@@ -332,3 +332,9 @@ def threshold_p_values(p_values, threshold=0.05):
     return masked_p_values
 
 
+def create_cmap():
+    cmap = LinearSegmentedColormap.from_list(
+    "my_cmap", [(1, 1, 0.8), (0.6, 0, 0)], N=256
+    )
+    return cmap
+
