@@ -282,3 +282,53 @@ def compute_p_values(X, K, y, model, num_permutations):
 
     return p_values
 
+
+def fdr_correction_masked(p_values, alpha=0.05):
+    """
+    Perform Benjamini-Hochberg FDR correction on a list of p-values and return a masked array.
+    
+    Parameters:
+    - p_values (array-like): List of p-values to correct.
+    - alpha (float): Desired FDR control level.
+    
+    Returns:
+    - Masked p-values where non-significant values are set to 1.
+    """
+    
+    p_values = np.array(p_values)
+    m = len(p_values)
+    ranks = np.argsort(p_values)
+    sorted_p_values = p_values[ranks]
+    
+    threshold_values = [(i+1)/m * alpha for i in range(m)]
+    below_threshold = sorted_p_values <= threshold_values
+    if below_threshold.any():
+        max_p_value = sorted_p_values[below_threshold].max()
+    else:
+        max_p_value = 0.0
+
+    # Create the masked p-values
+    masked_p_values = np.where(p_values <= max_p_value, p_values, 1)
+    
+    return masked_p_values
+
+
+
+def threshold_p_values(p_values, threshold=0.05):
+    """
+    Threshold p-values at a specified significance level.
+    
+    Parameters:
+    - p_values (array-like): List of p-values to threshold.
+    - threshold (float): Desired significance level, default is 0.05.
+    
+    Returns:
+    - Masked p-values where non-significant values are set to 1.
+    """
+    
+    p_values = np.array(p_values)
+    masked_p_values = np.where(p_values <= threshold, p_values, 0)
+    
+    return masked_p_values
+
+
