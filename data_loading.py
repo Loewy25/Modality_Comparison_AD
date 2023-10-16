@@ -119,36 +119,3 @@ def loading_mask(task,modality):
     train_data=np.array(train_data).reshape(np.array(train_label).shape[0],122597)
     
     return train_data,train_label,masker
-
-def binarylabel(train_label,mode):
-    if mode=="cd":
-        for i in range(len(train_label)):
-            if train_label[i]=="CN":
-                train_label[i]=0
-            else:
-                train_label[i]=1
-    if mode=="cm":
-        for i in range(len(train_label)):
-            if train_label[i]=="CN":
-                train_label[i]=0
-            else:
-                train_label[i]=1
-    if mode=="dm":
-        for i in range(len(train_label)):
-            if train_label[i]=="Dementia":
-                train_label[i]=1
-            else:
-                train_label[i]=0
-    if mode=="pc":
-        for i in range(len(train_label)):
-            if train_label[i]=="CN":
-                train_label[i]=0
-            else:
-                train_label[i]=1
-    if mode=="pm":
-        for i in range(len(train_label)):
-            if train_label[i]=="EMCI":
-                train_label[i]=1
-            else:
-                train_label[i]=0
-    return train_label
