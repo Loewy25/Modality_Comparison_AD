@@ -36,7 +36,7 @@ from sklearn.svm import LinearSVC, SVC
 
 
 
-from utils.py import (
+from utils import (
     compute_kernel_matrix,
     min_max_normalization,
     compute_p_values,
