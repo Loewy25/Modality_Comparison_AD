@@ -64,6 +64,7 @@ def plot_confusion_matrix(true_y, y_prob, positive, negative, method, task):
     # Save the plot
     plt.savefig(file_path)
     plt.show()
+    plt.close() # Close the plot
 
 
 def plot_roc_curve(true_y, y_prob, method, task):
@@ -92,6 +93,7 @@ def plot_roc_curve(true_y, y_prob, method, task):
     
     # Show the plot
     plt.show()
+    plt.close() # Close the plot
     print(f"Overall ROC AUC for all data: {roc_auc_score(true_y, y_prob)}")
 
 def plot_glass_brain(feature_importance_map_3d, method, task, modality):
