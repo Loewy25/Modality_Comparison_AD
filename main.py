@@ -46,6 +46,7 @@ from utils import (
     compute_covariance_directly,
     compute_p_values_with_correction,
     normalize_features,
+    apply_normalization,
     compute_bootstrap_confi
 
 )
