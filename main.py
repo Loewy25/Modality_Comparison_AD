@@ -27,12 +27,13 @@ from sklearn import metrics, svm
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.metrics import (accuracy_score, confusion_matrix,
                              precision_recall_curve, precision_recall_fscore_support,
-                             roc_auc_score, roc_curve)
+                             roc_auc_score, roc_curve,balanced_accuracy_score,precision_score,recall_score,f1_score)
 from sklearn.model_selection import (GridSearchCV, KFold, StratifiedKFold,
                                      cross_val_predict, cross_val_score,
                                      train_test_split)
 from sklearn.preprocessing import Binarizer, label_binarize
 from sklearn.svm import LinearSVC, SVC
+
 
 
 
