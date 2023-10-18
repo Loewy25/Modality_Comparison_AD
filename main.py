@@ -126,13 +126,6 @@ def hyperparameter_tuning_visual_cov_V3(data, label, randomseed, outer, inner, n
 
 
 def nested_crossvalidation(data, label, method, task):
-    from sklearn.model_selection import StratifiedKFold, GridSearchCV
-    from sklearn.metrics import (roc_auc_score, precision_recall_fscore_support,
-                                 accuracy_score, balanced_accuracy_score, precision_score, confusion_matrix)
-    from sklearn.svm import SVC
-    import numpy as np
-    import os
-    import pickle
 
     train_data = data
     train_label = label
