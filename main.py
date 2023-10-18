@@ -44,9 +44,7 @@ from utils import (
     compute_covariance_directly,
     compute_p_values_with_correction,
     normalize_features,
-    compute_bootstrap_confi,
-    plot_roc_curve,
-    plot_confusion_matrix
+    compute_bootstrap_confi
 
 )
 
