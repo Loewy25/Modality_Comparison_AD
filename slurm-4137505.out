@@ -1,0 +1,36 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Oct 18 14:04:03 CDT 2023 1697655843
+Job ID:		4137505
+Username:	l.peiwang
+Partition:	tier2_cpu
+End Slurm Prologue Wed Oct 18 14:04:03 CDT 2023 1697655843
+--------------------------------------------------------------
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/cd.py", line 20
+    //
+    ^^
+SyntaxError: invalid syntax
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Oct 18 14:04:07 CDT 2023 1697655847
+Name                : allocation
+User                : l.peiwang
+Partition           : 
+Nodes               : highmem02
+Cores               : 2
+State               : COMPLETED
+Submit              : 2023-10-18T14:04:02
+Start               : 2023-10-18T14:04:03
+End                 : 2023-10-18T14:04:05
+Reserved Walltime   : --
+Used Walltime       : 00:00:02
+Used CPU Time       : --
+% User (Computation):  0.00%
+% System (I/O)      : 30.56%
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : highmem02
+Max-Disk-Write Node : highmem02
+Max-Disk-Read Node  : highmem02
+End Slurm Epilogue Wed Oct 18 14:04:07 CDT 2023 1697655847
+--------------------------------------------------------------
