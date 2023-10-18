@@ -46,10 +46,14 @@ from utils import (
     normalize_features,
     compute_bootstrap_confi,
     plot_roc_curve,
-    plot_confusion_matrix,
+    plot_confusion_matrix
 
 )
 
+from plot_utils import (
+    plot_roc_curve,
+    plot_confusion_matrix
+)
 
 def hyperparameter_tuning_visual_cov_V3(data, label, randomseed, outer, inner, num_permutations):
     train_data = data
