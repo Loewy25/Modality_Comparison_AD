@@ -264,9 +264,8 @@ def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
     train_label = np.array(train_label)
     
     for rs in random_states:
-        cv_outer = StratifiedKFold(n_splits=5, shuffle=True, random_state=rs)
-        
-       for train_ix, test_ix in cv_outer.split(train_data_pet, train_label):
+        cv_outer = StratifiedKFold(n_splits=5, shuffle=True, random_state=rs)        
+        for train_ix, test_ix in cv_outer.split(train_data_pet, train_label):
             X_train_pet, X_test_pet = train_data_pet[train_ix, :], train_data_pet[test_ix, :]
             X_train_mri, X_test_mri = train_data_mri[train_ix, :], train_data_mri[test_ix, :]
             y_train, y_test = train_label[train_ix], train_label[test_ix]
