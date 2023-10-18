@@ -49,7 +49,7 @@ def plot_confusion_matrix(true_y, y_prob, positive, negative, method, task):
     cm_display.plot()
     
     # Directory path
-    directory = "/result/"
+    directory = "./result"
 
     # Construct the task specific directory path
     task_directory = os.path.join(directory, task)
@@ -75,7 +75,7 @@ def plot_roc_curve(true_y, y_prob, method, task):
     plt.ylabel('True Positive Rate')
 
     # Directory path
-    directory = "/scratch/l.peiwang"
+    directory = "./result"
     
     # Construct the task specific directory path
     task_directory = os.path.join(directory, task)
