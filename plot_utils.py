@@ -92,7 +92,6 @@ def plot_roc_curve(true_y, y_prob, method, task):
     
     # Show the plot
     plt.show()
-    time.sleep(2.5)
     print(f"Overall ROC AUC for all data: {roc_auc_score(true_y, y_prob)}")
 
 def plot_glass_brain(feature_importance_map_3d, method, task, modality):
