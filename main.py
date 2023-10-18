@@ -208,7 +208,7 @@ def nested_crossvalidation(data, label, method, task):
     plot_roc_curve(all_y_test, all_y_prob, method, task)
     plot_confusion_matrix(all_y_test, all_predictions, positive, negative, method, task)
     
-    directory = '/scratch/l.peiwang/results'
+    directory = './result'
     os.makedirs(directory, exist_ok=True)
     filename = os.path.join(directory, f'results_{method}_{task}.pickle')
     
@@ -363,7 +363,7 @@ for rs in random_states:
     plot_roc_curve(all_y_test, all_y_prob, method, task)
     plot_confusion_matrix(all_y_test, all_predictions, positive, negative, method, task)
     
-    directory = './results'
+    directory = './result'
     os.makedirs(directory, exist_ok=True)
     filename = os.path.join(directory, f'results_{method}_{task}.pickle')
     
