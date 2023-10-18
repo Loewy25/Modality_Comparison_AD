@@ -36,7 +36,7 @@ from sklearn.svm import LinearSVC, SVC
 
 
 
-from utils.py import (ensure_directory_exists,create_cmap)
+from utils import (ensure_directory_exists,create_cmap)
 
 
 
