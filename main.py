@@ -183,14 +183,20 @@ def nested_crossvalidation(data, label, method, task):
     auc = roc_auc_score(all_y_test, all_y_prob)
     accuracy = accuracy_score(all_y_test, all_predictions)
     balanced_accuracy = balanced_accuracy_score(all_y_test, all_predictions)
-
-    precision_classwise = precision_score(all_y_test, all_predictions, average=None)
+    
+    # Handle UndefinedMetricWarning by setting zero_division=1
+    precision_classwise = precision_score(all_y_test, all_predictions, average=None, zero_division=1)
     recall_classwise = recall_score(all_y_test, all_predictions, average=None)
     f1_classwise = f1_score(all_y_test, all_predictions, average=None)
-
-    ppv = precision_score(all_y_test, all_predictions, average=None)
+    
+    ppv = precision_classwise  # since they are the same, no need to compute twice
+    
     cm = confusion_matrix(all_y_test, all_predictions)
-    npv = cm[1,1] / (cm[1,1] + cm[0,1])
+    
+    # Handle RuntimeWarning by checking for zero denominator
+    denominator = cm[1,1] + cm[0,1]
+    npv = cm[1,1] / denominator if denominator != 0 else 0
+
     
     # 2. Compute bootstrap confidence intervals for each of these metrics.
     confi_auc = compute_bootstrap_confi(all_y_prob, all_y_test, roc_auc_score)
@@ -340,12 +346,20 @@ def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
     auc = roc_auc_score(all_y_test, all_y_prob)
     accuracy = accuracy_score(all_y_test, all_predictions)
     balanced_accuracy = balanced_accuracy_score(all_y_test, all_predictions)
-    precision_classwise = precision_score(all_y_test, all_predictions, average=None)
+    
+    # Handle UndefinedMetricWarning by setting zero_division=1
+    precision_classwise = precision_score(all_y_test, all_predictions, average=None, zero_division=1)
     recall_classwise = recall_score(all_y_test, all_predictions, average=None)
     f1_classwise = f1_score(all_y_test, all_predictions, average=None)
-    ppv = precision_score(all_y_test, all_predictions, average=None)
+    
+    ppv = precision_classwise  # since they are the same, no need to compute twice
+    
     cm = confusion_matrix(all_y_test, all_predictions)
-    npv = cm[1,1] / (cm[1,1] + cm[0,1])
+    
+    # Handle RuntimeWarning by checking for zero denominator
+    denominator = cm[1,1] + cm[0,1]
+    npv = cm[1,1] / denominator if denominator != 0 else 0
+
     
     # 2. Compute bootstrap confidence intervals for each of these metrics.
     confi_auc = compute_bootstrap_confi(all_y_prob, all_y_test, roc_auc_score)
