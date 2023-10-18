@@ -231,52 +231,52 @@ def nested_crossvalidation(data, label, method, task):
 
 
 def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
-train_label = label
-random_states = [10]
-
-performance_dict = {}
-tasks_dict = {
-    'cd': ('AD', 'CN'),
-    'dm': ('AD', 'MCI'),
-    'cm': ('MCI', 'CN'),
-    'pc': ('Preclinical', 'CN')
-}
-
-all_y_test = []
-all_y_prob = []
-all_predictions = []
-performance_dict = {}
-best_models_pet = []
-best_models_mri = []
-best_weights_list = []
-best_auc_list = []
-
-positive, negative = tasks_dict[task]
-train_data_pet = np.array(data_pet)
-train_data_mri = np.array(data_mri)
-train_label = np.array(train_label)
-
-for rs in random_states:
-    cv_outer = StratifiedKFold(n_splits=5, shuffle=True, random_state=rs)
+    train_label = label
+    random_states = [10]
     
-    for train_ix, test_ix in cv_outer.split(train_data_pet, train_label):
-        X_train_pet, X_test_pet = train_data_pet[train_ix, :], train_data_pet[test_ix, :]
-        X_train_mri, X_test_mri = train_data_mri[train_ix, :], train_data_mri[test_ix, :]
-        y_train, y_test = train_label[train_ix], train_label[test_ix]
-
-        # Normalize the PET and MRI training data based on control indices within this fold
-        control_indices_train = [i for i, label in enumerate(y_train) if label == 0]
-        X_train_pet = normalize_features(X_train_pet, control_indices_train)
-        X_train_mri = normalize_features(X_train_mri, control_indices_train)
-
-        # Compute kernel matrices for PET and MRI data
-        K_train_pet = compute_kernel_matrix(X_train_pet, X_train_pet, linear_kernel)
-        K_test_pet = compute_kernel_matrix(X_test_pet, X_train_pet, linear_kernel)
+    performance_dict = {}
+    tasks_dict = {
+        'cd': ('AD', 'CN'),
+        'dm': ('AD', 'MCI'),
+        'cm': ('MCI', 'CN'),
+        'pc': ('Preclinical', 'CN')
+    }
+    
+    all_y_test = []
+    all_y_prob = []
+    all_predictions = []
+    performance_dict = {}
+    best_models_pet = []
+    best_models_mri = []
+    best_weights_list = []
+    best_auc_list = []
+    
+    positive, negative = tasks_dict[task]
+    train_data_pet = np.array(data_pet)
+    train_data_mri = np.array(data_mri)
+    train_label = np.array(train_label)
+    
+    for rs in random_states:
+        cv_outer = StratifiedKFold(n_splits=5, shuffle=True, random_state=rs)
         
-        K_train_mri = compute_kernel_matrix(X_train_mri, X_train_mri, linear_kernel)
-        K_test_mri = compute_kernel_matrix(X_test_mri, X_train_mri, linear_kernel)
-        
-        # ... continue with your training, model selection, and evaluation logic ...
+        for train_ix, test_ix in cv_outer.split(train_data_pet, train_label):
+            X_train_pet, X_test_pet = train_data_pet[train_ix, :], train_data_pet[test_ix, :]
+            X_train_mri, X_test_mri = train_data_mri[train_ix, :], train_data_mri[test_ix, :]
+            y_train, y_test = train_label[train_ix], train_label[test_ix]
+    
+            # Normalize the PET and MRI training data based on control indices within this fold
+            control_indices_train = [i for i, label in enumerate(y_train) if label == 0]
+            X_train_pet = normalize_features(X_train_pet, control_indices_train)
+            X_train_mri = normalize_features(X_train_mri, control_indices_train)
+    
+            # Compute kernel matrices for PET and MRI data
+            K_train_pet = compute_kernel_matrix(X_train_pet, X_train_pet, linear_kernel)
+            K_test_pet = compute_kernel_matrix(X_test_pet, X_train_pet, linear_kernel)
+            
+            K_train_mri = compute_kernel_matrix(X_train_mri, X_train_mri, linear_kernel)
+            K_test_mri = compute_kernel_matrix(X_test_mri, X_train_mri, linear_kernel)
+            
+            # ... continue with your training, model selection, and evaluation logic ...
 
             
             best_auc = 0
