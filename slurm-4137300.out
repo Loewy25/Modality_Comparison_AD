@@ -1,0 +1,41 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Oct 18 12:17:20 CDT 2023 1697649440
+Job ID:		4137300
+Username:	l.peiwang
+Partition:	tier2_cpu
+End Slurm Prologue Wed Oct 18 12:17:20 CDT 2023 1697649440
+--------------------------------------------------------------
+/home/l.peiwang/.local/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+Running outer loop with random state: 30
+Traceback (most recent call last):
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/cd_interpretation_PET.py", line 19, in <module>
+    average_single_weights,average_corrected_weights,average_permuted_single_weights,average_permuted_corrected_weights=hyperparameter_tuning_visual_cov_V3(image,label1,[30],2,2,1000)
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/main.py", line 80, in hyperparameter_tuning_visual_cov_V3
+    K_train = compute_kernel_matrix(X_train, X_train, linear_kernel)
+NameError: name 'linear_kernel' is not defined
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Oct 18 12:20:48 CDT 2023 1697649648
+Name                : ex_visual
+User                : l.peiwang
+Partition           : tier2_cpu
+Nodes               : highmem02
+Cores               : 2
+State               : COMPLETED
+Submit              : 2023-10-18T12:17:20
+Start               : 2023-10-18T12:17:20
+End                 : 2023-10-18T12:20:46
+Reserved Walltime   : 1-16:50:00
+Used Walltime       :   00:03:26
+Used CPU Time       :   00:02:13
+% User (Computation): 96.96%
+% System (I/O)      :  3.04%
+Mem Reserved        : 53000M
+Max Mem Used        : 514.84M (539852800.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 983.04K (1006632.96)
+Max-Mem-Used Node   : highmem02
+Max-Disk-Write Node : highmem02
+Max-Disk-Read Node  : highmem02
+End Slurm Epilogue Wed Oct 18 12:20:48 CDT 2023 1697649648
+--------------------------------------------------------------
