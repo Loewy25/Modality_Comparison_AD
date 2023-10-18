@@ -1,14 +1,14 @@
 #!/bin/bash
 
-#SBATCH -J threshold2
+#SBATCH -J ex_visual
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 53000M
-#SBATCH -t 20:50:00
+#SBATCH -t 40:50:00
 ##SBATCH --gres=gpu:3
 
 
-#SBATCH --partition=tier2_gpu
+#SBATCH --partition=tier2_cpu
 
 
 #SBATCH --account=aristeidis_sotiras
@@ -20,5 +20,5 @@ module load python
 ##source ~/liuenv/bin/activate
 
 
-python cd_MRI.py
+python cd_interpretation_PET.py
 sleep 1
