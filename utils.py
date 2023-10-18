@@ -162,7 +162,7 @@ def min_max_normalization(arr):
     return normalized_arr
 
 
-def normalize_features(data, control_indices):
+def normalize_features(data, control_indices, return_params=False):
     """
     Normalize features using the control group data.
     
@@ -170,9 +170,11 @@ def normalize_features(data, control_indices):
         The data to be normalized.
     control_indices: list
         The indices of the control samples in the data.
+    return_params: bool, optional (default=False)
+        If True, returns normalization parameters alongside normalized data.
         
-    Returns: ndarray
-        The normalized data.
+    Returns: ndarray, (and tuple if return_params=True)
+        The normalized data and normalization parameters (control_mean, control_std).
     """
     # Select the control group data
     control_data = data[control_indices, :]
@@ -182,8 +184,27 @@ def normalize_features(data, control_indices):
     
     # Normalize the features for all samples
     normalized_data = (data - control_mean) / control_std
-       
-    return normalized_data
+
+    if return_params:
+        return normalized_data, (control_mean, control_std)
+    else:
+        return normalized_data
+
+def apply_normalization(data, params):
+    """
+    Apply normalization to the data using provided parameters.
+    
+    data: ndarray, shape (n_samples, n_features)
+        The data to be normalized.
+    params: tuple
+        The normalization parameters in the form (mean, std).
+        
+    Returns: ndarray
+        The normalized data.
+    """
+    mean, std = params
+    return (data - mean) / std
+
 
 
 def compute_bootstrap_confi(predictions, ground_truth, scoring_func, n_iterations=1000):
