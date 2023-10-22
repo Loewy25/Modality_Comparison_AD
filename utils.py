@@ -145,13 +145,13 @@ def interpret_backward2forward(X_train,y_train,weight):
     temp1 = np.dot(cov_matrix_x, W)
     temp2=np.dot(temp1,A_inv)
     activation_pattern=temp2.reshape(1,122597)
+    return activation_pattern
 
 
 def ensure_directory_exists(dir_path):
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
 
-    return activation_pattern
 
 
 
