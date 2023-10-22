@@ -96,22 +96,22 @@ def plot_roc_curve(true_y, y_prob, method, task):
     plt.close() # Close the plot
     print(f"Overall ROC AUC for all data: {roc_auc_score(true_y, y_prob)}")
 
-def plot_glass_brain(feature_importance_map_3d, method, task, modality):
+def plot_glass_brain(feature_importance_map_3d, method, task, modality,vmax=1):
     base_path = os.getcwd() # Get the current working directory
     result_path = os.path.join(base_path, 'result')
     ensure_directory_exists(result_path)
     output_path = os.path.join(result_path, f'glass_brain_{method}_{task}_{modality}.png')
     
     cmap = create_cmap()
-    plotting.plot_glass_brain(feature_importance_map_3d, colorbar=True, plot_abs=True, cmap='jet', output_file=output_path, vmin=0, vmax=1)
+    plotting.plot_glass_brain(feature_importance_map_3d, colorbar=True, plot_abs=True, cmap='jet', output_file=output_path, vmin=0, vmax=vmax)
     print(f'Glass brain plot saved at {output_path}')
 
-def plot_stat_map(weight_img, threshold, method, task, modality):
+def plot_stat_map(weight_img, threshold, method, task, modality,vmax=1):
     base_path = os.getcwd() # Get the current working directory
     result_path = os.path.join(base_path, 'result')
     ensure_directory_exists(result_path)
     output_path = os.path.join(result_path, f'stat_map_{method}_{task}_{modality}.png')
     
     cmap = create_cmap()
-    plotting.plot_stat_map(weight_img, display_mode='x', threshold=threshold, cut_coords=range(0, 51, 5), title='Slices', cmap='jet', output_file=output_path, vmax=1)
+    plotting.plot_stat_map(weight_img, display_mode='x', threshold=threshold, cut_coords=range(0, 51, 5), title='Slices', cmap='jet', output_file=output_path, vmax=vmax)
     print(f'Stat map plot saved at {output_path}')
