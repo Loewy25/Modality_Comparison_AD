@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J visual_dm_P
+#SBATCH -J visual_pc_P
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 53000M
@@ -20,5 +20,5 @@ module load python
 ##source ~/liuenv/bin/activate
 
 
-python dm_interpretation_PET.py
+python pc_interpretation_PET.py
 sleep 1
