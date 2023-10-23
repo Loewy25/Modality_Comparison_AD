@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J visual_pc_M
+#SBATCH -J visual_cd_M
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 53000M
@@ -20,5 +20,5 @@ module load python
 ##source ~/liuenv/bin/activate
 
 
-python pc_interpretation_MRI.py
+python cd_interpretation_MRI.py
 sleep 1
