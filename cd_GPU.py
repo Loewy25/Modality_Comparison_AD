@@ -1,4 +1,5 @@
 from cuml import SVC as cuSVC
+import cudf
 from cuml.model_selection import GridSearchCV as cuGridSearchCV
 import time
 from data_loading import loading_mask
