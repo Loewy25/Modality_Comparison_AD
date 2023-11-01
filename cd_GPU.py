@@ -39,6 +39,24 @@ from sklearn.preprocessing import Binarizer, label_binarize
 from sklearn.svm import LinearSVC, SVC
 
 
+from utils import (
+    compute_kernel_matrix,
+    linear_kernel,
+    min_max_normalization,
+    compute_p_values,
+    compute_weights_for_linear_kernel,
+    compute_covariance_directly,
+    compute_p_values_with_correction,
+    normalize_features,
+    apply_normalization,
+    compute_bootstrap_confi
+
+)
+
+from plot_utils import (
+    plot_roc_curve,
+    plot_confusion_matrix
+)
 
 
 def nested_crossvalidation1(data, label, method, task):
