@@ -5,7 +5,7 @@
 #SBATCH -n 1
 #SBATCH --mem 53000M
 #SBATCH -t 40:50:00
-#SBATCH --gres=gpu:3
+#SBATCH --gres=gpu:1
 
 
 #SBATCH --partition=tier2_gpu
