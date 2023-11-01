@@ -17,7 +17,6 @@ import scipy.ndimage as ndi
 import statsmodels.stats.contingency_tables as ct
 import time
 from collections import Counter
-from datetime import *
 from matplotlib import pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 from nilearn import image, plotting
