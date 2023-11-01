@@ -94,6 +94,13 @@ def nested_crossvalidation1(data, label, method, task):
             # Normalize the test data using the same normalization parameters
             X_test = apply_normalization(X_test, normalization_params)
 
+
+            
+            # Create splits
+            cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
+            splits = list(cv_inner.split(X_train, y_train))
+          
+          
             X_train = pd.DataFrame(X_train)
             X_test = pd.DataFrame(X_test)
 
@@ -102,12 +109,11 @@ def nested_crossvalidation1(data, label, method, task):
             X_test_gpu = cudf.DataFrame.from_pandas(X_test)
             y_train_gpu = cudf.Series(y_train)
             y_test_gpu = cudf.Series(y_test)
-            cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
-            
+          
             # Use cuSVC and cuGridSearchCV
             model = cuSVC(kernel="linear", class_weight='balanced', probability=True)
             space = {'C': [1, 100, 10, 0.1, 0.01, 0.001, 0.0001, 0.00001]}
-            search = cuGridSearchCV(model, space, scoring='roc_auc', cv=cv_inner, refit=True)
+            search = cuGridSearchCV(model, space, scoring='roc_auc', cv=splits, refit=True)
             result = search.fit(X_train_gpu, y_train_gpu)
             best_model = result.best_estimator_
             yhat = best_model.predict_proba(X_test_gpu)
