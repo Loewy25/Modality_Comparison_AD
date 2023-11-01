@@ -19,7 +19,8 @@ module load cudnn/8.1.1
 
 #source ~/liuenv/bin/activate
 
-!git clone https://github.com/rapidsai/rapidsai-csp-utils.git
-!python rapidsai-csp-utils/colab/pip-install.py
+git clone https://github.com/rapidsai/rapidsai-csp-utils.git
+python rapidsai-csp-utils/colab/pip-install.py
+
 python cd_GPU.py
 sleep 1
