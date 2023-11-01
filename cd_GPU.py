@@ -93,7 +93,10 @@ def nested_crossvalidation1(data, label, method, task):
             
             # Normalize the test data using the same normalization parameters
             X_test = apply_normalization(X_test, normalization_params)
-            
+
+            X_train = pd.DataFrame(X_train)
+            X_test = pd.DataFrame(X_test)
+
             # Convert data to GPU
             X_train_gpu = cudf.DataFrame.from_pandas(X_train)
             X_test_gpu = cudf.DataFrame.from_pandas(X_test)
