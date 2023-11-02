@@ -39,8 +39,6 @@ from sklearn.svm import LinearSVC, SVC
 def generate(images,labels,task):
     imagesData=[]
     labelsData=[]
-    ageData=[]
-    genderData=[]
     if task == "cd":
         for i in range(len(images)):
             if labels[i] == "CN":
