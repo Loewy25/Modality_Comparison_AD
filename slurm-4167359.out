@@ -1,0 +1,275 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Nov  1 16:31:16 CDT 2023 1698874276
+Job ID:		4167359
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Wed Nov  1 16:31:16 CDT 2023 1698874276
+--------------------------------------------------------------
+Cloning into 'rapidsai-csp-utils'...
+Defaulting to user installation because normal site-packages is not writeable
+Collecting pynvml
+  Downloading pynvml-11.5.0-py3-none-any.whl (53 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 53.1/53.1 kB 821.5 kB/s eta 0:00:00
+Installing collected packages: pynvml
+Successfully installed pynvml-11.5.0
+
+[notice] A new release of pip is available: 23.2.1 -> 23.3.1
+[notice] To update, run: pip install --upgrade pip
+***********************************************************************
+Woo! Your instance has the right kind of GPU, a Tesla T4!
+We will now install RAPIDS cuDF, cuML, and cuGraph via pip! 
+Please stand by, should be quick...
+***********************************************************************
+
+Defaulting to user installation because normal site-packages is not writeable
+Looking in indexes: https://pypi.org/simple, https://pypi.nvidia.com
+Collecting cudf-cu11
+  Downloading https://pypi.nvidia.com/cudf-cu11/cudf_cu11-23.10.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (502.5 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 502.5/502.5 MB 7.6 MB/s eta 0:00:00
+Collecting cuml-cu11
+  Downloading https://pypi.nvidia.com/cuml-cu11/cuml_cu11-23.10.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1078.5 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 GB 4.7 MB/s eta 0:00:00
+Collecting cugraph-cu11
+  Downloading https://pypi.nvidia.com/cugraph-cu11/cugraph_cu11-23.10.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1231.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 GB 4.1 MB/s eta 0:00:00
+Collecting aiohttp
+  Obtaining dependency information for aiohttp from https://files.pythonhosted.org/packages/41/8e/4c48881316bbced3d13089c4d0df4be321ce79a0c695d82dee9996aaf56b/aiohttp-3.8.6-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata
+  Downloading aiohttp-3.8.6-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.7 kB)
+Requirement already satisfied: cachetools in /ceph/chpc/home/l.peiwang/.local/lib/python3.10/site-packages (from cudf-cu11) (5.3.0)
+Collecting cubinlinker-cu11 (from cudf-cu11)
+  Downloading https://pypi.nvidia.com/cubinlinker-cu11/cubinlinker_cu11-0.3.0.post1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (8.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.8/8.8 MB 37.5 MB/s eta 0:00:00
+Collecting cuda-python<12.0a0,>=11.7.1 (from cudf-cu11)
+  Obtaining dependency information for cuda-python<12.0a0,>=11.7.1 from https://files.pythonhosted.org/packages/4d/df/09c948e21036fcf35f1d148391cac1e10f74e83f6486c6cbcf9f6a3f28bd/cuda_python-11.8.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata
+  Downloading cuda_python-11.8.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (12 kB)
+Collecting cupy-cuda11x>=12.0.0 (from cudf-cu11)
+  Obtaining dependency information for cupy-cuda11x>=12.0.0 from https://files.pythonhosted.org/packages/27/50/dede8ba6e82b3c48d9d893d5ddfb148b87a8ea9dda582012cb102d3f2f4f/cupy_cuda11x-12.2.0-cp310-cp310-manylinux2014_x86_64.whl.metadata
+  Downloading cupy_cuda11x-12.2.0-cp310-cp310-manylinux2014_x86_64.whl.metadata (2.6 kB)
+Requirement already satisfied: fsspec>=0.6.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from cudf-cu11) (2022.11.0)
+Collecting numba<0.58,>=0.57 (from cudf-cu11)
+  Obtaining dependency information for numba<0.58,>=0.57 from https://files.pythonhosted.org/packages/aa/9d/e93ddc139fcd5b7201bcbdd1ac9c76534aac043fbbdb86ab4bd2e7aebae5/numba-0.57.1-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata
+  Downloading numba-0.57.1-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.7 kB)
+Requirement already satisfied: numpy<1.25,>=1.21 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from cudf-cu11) (1.23.5)
+Collecting nvtx>=0.2.1 (from cudf-cu11)
+  Obtaining dependency information for nvtx>=0.2.1 from https://files.pythonhosted.org/packages/91/cf/2c482e429ca8b8570e88538a35c217e26c24cf5c5e47997bc148ca490758/nvtx-0.2.8-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata
+  Downloading nvtx-0.2.8-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (739 bytes)
+Requirement already satisfied: packaging in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from cudf-cu11) (22.0)
+Requirement already satisfied: pandas<1.6.0dev0,>=1.3 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from cudf-cu11) (1.5.3)
+Requirement already satisfied: protobuf<5,>=4.21 in /ceph/chpc/home/l.peiwang/.local/lib/python3.10/site-packages (from cudf-cu11) (4.23.0)
+Collecting ptxcompiler-cu11 (from cudf-cu11)
+  Downloading https://pypi.nvidia.com/ptxcompiler-cu11/ptxcompiler_cu11-0.7.0.post1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (8.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.8/8.8 MB 25.4 MB/s eta 0:00:00
+Collecting pyarrow==12.* (from cudf-cu11)
+  Obtaining dependency information for pyarrow==12.* from https://files.pythonhosted.org/packages/0d/c8/886acfcce7cb2f7552f538d2b6deafd4841f3de42902943db15f1b42313d/pyarrow-12.0.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata
+  Downloading pyarrow-12.0.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.0 kB)
+Collecting rmm-cu11==23.10.* (from cudf-cu11)
+  Downloading https://pypi.nvidia.com/rmm-cu11/rmm_cu11-23.10.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.0 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 26.8 MB/s eta 0:00:00
+Requirement already satisfied: typing-extensions>=4.0.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from cudf-cu11) (4.4.0)
+Collecting dask-cuda==23.10.* (from cuml-cu11)
+  Obtaining dependency information for dask-cuda==23.10.* from https://files.pythonhosted.org/packages/d6/b6/3880386c6a5c226eb51bc395a02ee78df90739c2f6a47d5811085953b74c/dask_cuda-23.10.0-py3-none-any.whl.metadata
+  Downloading dask_cuda-23.10.0-py3-none-any.whl.metadata (2.3 kB)
+Collecting dask-cudf-cu11==23.10.* (from cuml-cu11)
+  Downloading https://pypi.nvidia.com/dask-cudf-cu11/dask_cudf_cu11-23.10.0-py3-none-any.whl (82 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 82.0/82.0 kB 2.3 MB/s eta 0:00:00
+Collecting dask==2023.9.2 (from cuml-cu11)
+  Obtaining dependency information for dask==2023.9.2 from https://files.pythonhosted.org/packages/f5/ec/3613b5221a015f54ff50a948029bbd7564e846a45178070feced8b9d105c/dask-2023.9.2-py3-none-any.whl.metadata
+  Downloading dask-2023.9.2-py3-none-any.whl.metadata (3.6 kB)
+Collecting distributed==2023.9.2 (from cuml-cu11)
+  Obtaining dependency information for distributed==2023.9.2 from https://files.pythonhosted.org/packages/63/17/ad16f15b7e78d15265086f7da8c52eda1483e97affc796ccd75e654573cb/distributed-2023.9.2-py3-none-any.whl.metadata
+  Downloading distributed-2023.9.2-py3-none-any.whl.metadata (3.3 kB)
+Requirement already satisfied: joblib>=0.11 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from cuml-cu11) (1.1.1)
+Collecting raft-dask-cu11==23.10.* (from cuml-cu11)
+  Downloading https://pypi.nvidia.com/raft-dask-cu11/raft_dask_cu11-23.10.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (214.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 214.8/214.8 MB 14.2 MB/s eta 0:00:00
+Requirement already satisfied: scipy>=1.8.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from cuml-cu11) (1.10.0)
+Collecting treelite==3.9.1 (from cuml-cu11)
+  Obtaining dependency information for treelite==3.9.1 from https://files.pythonhosted.org/packages/2b/18/af1c2ec3bcab0575e76fe3380288d13717369b40c5bdcb44dc0e38956f96/treelite-3.9.1-py3-none-manylinux2014_x86_64.whl.metadata
+  Downloading treelite-3.9.1-py3-none-manylinux2014_x86_64.whl.metadata (781 bytes)
+Collecting treelite-runtime==3.9.1 (from cuml-cu11)
+  Obtaining dependency information for treelite-runtime==3.9.1 from https://files.pythonhosted.org/packages/13/4e/f2e47fceb1611e5a9670c471ff0b0519dc13affd01ba07fe8b04dcfd64db/treelite_runtime-3.9.1-py3-none-manylinux2014_x86_64.whl.metadata
+  Downloading treelite_runtime-3.9.1-py3-none-manylinux2014_x86_64.whl.metadata (654 bytes)
+Requirement already satisfied: click>=8.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from dask==2023.9.2->cuml-cu11) (8.0.4)
+Requirement already satisfied: cloudpickle>=1.5.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from dask==2023.9.2->cuml-cu11) (2.0.0)
+Requirement already satisfied: partd>=1.2.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from dask==2023.9.2->cuml-cu11) (1.2.0)
+Requirement already satisfied: pyyaml>=5.3.1 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from dask==2023.9.2->cuml-cu11) (6.0)
+Requirement already satisfied: toolz>=0.10.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from dask==2023.9.2->cuml-cu11) (0.12.0)
+Collecting importlib-metadata>=4.13.0 (from dask==2023.9.2->cuml-cu11)
+  Obtaining dependency information for importlib-metadata>=4.13.0 from https://files.pythonhosted.org/packages/cc/37/db7ba97e676af155f5fcb1a35466f446eadc9104e25b83366e8088c9c926/importlib_metadata-6.8.0-py3-none-any.whl.metadata
+  Using cached importlib_metadata-6.8.0-py3-none-any.whl.metadata (5.1 kB)
+Collecting pynvml<11.5,>=11.0.0 (from dask-cuda==23.10.*->cuml-cu11)
+  Downloading pynvml-11.4.1-py3-none-any.whl (46 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 47.0/47.0 kB 169.7 kB/s eta 0:00:00
+Requirement already satisfied: zict>=2.0.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from dask-cuda==23.10.*->cuml-cu11) (2.1.0)
+Requirement already satisfied: jinja2>=2.10.3 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from distributed==2023.9.2->cuml-cu11) (3.1.2)
+Requirement already satisfied: locket>=1.0.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from distributed==2023.9.2->cuml-cu11) (1.0.0)
+Requirement already satisfied: msgpack>=1.0.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from distributed==2023.9.2->cuml-cu11) (1.0.3)
+Requirement already satisfied: psutil>=5.7.2 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from distributed==2023.9.2->cuml-cu11) (5.9.0)
+Requirement already satisfied: sortedcontainers>=2.0.5 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from distributed==2023.9.2->cuml-cu11) (2.4.0)
+Requirement already satisfied: tblib>=1.6.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from distributed==2023.9.2->cuml-cu11) (1.7.0)
+Requirement already satisfied: tornado>=6.0.4 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from distributed==2023.9.2->cuml-cu11) (6.1)
+Requirement already satisfied: urllib3>=1.24.3 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from distributed==2023.9.2->cuml-cu11) (1.26.14)
+Collecting zict>=2.0.0 (from dask-cuda==23.10.*->cuml-cu11)
+  Downloading zict-3.0.0-py2.py3-none-any.whl (43 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.3/43.3 kB 589.4 kB/s eta 0:00:00
+Collecting pylibraft-cu11==23.10.* (from raft-dask-cu11==23.10.*->cuml-cu11)
+  Downloading https://pypi.nvidia.com/pylibraft-cu11/pylibraft_cu11-23.10.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (520.0 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 520.0/520.0 MB 8.5 MB/s eta 0:00:00
+Collecting ucx-py-cu11==0.34.* (from raft-dask-cu11==23.10.*->cuml-cu11)
+  Downloading https://pypi.nvidia.com/ucx-py-cu11/ucx_py_cu11-0.34.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (7.7 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.7/7.7 MB 48.1 MB/s eta 0:00:00
+Collecting pylibcugraph-cu11==23.10.* (from cugraph-cu11)
+  Downloading https://pypi.nvidia.com/pylibcugraph-cu11/pylibcugraph_cu11-23.10.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1232.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 GB 3.3 MB/s eta 0:00:00
+Requirement already satisfied: attrs>=17.3.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from aiohttp) (22.1.0)
+Requirement already satisfied: charset-normalizer<4.0,>=2.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from aiohttp) (2.0.4)
+Collecting multidict<7.0,>=4.5 (from aiohttp)
+  Downloading multidict-6.0.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (114 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.5/114.5 kB 4.1 MB/s eta 0:00:00
+Collecting async-timeout<5.0,>=4.0.0a3 (from aiohttp)
+  Obtaining dependency information for async-timeout<5.0,>=4.0.0a3 from https://files.pythonhosted.org/packages/a7/fa/e01228c2938de91d47b307831c62ab9e4001e747789d0b05baf779a6488c/async_timeout-4.0.3-py3-none-any.whl.metadata
+  Downloading async_timeout-4.0.3-py3-none-any.whl.metadata (4.2 kB)
+Collecting yarl<2.0,>=1.0 (from aiohttp)
+  Downloading yarl-1.9.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (268 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 268.8/268.8 kB 9.5 MB/s eta 0:00:00
+Collecting frozenlist>=1.1.1 (from aiohttp)
+  Obtaining dependency information for frozenlist>=1.1.1 from https://files.pythonhosted.org/packages/1e/28/74b8b6451c89c070d34e753d8b65a1e4ce508a6808b18529f36e8c0e2184/frozenlist-1.4.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata
+  Downloading frozenlist-1.4.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.2 kB)
+Collecting aiosignal>=1.1.2 (from aiohttp)
+  Downloading aiosignal-1.3.1-py3-none-any.whl (7.6 kB)
+Requirement already satisfied: fastrlock>=0.5 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from cupy-cuda11x>=12.0.0->cudf-cu11) (0.8.1)
+Requirement already satisfied: requests in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from fsspec>=0.6.0->cudf-cu11) (2.28.1)
+Collecting llvmlite<0.41,>=0.40.0dev0 (from numba<0.58,>=0.57->cudf-cu11)
+  Obtaining dependency information for llvmlite<0.41,>=0.40.0dev0 from https://files.pythonhosted.org/packages/14/73/424ef49a4bb7bbc9c16f3fc66926cb3018699c69146cd130642c76ff2d97/llvmlite-0.40.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata
+  Downloading llvmlite-0.40.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.7 kB)
+Requirement already satisfied: python-dateutil>=2.8.1 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from pandas<1.6.0dev0,>=1.3->cudf-cu11) (2.8.2)
+Requirement already satisfied: pytz>=2020.1 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from pandas<1.6.0dev0,>=1.3->cudf-cu11) (2022.7)
+Requirement already satisfied: idna>=2.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from yarl<2.0,>=1.0->aiohttp) (3.4)
+Requirement already satisfied: zipp>=0.5 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from importlib-metadata>=4.13.0->dask==2023.9.2->cuml-cu11) (3.11.0)
+Requirement already satisfied: MarkupSafe>=2.0 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from jinja2>=2.10.3->distributed==2023.9.2->cuml-cu11) (2.1.1)
+Requirement already satisfied: six>=1.5 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from python-dateutil>=2.8.1->pandas<1.6.0dev0,>=1.3->cudf-cu11) (1.16.0)
+Requirement already satisfied: certifi>=2017.4.17 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from requests->fsspec>=0.6.0->cudf-cu11) (2022.12.7)
+Downloading pyarrow-12.0.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (38.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 38.9/38.9 MB 20.9 MB/s eta 0:00:00
+Downloading dask-2023.9.2-py3-none-any.whl (1.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 18.5 MB/s eta 0:00:00
+Downloading dask_cuda-23.10.0-py3-none-any.whl (124 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 124.3/124.3 kB 3.7 MB/s eta 0:00:00
+Downloading distributed-2023.9.2-py3-none-any.whl (994 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 994.9/994.9 kB 22.3 MB/s eta 0:00:00
+Downloading treelite-3.9.1-py3-none-manylinux2014_x86_64.whl (1.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.0/1.0 MB 7.8 MB/s eta 0:00:00
+Downloading treelite_runtime-3.9.1-py3-none-manylinux2014_x86_64.whl (198 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 198.7/198.7 kB 9.9 MB/s eta 0:00:00
+Downloading aiohttp-3.8.6-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.0/1.0 MB 7.9 MB/s eta 0:00:00
+Downloading async_timeout-4.0.3-py3-none-any.whl (5.7 kB)
+Downloading cuda_python-11.8.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (18.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 18.7/18.7 MB 23.2 MB/s eta 0:00:00
+Downloading cupy_cuda11x-12.2.0-cp310-cp310-manylinux2014_x86_64.whl (89.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 89.6/89.6 MB 13.2 MB/s eta 0:00:00
+Downloading frozenlist-1.4.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (225 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 225.7/225.7 kB 4.4 MB/s eta 0:00:00
+Downloading numba-0.57.1-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (3.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.6/3.6 MB 30.2 MB/s eta 0:00:00
+Downloading nvtx-0.2.8-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (582 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 582.4/582.4 kB 8.8 MB/s eta 0:00:00
+Using cached importlib_metadata-6.8.0-py3-none-any.whl (22 kB)
+Downloading llvmlite-0.40.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (42.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.1/42.1 MB 14.9 MB/s eta 0:00:00
+Installing collected packages: ptxcompiler-cu11, nvtx, cuda-python, cubinlinker-cu11, zict, pynvml, pyarrow, multidict, llvmlite, importlib-metadata, frozenlist, cupy-cuda11x, async-timeout, yarl, ucx-py-cu11, treelite-runtime, treelite, numba, dask, aiosignal, rmm-cu11, distributed, aiohttp, pylibraft-cu11, dask-cuda, cudf-cu11, raft-dask-cu11, pylibcugraph-cu11, dask-cudf-cu11, cuml-cu11, cugraph-cu11
+  Attempting uninstall: pynvml
+    Found existing installation: pynvml 11.5.0
+    Uninstalling pynvml-11.5.0:
+      Successfully uninstalled pynvml-11.5.0
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+spyder 5.4.1 requires pyqt5<5.16, which is not installed.
+spyder 5.4.1 requires pyqtwebengine<5.16, which is not installed.
+Successfully installed aiohttp-3.8.6 aiosignal-1.3.1 async-timeout-4.0.3 cubinlinker-cu11-0.3.0.post1 cuda-python-11.8.3 cudf-cu11-23.10.0 cugraph-cu11-23.10.0 cuml-cu11-23.10.0 cupy-cuda11x-12.2.0 dask-2023.9.2 dask-cuda-23.10.0 dask-cudf-cu11-23.10.0 distributed-2023.9.2 frozenlist-1.4.0 importlib-metadata-6.8.0 llvmlite-0.40.1 multidict-6.0.4 numba-0.57.1 nvtx-0.2.8 ptxcompiler-cu11-0.7.0.post1 pyarrow-12.0.1 pylibcugraph-cu11-23.10.0 pylibraft-cu11-23.10.0 pynvml-11.4.1 raft-dask-cu11-23.10.0 rmm-cu11-23.10.0 treelite-3.9.1 treelite-runtime-3.9.1 ucx-py-cu11-0.34.0 yarl-1.9.2 zict-3.0.0
+
+[notice] A new release of pip is available: 23.2.1 -> 23.3.1
+[notice] To update, run: pip install --upgrade pip
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: cupy-cuda11x in /ceph/chpc/home/l.peiwang/.local/lib/python3.10/site-packages (12.2.0)
+Requirement already satisfied: numpy<1.27,>=1.20 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from cupy-cuda11x) (1.23.5)
+Requirement already satisfied: fastrlock>=0.5 in /export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/site-packages (from cupy-cuda11x) (0.8.1)
+
+[notice] A new release of pip is available: 23.2.1 -> 23.3.1
+[notice] To update, run: pip install --upgrade pip
+
+          ***********************************************************************
+          The pip install of RAPIDS is complete.
+          
+          Please do not run any further installation from the conda based installation methods, as they may cause issues!  
+          
+          Please ensure that you're pulling from the git repo to remain updated with the latest working install scripts. 
+r          
+          Troubleshooting:
+             - If there is an installation failure, please check back on RAPIDSAI owned templates/notebooks to see how to update your personal files. 
+             - If an installation failure persists when using the latest script, please make an issue on https://github.com/rapidsai-community/rapidsai-csp-utils
+          ***********************************************************************
+          
+/home/l.peiwang/.local/lib/python3.10/site-packages/cupy/_environment.py:447: UserWarning: 
+--------------------------------------------------------------------------------
+
+  CuPy may not function correctly because multiple CuPy packages are installed
+  in your environment:
+
+    cupy-cuda113, cupy-cuda11x
+
+  Follow these steps to resolve this issue:
+
+    1. For all packages listed above, run the following command to remove all
+       existing CuPy installations:
+
+         $ pip uninstall <package_name>
+
+      If you previously installed CuPy via conda, also run the following:
+
+         $ conda uninstall cupy
+
+    2. Install the appropriate CuPy package.
+       Refer to the Installation Guide for detailed instructions.
+
+         https://docs.cupy.dev/en/stable/install.html
+
+--------------------------------------------------------------------------------
+
+  warnings.warn(f'''
+/home/l.peiwang/.local/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+Traceback (most recent call last):
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/cd_GPU.py", line 133, in <module>
+    performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation1(image_mri, label, 'MRI', 'cd')
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/cd_GPU.py", line 30, in nested_crossvalidation1
+    cv_outer = StratifiedKFold(n_splits=5, shuffle=True, random_state=rs)
+NameError: name 'StratifiedKFold' is not defined
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Nov  1 16:38:25 CDT 2023 1698874706
+Name                : cd_time
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpu08
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-11-01T16:31:16
+Start               : 2023-11-01T16:31:16
+End                 : 2023-11-01T16:38:23
+Reserved Walltime   : 1-16:50:00
+Used Walltime       :   00:07:07
+Used CPU Time       :   00:04:28
+% User (Computation): 89.50%
+% System (I/O)      : 10.50%
+Mem Reserved        : 53000M
+Max Mem Used        : 1.20G (1292161024.0)
+Max Disk Write      : 21.71G (23311239086.1)
+Max Disk Read       : 14.07G (15102556241.9)
+Max-Mem-Used Node   : gpu08
+Max-Disk-Write Node : gpu08
+Max-Disk-Read Node  : gpu08
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                    GPU Performance Statistics
+--------------------------------------------------------------
+GPU Model: Tesla 
+End Slurm Epilogue Wed Nov  1 16:38:26 CDT 2023 1698874706
+--------------------------------------------------------------
