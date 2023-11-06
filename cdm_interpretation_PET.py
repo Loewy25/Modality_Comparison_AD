@@ -7,7 +7,7 @@ from main import hyperparameter_tuning_visual_cov_V3
 
 
 
-task="pc"
+task="cdm"
 method="PET"
 threshold=0.05
 
