@@ -1,26 +1,24 @@
 #!/bin/bash
 
-#SBATCH -J cd_time
+#SBATCH -J pc_second_ex
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 53000M
 #SBATCH -t 40:50:00
-#SBATCH --gres=gpu:1
+##SBATCH --gres=gpu:1
 
 
-#SBATCH --partition=tier2_gpu
+#SBATCH --partition=tier2_cpu
 
 
 #SBATCH --account=aristeidis_sotiras
 
 module load python
-module load cuda/11.3
-module load cudnn/8.1.1
+##module load cuda/11.3
+##module load cudnn/8.1.1
 
-#source ~/liuenv/bin/activate
+##source ~/liuenv/bin/activate
 
-git clone https://github.com/rapidsai/rapidsai-csp-utils.git
-python rapidsai-csp-utils/colab/pip-install.py
 
-python cd_GPU.py
+python pc_interpretation_PET.py
 sleep 1
