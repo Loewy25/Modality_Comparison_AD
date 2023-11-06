@@ -136,7 +136,7 @@ def generate_data_path():
 
 
 def binarylabel(train_label,mode):
-    if mode=="cd":
+    if mode=="cd" or mode=="cdm":
         for i in range(len(train_label)):
             if train_label[i]=="CN":
                 train_label[i]=0
