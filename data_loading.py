@@ -101,7 +101,7 @@ def generate(images,labels,task):
                 imagesData.append(images[i])
                 labelsData.append(labels[i])
     print("lenth of dataset: ")
-    print(len(labels))
+    print(len(labelsData))
       
         
     return imagesData,labelsData
