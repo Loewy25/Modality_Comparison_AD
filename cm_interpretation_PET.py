@@ -9,7 +9,7 @@ from main import hyperparameter_tuning_visual_cov_V3
 
 task="cm"
 method="PET"
-threshold=0.05
+threshold=0.04
 
 image1,label1,masker=loading_mask(task,method)
 
