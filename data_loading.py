@@ -39,6 +39,27 @@ from sklearn.svm import LinearSVC, SVC
 def generate(images,labels,task):
     imagesData=[]
     labelsData=[]
+    cn=0
+    pcn=0
+    dementia=0
+    mci=0
+    for i in range(len(images)):
+      if labels[i]=='CN':
+        cn+=1
+      if labels[i]=='MCI':
+        mci+=1
+      if labels[i]=='Dementia':
+        dementia+=1
+      if labels[i]=='PCN':
+        pcn+=1
+    print("Number of CN subjects:")
+    print(cn)
+    print("Number of PCN subjects:")
+    print(pcn)
+    print("Number of MCI subjects:")
+    print(mci)
+    print("Number of Dementia subjects:")
+    print(dementia)
     if task == "cd":
         for i in range(len(images)):
             if labels[i] == "CN":
@@ -70,7 +91,18 @@ def generate(images,labels,task):
                 labelsData.append(labels[i])
             if labels[i] == "CN":
                 imagesData.append(images[i])
-                labelsData.append(labels[i])      
+                labelsData.append(labels[i])   
+    if task == 'cdm':
+        for i in range(len(images)):
+            if labels[i] == "CN":
+                imagesData.append(images[i])
+                labelsData.append(labels[i])
+            if labels[i] == "Dementia" or labels[i] == 'MCI':
+                imagesData.append(images[i])
+                labelsData.append(labels[i])
+    print("lenth of dataset: ")
+    print(len(labels))
+      
         
     return imagesData,labelsData
 
