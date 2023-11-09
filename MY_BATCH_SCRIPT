@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J pc2
+#SBATCH -J pc3
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 53000M
