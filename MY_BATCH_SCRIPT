@@ -8,7 +8,7 @@
 ##SBATCH --gres=gpu:1
 
 
-#SBATCH --partition=tier2_gpu
+#SBATCH --partition=tier2_cpu
 
 
 #SBATCH --account=aristeidis_sotiras
