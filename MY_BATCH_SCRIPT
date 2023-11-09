@@ -3,12 +3,12 @@
 #SBATCH -J pc4
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH --mem 53000M
+#SBATCH --mem 103000M
 #SBATCH -t 30:50:00
 ##SBATCH --gres=gpu:1
 
 
-#SBATCH --partition=tier2_cpu
+#SBATCH --partition=tier2_gpu
 
 
 #SBATCH --account=aristeidis_sotiras
