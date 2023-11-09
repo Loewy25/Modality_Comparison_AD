@@ -1,0 +1,43 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Nov  9 00:37:54 CST 2023 1699511874
+Job ID:		4177669
+Username:	l.peiwang
+Partition:	tier2_cpu
+End Slurm Prologue Thu Nov  9 00:37:54 CST 2023 1699511874
+--------------------------------------------------------------
+/var/spool/slurmd/job4177669/slurm_script: line 20: /home/l.peiwang/liuenv/bin/activate: No such file or directory
+Traceback (most recent call last):
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/pc_interpretation_PET.py", line 1, in <module>
+    from nilearn.input_data import NiftiMasker
+  File "/home/l.peiwang/.local/lib/python3.10/site-packages/nilearn/__init__.py", line 68, in <module>
+    _check_module_dependencies()
+  File "/home/l.peiwang/.local/lib/python3.10/site-packages/nilearn/version.py", line 179, in _check_module_dependencies
+    _import_module_with_version_check(
+  File "/home/l.peiwang/.local/lib/python3.10/site-packages/nilearn/version.py", line 71, in _import_module_with_version_check
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'numpy'. Module "numpy" could not be found. See https://nilearn.github.io/stable/introduction.html#installation for installation information.
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Nov  9 00:37:57 CST 2023 1699511877
+Name                : pc4
+User                : l.peiwang
+Partition           : tier2_cpu
+Nodes               : highmem02
+Cores               : 2
+State               : COMPLETED
+Submit              : 2023-11-09T00:37:53
+Start               : 2023-11-09T00:37:54
+End                 : 2023-11-09T00:37:55
+Reserved Walltime   : 1-06:50:00
+Used Walltime       :   00:00:01
+Used CPU Time       : --
+% User (Computation):  0.00%
+% System (I/O)      : 19.62%
+Mem Reserved        : 40000M
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : highmem02
+Max-Disk-Write Node : highmem02
+Max-Disk-Read Node  : highmem02
+End Slurm Epilogue Thu Nov  9 00:37:57 CST 2023 1699511877
+--------------------------------------------------------------

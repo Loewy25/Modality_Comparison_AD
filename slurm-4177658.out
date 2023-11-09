@@ -1,0 +1,47 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Nov  9 00:18:57 CST 2023 1699510737
+Job ID:		4177658
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Thu Nov  9 00:18:57 CST 2023 1699510737
+--------------------------------------------------------------
+/var/spool/slurmd/job4177658/slurm_script: line 20: /home/l.peiwang/liuenv/bin/activate: No such file or directory
+Traceback (most recent call last):
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/cd_interpretation_PET.py", line 1, in <module>
+    from nilearn.input_data import NiftiMasker
+  File "/home/l.peiwang/.local/lib/python3.10/site-packages/nilearn/__init__.py", line 68, in <module>
+    _check_module_dependencies()
+  File "/home/l.peiwang/.local/lib/python3.10/site-packages/nilearn/version.py", line 179, in _check_module_dependencies
+    _import_module_with_version_check(
+  File "/home/l.peiwang/.local/lib/python3.10/site-packages/nilearn/version.py", line 71, in _import_module_with_version_check
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'numpy'. Module "numpy" could not be found. See https://nilearn.github.io/stable/introduction.html#installation for installation information.
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Nov  9 00:19:01 CST 2023 1699510741
+Name                : pc1
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpu06
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-11-09T00:18:56
+Start               : 2023-11-09T00:18:57
+End                 : 2023-11-09T00:18:59
+Reserved Walltime   : 4-04:50:00
+Used Walltime       :   00:00:02
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 53000M
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : gpu06
+Max-Disk-Write Node : gpu06
+Max-Disk-Read Node  : gpu06
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                    GPU Performance Statistics
+--------------------------------------------------------------
+GPU Model: Tesla 
+End Slurm Epilogue Thu Nov  9 00:19:01 CST 2023 1699510741
+--------------------------------------------------------------
