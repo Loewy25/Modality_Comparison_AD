@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J cd1
+#SBATCH -J pc4
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 53000M
@@ -20,5 +20,5 @@ module load python
 ##source ~/liuenv/bin/activate
 
 
-python cd_interpretation_PET.py
+python pc_interpretation_PET.py
 sleep 1
