@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J dm
+#SBATCH -J pc
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 40000M
@@ -21,5 +21,5 @@ module load python
 source ~/liuenv/bin/activate
 
 
-python dm.py
+python pc.py
 sleep 1
