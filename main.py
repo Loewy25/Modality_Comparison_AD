@@ -32,6 +32,7 @@ from sklearn.model_selection import (GridSearchCV, KFold, StratifiedKFold,
                                      train_test_split)
 from sklearn.preprocessing import Binarizer, label_binarize
 from sklearn.svm import LinearSVC, SVC
+from sklearn.metrics import auc as calculate_auc
 
 
 
@@ -195,7 +196,7 @@ def nested_crossvalidation(data, label, method, task):
 
     # Compute the precision-recall curve and AUPRC
     precision, recall, _ = precision_recall_curve(all_y_test, all_y_prob)
-    auprc = auc(recall, precision)
+    auprc = calculate_auc(recall, precision)
   
     ppv = precision_classwise  # since they are the same, no need to compute twice
     
