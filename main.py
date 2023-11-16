@@ -192,7 +192,11 @@ def nested_crossvalidation(data, label, method, task):
     precision_classwise = precision_score(all_y_test, all_predictions, average=None, zero_division=1)
     recall_classwise = recall_score(all_y_test, all_predictions, average=None)
     f1_classwise = f1_score(all_y_test, all_predictions, average=None)
-    
+
+    # Compute the precision-recall curve and AUPRC
+    precision, recall, _ = precision_recall_curve(all_y_test, all_y_prob)
+    auprc = auc(recall, precision)
+  
     ppv = precision_classwise  # since they are the same, no need to compute twice
     
     cm = confusion_matrix(all_y_test, all_predictions)
@@ -200,6 +204,7 @@ def nested_crossvalidation(data, label, method, task):
     # Handle RuntimeWarning by checking for zero denominator
     denominator = cm[1,1] + cm[0,1]
     npv = cm[1,1] / denominator if denominator != 0 else 0
+    specificity = cm[0, 0] / (cm[0, 0] + cm[0, 1])
 
     
     # 2. Compute bootstrap confidence intervals for each of these metrics.
@@ -209,6 +214,8 @@ def nested_crossvalidation(data, label, method, task):
     confi_precision = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: precision_score(y_true, y_pred, average=None)[i]) for i in range(2)]
     confi_recall = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: recall_score(y_true, y_pred, average=None)[i]) for i in range(2)]
     confi_f1 = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: f1_score(y_true, y_pred, average=None)[i]) for i in range(2)]
+    confi_auprc = compute_bootstrap_confi(all_y_prob, all_y_test, lambda y_true, y_pred_probs: auc(*precision_recall_curve(y_true, y_pred_probs)[:2]))
+    confi_specificity = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: cm[0, 0] / (cm[0, 0] + cm[0, 1]))
     confi_ppv = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: precision_score(y_true, y_pred, average=None)[i]) for i in range(2)]
     confi_npv = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: (confusion_matrix(y_true, y_pred)[1,1] / (confusion_matrix(y_true, y_pred)[1,1] + confusion_matrix(y_true, y_pred)[0,1])))
     
@@ -228,6 +235,8 @@ def nested_crossvalidation(data, label, method, task):
     print(f"Precision per class: {precision_classwise[0]} {negative} (95% CI: {confi_precision[0]}), {precision_classwise[1]} {positive} (95% CI: {confi_precision[1]})")
     print(f"Recall per class: {recall_classwise[0]} {negative} (95% CI: {confi_recall[0]}), {recall_classwise[1]} {positive} (95% CI: {confi_recall[1]})")
     print(f"F1-score per class: {f1_classwise[0]} {negative} (95% CI: {confi_f1[0]}), {f1_classwise[1]} {positive} (95% CI: {confi_f1[1]})")
+    print(f"AUPRC: {auprc} (95% CI: {confi_auprc})")
+    print(f"Specificity: {specificity} (95% CI: {confi_specificity})")
     print(f"PPV per class: {ppv[0]} {negative} (95% CI: {confi_ppv[0]}), {ppv[1]} {positive} (95% CI: {confi_ppv[1]})")
     print(f"NPV: {npv} (95% CI: {confi_npv})")
     
