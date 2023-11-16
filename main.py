@@ -222,12 +222,23 @@ def nested_crossvalidation(data, label, method, task):
     plot_roc_curve(all_y_test, all_y_prob, method, task)
     plot_confusion_matrix(all_y_test, all_predictions, positive, negative, method, task)
     
-    directory = './result'
-    os.makedirs(directory, exist_ok=True)
-    filename = os.path.join(directory, f'results_{method}_{task}.pickle')
+    # Directory path
+    directory = "./result"
     
-    with open(filename, 'wb') as f:
+    # Construct the task specific directory path
+    task_directory = os.path.join(directory, task)
+    
+    # Ensure the task specific directory exists
+    os.makedirs(task_directory, exist_ok=True)
+    
+    # Construct complete file path for pickle file with 'results' + task + method as the filename
+    filename = f"results_{task}_{method}.pickle"
+    file_path = os.path.join(task_directory, filename)
+    
+    # Save the pickle file in the constructed path
+    with open(file_path, 'wb') as f:
         pickle.dump((performance_dict, all_y_test, all_y_prob, all_predictions), f)
+
         
     print(f"AUC: {auc} (95% CI: {confi_auc})")
     print(f"Accuracy: {accuracy} (95% CI: {confi_accuracy})")
