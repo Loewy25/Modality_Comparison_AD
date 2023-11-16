@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J cdm4
+#SBATCH -J cd
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 40000M
@@ -21,5 +21,5 @@ module load python
 source ~/liuenv/bin/activate
 
 
-python cdm_interpretation_PET.py
+python cd.py
 sleep 1
