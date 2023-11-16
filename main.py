@@ -56,6 +56,18 @@ from plot_utils import (
     plot_confusion_matrix
 )
 
+
+def compute_auprc(y_true, y_pred_probs):
+    precision, recall, _ = precision_recall_curve(y_true, y_pred_probs)
+    sorted_indices = np.argsort(recall)
+    sorted_recall = recall[sorted_indices]
+    sorted_precision = precision[sorted_indices]
+    unique_recall, unique_indices = np.unique(sorted_recall, return_index=True)
+    unique_precision = np.array([max(sorted_precision[:i + 1]) for i in unique_indices])
+    return calculate_auc(unique_recall, unique_precision)
+
+
+
 def hyperparameter_tuning_visual_cov_V3(data, label, randomseed, outer, inner, num_permutations):
     train_data = data
     train_label = label
@@ -194,9 +206,7 @@ def nested_crossvalidation(data, label, method, task):
     recall_classwise = recall_score(all_y_test, all_predictions, average=None)
     f1_classwise = f1_score(all_y_test, all_predictions, average=None)
 
-    # Compute the precision-recall curve and AUPRC
-    precision, recall, _ = precision_recall_curve(all_y_test, all_y_prob)
-    auprc = calculate_auc(recall, precision)
+    auprc = compute_auprc(all_y_test, all_y_prob)
   
     ppv = precision_classwise  # since they are the same, no need to compute twice
     
@@ -215,7 +225,7 @@ def nested_crossvalidation(data, label, method, task):
     confi_precision = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: precision_score(y_true, y_pred, average=None)[i]) for i in range(2)]
     confi_recall = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: recall_score(y_true, y_pred, average=None)[i]) for i in range(2)]
     confi_f1 = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: f1_score(y_true, y_pred, average=None)[i]) for i in range(2)]
-    confi_auprc = compute_bootstrap_confi(all_y_prob, all_y_test, lambda y_true, y_pred_probs: calculate_auc(*precision_recall_curve(y_true, y_pred_probs)[:2]))
+    confi_auprc = compute_bootstrap_confi(all_y_prob, all_y_test, lambda y_true, y_pred_probs: compute_auprc(y_true, y_pred_probs))
     confi_specificity = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: cm[0, 0] / (cm[0, 0] + cm[0, 1]))
     confi_ppv = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: precision_score(y_true, y_pred, average=None)[i]) for i in range(2)]
     confi_npv = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: (confusion_matrix(y_true, y_pred)[1,1] / (confusion_matrix(y_true, y_pred)[1,1] + confusion_matrix(y_true, y_pred)[0,1])))
