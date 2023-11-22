@@ -47,7 +47,7 @@ def loading_mask(task, modality):
 
 task="cdm"
 method="PET"
-threshold=0.04
+threshold=0.05
 
 image1,label1,masker=loading_mask(task,method)
 
