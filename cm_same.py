@@ -1,7 +1,7 @@
 from nilearn.input_data import NiftiMasker
 
-from data_loading import loading_mask, generate_data_path,generate
-from utils import normalize_features, threshold_p_values, binarylabel
+from data_loading import loading_mask, generate_data_path,generate,binarylabel
+from utils import normalize_features, threshold_p_values
 from plot_utils import plot_glass_brain, plot_stat_map
 from main import hyperparameter_tuning_visual_cov_V3
 
