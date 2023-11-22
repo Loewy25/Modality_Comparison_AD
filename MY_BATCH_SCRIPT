@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J cdm2
+#SBATCH -J cdm3
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 40000M
