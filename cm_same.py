@@ -24,7 +24,7 @@ def loading_mask(task, modality):
     filtered_train_label = []
     mci_count = 0
     for i in range(len(train_label)):
-        if train_label[i] == 'mci':
+        if train_label[i] == 'MCI':
             if mci_count < 151:  # Accept only first 151 'mci' instances
                 filtered_data_train.append(data_train[i])
                 filtered_train_label.append(train_label[i])
@@ -50,6 +50,7 @@ method="PET"
 threshold=0.01
 
 image1,label1,masker=loading_mask(task,method)
+print(len(label1))
 
 
 control_indices = [i for i, label in enumerate(label1) if label == 0]
