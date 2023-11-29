@@ -106,7 +106,7 @@ def create_cnn_model():
     x = GlobalAveragePooling3D()(x)
 
     # Dropout layer as described in the paper
-    x = SpatialDropout3D(0.3)(x)   # The paper mentioned a dropout layer after GAP
+    x = Dropout(0.3)(x)  # The paper mentioned a dropout layer after GAP
 
     # Dense layer with 7 output nodes as described in the paper
     output = Dense(2, activation='softmax')(x) 
