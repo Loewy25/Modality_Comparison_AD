@@ -48,6 +48,9 @@ def loading_mask(task,modality):
     
     return train_data,train_label,masker
 
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+
+
 
 task = 'cd'
 modality = 'PET'
