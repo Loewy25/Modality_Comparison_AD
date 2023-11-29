@@ -3,7 +3,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 import tensorflow_addons as tfa
 import numpy as np
-from nilearn.image import resample_img, new_img_like
+from nilearn.image import resample_img, new_img_like, reorder_img
 
 
 def pad_image_to_shape(image, target_shape=(128, 128, 128)):
