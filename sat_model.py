@@ -99,9 +99,13 @@ for fold_num, (train, val) in enumerate(stratified_kfold.split(X_train_val, Y_tr
 
     K.clear_session()
 
-# Overall AUC
-all_y_val = np.array(all_y_val)
-all_y_val_pred = np.array(all_y_val_pred)
-overall_auc = roc_auc_score(all_y_val, all_y_val_pred)
-print(f"Overall AUC: {overall_auc:.4f}")
+# Train the model on the entire training/validation set
+model = create_cnn_model()
+model.compile(optimizer=Adam(5e-4), loss='categorical_crossentropy', metrics=['accuracy', AUC(name='auc')])
+model.fit(X_train_val, Y_train_val, batch_size=5, epochs=200, callbacks=[early_stopping, reduce_lr])
+
+# Evaluate the model on the test set
+y_test_pred = model.predict(X_test)
+test_auc = roc_auc_score(Y_test[:, 1], y_test_pred[:, 1])
+print(f"Test AUC: {test_auc:.4f}")
 
