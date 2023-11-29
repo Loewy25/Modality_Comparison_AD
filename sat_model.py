@@ -2,7 +2,7 @@ from cnn import pad_image_to_shape, resize, convolution_block, context_module, c
 from data_loading import generate, generate_data_path, binarylabel
 
 from nilearn.input_data import NiftiMasker
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold, train_test_split
 from sklearn.metrics import roc_auc_score
 import numpy as np
 import tensorflow as tf
