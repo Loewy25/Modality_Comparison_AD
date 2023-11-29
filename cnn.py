@@ -2,8 +2,18 @@ from tensorflow.keras.layers import Conv3D, Input, LeakyReLU, Add, GlobalAverage
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 import tensorflow_addons as tfa
+import nibabel as nib
+
 import numpy as np
 from nilearn.image import resample_img, new_img_like, reorder_img
+from scipy.ndimage import zoom
+
+def resample_to_spacing(data, original_spacing, new_spacing, interpolation='linear'):
+    zoom_factors = [o / n for o, n in zip(original_spacing, new_spacing)]
+    return zoom(data, zoom_factors, order=1 if interpolation == 'linear' else 0)
+
+def calculate_origin_offset(new_spacing, original_spacing):
+    return [(o - n) / 2 for o, n in zip(original_spacing, new_spacing)]
 
 
 def pad_image_to_shape(image, target_shape=(128, 128, 128)):
