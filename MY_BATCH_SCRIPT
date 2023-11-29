@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#SBATCH -J cm5
+#SBATCH -J cd_gpu
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 40000M
 #SBATCH -t 30:50:00
-##SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:1
 
 
 #SBATCH --partition=tier2_gpu
@@ -15,11 +15,11 @@
 #SBATCH --account=aristeidis_sotiras
 
 module load python
-##module load cuda/11.3
-##module load cudnn/8.1.1
+#module load cuda/11.3
+#module load cudnn/8.1.1
 
 source ~/liuenv/bin/activate
 
 
-python cm_same.py
+python sat_model.py
 sleep 1
