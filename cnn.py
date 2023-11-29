@@ -9,14 +9,16 @@ from nilearn.image import resample_img, new_img_like, reorder_img
 from scipy.ndimage import zoom
 
 def resample_to_spacing(data, original_spacing, new_spacing, interpolation='linear'):
-    zoom_factors = [o / n for o, n in zip(original_spacing, new_spacing)]
+    # Assuming the last dimension is the channel and should not be resampled
+    zoom_factors = [o / n for o, n in zip(original_spacing, new_spacing)] + [1]
     return zoom(data, zoom_factors, order=1 if interpolation == 'linear' else 0)
+
 
 def calculate_origin_offset(new_spacing, original_spacing):
     return [(o - n) / 2 for o, n in zip(original_spacing, new_spacing)]
 
 
-def pad_image_to_shape(image, target_shape=(128, 128, 128)):
+def pad_image_to_shape(image, target_shape=(128, 128, 128,1)):
     # Calculate the padding required in each dimension
     padding = [(0, max(target_shape[dim] - image.shape[dim], 0)) for dim in range(3)]
     
