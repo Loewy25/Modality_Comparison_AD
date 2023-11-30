@@ -1,0 +1,381 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Nov 28 23:29:26 CST 2023 1701235766
+Job ID:		4243661
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Tue Nov 28 23:29:26 CST 2023 1701235766
+--------------------------------------------------------------
+2023-11-28 23:29:26.528129: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2023-11-28 23:29:26.528166: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow_addons/utils/tfa_eol_msg.py:23: UserWarning: 
+
+TensorFlow Addons (TFA) has ended development and introduction of new features.
+TFA has entered a minimal maintenance and release mode until a planned end of life in May 2024.
+Please modify downstream libraries to take dependencies from other repositories in our TensorFlow community (e.g. Keras, Keras-CV, and Keras-NLP). 
+
+For more information see: https://github.com/tensorflow/addons/issues/2807 
+
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow_addons/utils/ensure_tf_install.py:53: UserWarning: Tensorflow Addons supports using Python ops for all Tensorflow versions above or equal to 2.11.0 and strictly below 2.14.0 (nightly versions are not supported). 
+ The versions of TensorFlow you are currently using is 2.8.4 and is not supported. 
+Some things might work, some things might not.
+If you were to encounter a bug, do not file an issue.
+If you want to make sure you're using a tested and supported configuration, either change the TensorFlow version or the TensorFlow Addons's version. 
+You can find the compatibility matrix in TensorFlow Addon's readme:
+https://github.com/tensorflow/addons
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+2023-11-28 23:35:57.843807: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2023-11-28 23:35:57.843894: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublas.so.11'; dlerror: libcublas.so.11: cannot open shared object file: No such file or directory
+2023-11-28 23:35:57.843933: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublasLt.so.11'; dlerror: libcublasLt.so.11: cannot open shared object file: No such file or directory
+2023-11-28 23:35:57.845714: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusolver.so.11'; dlerror: libcusolver.so.11: cannot open shared object file: No such file or directory
+2023-11-28 23:35:57.845770: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusparse.so.11'; dlerror: libcusparse.so.11: cannot open shared object file: No such file or directory
+2023-11-28 23:35:57.845809: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudnn.so.8'; dlerror: libcudnn.so.8: cannot open shared object file: No such file or directory
+2023-11-28 23:35:57.845830: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1850] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2023-11-28 23:35:57.846209: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING:tensorflow:There are non-GPU devices in `tf.distribute.Strategy`, not using nccl allreduce.
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_1 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d (Conv3D)                (None, 128, 128, 12  448         ['input_1[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ instance_normalization (Instan  (None, 128, 128, 12  32         ['conv3d[0][0]']                 
+ ceNormalization)               8, 16)                                                            
+                                                                                                  
+ leaky_re_lu (LeakyReLU)        (None, 128, 128, 12  0           ['instance_normalization[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_1 (Conv3D)              (None, 128, 128, 12  6928        ['leaky_re_lu[0][0]']            
+                                8, 16)                                                            
+                                                                                                  
+ instance_normalization_1 (Inst  (None, 128, 128, 12  32         ['conv3d_1[0][0]']               
+ anceNormalization)             8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_1 (LeakyReLU)      (None, 128, 128, 12  0           ['instance_normalization_1[0][0]'
+                                8, 16)                           ]                                
+                                                                                                  
+ spatial_dropout3d (SpatialDrop  (None, 128, 128, 12  0          ['leaky_re_lu_1[0][0]']          
+ out3D)                         8, 16)                                                            
+                                                                                                  
+ conv3d_2 (Conv3D)              (None, 128, 128, 12  6928        ['spatial_dropout3d[0][0]']      
+                                8, 16)                                                            
+                                                                                                  
+ instance_normalization_2 (Inst  (None, 128, 128, 12  32         ['conv3d_2[0][0]']               
+ anceNormalization)             8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_2 (LeakyReLU)      (None, 128, 128, 12  0           ['instance_normalization_2[0][0]'
+                                8, 16)                           ]                                
+                                                                                                  
+ add (Add)                      (None, 128, 128, 12  0           ['leaky_re_lu_2[0][0]',          
+                                8, 16)                            'leaky_re_lu[0][0]']            
+                                                                                                  
+ conv3d_3 (Conv3D)              (None, 64, 64, 64,   13856       ['add[0][0]']                    
+                                32)                                                               
+                                                                                                  
+ instance_normalization_3 (Inst  (None, 64, 64, 64,   64         ['conv3d_3[0][0]']               
+ anceNormalization)             32)                                                               
+                                                                                                  
+ leaky_re_lu_3 (LeakyReLU)      (None, 64, 64, 64,   0           ['instance_normalization_3[0][0]'
+                                32)                              ]                                
+                                                                                                  
+ conv3d_4 (Conv3D)              (None, 64, 64, 64,   27680       ['leaky_re_lu_3[0][0]']          
+                                32)                                                               
+                                                                                                  
+ instance_normalization_4 (Inst  (None, 64, 64, 64,   64         ['conv3d_4[0][0]']               
+ anceNormalization)             32)                                                               
+                                                                                                  
+ leaky_re_lu_4 (LeakyReLU)      (None, 64, 64, 64,   0           ['instance_normalization_4[0][0]'
+                                32)                              ]                                
+                                                                                                  
+ spatial_dropout3d_1 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_4[0][0]']          
+ opout3D)                       32)                                                               
+                                                                                                  
+ conv3d_5 (Conv3D)              (None, 64, 64, 64,   27680       ['spatial_dropout3d_1[0][0]']    
+                                32)                                                               
+                                                                                                  
+ instance_normalization_5 (Inst  (None, 64, 64, 64,   64         ['conv3d_5[0][0]']               
+ anceNormalization)             32)                                                               
+                                                                                                  
+ leaky_re_lu_5 (LeakyReLU)      (None, 64, 64, 64,   0           ['instance_normalization_5[0][0]'
+                                32)                              ]                                
+                                                                                                  
+ add_1 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_5[0][0]',          
+                                32)                               'leaky_re_lu_3[0][0]']          
+                                                                                                  
+ conv3d_6 (Conv3D)              (None, 32, 32, 32,   55360       ['add_1[0][0]']                  
+                                64)                                                               
+                                                                                                  
+ instance_normalization_6 (Inst  (None, 32, 32, 32,   128        ['conv3d_6[0][0]']               
+ anceNormalization)             64)                                                               
+                                                                                                  
+ leaky_re_lu_6 (LeakyReLU)      (None, 32, 32, 32,   0           ['instance_normalization_6[0][0]'
+                                64)                              ]                                
+                                                                                                  
+ conv3d_7 (Conv3D)              (None, 32, 32, 32,   110656      ['leaky_re_lu_6[0][0]']          
+                                64)                                                               
+                                                                                                  
+ instance_normalization_7 (Inst  (None, 32, 32, 32,   128        ['conv3d_7[0][0]']               
+ anceNormalization)             64)                                                               
+                                                                                                  
+ leaky_re_lu_7 (LeakyReLU)      (None, 32, 32, 32,   0           ['instance_normalization_7[0][0]'
+                                64)                              ]                                
+                                                                                                  
+ spatial_dropout3d_2 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_7[0][0]']          
+ opout3D)                       64)                                                               
+                                                                                                  
+ conv3d_8 (Conv3D)              (None, 32, 32, 32,   110656      ['spatial_dropout3d_2[0][0]']    
+                                64)                                                               
+                                                                                                  
+ instance_normalization_8 (Inst  (None, 32, 32, 32,   128        ['conv3d_8[0][0]']               
+ anceNormalization)             64)                                                               
+                                                                                                  
+ leaky_re_lu_8 (LeakyReLU)      (None, 32, 32, 32,   0           ['instance_normalization_8[0][0]'
+                                64)                              ]                                
+                                                                                                  
+ add_2 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_8[0][0]',          
+                                64)                               'leaky_re_lu_6[0][0]']          
+                                                                                                  
+ conv3d_9 (Conv3D)              (None, 16, 16, 16,   221312      ['add_2[0][0]']                  
+                                128)                                                              
+                                                                                                  
+ instance_normalization_9 (Inst  (None, 16, 16, 16,   256        ['conv3d_9[0][0]']               
+ anceNormalization)             128)                                                              
+                                                                                                  
+ leaky_re_lu_9 (LeakyReLU)      (None, 16, 16, 16,   0           ['instance_normalization_9[0][0]'
+                                128)                             ]                                
+                                                                                                  
+ conv3d_10 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_9[0][0]']          
+                                128)                                                              
+                                                                                                  
+ instance_normalization_10 (Ins  (None, 16, 16, 16,   256        ['conv3d_10[0][0]']              
+ tanceNormalization)            128)                                                              
+                                                                                                  
+ leaky_re_lu_10 (LeakyReLU)     (None, 16, 16, 16,   0           ['instance_normalization_10[0][0]
+                                128)                             ']                               
+                                                                                                  
+ spatial_dropout3d_3 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_10[0][0]']         
+ opout3D)                       128)                                                              
+                                                                                                  
+ conv3d_11 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_3[0][0]']    
+                                128)                                                              
+                                                                                                  
+ instance_normalization_11 (Ins  (None, 16, 16, 16,   256        ['conv3d_11[0][0]']              
+ tanceNormalization)            128)                                                              
+                                                                                                  
+ leaky_re_lu_11 (LeakyReLU)     (None, 16, 16, 16,   0           ['instance_normalization_11[0][0]
+                                128)                             ']                               
+                                                                                                  
+ add_3 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_11[0][0]',         
+                                128)                              'leaky_re_lu_9[0][0]']          
+                                                                                                  
+ conv3d_12 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_3[0][0]']                  
+                                )                                                                 
+                                                                                                  
+ instance_normalization_12 (Ins  (None, 8, 8, 8, 256  512        ['conv3d_12[0][0]']              
+ tanceNormalization)            )                                                                 
+                                                                                                  
+ leaky_re_lu_12 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['instance_normalization_12[0][0]
+                                )                                ']                               
+                                                                                                  
+ conv3d_13 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_12[0][0]']         
+                                )                                                                 
+                                                                                                  
+ instance_normalization_13 (Ins  (None, 8, 8, 8, 256  512        ['conv3d_13[0][0]']              
+ tanceNormalization)            )                                                                 
+                                                                                                  
+ leaky_re_lu_13 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['instance_normalization_13[0][0]
+                                )                                ']                               
+                                                                                                  
+ spatial_dropout3d_4 (SpatialDr  (None, 8, 8, 8, 256  0          ['leaky_re_lu_13[0][0]']         
+ opout3D)                       )                                                                 
+                                                                                                  
+ conv3d_14 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_4[0][0]']    
+                                )                                                                 
+                                                                                                  
+ instance_normalization_14 (Ins  (None, 8, 8, 8, 256  512        ['conv3d_14[0][0]']              
+ tanceNormalization)            )                                                                 
+                                                                                                  
+ leaky_re_lu_14 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['instance_normalization_14[0][0]
+                                )                                ']                               
+                                                                                                  
+ global_average_pooling3d (Glob  (None, 256)         0           ['leaky_re_lu_14[0][0]']         
+ alAveragePooling3D)                                                                              
+                                                                                                  
+ dropout (Dropout)              (None, 256)          0           ['global_average_pooling3d[0][0]'
+                                                                 ]                                
+                                                                                                  
+ dense (Dense)                  (None, 2)            514         ['dropout[0][0]']                
+                                                                                                  
+==================================================================================================
+Total params: 5,894,434
+Trainable params: 5,894,434
+Non-trainable params: 0
+__________________________________________________________________________________________________
+2023-11-28 23:36:02.372470: W tensorflow/core/grappler/optimizers/data/auto_shard.cc:776] AUTO sharding policy will apply DATA sharding policy as it failed to apply FILE sharding policy because of the following reason: Did not find a shardable source, walked to a node which is not a dataset: name: "FlatMapDataset/_9"
+op: "FlatMapDataset"
+input: "PrefetchDataset/_8"
+attr {
+  key: "Targuments"
+  value {
+    list {
+    }
+  }
+}
+attr {
+  key: "_cardinality"
+  value {
+    i: -2
+  }
+}
+attr {
+  key: "f"
+  value {
+    func {
+      name: "__inference_Dataset_flat_map_slice_batch_indices_1738"
+    }
+  }
+}
+attr {
+  key: "metadata"
+  value {
+    s: "\n\020FlatMapDataset:4"
+  }
+}
+attr {
+  key: "output_shapes"
+  value {
+    list {
+      shape {
+        dim {
+          size: -1
+        }
+      }
+    }
+  }
+}
+attr {
+  key: "output_types"
+  value {
+    list {
+      type: DT_INT64
+    }
+  }
+}
+experimental_type {
+  type_id: TFT_PRODUCT
+  args {
+    type_id: TFT_DATASET
+    args {
+      type_id: TFT_PRODUCT
+      args {
+        type_id: TFT_TENSOR
+        args {
+          type_id: TFT_INT64
+        }
+      }
+    }
+  }
+  args {
+    type_id: TFT_DATASET
+    args {
+      type_id: TFT_PRODUCT
+      args {
+        type_id: TFT_TENSOR
+        args {
+          type_id: TFT_INT64
+        }
+      }
+    }
+  }
+}
+. Consider either turning off auto-sharding or switching the auto_shard_policy to DATA to shard this dataset. You can do this by creating a new `tf.data.Options()` object then setting `options.experimental_distribute.auto_shard_policy = AutoShardPolicy.DATA` before applying the options object to the dataset via `dataset.with_options(options)`.
+2023-11-28 23:36:02.436027: W tensorflow/core/framework/dataset.cc:768] Input of GeneratorDatasetOp::Dataset will not be optimized because the dataset does not implement the AsGraphDefInternal() method needed to apply optimizations.
+Epoch 1/200
+ 1/67 [..............................] - ETA: 1:47:17 - loss: 0.8262 - accuracy: 0.2000 - auc: 0.2200 2/67 [..............................] - ETA: 1:41:37 - loss: 0.8386 - accuracy: 0.1000 - auc: 0.0750 3/67 [>.............................] - ETA: 1:39:58 - loss: 0.8456 - accuracy: 0.1333 - auc: 0.0956 4/67 [>.............................] - ETA: 1:38:21 - loss: 0.8060 - accuracy: 0.2000 - auc: 0.2338 5/67 [=>............................] - ETA: 1:36:47 - loss: 0.7872 - accuracy: 0.2400 - auc: 0.2792 6/67 [=>............................] - ETA: 1:35:16 - loss: 0.7725 - accuracy: 0.2667 - auc: 0.3339 7/67 [==>...........................] - ETA: 1:33:44 - loss: 0.7610 - accuracy: 0.3143 - auc: 0.3567 8/67 [==>...........................] - ETA: 1:32:09 - loss: 0.7619 - accuracy: 0.3000 - auc: 0.3306 9/67 [===>..........................] - ETA: 1:30:34 - loss: 0.7567 - accuracy: 0.3333 - auc: 0.368910/67 [===>..........................] - ETA: 1:29:00 - loss: 0.7484 - accuracy: 0.3600 - auc: 0.409611/67 [===>..........................] - ETA: 1:27:27 - loss: 0.7434 - accuracy: 0.4000 - auc: 0.437412/67 [====>.........................] - ETA: 1:25:54 - loss: 0.7297 - accuracy: 0.4333 - auc: 0.481313/67 [====>.........................] - ETA: 1:24:20 - loss: 0.7161 - accuracy: 0.4462 - auc: 0.510914/67 [=====>........................] - ETA: 1:22:46 - loss: 0.7032 - accuracy: 0.4857 - auc: 0.552815/67 [=====>........................] - ETA: 1:21:13 - loss: 0.7056 - accuracy: 0.4800 - auc: 0.544816/67 [======>.......................] - ETA: 1:19:39 - loss: 0.6887 - accuracy: 0.5125 - auc: 0.588717/67 [======>.......................] - ETA: 1:18:05 - loss: 0.6840 - accuracy: 0.5176 - auc: 0.598018/67 [=======>......................] - ETA: 1:16:31 - loss: 0.6896 - accuracy: 0.5111 - auc: 0.585719/67 [=======>......................] - ETA: 1:14:58 - loss: 0.6905 - accuracy: 0.5158 - auc: 0.590420/67 [=======>......................] - ETA: 1:13:25 - loss: 0.7028 - accuracy: 0.5100 - auc: 0.575021/67 [========>.....................] - ETA: 1:11:51 - loss: 0.6947 - accuracy: 0.5143 - auc: 0.589922/67 [========>.....................] - ETA: 1:10:17 - loss: 0.7051 - accuracy: 0.5091 - auc: 0.580323/67 [=========>....................] - ETA: 1:08:43 - loss: 0.6988 - accuracy: 0.5217 - auc: 0.593924/67 [=========>....................] - ETA: 1:07:10 - loss: 0.7019 - accuracy: 0.5167 - auc: 0.585925/67 [==========>...................] - ETA: 1:05:36 - loss: 0.7020 - accuracy: 0.5200 - auc: 0.588026/67 [==========>...................] - ETA: 1:04:02 - loss: 0.6908 - accuracy: 0.5385 - auc: 0.613327/67 [===========>..................] - ETA: 1:02:28 - loss: 0.6821 - accuracy: 0.5481 - auc: 0.629928/67 [===========>..................] - ETA: 1:00:55 - loss: 0.6836 - accuracy: 0.5500 - auc: 0.627429/67 [===========>..................] - ETA: 59:21 - loss: 0.6863 - accuracy: 0.5448 - auc: 0.6214  30/67 [============>.................] - ETA: 57:47 - loss: 0.6922 - accuracy: 0.5400 - auc: 0.613231/67 [============>.................] - ETA: 56:13 - loss: 0.6858 - accuracy: 0.5548 - auc: 0.625532/67 [=============>................] - ETA: 54:40 - loss: 0.6894 - accuracy: 0.5500 - auc: 0.618133/67 [=============>................] - ETA: 53:06 - loss: 0.6855 - accuracy: 0.5515 - auc: 0.625134/67 [==============>...............] - ETA: 51:32 - loss: 0.6876 - accuracy: 0.5529 - auc: 0.623735/67 [==============>...............] - ETA: 49:58 - loss: 0.6914 - accuracy: 0.5486 - auc: 0.617336/67 [===============>..............] - ETA: 48:25 - loss: 0.6964 - accuracy: 0.5444 - auc: 0.606437/67 [===============>..............] - ETA: 46:51 - loss: 0.6919 - accuracy: 0.5568 - auc: 0.615738/67 [================>.............] - ETA: 45:17 - loss: 0.6942 - accuracy: 0.5579 - auc: 0.612239/67 [================>.............] - ETA: 43:43 - loss: 0.6958 - accuracy: 0.5538 - auc: 0.607640/67 [================>.............] - ETA: 42:09 - loss: 0.6974 - accuracy: 0.5500 - auc: 0.603641/67 [=================>............] - ETA: 40:36 - loss: 0.6970 - accuracy: 0.5512 - auc: 0.603542/67 [=================>............] - ETA: 39:02 - loss: 0.6960 - accuracy: 0.5571 - auc: 0.605143/67 [==================>...........] - ETA: 37:28 - loss: 0.6954 - accuracy: 0.5581 - auc: 0.606144/67 [==================>...........] - ETA: 35:55 - loss: 0.6951 - accuracy: 0.5591 - auc: 0.605945/67 [===================>..........] - ETA: 34:21 - loss: 0.6942 - accuracy: 0.5600 - auc: 0.607846/67 [===================>..........] - ETA: 32:47 - loss: 0.6910 - accuracy: 0.5652 - auc: 0.615047/67 [====================>.........] - ETA: 31:14 - loss: 0.6907 - accuracy: 0.5660 - auc: 0.615548/67 [====================>.........] - ETA: 29:40 - loss: 0.6896 - accuracy: 0.5708 - auc: 0.617249/67 [====================>.........] - ETA: 28:06 - loss: 0.6905 - accuracy: 0.5673 - auc: 0.614050/67 [=====================>........] - ETA: 26:32 - loss: 0.6907 - accuracy: 0.5720 - auc: 0.613251/67 [=====================>........] - ETA: 24:59 - loss: 0.6892 - accuracy: 0.5765 - auc: 0.618052/67 [======================>.......] - ETA: 23:25 - loss: 0.6848 - accuracy: 0.5846 - auc: 0.627353/67 [======================>.......] - ETA: 21:51 - loss: 0.6858 - accuracy: 0.5811 - auc: 0.624454/67 [=======================>......] - ETA: 20:18 - loss: 0.6817 - accuracy: 0.5889 - auc: 0.632955/67 [=======================>......] - ETA: 18:44 - loss: 0.6792 - accuracy: 0.5927 - auc: 0.638356/67 [========================>.....] - ETA: 17:10 - loss: 0.6857 - accuracy: 0.5821 - auc: 0.624157/67 [========================>.....] - ETA: 15:36 - loss: 0.6872 - accuracy: 0.5789 - auc: 0.621158/67 [========================>.....] - ETA: 14:03 - loss: 0.6879 - accuracy: 0.5793 - auc: 0.620859/67 [=========================>....] - ETA: 12:29 - loss: 0.6880 - accuracy: 0.5797 - auc: 0.621060/67 [=========================>....] - ETA: 10:55 - loss: 0.6866 - accuracy: 0.5833 - auc: 0.623761/67 [==========================>...] - ETA: 9:22 - loss: 0.6858 - accuracy: 0.5869 - auc: 0.6261 62/67 [==========================>...] - ETA: 7:48 - loss: 0.6853 - accuracy: 0.5903 - auc: 0.627063/67 [===========================>..] - ETA: 6:14 - loss: 0.6864 - accuracy: 0.5873 - auc: 0.624464/67 [===========================>..] - ETA: 4:41 - loss: 0.6858 - accuracy: 0.5875 - auc: 0.6251slurmstepd: error: *** JOB 4243661 ON gpu02 CANCELLED AT 2023-11-29T01:16:58 ***
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Nov 29 01:17:02 CST 2023 1701242222
+Name                : cd_gpu
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpu02
+Cores               : 1
+State               : CANCELLED,CANCELLED by 2035263
+Submit              : 2023-11-28T23:29:22
+Start               : 2023-11-28T23:29:26
+End                 : 2023-11-29T01:16:59
+Reserved Walltime   : 1-06:50:00
+Used Walltime       :   01:47:33
+Used CPU Time       :   01:46:50
+% User (Computation): 92.82%
+% System (I/O)      :  7.18%
+Mem Reserved        : 40000M
+Max Mem Used        : 32.40G (34793623552.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 942.08K (964689.92)
+Max-Mem-Used Node   : gpu02
+Max-Disk-Write Node : gpu02
+Max-Disk-Read Node  : gpu02
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                    GPU Performance Statistics
+--------------------------------------------------------------
+GPU Model: Tesla 
+End Slurm Epilogue Wed Nov 29 01:17:02 CST 2023 1701242222
+--------------------------------------------------------------

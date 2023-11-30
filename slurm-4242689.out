@@ -1,0 +1,81 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Nov 28 19:17:13 CST 2023 1701220633
+Job ID:		4242689
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Tue Nov 28 19:17:13 CST 2023 1701220633
+--------------------------------------------------------------
+2023-11-28 19:17:13.630380: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2023-11-28 19:17:13.630418: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow_addons/utils/tfa_eol_msg.py:23: UserWarning: 
+
+TensorFlow Addons (TFA) has ended development and introduction of new features.
+TFA has entered a minimal maintenance and release mode until a planned end of life in May 2024.
+Please modify downstream libraries to take dependencies from other repositories in our TensorFlow community (e.g. Keras, Keras-CV, and Keras-NLP). 
+
+For more information see: https://github.com/tensorflow/addons/issues/2807 
+
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow_addons/utils/ensure_tf_install.py:53: UserWarning: Tensorflow Addons supports using Python ops for all Tensorflow versions above or equal to 2.11.0 and strictly below 2.14.0 (nightly versions are not supported). 
+ The versions of TensorFlow you are currently using is 2.8.4 and is not supported. 
+Some things might work, some things might not.
+If you were to encounter a bug, do not file an issue.
+If you want to make sure you're using a tested and supported configuration, either change the TensorFlow version or the TensorFlow Addons's version. 
+You can find the compatibility matrix in TensorFlow Addon's readme:
+https://github.com/tensorflow/addons
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Traceback (most recent call last):
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/sat_model.py", line 43, in <module>
+    train_data, train_label, masker = loading_mask(task, modality)
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/sat_model.py", line 30, in loading_mask
+    resized_image = resize(masked_image)
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/cnn.py", line 45, in resize
+    new_data = resample_to_spacing(image.get_fdata(), image.header.get_zooms()[:3], new_spacing, 
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/cnn.py", line 13, in resample_to_spacing
+    return zoom(data, zoom_factors, order=1 if interpolation == 'linear' else 0)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/scipy/ndimage/_interpolation.py", line 770, in zoom
+    zoom = _ni_support._normalize_sequence(zoom, input.ndim)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/scipy/ndimage/_ni_support.py", line 68, in _normalize_sequence
+    raise RuntimeError(err)
+RuntimeError: sequence argument must have length equal to input rank
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Nov 28 19:17:20 CST 2023 1701220640
+Name                : cd_gpu
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpu02
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-11-28T19:17:12
+Start               : 2023-11-28T19:17:13
+End                 : 2023-11-28T19:17:18
+Reserved Walltime   : 1-06:50:00
+Used Walltime       :   00:00:05
+Used CPU Time       :   00:00:03
+% User (Computation): 88.49%
+% System (I/O)      :  0.00%
+Mem Reserved        : 40000M
+Max Mem Used        : 108.00K (110592.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : gpu02
+Max-Disk-Write Node : gpu02
+Max-Disk-Read Node  : gpu02
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                    GPU Performance Statistics
+--------------------------------------------------------------
+GPU Model: Tesla 
+End Slurm Epilogue Tue Nov 28 19:17:20 CST 2023 1701220640
+--------------------------------------------------------------
