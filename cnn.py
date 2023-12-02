@@ -18,7 +18,7 @@ def calculate_origin_offset(new_spacing, original_spacing):
     return [(o - n) / 2 for o, n in zip(original_spacing, new_spacing)]
 
 
-def pad_image_to_shape(image, target_shape=(128, 128, 128,1)):
+def pad_image_to_shape(image, target_shape=(128, 128, 128)):
     # Calculate the padding required in each dimension
     padding = [(0, max(target_shape[dim] - image.shape[dim], 0)) for dim in range(3)]
     
