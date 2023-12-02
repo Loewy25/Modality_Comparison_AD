@@ -39,7 +39,7 @@ def loading_mask(task,modality):
         masked_image = masker.inverse_transform(masked_data)
 
         # Resize the image
-        resized_image = pad_image_to_shape(masked_image)
+        resized_image = resize(masked_image)
 
         # Convert the resized NIfTI image to a numpy array
         resized_data = resized_image.get_fdata()
@@ -76,7 +76,7 @@ for fold_num, (train, val) in enumerate(stratified_kfold.split(X, Y.argmax(axis=
         early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
 
-        history = model.fit(X_train_augmented, Y_train, batch_size=5, epochs=200, validation_data=(X[val], Y[val]), callbacks=[early_stopping, reduce_lr])
+        history = model.fit(X_train_augmented, Y_train, batch_size=3, epochs=200, validation_data=(X[val], Y[val]), callbacks=[early_stopping, reduce_lr])
 
     y_val_pred = model.predict(X[val])
     all_y_val.extend(Y[val][:, 1])
