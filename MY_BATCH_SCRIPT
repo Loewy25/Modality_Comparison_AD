@@ -3,7 +3,7 @@
 #SBATCH -J b3
 #SBATCH -N 1
 #SBATCH -n 3
-#SBATCH --mem 40000M
+#SBATCH --mem 20000M
 #SBATCH -t 30:50:00
 #SBATCH --gres=gpu:3
 
