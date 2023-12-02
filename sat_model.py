@@ -76,7 +76,7 @@ for fold_num, (train, val) in enumerate(stratified_kfold.split(X, Y.argmax(axis=
         early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
 
-        history = model.fit(X_train_augmented, Y_train, batch_size=1, epochs=200, validation_data=(X[val], Y[val]), callbacks=[early_stopping, reduce_lr])
+        history = model.fit(X_train_augmented, Y_train, batch_size=3, epochs=200, validation_data=(X[val], Y[val]), callbacks=[early_stopping, reduce_lr])
 
     y_val_pred = model.predict(X[val])
     all_y_val.extend(Y[val][:, 1])
