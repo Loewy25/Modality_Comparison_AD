@@ -97,7 +97,7 @@ for fold_num, (train, val) in enumerate(stratified_kfold.split(X, Y.argmax(axis=
     plt.legend()
     plt.show()
 
-    clear_session()
+    K.clear_session()
 
 # Calculate and print the average AUC across all folds
 average_auc = sum(all_auc_scores) / len(all_auc_scores)
