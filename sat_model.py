@@ -59,17 +59,16 @@ train_data, train_label, masker = loading_mask(task, modality)
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
 
-# Split data into training/validation and test sets
-X_train_val, X_test, Y_train_val, Y_test = train_test_split(X, Y, test_size=0.3, random_state=42, stratify=Y)
-
-# Apply StratifiedKFold on the training/validation set
+# Apply StratifiedKFold on the entire dataset
 stratified_kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 all_y_val = []
 all_y_val_pred = []
+all_auc_scores = []
 
-for fold_num, (train, val) in enumerate(stratified_kfold.split(X_train_val, Y_train_val.argmax(axis=1))):
-    X_train_augmented = np.array([augment_data(X_train_val[i]) for i in train])
-    Y_train = Y_train_val[train]
+for fold_num, (train, val) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
+    X_train_augmented = np.array([augment_data(X[i]) for i in train])
+    Y_train = Y[train]
+
     with tf.distribute.MirroredStrategy().scope():
         model = create_cnn_model()
         model.compile(optimizer=Adam(5e-4), loss='categorical_crossentropy', metrics=['accuracy', AUC(name='auc')])
@@ -77,14 +76,15 @@ for fold_num, (train, val) in enumerate(stratified_kfold.split(X_train_val, Y_tr
         early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
 
-        history = model.fit(X_train_augmented, Y_train, batch_size=5, epochs=200, validation_data=(X_train_val[val], Y_train_val[val]), callbacks=[early_stopping, reduce_lr])
+        history = model.fit(X_train_augmented, Y_train, batch_size=5, epochs=200, validation_data=(X[val], Y[val]), callbacks=[early_stopping, reduce_lr])
 
-    y_val_pred = model.predict(X_train_val[val])
-    all_y_val.extend(Y_train_val[val][:, 1])
+    y_val_pred = model.predict(X[val])
+    all_y_val.extend(Y[val][:, 1])
     all_y_val_pred.extend(y_val_pred[:, 1])
 
     # AUC for the current fold
-    auc_score = roc_auc_score(Y_train_val[val][:, 1], y_val_pred[:, 1])
+    auc_score = roc_auc_score(Y[val][:, 1], y_val_pred[:, 1])
+    all_auc_scores.append(auc_score)
     print(f"AUC for fold {fold_num + 1}: {auc_score:.4f}")
 
     # Plotting AUC history
@@ -97,15 +97,8 @@ for fold_num, (train, val) in enumerate(stratified_kfold.split(X_train_val, Y_tr
     plt.legend()
     plt.show()
 
-    K.clear_session()
+    clear_session()
 
-# Train the model on the entire training/validation set
-model = create_cnn_model()
-model.compile(optimizer=Adam(5e-4), loss='categorical_crossentropy', metrics=['accuracy', AUC(name='auc')])
-model.fit(X_train_val, Y_train_val, batch_size=5, epochs=200, callbacks=[early_stopping, reduce_lr])
-
-# Evaluate the model on the test set
-y_test_pred = model.predict(X_test)
-test_auc = roc_auc_score(Y_test[:, 1], y_test_pred[:, 1])
-print(f"Test AUC: {test_auc:.4f}")
-
+# Calculate and print the average AUC across all folds
+average_auc = sum(all_auc_scores) / len(all_auc_scores)
+print(f"Average AUC across all folds: {average_auc:.4f}")
