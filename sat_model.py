@@ -60,7 +60,7 @@ X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
 
 # Apply StratifiedKFold on the entire dataset
-stratified_kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
 all_y_val = []
 all_y_val_pred = []
 all_auc_scores = []
