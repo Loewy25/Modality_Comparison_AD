@@ -14,15 +14,44 @@ from tensorflow.keras.metrics import AUC
 from tensorflow.keras.utils import to_categorical
 import matplotlib.pyplot as plt
 from tensorflow.keras import backend as K 
+import scipy.ndimage
 
-
-
-def augment_data(image):
+def augment_data(image, augmentation_level=1):
     augmented_image = image.copy()
-    for axis in range(3):
+
+    # Level 1 (Very Low): Basic flipping
+    if augmentation_level >= 1:
+        for axis in range(3):
+            if np.random.rand() > 0.5:
+                augmented_image = np.flip(augmented_image, axis=axis)
+
+    # Level 2 (Low): Flipping and slight rotation
+    if augmentation_level >= 2:
         if np.random.rand() > 0.5:
-            augmented_image = np.flip(augmented_image, axis=axis)
+            angle = np.random.uniform(-5, 5)
+            augmented_image = scipy.ndimage.rotate(augmented_image, angle, axes=(0, 1), reshape=False)
+
+    # Level 3 (Medium): Includes brightness adjustment
+    if augmentation_level >= 3:
+        if np.random.rand() > 0.5:
+            brightness_factor = np.random.uniform(0.9, 1.1)
+            augmented_image *= brightness_factor
+
+    # Level 4 (High): Adds contrast adjustment
+    if augmentation_level >= 4:
+        if np.random.rand() > 0.5:
+            contrast_factor = np.random.uniform(0.9, 1.1)
+            mean = np.mean(augmented_image)
+            augmented_image = (augmented_image - mean) * contrast_factor + mean
+
+    # Level 5 (Very High): Incorporates random noise
+    if augmentation_level == 5:
+        if np.random.rand() > 0.5:
+            noise = np.random.normal(0, 0.01, augmented_image.shape)
+            augmented_image += noise
+
     return augmented_image
+
 
 def loading_mask(task,modality):
     #Loading and generating data
@@ -61,13 +90,20 @@ Y = to_categorical(train_label, num_classes=2)
 
 # Apply StratifiedKFold on the entire dataset
 stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
-all_y_val = []
-all_y_val_pred = []
+all_y_test = []
+all_y_test_pred = []
 all_auc_scores = []
 
-for fold_num, (train, val) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
-    X_train_augmented = np.array([augment_data(X[i]) for i in train])
-    Y_train = Y[train]
+for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
+    # Split the training and validation set further
+    train_idx, val_idx = train_test_split(train_val_idx, test_size=0.2, random_state=42)
+
+    X_train, Y_train = X[train_idx], Y[train_idx]
+    X_val, Y_val = X[val_idx], Y[val_idx]
+    X_test, Y_test = X[test_idx], Y[test_idx]
+
+    # Augment the training data
+    X_train_augmented = np.array([augment_data(X_train[i], augmentation_level=1) for i in range(len(X_train))])
 
     with tf.distribute.MirroredStrategy().scope():
         model = create_cnn_model()
@@ -76,14 +112,14 @@ for fold_num, (train, val) in enumerate(stratified_kfold.split(X, Y.argmax(axis=
         early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
 
-        history = model.fit(X_train_augmented, Y_train, batch_size=4, epochs=200, validation_data=(X[val], Y[val]), callbacks=[early_stopping, reduce_lr])
+        history = model.fit(X_train_augmented, Y_train, batch_size=5, epochs=200, validation_data=(X_val, Y_val), callbacks=[early_stopping, reduce_lr])
 
-    y_val_pred = model.predict(X[val])
-    all_y_val.extend(Y[val][:, 1])
-    all_y_val_pred.extend(y_val_pred[:, 1])
+    y_test_pred = model.predict(X_test)
+    all_y_test.extend(Y_test[:, 1])
+    all_y_test_pred.extend(y_test_pred[:, 1])
 
     # AUC for the current fold
-    auc_score = roc_auc_score(Y[val][:, 1], y_val_pred[:, 1])
+    auc_score = roc_auc_score(Y_test[:, 1], y_test_pred[:, 1])
     all_auc_scores.append(auc_score)
     print(f"AUC for fold {fold_num + 1}: {auc_score:.4f}")
 
@@ -99,6 +135,6 @@ for fold_num, (train, val) in enumerate(stratified_kfold.split(X, Y.argmax(axis=
 
     K.clear_session()
 
-# Calculate and print the average AUC across all folds
+# Calculate and print the average AUC across all test sets
 average_auc = sum(all_auc_scores) / len(all_auc_scores)
-print(f"Average AUC across all folds: {average_auc:.4f}")
+print(f"Average AUC across all test sets: {average_auc:.4f}")
