@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J 4
+#SBATCH -J median
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 40000M
@@ -9,7 +9,7 @@
 
 
 #SBATCH --partition=tier2_gpu
-#SBATCH --nodelist=gpu02
+##SBATCH --nodelist=gpu02
 
 
 #SBATCH --account=aristeidis_sotiras
