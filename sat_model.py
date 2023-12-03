@@ -62,7 +62,7 @@ def augment_data(image, augmentation_level='medium'):
             intensity_factor = np.random.uniform(0.9, 1.1)
             augmented_image *= intensity_factor
 
-    return np.clip(augmented_image, 0, 1)  # Ensure the image data is within valid range
+    return augmented_image  # Ensure the image data is within valid range
 
 def loading_mask(task,modality):
     #Loading and generating data
