@@ -17,12 +17,46 @@ from tensorflow.keras import backend as K
 
 
 
-def augment_data(image):
+def augment_data(image, augmentation_level='low'):
     augmented_image = image.copy()
-    for axis in range(3):
+
+    # Basic Augmentations
+    if augmentation_level in ['low', 'medium', 'high']:
+        # Random Flip
+        for axis in range(3):
+            if np.random.rand() > 0.5:
+                augmented_image = np.flip(augmented_image, axis=axis)
+
+        # Random Rotation
         if np.random.rand() > 0.5:
-            augmented_image = np.flip(augmented_image, axis=axis)
-    return augmented_image
+            angle = np.random.uniform(-10, 10)  # Rotation angle in degrees
+            augmented_image = scipy.ndimage.rotate(augmented_image, angle, reshape=False)
+
+    # Intermediate Augmentations
+    if augmentation_level in ['medium', 'high']:
+        # Translation
+        if np.random.rand() > 0.5:
+            shift = np.random.uniform(-5, 5, 3)  # Shift range in pixels
+            augmented_image = scipy.ndimage.shift(augmented_image, shift)
+
+        # Scaling
+        if np.random.rand() > 0.5:
+            scale_factor = np.random.uniform(0.9, 1.1)
+            augmented_image = scipy.ndimage.zoom(augmented_image, zoom=scale_factor, order=1)
+
+    # Advanced Augmentations
+    if augmentation_level == 'high':
+        # Random Noise
+        if np.random.rand() > 0.5:
+            noise = np.random.normal(0, 0.05, augmented_image.shape)
+            augmented_image += noise
+
+        # Intensity Variation
+        if np.random.rand() > 0.5:
+            intensity_factor = np.random.uniform(0.9, 1.1)
+            augmented_image *= intensity_factor
+
+    return np.clip(augmented_image, 0, 1)  # Ensure the image data is within valid range
 
 def loading_mask(task,modality):
     #Loading and generating data
