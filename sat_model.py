@@ -18,7 +18,7 @@ from tensorflow.keras import backend as K
 
 
 
-def augment_data(image, augmentation_level='low'):
+def augment_data(image, augmentation_level='high'):
     augmented_image = image.copy()
 
     # Determine the number of spatial dimensions (assuming the last dimension is channel)
