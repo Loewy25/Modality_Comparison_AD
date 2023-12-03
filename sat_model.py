@@ -100,7 +100,7 @@ all_y_val_pred = []
 all_auc_scores = []
 
 for fold_num, (train, val) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
-    X_train_augmented = np.array([augment_data(X[i],augmentation_level='medium') for i in train])
+    X_train_augmented = np.array([augment_data(X[i],augmentation_level='hign') for i in train])
     Y_train = Y[train]
 
     with tf.distribute.MirroredStrategy().scope():
