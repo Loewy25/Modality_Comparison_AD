@@ -103,7 +103,7 @@ for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y
     X_test, Y_test = X[test_idx], Y[test_idx]
 
     # Augment the training data
-    X_train_augmented = np.array([augment_data(X_train[i], augmentation_level=4) for i in range(len(X_train))])
+    X_train_augmented = np.array([augment_data(X_train[i], augmentation_level=3) for i in range(len(X_train))])
 
     with tf.distribute.MirroredStrategy().scope():
         model = create_cnn_model()
