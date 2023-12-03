@@ -33,9 +33,9 @@ def augment_data(image, augmentation_level='medium'):
                 augmented_image = np.flip(augmented_image, axis=axis)
 
         # Random Rotation
-        if np.random.rand() > 0.5:
-            angle = np.random.uniform(-10, 10)  # Rotation angle in degrees
-            augmented_image = scipy.ndimage.rotate(augmented_image, angle, axes=(0,1), reshape=False)
+        #if np.random.rand() > 0.5:
+        #    angle = np.random.uniform(-10, 10)  # Rotation angle in degrees
+        #    augmented_image = scipy.ndimage.rotate(augmented_image, angle, axes=(0,1), reshape=False)
 
     # Intermediate Augmentations
     if augmentation_level in ['medium', 'high']:
