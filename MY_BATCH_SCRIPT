@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J low
+#SBATCH -J high-hh
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 40000M
