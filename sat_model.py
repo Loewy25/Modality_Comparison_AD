@@ -18,32 +18,39 @@ from tensorflow.keras import backend as K
 
 
 
-def augment_data(image, augmentation_level='low'):
+def augment_data(image, augmentation_level='medium'):
     augmented_image = image.copy()
+
+    # Determine the number of spatial dimensions (assuming the last dimension is channel)
+    num_dims = augmented_image.ndim - 1  # Subtract 1 if the last dimension is channel
 
     # Basic Augmentations
     if augmentation_level in ['low', 'medium', 'high']:
         # Random Flip
-        for axis in range(3):
+        for axis in range(num_dims):
             if np.random.rand() > 0.5:
                 augmented_image = np.flip(augmented_image, axis=axis)
 
         # Random Rotation
         if np.random.rand() > 0.5:
             angle = np.random.uniform(-10, 10)  # Rotation angle in degrees
-            augmented_image = scipy.ndimage.rotate(augmented_image, angle, reshape=False)
+            augmented_image = scipy.ndimage.rotate(augmented_image, angle, axes=(0,1), reshape=False)
 
     # Intermediate Augmentations
     if augmentation_level in ['medium', 'high']:
         # Translation
         if np.random.rand() > 0.5:
-            shift = np.random.uniform(-5, 5, 3)  # Shift range in pixels
-            augmented_image = scipy.ndimage.shift(augmented_image, shift)
+            # Generate shift values for each spatial dimension and 0 for the channel dimension
+            shift_values = np.random.uniform(-5, 5, num_dims).tolist()
+            shift_values.append(0)  # No shift along the channel dimension
+            augmented_image = scipy.ndimage.shift(augmented_image, shift=shift_values)
 
         # Scaling
         if np.random.rand() > 0.5:
             scale_factor = np.random.uniform(0.9, 1.1)
-            augmented_image = scipy.ndimage.zoom(augmented_image, zoom=scale_factor, order=1)
+            # Apply scaling while keeping the channel dimension unchanged
+            scale_factors = [scale_factor] * num_dims + [1]
+            augmented_image = scipy.ndimage.zoom(augmented_image, zoom=scale_factors, order=1)
 
     # Advanced Augmentations
     if augmentation_level == 'high':
@@ -57,7 +64,7 @@ def augment_data(image, augmentation_level='low'):
             intensity_factor = np.random.uniform(0.9, 1.1)
             augmented_image *= intensity_factor
 
-    return np.clip(augmented_image, 0, 1)  # Ensure the image data is within valid range
+    return np.clip(augmented_image, 0, 1)
 
 def loading_mask(task,modality):
     #Loading and generating data
