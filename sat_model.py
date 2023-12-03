@@ -5,7 +5,6 @@ from nilearn.input_data import NiftiMasker
 from sklearn.model_selection import StratifiedKFold, train_test_split
 from sklearn.metrics import roc_auc_score
 import numpy as np
-import scipy.ndimage
 import tensorflow as tf
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense
@@ -18,51 +17,12 @@ from tensorflow.keras import backend as K
 
 
 
-import numpy as np
-import scipy.ndimage
-import random
-
-def augment_data(image, augmentation_level='medium'):
+def augment_data(image):
     augmented_image = image.copy()
-
-    # Basic Augmentations
-    if augmentation_level in ['low', 'medium', 'high']:
-        # Random Flip
-        for axis in range(3):
-            if np.random.rand() > 0.5:
-                augmented_image = np.flip(augmented_image, axis=axis)
-
-        # Random Rotation
-        #if np.random.rand() > 0.5:
-        #    angle = np.random.uniform(-10, 10)  # Rotation angle in degrees
-        #    augmented_image = scipy.ndimage.rotate(augmented_image, angle, axes=(0,1), reshape=False)
-
-    # Intermediate Augmentations
-    if augmentation_level in ['medium', 'high']:
-        # Brightness Adjustment
+    for axis in range(3):
         if np.random.rand() > 0.5:
-            brightness_factor = np.random.uniform(0.8, 1.2)
-            augmented_image *= brightness_factor
-
-        # Contrast Adjustment
-        if np.random.rand() > 0.5:
-            contrast_factor = np.random.uniform(0.8, 1.2)
-            mean = np.mean(augmented_image)
-            augmented_image = (augmented_image - mean) * contrast_factor + mean
-
-    # Advanced Augmentations
-    if augmentation_level == 'high':
-        # Random Noise
-        if np.random.rand() > 0.5:
-            noise = np.random.normal(0, 0.05, augmented_image.shape)
-            augmented_image += noise
-
-        # Intensity Variation
-        if np.random.rand() > 0.5:
-            intensity_factor = np.random.uniform(0.9, 1.1)
-            augmented_image *= intensity_factor
-
-    return augmented_image  # Ensure the image data is within valid range
+            augmented_image = np.flip(augmented_image, axis=axis)
+    return augmented_image
 
 def loading_mask(task,modality):
     #Loading and generating data
@@ -106,7 +66,7 @@ all_y_val_pred = []
 all_auc_scores = []
 
 for fold_num, (train, val) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
-    X_train_augmented = np.array([augment_data(X[i],augmentation_level='low') for i in train])
+    X_train_augmented = np.array([augment_data(X[i]) for i in train])
     Y_train = Y[train]
 
     with tf.distribute.MirroredStrategy().scope():
