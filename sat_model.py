@@ -5,6 +5,7 @@ from nilearn.input_data import NiftiMasker
 from sklearn.model_selection import StratifiedKFold, train_test_split
 from sklearn.metrics import roc_auc_score
 import numpy as np
+import scipy.ndimage
 import tensorflow as tf
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense
