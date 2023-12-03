@@ -1,15 +1,16 @@
 #!/bin/bash
 
-#SBATCH -J high-hh
+#SBATCH -J medium
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 40000M
 #SBATCH -t 30:50:00
 #SBATCH --gres=gpu:1
+#SBATCH --exclude=gpu06
 
 
 #SBATCH --partition=tier2_gpu
-#SBATCH --nodelist=gpu03
+##SBATCH --nodelist=gpu03
 
 
 #SBATCH --account=aristeidis_sotiras
