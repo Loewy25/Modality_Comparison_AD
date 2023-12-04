@@ -19,9 +19,15 @@ def calculate_origin_offset(new_spacing, original_spacing):
 
 
 def pad_image_to_shape(image, target_shape=(128, 128, 128)):
+    # Check if the image has a 4th dimension (like a channel)
+    has_channel = image.ndim == 4
+
+    # Adjust target shape if the image has a channel dimension
+    target_shape_adjusted = target_shape + (image.shape[3],) if has_channel else target_shape
+
     # Calculate the padding required in each dimension
-    padding = [(0, max(target_shape[dim] - image.shape[dim], 0)) for dim in range(3)]
-    
+    padding = [(0, max(target_shape_adjusted[dim] - image.shape[dim], 0)) for dim in range(image.ndim)]
+
     # Apply zero-padding to the data
     new_data = np.pad(image.get_fdata(), padding, mode='constant', constant_values=0)
     
