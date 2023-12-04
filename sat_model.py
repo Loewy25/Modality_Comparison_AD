@@ -68,7 +68,7 @@ def loading_mask(task,modality):
         masked_image = masker.inverse_transform(masked_data)
 
         # Resize the image
-        resized_image = resize(masked_image)
+        resized_image = pad_image_to_shape(masked_image)
 
         # Convert the resized NIfTI image to a numpy array
         resized_data = resized_image.get_fdata()
