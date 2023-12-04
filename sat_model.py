@@ -118,19 +118,8 @@ for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y
     all_auc_scores.append(auc_score)
     print(f"AUC for fold {fold_num + 1}: {auc_score:.4f}")
 
-    plt.figure()
-    plt.plot(history.history['auc'], label='Train AUC')
-    plt.plot(history.history['val_auc'], label='Validation AUC', linestyle='--')
-    plt.title(f'Fold {fold_num + 1} - AUC')
-    plt.xlabel('Epochs')
-    plt.ylabel('AUC')
-    plt.legend()
-    plt.show()
-
     K.clear_session()
 
 # Calculate the average AUC across all folds
 average_auc = sum(all_auc_scores) / len(all_auc_scores)
 print(f"Average AUC across all folds: {average_auc:.4f}")
-
-
