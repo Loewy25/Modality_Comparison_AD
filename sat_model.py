@@ -91,11 +91,13 @@ Y = to_categorical(train_label, num_classes=2)
 
 # Apply StratifiedKFold on the entire dataset
 stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
-all_y_test = []
-all_y_test_pred = []
-all_auc_scores = []
 
 for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
+    # Reinitialize lists for each fold
+    all_y_test = []
+    all_y_test_pred = []
+    fold_auc_scores = []
+
     X_train_val, Y_train_val = X[train_val_idx], Y[train_val_idx]
     X_test, Y_test = X[test_idx], Y[test_idx]
 
@@ -113,14 +115,14 @@ for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y
         early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
 
-        history = model.fit(X_train_augmented, Y_train, batch_size=5, epochs=200, validation_data=(X_val, Y_val), callbacks=[early_stopping, reduce_lr])
+        history = model.fit(X_train_augmented, Y_train, batch_size=5, epochs=400, validation_data=(X_val, Y_val), callbacks=[early_stopping, reduce_lr])
 
     y_test_pred = model.predict(X_test)
     all_y_test.extend(Y_test[:, 1])
     all_y_test_pred.extend(y_test_pred[:, 1])
 
     auc_score = roc_auc_score(Y_test[:, 1], y_test_pred[:, 1])
-    all_auc_scores.append(auc_score)
+    fold_auc_scores.append(auc_score)
     print(f"AUC for fold {fold_num + 1}: {auc_score:.4f}")
 
     plt.figure()
@@ -134,5 +136,10 @@ for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y
 
     K.clear_session()
 
+    # Adding fold-specific AUC to the overall AUC list
+    all_auc_scores.extend(fold_auc_scores)
+
+# Calculate the average AUC across all folds
 average_auc = sum(all_auc_scores) / len(all_auc_scores)
-print(f"Average AUC across all test sets: {average_auc:.4f}")
+print(f"Average AUC across all folds: {average_auc:.4f}")
+
