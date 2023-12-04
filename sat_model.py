@@ -121,6 +121,10 @@ for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y
     all_y_test.extend(Y_test[:, 1])  # Collect test labels from all folds
     all_y_pred.extend(y_test_pred[:, 1])  # Collect predictions from all folds
 
+    # Calculate and print the AUC for the current fold
+    fold_auc = roc_auc_score(Y_test[:, 1], y_test_pred[:, 1])
+    print(f"AUC for fold {fold_num + 1}: {fold_auc:.4f}")
+
     plt.figure()
     plt.plot(history.history['auc'], label='Train AUC')
     plt.plot(history.history['val_auc'], label='Validation AUC', linestyle='--')
@@ -135,4 +139,5 @@ for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y
 # Calculate the final AUC using aggregated results
 final_auc = roc_auc_score(all_y_test, all_y_pred)
 print(f"Final AUC using aggregated results from all folds: {final_auc:.4f}")
+
 
