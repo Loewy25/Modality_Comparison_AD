@@ -103,10 +103,6 @@ def create_cnn_model():
     # Context 4
     x = context_module(x, 64)
     x = Add()([x, conv4_out])
-    x = convolution_block(x, 128, strides=(2,2,2))
-    
-    # Context 5
-    x = context_module(x, 128)
 
     # Global Average Pooling
     x = GlobalAveragePooling3D()(x)
