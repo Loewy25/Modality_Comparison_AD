@@ -82,6 +82,7 @@ print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 
 
+# Loading the dataset
 task = 'cd'
 modality = 'PET'
 train_data, train_label, masker = loading_mask(task, modality)
@@ -95,21 +96,21 @@ all_y_test_pred = []
 all_auc_scores = []
 
 for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
-    # Split the training and validation set further
-    train_idx, val_idx = train_test_split(train_val_idx, test_size=0.2, random_state=42)
-
-    X_train, Y_train = X[train_idx], Y[train_idx]
-    X_val, Y_val = X[val_idx], Y[val_idx]
+    X_train_val, Y_train_val = X[train_val_idx], Y[train_val_idx]
     X_test, Y_test = X[test_idx], Y[test_idx]
 
-    # Augment the training data
+    stratified_split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+    for train_idx, val_idx in stratified_split.split(X_train_val, Y_train_val.argmax(axis=1)):
+        X_train, Y_train = X_train_val[train_idx], Y_train_val[train_idx]
+        X_val, Y_val = X_train_val[val_idx], Y_train_val[val_idx]
+
     X_train_augmented = np.array([augment_data(X_train[i], augmentation_level=1) for i in range(len(X_train))])
 
     with tf.distribute.MirroredStrategy().scope():
         model = create_cnn_model()
         model.compile(optimizer=Adam(5e-4), loss='categorical_crossentropy', metrics=['accuracy', AUC(name='auc')])
 
-        early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=5, restore_best_weights=True)
+        early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
 
         history = model.fit(X_train_augmented, Y_train, batch_size=5, epochs=200, validation_data=(X_val, Y_val), callbacks=[early_stopping, reduce_lr])
@@ -118,12 +119,10 @@ for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y
     all_y_test.extend(Y_test[:, 1])
     all_y_test_pred.extend(y_test_pred[:, 1])
 
-    # AUC for the current fold
     auc_score = roc_auc_score(Y_test[:, 1], y_test_pred[:, 1])
     all_auc_scores.append(auc_score)
     print(f"AUC for fold {fold_num + 1}: {auc_score:.4f}")
 
-    # Plotting AUC history
     plt.figure()
     plt.plot(history.history['auc'], label='Train AUC')
     plt.plot(history.history['val_auc'], label='Validation AUC', linestyle='--')
@@ -135,6 +134,5 @@ for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y
 
     K.clear_session()
 
-# Calculate and print the average AUC across all test sets
 average_auc = sum(all_auc_scores) / len(all_auc_scores)
 print(f"Average AUC across all test sets: {average_auc:.4f}")
