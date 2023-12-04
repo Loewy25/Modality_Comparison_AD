@@ -91,7 +91,10 @@ Y = to_categorical(train_label, num_classes=2)
 
 # Apply StratifiedKFold on the entire dataset
 stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
-all_auc_scores = []  # Store AUC scores for each fold here
+
+# Initialize lists to store aggregated results
+all_y_test = []
+all_y_pred = []
 
 for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
     X_train_val, Y_train_val = X[train_val_idx], Y[train_val_idx]
@@ -113,13 +116,23 @@ for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y
 
         history = model.fit(X_train_augmented, Y_train, batch_size=5, epochs=400, validation_data=(X_val, Y_val), callbacks=[early_stopping, reduce_lr])
 
+    # Predict and store results
     y_test_pred = model.predict(X_test)
-    auc_score = roc_auc_score(Y_test[:, 1], y_test_pred[:, 1])
-    all_auc_scores.append(auc_score)
-    print(f"AUC for fold {fold_num + 1}: {auc_score:.4f}")
+    all_y_test.extend(Y_test[:, 1])  # Collect test labels from all folds
+    all_y_pred.extend(y_test_pred[:, 1])  # Collect predictions from all folds
+
+    plt.figure()
+    plt.plot(history.history['auc'], label='Train AUC')
+    plt.plot(history.history['val_auc'], label='Validation AUC', linestyle='--')
+    plt.title(f'Fold {fold_num + 1} - AUC')
+    plt.xlabel('Epochs')
+    plt.ylabel('AUC')
+    plt.legend()
+    plt.show()
 
     K.clear_session()
 
-# Calculate the average AUC across all folds
-average_auc = sum(all_auc_scores) / len(all_auc_scores)
-print(f"Average AUC across all folds: {average_auc:.4f}")
+# Calculate the final AUC using aggregated results
+final_auc = roc_auc_score(all_y_test, all_y_pred)
+print(f"Final AUC using aggregated results from all folds: {final_auc:.4f}")
+
