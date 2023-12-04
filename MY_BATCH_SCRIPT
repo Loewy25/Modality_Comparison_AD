@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J half75
+#SBATCH -J half7
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 80000M
