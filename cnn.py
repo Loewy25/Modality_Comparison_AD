@@ -72,7 +72,7 @@ def context_module(x, filters):
     # First convolution block
     x = convolution_block(x, filters)
     # Dropout layer
-    x = SpatialDropout3D(0.6)(x) 
+    x = SpatialDropout3D(0.7)(x) 
     # Second convolution block
     x = convolution_block(x, filters)
     return x
