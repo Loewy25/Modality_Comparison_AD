@@ -79,34 +79,34 @@ def context_module(x, filters):
 
 def create_cnn_model():
     input_img = Input(shape=(128, 128, 128, 1))
-    x = convolution_block(input_img, 16, strides=(1,1,1))
+    x = convolution_block(input_img, 8, strides=(1,1,1))
     conv1_out = x
 
     # Context 1
-    x = context_module(x, 16)
+    x = context_module(x, 8)
     x = Add()([x, conv1_out])
-    x = convolution_block(x, 32, strides=(2,2,2))
+    x = convolution_block(x, 16, strides=(2,2,2))
     conv2_out = x
 
     # Context 2
-    x = context_module(x, 32)
+    x = context_module(x, 16)
     x = Add()([x, conv2_out])
-    x = convolution_block(x, 64, strides=(2,2,2))
+    x = convolution_block(x, 32, strides=(2,2,2))
     conv3_out = x
 
     # Context 3
-    x = context_module(x, 64)
+    x = context_module(x, 32)
     x = Add()([x, conv3_out])
-    x = convolution_block(x, 128, strides=(2,2,2))
+    x = convolution_block(x, 64, strides=(2,2,2))
     conv4_out = x
 
     # Context 4
-    x = context_module(x, 128)
+    x = context_module(x, 64)
     x = Add()([x, conv4_out])
-    x = convolution_block(x, 256, strides=(2,2,2))
+    x = convolution_block(x, 128, strides=(2,2,2))
     
     # Context 5
-    x = context_module(x, 256)
+    x = context_module(x, 128)
 
     # Global Average Pooling
     x = GlobalAveragePooling3D()(x)
