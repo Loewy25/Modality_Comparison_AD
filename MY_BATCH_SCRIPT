@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#SBATCH -J resize_rem
+#SBATCH -J resize_half
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH --mem 40000M
+#SBATCH --mem 80000M
 #SBATCH -t 30:50:00
 #SBATCH --gres=gpu:1
 #SBATCH --exclude=gpu06
