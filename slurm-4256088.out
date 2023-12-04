@@ -17,3 +17,408 @@ https://github.com/tensorflow/addons
   warnings.warn(
 /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
   warnings.warn(message, FutureWarning)
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+2023-12-04 14:10:15.579697: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-12-04 14:10:16.158642: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:61:00.0, compute capability: 7.0
+Num GPUs Available:  1
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_1 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d (Conv3D)                (None, 128, 128, 12  448         ['input_1[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ instance_normalization (Instan  (None, 128, 128, 12  32         ['conv3d[0][0]']                 
+ ceNormalization)               8, 16)                                                            
+                                                                                                  
+ leaky_re_lu (LeakyReLU)        (None, 128, 128, 12  0           ['instance_normalization[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_1 (Conv3D)              (None, 128, 128, 12  6928        ['leaky_re_lu[0][0]']            
+                                8, 16)                                                            
+                                                                                                  
+ instance_normalization_1 (Inst  (None, 128, 128, 12  32         ['conv3d_1[0][0]']               
+ anceNormalization)             8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_1 (LeakyReLU)      (None, 128, 128, 12  0           ['instance_normalization_1[0][0]'
+                                8, 16)                           ]                                
+                                                                                                  
+ spatial_dropout3d (SpatialDrop  (None, 128, 128, 12  0          ['leaky_re_lu_1[0][0]']          
+ out3D)                         8, 16)                                                            
+                                                                                                  
+ conv3d_2 (Conv3D)              (None, 128, 128, 12  6928        ['spatial_dropout3d[0][0]']      
+                                8, 16)                                                            
+                                                                                                  
+ instance_normalization_2 (Inst  (None, 128, 128, 12  32         ['conv3d_2[0][0]']               
+ anceNormalization)             8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_2 (LeakyReLU)      (None, 128, 128, 12  0           ['instance_normalization_2[0][0]'
+                                8, 16)                           ]                                
+                                                                                                  
+ add (Add)                      (None, 128, 128, 12  0           ['leaky_re_lu_2[0][0]',          
+                                8, 16)                            'leaky_re_lu[0][0]']            
+                                                                                                  
+ conv3d_3 (Conv3D)              (None, 64, 64, 64,   13856       ['add[0][0]']                    
+                                32)                                                               
+                                                                                                  
+ instance_normalization_3 (Inst  (None, 64, 64, 64,   64         ['conv3d_3[0][0]']               
+ anceNormalization)             32)                                                               
+                                                                                                  
+ leaky_re_lu_3 (LeakyReLU)      (None, 64, 64, 64,   0           ['instance_normalization_3[0][0]'
+                                32)                              ]                                
+                                                                                                  
+ conv3d_4 (Conv3D)              (None, 64, 64, 64,   27680       ['leaky_re_lu_3[0][0]']          
+                                32)                                                               
+                                                                                                  
+ instance_normalization_4 (Inst  (None, 64, 64, 64,   64         ['conv3d_4[0][0]']               
+ anceNormalization)             32)                                                               
+                                                                                                  
+ leaky_re_lu_4 (LeakyReLU)      (None, 64, 64, 64,   0           ['instance_normalization_4[0][0]'
+                                32)                              ]                                
+                                                                                                  
+ spatial_dropout3d_1 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_4[0][0]']          
+ opout3D)                       32)                                                               
+                                                                                                  
+ conv3d_5 (Conv3D)              (None, 64, 64, 64,   27680       ['spatial_dropout3d_1[0][0]']    
+                                32)                                                               
+                                                                                                  
+ instance_normalization_5 (Inst  (None, 64, 64, 64,   64         ['conv3d_5[0][0]']               
+ anceNormalization)             32)                                                               
+                                                                                                  
+ leaky_re_lu_5 (LeakyReLU)      (None, 64, 64, 64,   0           ['instance_normalization_5[0][0]'
+                                32)                              ]                                
+                                                                                                  
+ add_1 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_5[0][0]',          
+                                32)                               'leaky_re_lu_3[0][0]']          
+                                                                                                  
+ conv3d_6 (Conv3D)              (None, 32, 32, 32,   55360       ['add_1[0][0]']                  
+                                64)                                                               
+                                                                                                  
+ instance_normalization_6 (Inst  (None, 32, 32, 32,   128        ['conv3d_6[0][0]']               
+ anceNormalization)             64)                                                               
+                                                                                                  
+ leaky_re_lu_6 (LeakyReLU)      (None, 32, 32, 32,   0           ['instance_normalization_6[0][0]'
+                                64)                              ]                                
+                                                                                                  
+ conv3d_7 (Conv3D)              (None, 32, 32, 32,   110656      ['leaky_re_lu_6[0][0]']          
+                                64)                                                               
+                                                                                                  
+ instance_normalization_7 (Inst  (None, 32, 32, 32,   128        ['conv3d_7[0][0]']               
+ anceNormalization)             64)                                                               
+                                                                                                  
+ leaky_re_lu_7 (LeakyReLU)      (None, 32, 32, 32,   0           ['instance_normalization_7[0][0]'
+                                64)                              ]                                
+                                                                                                  
+ spatial_dropout3d_2 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_7[0][0]']          
+ opout3D)                       64)                                                               
+                                                                                                  
+ conv3d_8 (Conv3D)              (None, 32, 32, 32,   110656      ['spatial_dropout3d_2[0][0]']    
+                                64)                                                               
+                                                                                                  
+ instance_normalization_8 (Inst  (None, 32, 32, 32,   128        ['conv3d_8[0][0]']               
+ anceNormalization)             64)                                                               
+                                                                                                  
+ leaky_re_lu_8 (LeakyReLU)      (None, 32, 32, 32,   0           ['instance_normalization_8[0][0]'
+                                64)                              ]                                
+                                                                                                  
+ add_2 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_8[0][0]',          
+                                64)                               'leaky_re_lu_6[0][0]']          
+                                                                                                  
+ conv3d_9 (Conv3D)              (None, 16, 16, 16,   221312      ['add_2[0][0]']                  
+                                128)                                                              
+                                                                                                  
+ instance_normalization_9 (Inst  (None, 16, 16, 16,   256        ['conv3d_9[0][0]']               
+ anceNormalization)             128)                                                              
+                                                                                                  
+ leaky_re_lu_9 (LeakyReLU)      (None, 16, 16, 16,   0           ['instance_normalization_9[0][0]'
+                                128)                             ]                                
+                                                                                                  
+ conv3d_10 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_9[0][0]']          
+                                128)                                                              
+                                                                                                  
+ instance_normalization_10 (Ins  (None, 16, 16, 16,   256        ['conv3d_10[0][0]']              
+ tanceNormalization)            128)                                                              
+                                                                                                  
+ leaky_re_lu_10 (LeakyReLU)     (None, 16, 16, 16,   0           ['instance_normalization_10[0][0]
+                                128)                             ']                               
+                                                                                                  
+ spatial_dropout3d_3 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_10[0][0]']         
+ opout3D)                       128)                                                              
+                                                                                                  
+ conv3d_11 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_3[0][0]']    
+                                128)                                                              
+                                                                                                  
+ instance_normalization_11 (Ins  (None, 16, 16, 16,   256        ['conv3d_11[0][0]']              
+ tanceNormalization)            128)                                                              
+                                                                                                  
+ leaky_re_lu_11 (LeakyReLU)     (None, 16, 16, 16,   0           ['instance_normalization_11[0][0]
+                                128)                             ']                               
+                                                                                                  
+ add_3 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_11[0][0]',         
+                                128)                              'leaky_re_lu_9[0][0]']          
+                                                                                                  
+ conv3d_12 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_3[0][0]']                  
+                                )                                                                 
+                                                                                                  
+ instance_normalization_12 (Ins  (None, 8, 8, 8, 256  512        ['conv3d_12[0][0]']              
+ tanceNormalization)            )                                                                 
+                                                                                                  
+ leaky_re_lu_12 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['instance_normalization_12[0][0]
+                                )                                ']                               
+                                                                                                  
+ conv3d_13 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_12[0][0]']         
+                                )                                                                 
+                                                                                                  
+ instance_normalization_13 (Ins  (None, 8, 8, 8, 256  512        ['conv3d_13[0][0]']              
+ tanceNormalization)            )                                                                 
+                                                                                                  
+ leaky_re_lu_13 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['instance_normalization_13[0][0]
+                                )                                ']                               
+                                                                                                  
+ spatial_dropout3d_4 (SpatialDr  (None, 8, 8, 8, 256  0          ['leaky_re_lu_13[0][0]']         
+ opout3D)                       )                                                                 
+                                                                                                  
+ conv3d_14 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_4[0][0]']    
+                                )                                                                 
+                                                                                                  
+ instance_normalization_14 (Ins  (None, 8, 8, 8, 256  512        ['conv3d_14[0][0]']              
+ tanceNormalization)            )                                                                 
+                                                                                                  
+ leaky_re_lu_14 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['instance_normalization_14[0][0]
+                                )                                ']                               
+                                                                                                  
+ global_average_pooling3d (Glob  (None, 256)         0           ['leaky_re_lu_14[0][0]']         
+ alAveragePooling3D)                                                                              
+                                                                                                  
+ dropout (Dropout)              (None, 256)          0           ['global_average_pooling3d[0][0]'
+                                                                 ]                                
+                                                                                                  
+ dense (Dense)                  (None, 2)            514         ['dropout[0][0]']                
+                                                                                                  
+==================================================================================================
+Total params: 5,894,434
+Trainable params: 5,894,434
+Non-trainable params: 0
+__________________________________________________________________________________________________
+2023-12-04 14:10:20.550690: W tensorflow/core/grappler/optimizers/data/auto_shard.cc:776] AUTO sharding policy will apply DATA sharding policy as it failed to apply FILE sharding policy because of the following reason: Did not find a shardable source, walked to a node which is not a dataset: name: "FlatMapDataset/_9"
+op: "FlatMapDataset"
+input: "PrefetchDataset/_8"
+attr {
+  key: "Targuments"
+  value {
+    list {
+    }
+  }
+}
+attr {
+  key: "_cardinality"
+  value {
+    i: -2
+  }
+}
+attr {
+  key: "f"
+  value {
+    func {
+      name: "__inference_Dataset_flat_map_slice_batch_indices_1733"
+    }
+  }
+}
+attr {
+  key: "metadata"
+  value {
+    s: "\n\020FlatMapDataset:4"
+  }
+}
+attr {
+  key: "output_shapes"
+  value {
+    list {
+      shape {
+        dim {
+          size: 5
+        }
+      }
+    }
+  }
+}
+attr {
+  key: "output_types"
+  value {
+    list {
+      type: DT_INT64
+    }
+  }
+}
+experimental_type {
+  type_id: TFT_PRODUCT
+  args {
+    type_id: TFT_DATASET
+    args {
+      type_id: TFT_PRODUCT
+      args {
+        type_id: TFT_TENSOR
+        args {
+          type_id: TFT_INT64
+        }
+      }
+    }
+  }
+  args {
+    type_id: TFT_DATASET
+    args {
+      type_id: TFT_PRODUCT
+      args {
+        type_id: TFT_TENSOR
+        args {
+          type_id: TFT_INT64
+        }
+      }
+    }
+  }
+}
+. Consider either turning off auto-sharding or switching the auto_shard_policy to DATA to shard this dataset. You can do this by creating a new `tf.data.Options()` object then setting `options.experimental_distribute.auto_shard_policy = AutoShardPolicy.DATA` before applying the options object to the dataset via `dataset.with_options(options)`.
+Epoch 1/200
+2023-12-04 14:10:24.301101: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8101
+ 1/44 [..............................] - ETA: 6:49 - loss: 0.6736 - accuracy: 0.8000 - auc: 0.6400 2/44 [>.............................] - ETA: 32s - loss: 0.6780 - accuracy: 0.7000 - auc: 0.6300  3/44 [=>............................] - ETA: 31s - loss: 0.5998 - accuracy: 0.7333 - auc: 0.7511 4/44 [=>............................] - ETA: 31s - loss: 0.6464 - accuracy: 0.6500 - auc: 0.6825 5/44 [==>...........................] - ETA: 30s - loss: 0.6468 - accuracy: 0.6400 - auc: 0.6848 6/44 [===>..........................] - ETA: 29s - loss: 0.6309 - accuracy: 0.6333 - auc: 0.7078 7/44 [===>..........................] - ETA: 28s - loss: 0.6123 - accuracy: 0.6857 - auc: 0.7445 8/44 [====>.........................] - ETA: 28s - loss: 0.6272 - accuracy: 0.6500 - auc: 0.7212 9/44 [=====>........................] - ETA: 27s - loss: 0.6243 - accuracy: 0.6667 - auc: 0.726210/44 [=====>........................] - ETA: 26s - loss: 0.6377 - accuracy: 0.6800 - auc: 0.724211/44 [======>.......................] - ETA: 25s - loss: 0.6482 - accuracy: 0.6727 - auc: 0.705312/44 [=======>......................] - ETA: 24s - loss: 0.6606 - accuracy: 0.6667 - auc: 0.688513/44 [=======>......................] - ETA: 24s - loss: 0.6712 - accuracy: 0.6615 - auc: 0.682514/44 [========>.....................] - ETA: 23s - loss: 0.6975 - accuracy: 0.6429 - auc: 0.655015/44 [=========>....................] - ETA: 22s - loss: 0.6894 - accuracy: 0.6533 - auc: 0.664416/44 [=========>....................] - ETA: 21s - loss: 0.6927 - accuracy: 0.6500 - auc: 0.657017/44 [==========>...................] - ETA: 21s - loss: 0.7060 - accuracy: 0.6235 - auc: 0.639118/44 [===========>..................] - ETA: 20s - loss: 0.6933 - accuracy: 0.6444 - auc: 0.653519/44 [===========>..................] - ETA: 19s - loss: 0.6854 - accuracy: 0.6526 - auc: 0.662620/44 [============>.................] - ETA: 18s - loss: 0.6841 - accuracy: 0.6500 - auc: 0.663321/44 [=============>................] - ETA: 17s - loss: 0.6890 - accuracy: 0.6381 - auc: 0.654822/44 [==============>...............] - ETA: 17s - loss: 0.6928 - accuracy: 0.6273 - auc: 0.648323/44 [==============>...............] - ETA: 16s - loss: 0.6989 - accuracy: 0.6261 - auc: 0.639224/44 [===============>..............] - ETA: 15s - loss: 0.6999 - accuracy: 0.6250 - auc: 0.636825/44 [================>.............] - ETA: 14s - loss: 0.6961 - accuracy: 0.6240 - auc: 0.640426/44 [================>.............] - ETA: 14s - loss: 0.6885 - accuracy: 0.6308 - auc: 0.650027/44 [=================>............] - ETA: 13s - loss: 0.6850 - accuracy: 0.6296 - auc: 0.653928/44 [==================>...........] - ETA: 12s - loss: 0.6874 - accuracy: 0.6286 - auc: 0.649929/44 [==================>...........] - ETA: 11s - loss: 0.6908 - accuracy: 0.6207 - auc: 0.643830/44 [===================>..........] - ETA: 10s - loss: 0.6894 - accuracy: 0.6200 - auc: 0.644831/44 [====================>.........] - ETA: 10s - loss: 0.6817 - accuracy: 0.6194 - auc: 0.654832/44 [====================>.........] - ETA: 9s - loss: 0.6793 - accuracy: 0.6187 - auc: 0.6578 33/44 [=====================>........] - ETA: 8s - loss: 0.6729 - accuracy: 0.6303 - auc: 0.667134/44 [======================>.......] - ETA: 7s - loss: 0.6827 - accuracy: 0.6235 - auc: 0.654035/44 [======================>.......] - ETA: 7s - loss: 0.6796 - accuracy: 0.6286 - auc: 0.658236/44 [=======================>......] - ETA: 6s - loss: 0.6767 - accuracy: 0.6278 - auc: 0.662437/44 [========================>.....] - ETA: 5s - loss: 0.6798 - accuracy: 0.6270 - auc: 0.660238/44 [========================>.....] - ETA: 4s - loss: 0.6895 - accuracy: 0.6158 - auc: 0.646039/44 [=========================>....] - ETA: 3s - loss: 0.6896 - accuracy: 0.6205 - auc: 0.645940/44 [==========================>...] - ETA: 3s - loss: 0.6806 - accuracy: 0.6300 - auc: 0.659241/44 [==========================>...] - ETA: 2s - loss: 0.6799 - accuracy: 0.6341 - auc: 0.660642/44 [===========================>..] - ETA: 1s - loss: 0.6746 - accuracy: 0.6429 - auc: 0.668343/44 [============================>.] - ETA: 0s - loss: 0.6823 - accuracy: 0.6372 - auc: 0.659144/44 [==============================] - ETA: 0s - loss: 0.6863 - accuracy: 0.6318 - auc: 0.65272023-12-04 14:11:04.574497: W tensorflow/core/grappler/optimizers/data/auto_shard.cc:776] AUTO sharding policy will apply DATA sharding policy as it failed to apply FILE sharding policy because of the following reason: Did not find a shardable source, walked to a node which is not a dataset: name: "FlatMapDataset/_9"
+op: "FlatMapDataset"
+input: "PrefetchDataset/_8"
+attr {
+  key: "Targuments"
+  value {
+    list {
+    }
+  }
+}
+attr {
+  key: "_cardinality"
+  value {
+    i: -2
+  }
+}
+attr {
+  key: "f"
+  value {
+    func {
+      name: "__inference_Dataset_flat_map_slice_batch_indices_7665"
+    }
+  }
+}
+attr {
+  key: "metadata"
+  value {
+    s: "\n\021FlatMapDataset:27"
+  }
+}
+attr {
+  key: "output_shapes"
+  value {
+    list {
+      shape {
+        dim {
+          size: -1
+        }
+      }
+    }
+  }
+}
+attr {
+  key: "output_types"
+  value {
+    list {
+      type: DT_INT64
+    }
+  }
+}
+experimental_type {
+  type_id: TFT_PRODUCT
+  args {
+    type_id: TFT_DATASET
+    args {
+      type_id: TFT_PRODUCT
+      args {
+        type_id: TFT_TENSOR
+        args {
+          type_id: TFT_INT64
+        }
+      }
+    }
+  }
+  args {
+    type_id: TFT_DATASET
+    args {
+      type_id: TFT_PRODUCT
+      args {
+        type_id: TFT_TENSOR
+        args {
+          type_id: TFT_INT64
+        }
+      }
+    }
+  }
+}
+. Consider either turning off auto-sharding or switching the auto_shard_policy to DATA to shard this dataset. You can do this by creating a new `tf.data.Options()` object then setting `options.experimental_distribute.auto_shard_policy = AutoShardPolicy.DATA` before applying the options object to the dataset via `dataset.with_options(options)`.
+44/44 [==============================] - 47s 872ms/step - loss: 0.6863 - accuracy: 0.6318 - auc: 0.6527 - val_loss: 0.6482 - val_accuracy: 0.6429 - val_auc: 0.8198 - lr: 5.0000e-04
+Epoch 2/200
+ 1/44 [..............................] - ETA: 33s - loss: 0.9597 - accuracy: 0.4000 - auc: 0.1600 2/44 [>.............................] - ETA: 32s - loss: 0.8392 - accuracy: 0.4000 - auc: 0.3800 3/44 [=>............................] - ETA: 31s - loss: 0.7173 - accuracy: 0.5333 - auc: 0.5689 4/44 [=>............................] - ETA: 31s - loss: 0.7518 - accuracy: 0.5500 - auc: 0.5625 5/44 [==>...........................] - ETA: 30s - loss: 0.7234 - accuracy: 0.5600 - auc: 0.5920 6/44 [===>..........................] - ETA: 29s - loss: 0.6928 - accuracy: 0.5333 - auc: 0.6267 7/44 [===>..........................] - ETA: 28s - loss: 0.6790 - accuracy: 0.5429 - auc: 0.6400 8/44 [====>.........................] - ETA: 28s - loss: 0.6574 - accuracy: 0.5750 - auc: 0.6725 9/44 [=====>........................] - ETA: 27s - loss: 0.7159 - accuracy: 0.5111 - auc: 0.596510/44 [=====>........................] - ETA: 26s - loss: 0.7480 - accuracy: 0.4800 - auc: 0.549211/44 [======>.......................] - ETA: 25s - loss: 0.7451 - accuracy: 0.4909 - auc: 0.556412/44 [=======>......................] - ETA: 24s - loss: 0.7434 - accuracy: 0.5000 - auc: 0.560613/44 [=======>......................] - ETA: 24s - loss: 0.7315 - accuracy: 0.5231 - auc: 0.573314/44 [========>.....................] - ETA: 23s - loss: 0.7351 - accuracy: 0.5143 - auc: 0.564315/44 [=========>....................] - ETA: 22s - loss: 0.7356 - accuracy: 0.5067 - auc: 0.558816/44 [=========>....................] - ETA: 21s - loss: 0.7406 - accuracy: 0.5000 - auc: 0.555817/44 [==========>...................] - ETA: 21s - loss: 0.7464 - accuracy: 0.5059 - auc: 0.545218/44 [===========>..................] - ETA: 20s - loss: 0.7260 - accuracy: 0.5333 - auc: 0.577019/44 [===========>..................] - ETA: 19s - loss: 0.7153 - accuracy: 0.5579 - auc: 0.589320/44 [============>.................] - ETA: 18s - loss: 0.7200 - accuracy: 0.5500 - auc: 0.577221/44 [=============>................] - ETA: 17s - loss: 0.7175 - accuracy: 0.5524 - auc: 0.581022/44 [==============>...............] - ETA: 17s - loss: 0.7199 - accuracy: 0.5455 - auc: 0.576423/44 [==============>...............] - ETA: 16s - loss: 0.7157 - accuracy: 0.5391 - auc: 0.581924/44 [===============>..............] - ETA: 15s - loss: 0.7257 - accuracy: 0.5250 - auc: 0.564425/44 [================>.............] - ETA: 14s - loss: 0.7140 - accuracy: 0.5440 - auc: 0.584526/44 [================>.............] - ETA: 14s - loss: 0.7193 - accuracy: 0.5385 - auc: 0.577927/44 [=================>............] - ETA: 13s - loss: 0.7193 - accuracy: 0.5407 - auc: 0.578828/44 [==================>...........] - ETA: 12s - loss: 0.7174 - accuracy: 0.5429 - auc: 0.582829/44 [==================>...........] - ETA: 11s - loss: 0.7194 - accuracy: 0.5448 - auc: 0.581130/44 [===================>..........] - ETA: 10s - loss: 0.7146 - accuracy: 0.5533 - auc: 0.587731/44 [====================>.........] - ETA: 10s - loss: 0.7127 - accuracy: 0.5613 - auc: 0.588532/44 [====================>.........] - ETA: 9s - loss: 0.7231 - accuracy: 0.5500 - auc: 0.5745 33/44 [=====================>........] - ETA: 8s - loss: 0.7217 - accuracy: 0.5515 - auc: 0.576134/44 [======================>.......] - ETA: 7s - loss: 0.7175 - accuracy: 0.5529 - auc: 0.582735/44 [======================>.......] - ETA: 7s - loss: 0.7203 - accuracy: 0.5429 - auc: 0.576936/44 [=======================>......] - ETA: 6s - loss: 0.7130 - accuracy: 0.5500 - auc: 0.589437/44 [========================>.....] - ETA: 5s - loss: 0.7051 - accuracy: 0.5622 - auc: 0.602838/44 [========================>.....] - ETA: 4s - loss: 0.7137 - accuracy: 0.5632 - auc: 0.593539/44 [=========================>....] - ETA: 3s - loss: 0.7122 - accuracy: 0.5692 - auc: 0.595040/44 [==========================>...] - ETA: 3s - loss: 0.7041 - accuracy: 0.5800 - auc: 0.608841/44 [==========================>...] - ETA: 2s - loss: 0.7026 - accuracy: 0.5854 - auc: 0.612242/44 [===========================>..] - ETA: 1s - loss: 0.6985 - accuracy: 0.5905 - auc: 0.618043/44 [============================>.] - ETA: 0s - loss: 0.6956 - accuracy: 0.5953 - auc: 0.622244/44 [==============================] - ETA: 0s - loss: 0.6932 - accuracy: 0.5955 - auc: 0.625944/44 [==============================] - 36s 826ms/step - loss: 0.6932 - accuracy: 0.5955 - auc: 0.6259 - val_loss: 0.6347 - val_accuracy: 0.6429 - val_auc: 0.8265 - lr: 5.0000e-04
+Epoch 3/200
+ 1/44 [..............................] - ETA: 33s - loss: 0.7112 - accuracy: 0.6000 - auc: 0.6000 2/44 [>.............................] - ETA: 32s - loss: 0.5635 - accuracy: 0.8000 - auc: 0.8000 3/44 [=>............................] - ETA: 31s - loss: 0.5273 - accuracy: 0.8000 - auc: 0.8444 4/44 [=>............................] - ETA: 31s - loss: 0.5499 - accuracy: 0.8000 - auc: 0.8425 5/44 [==>...........................] - ETA: 30s - loss: 0.5895 - accuracy: 0.7600 - auc: 0.7872 6/44 [===>..........................] - ETA: 29s - loss: 0.6051 - accuracy: 0.7333 - auc: 0.7633 7/44 [===>..........................] - ETA: 28s - loss: 0.6223 - accuracy: 0.6857 - auc: 0.7376 8/44 [====>.........................] - ETA: 28s - loss: 0.6438 - accuracy: 0.6500 - auc: 0.7072 9/44 [=====>........................] - ETA: 27s - loss: 0.6665 - accuracy: 0.6222 - auc: 0.670910/44 [=====>........................] - ETA: 26s - loss: 0.6611 - accuracy: 0.6200 - auc: 0.676611/44 [======>.......................] - ETA: 25s - loss: 0.6525 - accuracy: 0.6364 - auc: 0.683112/44 [=======>......................] - ETA: 24s - loss: 0.6352 - accuracy: 0.6667 - auc: 0.707613/44 [=======>......................] - ETA: 24s - loss: 0.6418 - accuracy: 0.6462 - auc: 0.697614/44 [========>.....................] - ETA: 23s - loss: 0.6514 - accuracy: 0.6429 - auc: 0.686815/44 [=========>....................] - ETA: 22s - loss: 0.6693 - accuracy: 0.6267 - auc: 0.662116/44 [=========>....................] - ETA: 21s - loss: 0.6710 - accuracy: 0.6125 - auc: 0.660517/44 [==========>...................] - ETA: 21s - loss: 0.6571 - accuracy: 0.6353 - auc: 0.681018/44 [===========>..................] - ETA: 20s - loss: 0.6560 - accuracy: 0.6222 - auc: 0.681519/44 [===========>..................] - ETA: 19s - loss: 0.6481 - accuracy: 0.6316 - auc: 0.692220/44 [============>.................] - ETA: 18s - loss: 0.6523 - accuracy: 0.6300 - auc: 0.685821/44 [=============>................] - ETA: 17s - loss: 0.6459 - accuracy: 0.6286 - auc: 0.695122/44 [==============>...............] - ETA: 17s - loss: 0.6396 - accuracy: 0.6273 - auc: 0.703323/44 [==============>...............] - ETA: 16s - loss: 0.6477 - accuracy: 0.6348 - auc: 0.694724/44 [===============>..............] - ETA: 15s - loss: 0.6453 - accuracy: 0.6333 - auc: 0.697825/44 [================>.............] - ETA: 14s - loss: 0.6477 - accuracy: 0.6320 - auc: 0.695926/44 [================>.............] - ETA: 13s - loss: 0.6518 - accuracy: 0.6308 - auc: 0.690127/44 [=================>............] - ETA: 13s - loss: 0.6655 - accuracy: 0.6222 - auc: 0.678528/44 [==================>...........] - ETA: 12s - loss: 0.6714 - accuracy: 0.6214 - auc: 0.671829/44 [==================>...........] - ETA: 11s - loss: 0.6707 - accuracy: 0.6276 - auc: 0.672230/44 [===================>..........] - ETA: 10s - loss: 0.6729 - accuracy: 0.6133 - auc: 0.668431/44 [====================>.........] - ETA: 10s - loss: 0.6718 - accuracy: 0.6194 - auc: 0.668732/44 [====================>.........] - ETA: 9s - loss: 0.6723 - accuracy: 0.6187 - auc: 0.6672 33/44 [=====================>........] - ETA: 8s - loss: 0.6736 - accuracy: 0.6121 - auc: 0.664934/44 [======================>.......] - ETA: 7s - loss: 0.6696 - accuracy: 0.6176 - auc: 0.669935/44 [======================>.......] - ETA: 6s - loss: 0.6740 - accuracy: 0.6171 - auc: 0.663336/44 [=======================>......] - ETA: 6s - loss: 0.6792 - accuracy: 0.6167 - auc: 0.656537/44 [========================>.....] - ETA: 5s - loss: 0.6866 - accuracy: 0.6054 - auc: 0.644738/44 [========================>.....] - ETA: 4s - loss: 0.6876 - accuracy: 0.6000 - auc: 0.641839/44 [=========================>....] - ETA: 3s - loss: 0.6850 - accuracy: 0.6000 - auc: 0.644940/44 [==========================>...] - ETA: 3s - loss: 0.6831 - accuracy: 0.6000 - auc: 0.647641/44 [==========================>...] - ETA: 2s - loss: 0.6804 - accuracy: 0.6049 - auc: 0.652242/44 [===========================>..] - ETA: 1s - loss: 0.6827 - accuracy: 0.6048 - auc: 0.649143/44 [============================>.] - ETA: 0s - loss: 0.6878 - accuracy: 0.6000 - auc: 0.640944/44 [==============================] - ETA: 0s - loss: 0.6942 - accuracy: 0.5864 - auc: 0.630044/44 [==============================] - 36s 822ms/step - loss: 0.6942 - accuracy: 0.5864 - auc: 0.6300 - val_loss: 0.6706 - val_accuracy: 0.6429 - val_auc: 0.6639 - lr: 5.0000e-04
+Epoch 4/200
+ 1/44 [..............................] - ETA: 33s - loss: 0.7173 - accuracy: 0.6000 - auc: 0.5800 2/44 [>.............................] - ETA: 32s - loss: 0.8553 - accuracy: 0.5000 - auc: 0.3850 3/44 [=>............................] - ETA: 31s - loss: 0.7718 - accuracy: 0.6000 - auc: 0.5267 4/44 [=>............................] - ETA: 31s - loss: 0.7698 - accuracy: 0.5000 - auc: 0.4738 5/44 [==>...........................] - ETA: 30s - loss: 0.7586 - accuracy: 0.5200 - auc: 0.5096 6/44 [===>..........................] - ETA: 29s - loss: 0.7427 - accuracy: 0.5333 - auc: 0.5328 7/44 [===>..........................] - ETA: 28s - loss: 0.7705 - accuracy: 0.4857 - auc: 0.4796 8/44 [====>.........................] - ETA: 27s - loss: 0.8243 - accuracy: 0.4500 - auc: 0.4216 9/44 [=====>........................] - ETA: 27s - loss: 0.7977 - accuracy: 0.4889 - auc: 0.467910/44 [=====>........................] - ETA: 26s - loss: 0.7854 - accuracy: 0.5000 - auc: 0.482211/44 [======>.......................] - ETA: 25s - loss: 0.7698 - accuracy: 0.5273 - auc: 0.503012/44 [=======>......................] - ETA: 24s - loss: 0.7650 - accuracy: 0.5333 - auc: 0.502213/44 [=======>......................] - ETA: 24s - loss: 0.7718 - accuracy: 0.5385 - auc: 0.489214/44 [========>.....................] - ETA: 23s - loss: 0.7693 - accuracy: 0.5429 - auc: 0.494515/44 [=========>....................] - ETA: 22s - loss: 0.7820 - accuracy: 0.5200 - auc: 0.474516/44 [=========>....................] - ETA: 21s - loss: 0.7662 - accuracy: 0.5375 - auc: 0.501117/44 [==========>...................] - ETA: 20s - loss: 0.7540 - accuracy: 0.5529 - auc: 0.521218/44 [===========>..................] - ETA: 20s - loss: 0.7346 - accuracy: 0.5778 - auc: 0.555619/44 [===========>..................] - ETA: 19s - loss: 0.7425 - accuracy: 0.5684 - auc: 0.540620/44 [============>.................] - ETA: 18s - loss: 0.7289 - accuracy: 0.5900 - auc: 0.563721/44 [=============>................] - ETA: 17s - loss: 0.7233 - accuracy: 0.6000 - auc: 0.573722/44 [==============>...............] - ETA: 17s - loss: 0.7153 - accuracy: 0.6000 - auc: 0.586223/44 [==============>...............] - ETA: 16s - loss: 0.7127 - accuracy: 0.6000 - auc: 0.590724/44 [===============>..............] - ETA: 15s - loss: 0.7253 - accuracy: 0.5917 - auc: 0.572025/44 [================>.............] - ETA: 14s - loss: 0.7281 - accuracy: 0.5920 - auc: 0.572926/44 [================>.............] - ETA: 14s - loss: 0.7144 - accuracy: 0.6077 - auc: 0.594227/44 [=================>............] - ETA: 13s - loss: 0.7179 - accuracy: 0.5926 - auc: 0.586528/44 [==================>...........] - ETA: 12s - loss: 0.7095 - accuracy: 0.6071 - auc: 0.600429/44 [==================>...........] - ETA: 11s - loss: 0.7050 - accuracy: 0.6138 - auc: 0.606930/44 [===================>..........] - ETA: 10s - loss: 0.7091 - accuracy: 0.6133 - auc: 0.599431/44 [====================>.........] - ETA: 10s - loss: 0.6978 - accuracy: 0.6258 - auc: 0.617432/44 [====================>.........] - ETA: 9s - loss: 0.6921 - accuracy: 0.6375 - auc: 0.6269 33/44 [=====================>........] - ETA: 8s - loss: 0.6876 - accuracy: 0.6424 - auc: 0.633734/44 [======================>.......] - ETA: 7s - loss: 0.6906 - accuracy: 0.6353 - auc: 0.628035/44 [======================>.......] - ETA: 6s - loss: 0.6894 - accuracy: 0.6343 - auc: 0.629836/44 [=======================>......] - ETA: 6s - loss: 0.6934 - accuracy: 0.6333 - auc: 0.624437/44 [========================>.....] - ETA: 5s - loss: 0.6830 - accuracy: 0.6432 - auc: 0.641238/44 [========================>.....] - ETA: 4s - loss: 0.6827 - accuracy: 0.6421 - auc: 0.641039/44 [=========================>....] - ETA: 3s - loss: 0.6788 - accuracy: 0.6410 - auc: 0.647240/44 [==========================>...] - ETA: 3s - loss: 0.6908 - accuracy: 0.6300 - auc: 0.635641/44 [==========================>...] - ETA: 2s - loss: 0.6955 - accuracy: 0.6293 - auc: 0.632942/44 [===========================>..] - ETA: 1s - loss: 0.6982 - accuracy: 0.6190 - auc: 0.627343/44 [============================>.] - ETA: 0s - loss: 0.6952 - accuracy: 0.6233 - auc: 0.631344/44 [==============================] - ETA: 0s - loss: 0.7014 - accuracy: 0.6227 - auc: 0.626344/44 [==============================] - 36s 823ms/step - loss: 0.7014 - accuracy: 0.6227 - auc: 0.6263 - val_loss: 0.5868 - val_accuracy: 0.6429 - val_auc: 0.8399 - lr: 5.0000e-04
+Epoch 5/200
+ 1/44 [..............................] - ETA: 33s - loss: 0.5702 - accuracy: 0.6000 - auc: 0.8400 2/44 [>.............................] - ETA: 32s - loss: 0.5371 - accuracy: 0.7000 - auc: 0.8700 3/44 [=>............................] - ETA: 31s - loss: 0.5885 - accuracy: 0.6667 - auc: 0.7911 4/44 [=>............................] - ETA: 31s - loss: 0.5589 - accuracy: 0.7500 - auc: 0.8275 5/44 [==>...........................] - ETA: 30s - loss: 0.6305 - accuracy: 0.6800 - auc: 0.7264 6/44 [===>..........................] - ETA: 29s - loss: 0.6384 - accuracy: 0.6667 - auc: 0.7200 7/44 [===>..........................] - ETA: 28s - loss: 0.6399 - accuracy: 0.6571 - auc: 0.7159 8/44 [====>.........................] - ETA: 28s - loss: 0.6411 - accuracy: 0.6250 - auc: 0.7128 9/44 [=====>........................] - ETA: 27s - loss: 0.6378 - accuracy: 0.6222 - auc: 0.716310/44 [=====>........................] - ETA: 26s - loss: 0.6329 - accuracy: 0.6200 - auc: 0.719411/44 [======>.......................] - ETA: 25s - loss: 0.6409 - accuracy: 0.6182 - auc: 0.704012/44 [=======>......................] - ETA: 24s - loss: 0.6339 - accuracy: 0.6167 - auc: 0.711013/44 [=======>......................] - ETA: 24s - loss: 0.6497 - accuracy: 0.6308 - auc: 0.690514/44 [========>.....................] - ETA: 23s - loss: 0.6532 - accuracy: 0.6143 - auc: 0.685215/44 [=========>....................] - ETA: 22s - loss: 0.6442 - accuracy: 0.6267 - auc: 0.698016/44 [=========>....................] - ETA: 21s - loss: 0.6592 - accuracy: 0.6250 - auc: 0.676617/44 [==========>...................] - ETA: 21s - loss: 0.6700 - accuracy: 0.6118 - auc: 0.659018/44 [===========>..................] - ETA: 20s - loss: 0.6692 - accuracy: 0.6111 - auc: 0.657819/44 [===========>..................] - ETA: 19s - loss: 0.6739 - accuracy: 0.6211 - auc: 0.653020/44 [============>.................] - ETA: 18s - loss: 0.6814 - accuracy: 0.6100 - auc: 0.638821/44 [=============>................] - ETA: 17s - loss: 0.6739 - accuracy: 0.6286 - auc: 0.650722/44 [==============>...............] - ETA: 17s - loss: 0.6669 - accuracy: 0.6364 - auc: 0.662623/44 [==============>...............] - ETA: 16s - loss: 0.6610 - accuracy: 0.6348 - auc: 0.671924/44 [===============>..............] - ETA: 15s - loss: 0.6525 - accuracy: 0.6500 - auc: 0.685325/44 [================>.............] - ETA: 14s - loss: 0.6490 - accuracy: 0.6560 - auc: 0.691026/44 [================>.............] - ETA: 14s - loss: 0.6529 - accuracy: 0.6538 - auc: 0.686027/44 [=================>............] - ETA: 13s - loss: 0.6510 - accuracy: 0.6519 - auc: 0.689928/44 [==================>...........] - ETA: 12s - loss: 0.6619 - accuracy: 0.6357 - auc: 0.669929/44 [==================>...........] - ETA: 11s - loss: 0.6580 - accuracy: 0.6414 - auc: 0.676930/44 [===================>..........] - ETA: 10s - loss: 0.6577 - accuracy: 0.6467 - auc: 0.677331/44 [====================>.........] - ETA: 10s - loss: 0.6524 - accuracy: 0.6452 - auc: 0.685232/44 [====================>.........] - ETA: 9s - loss: 0.6492 - accuracy: 0.6500 - auc: 0.6888 33/44 [=====================>........] - ETA: 8s - loss: 0.6573 - accuracy: 0.6424 - auc: 0.677634/44 [======================>.......] - ETA: 7s - loss: 0.6647 - accuracy: 0.6412 - auc: 0.669135/44 [======================>.......] - ETA: 7s - loss: 0.6653 - accuracy: 0.6343 - auc: 0.668136/44 [=======================>......] - ETA: 6s - loss: 0.6735 - accuracy: 0.6222 - auc: 0.654137/44 [========================>.....] - ETA: 5s - loss: 0.6734 - accuracy: 0.6270 - auc: 0.655238/44 [========================>.....] - ETA: 4s - loss: 0.6663 - accuracy: 0.6316 - auc: 0.665739/44 [=========================>....] - ETA: 3s - loss: 0.6666 - accuracy: 0.6359 - auc: 0.668040/44 [==========================>...] - ETA: 3s - loss: 0.6734 - accuracy: 0.6250 - auc: 0.657241/44 [==========================>...] - ETA: 2s - loss: 0.6775 - accuracy: 0.6146 - auc: 0.650342/44 [===========================>..] - ETA: 1s - loss: 0.6768 - accuracy: 0.6143 - auc: 0.651943/44 [============================>.] - ETA: 0s - loss: 0.6770 - accuracy: 0.6140 - auc: 0.651144/44 [==============================] - ETA: 0s - loss: 0.6793 - accuracy: 0.6091 - auc: 0.647444/44 [==============================] - 36s 825ms/step - loss: 0.6793 - accuracy: 0.6091 - auc: 0.6474 - val_loss: 0.6656 - val_accuracy: 0.6429 - val_auc: 0.6642 - lr: 5.0000e-04
+Epoch 6/200
+ 1/44 [..............................] - ETA: 33s - loss: 0.5843 - accuracy: 0.6000 - auc: 0.7200 2/44 [>.............................] - ETA: 32s - loss: 0.5502 - accuracy: 0.7000 - auc: 0.8300 3/44 [=>............................] - ETA: 32s - loss: 0.5074 - accuracy: 0.8000 - auc: 0.9067
