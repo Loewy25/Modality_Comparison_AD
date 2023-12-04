@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J resize_half_only
+#SBATCH -J half65
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 80000M
