@@ -23,7 +23,10 @@ from kerastuner.engine import hyperparameters as hp_module
 
 def augment_data(image, augmentation_level=1):
     augmented_image = image.copy()
-
+    
+    if augmentation_level == 0:
+        return image 
+        
     # Level 1 (Very Low): Basic flipping
     if augmentation_level >= 1:
         for axis in range(3):
@@ -95,7 +98,7 @@ class MyTuner(Hyperband):
 
             # Data augmentation for the current fold
             train_data_gen = DataGenerator(X_train, Y_train, batch_size, augmentation_level)
-            val_data_gen = DataGenerator(X_val, Y_val, batch_size, augmentation_level)
+            val_data_gen = DataGenerator(X_val, Y_val, batch_size, 0)
 
             # Train the model
             model = self.hypermodel.build(trial.hyperparameters)
