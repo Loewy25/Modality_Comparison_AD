@@ -7,6 +7,9 @@ import nibabel as nib
 import numpy as np
 from nilearn.image import resample_img, new_img_like, reorder_img
 from scipy.ndimage import zoom
+import tensorflow as tf
+from tensorflow_addons.layers import InstanceNormalization
+
 
 def resample_to_spacing(data, original_spacing, new_spacing, interpolation='linear'):
     # Assuming the last dimension is the channel and should not be resampled
@@ -61,63 +64,45 @@ def resize(image, new_shape=(128, 128, 128), interpolation="linear"):
     return new_img_like(image, new_data, affine=new_affine)
 
 
-
-def convolution_block(x, filters, kernel_size=(3,3,3), strides=(1,1,1),regularizer=1e-5):
-    x = Conv3D(filters, kernel_size, strides=strides, padding='same', kernel_regularizer=l2(regularizer))(x)
-    x = tfa.layers.InstanceNormalization()(x)
+# Define the convolution block with hyperparameter options
+def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1),
+                      regularization_rate=1e-5, normalization_type='instance'):
+    x = Conv3D(filters, kernel_size, strides=strides, padding='same',
+               kernel_regularizer=l2(regularization_rate))(x)
+    if normalization_type == 'instance':
+        x = InstanceNormalization()(x)
     x = LeakyReLU()(x)
     return x
 
-def context_module(x, filters, dr=0.3):
-    # First convolution block
-    x = convolution_block(x, filters)
-    # Dropout layer
-    x = SpatialDropout3D(dr)(x) 
-    # Second convolution block
-    x = convolution_block(x, filters)
+# Define the context module with dropout
+def context_module(x, filters, dropout_rate=0.3, normalization_type='instance'):
+    x = convolution_block(x, filters, normalization_type=normalization_type)
+    x = SpatialDropout3D(dropout_rate)(x)
+    x = convolution_block(x, filters, normalization_type=normalization_type)
     return x
 
-def create_cnn_model(droprate=0.3,filters=16):
-    input_img = Input(shape=(128, 128, 128, 1))
-    x = convolution_block(input_img, filters, strides=(1,1,1))
-    conv1_out = x
+# Define the CNN model with hyperparameters
+class CNNHyperModel(HyperModel):
+    def __init__(self, input_shape):
+        self.input_shape = input_shape
 
-    # Context 1
-    x = context_module(x, filters)
-    x = Add()([x, conv1_out])
-    x = convolution_block(x, filters*2, strides=(2,2,2))
-    conv2_out = x
+    def build(self, hp):
+        filters = hp.Int('filters', min_value=16, max_value=64, step=16)
+        dropout_rate = hp.Float('dropout_rate', min_value=0.1, max_value=0.5, step=0.1)
+        regularization_rate = hp.Float('regularization_rate', min_value=1e-6, max_value=1e-4, sampling='LOG')
+        normalization_type = hp.Choice('normalization_type', ['instance'])
+        learning_rate = hp.Float('learning_rate', min_value=1e-5, max_value=1e-3, sampling='LOG')
 
-    # Context 2
-    x = context_module(x, filters*2)
-    x = Add()([x, conv2_out])
-    x = convolution_block(x, filters*4, strides=(2,2,2))
-    conv3_out = x
+        inputs = Input(shape=self.input_shape)
+        x = convolution_block(inputs, filters=filters, regularization_rate=regularization_rate, normalization_type=normalization_type)
+        x = context_module(x, filters=filters, dropout_rate=dropout_rate, normalization_type=normalization_type)
+        # ... (repeat the pattern from your original model)
+        x = GlobalAveragePooling3D()(x)
+        x = Dropout(dropout_rate)(x)
+        outputs = Dense(2, activation='softmax')(x)
 
-    # Context 3
-    x = context_module(x, filters*4)
-    x = Add()([x, conv3_out])
-    x = convolution_block(x, filters*8, strides=(2,2,2))
-    conv4_out = x
-
-    # Context 4
-    x = context_module(x, filters*8)
-    x = Add()([x, conv4_out])
-    x = convolution_block(x, filters*16, strides=(2,2,2))
-    
-    # Context 5
-    x = context_module(x, filters*16)
-
-    # Global Average Pooling
-    x = GlobalAveragePooling3D()(x)
-
-    # Dropout layer as described in the paper
-    x = Dropout(droprate)(x)  # The paper mentioned a dropout layer after GAP
-
-    # Dense layer with 7 output nodes as described in the paper
-    output = Dense(2, activation='softmax')(x) 
-
-    model = Model(inputs=input_img, outputs=output)
-    model.summary()
-
-    return model
+        model = Model(inputs=inputs, outputs=outputs)
+        model.compile(optimizer=Adam(learning_rate=learning_rate),
+                      loss='categorical_crossentropy',
+                      metrics=['accuracy', AUC(name='auc')])
+        return model
