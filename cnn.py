@@ -7,7 +7,7 @@ import nibabel as nib
 import numpy as np
 from nilearn.image import resample_img, new_img_like, reorder_img
 from scipy.ndimage import zoom
-import tensorflow as tf
+import tensorflow as tfwh
 from tensorflow_addons.layers import InstanceNormalization
 
 
@@ -91,10 +91,12 @@ class CNNHyperModel(HyperModel):
 
     def build(self, hp):
         filters = hp.Int('filters', min_value=4, max_value=16, step=4)
-        dropout_rate = hp.Float('dropout_rate', min_value=0.1, max_value=0.7, step=0.1)
-        regularization_rate = hp.Float('regularization_rate', min_value=1e-6, max_value=1e-4, sampling='LOG')
+        dropout_rate = hp.Float('dropout_rate', min_value=0.3, max_value=0.5, step=0.1)
+        regularization_rate = 1e-5
         normalization_type = hp.Choice('normalization_type', ['instance', 'batch'])
         learning_rate = hp.Float('learning_rate', min_value=1e-6, max_value=1e-4, sampling='LOG')
+        augmentation_level = hp.Int('augmentation_level', min_value=1, max_value=5, step=1)
+        batch_size = hp.Choice('batch_size', values=[5, 10]) 
 
         inputs = Input(shape=self.input_shape)
         x = convolution_block(inputs, filters=filters, regularization_rate=regularization_rate, normalization_type=normalization_type)
@@ -138,6 +140,4 @@ class CNNHyperModel(HyperModel):
                       loss='categorical_crossentropy',
                       metrics=['accuracy', AUC(name='auc')])
         return model
-
-# ...
 
