@@ -1,4 +1,4 @@
-from tensorflow.keras.layers import Conv3D, Input, LeakyReLU, Add, GlobalAveragePooling3D, Dense, Dropout, SpatialDropout3D
+from tensorflow.keras.layers import Conv3D, Input, LeakyReLU, Add, GlobalAveragePooling3D, Dense, Dropout, SpatialDropout3D, BatchNormalization
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 import tensorflow_addons as tfa
@@ -65,12 +65,15 @@ def resize(image, new_shape=(128, 128, 128), interpolation="linear"):
 
 
 # Define the convolution block with hyperparameter options
+
 def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1),
                       regularization_rate=1e-5, normalization_type='instance'):
     x = Conv3D(filters, kernel_size, strides=strides, padding='same',
                kernel_regularizer=l2(regularization_rate))(x)
     if normalization_type == 'instance':
         x = InstanceNormalization()(x)
+    elif normalization_type == 'batch':
+        x = BatchNormalization()(x)
     x = LeakyReLU()(x)
     return x
 
@@ -87,18 +90,47 @@ class CNNHyperModel(HyperModel):
         self.input_shape = input_shape
 
     def build(self, hp):
-        filters = hp.Int('filters', min_value=16, max_value=64, step=16)
-        dropout_rate = hp.Float('dropout_rate', min_value=0.1, max_value=0.5, step=0.1)
+        filters = hp.Int('filters', min_value=4, max_value=16, step=4)
+        dropout_rate = hp.Float('dropout_rate', min_value=0.1, max_value=0.7, step=0.1)
         regularization_rate = hp.Float('regularization_rate', min_value=1e-6, max_value=1e-4, sampling='LOG')
-        normalization_type = hp.Choice('normalization_type', ['instance'])
-        learning_rate = hp.Float('learning_rate', min_value=1e-5, max_value=1e-3, sampling='LOG')
+        normalization_type = hp.Choice('normalization_type', ['instance', 'batch'])
+        learning_rate = hp.Float('learning_rate', min_value=1e-6, max_value=1e-4, sampling='LOG')
 
         inputs = Input(shape=self.input_shape)
         x = convolution_block(inputs, filters=filters, regularization_rate=regularization_rate, normalization_type=normalization_type)
+        conv1_out = x
+
+        # Context 1
         x = context_module(x, filters=filters, dropout_rate=dropout_rate, normalization_type=normalization_type)
-        # ... (repeat the pattern from your original model)
+        x = Add()([x, conv1_out])
+        x = convolution_block(x, filters=filters * 2, strides=(2, 2, 2), regularization_rate=regularization_rate, normalization_type=normalization_type)
+        conv2_out = x
+
+        # Context 2
+        x = context_module(x, filters=filters * 2, dropout_rate=dropout_rate, normalization_type=normalization_type)
+        x = Add()([x, conv2_out])
+        x = convolution_block(x, filters=filters * 4, strides=(2, 2, 2), regularization_rate=regularization_rate, normalization_type=normalization_type)
+        conv3_out = x
+
+        # Context 3
+        x = context_module(x, filters=filters * 4, dropout_rate=dropout_rate, normalization_type=normalization_type)
+        x = Add()([x, conv3_out])
+        x = convolution_block(x, filters=filters * 8, strides=(2, 2, 2), regularization_rate=regularization_rate, normalization_type=normalization_type)
+        conv4_out = x
+
+        # Context 4
+        x = context_module(x, filters=filters * 8, dropout_rate=dropout_rate, normalization_type=normalization_type)
+        x = Add()([x, conv4_out])
+        x = convolution_block(x, filters=filters * 16, strides=(2, 2, 2), regularization_rate=regularization_rate, normalization_type=normalization_type)
+        
+        # Context 5
+        x = context_module(x, filters=filters * 16, dropout_rate=dropout_rate, normalization_type=normalization_type)
+
+        # Global Average Pooling and Dropout layer before Dense layer
         x = GlobalAveragePooling3D()(x)
         x = Dropout(dropout_rate)(x)
+
+        # Dense layer with softmax activation
         outputs = Dense(2, activation='softmax')(x)
 
         model = Model(inputs=inputs, outputs=outputs)
@@ -106,3 +138,6 @@ class CNNHyperModel(HyperModel):
                       loss='categorical_crossentropy',
                       metrics=['accuracy', AUC(name='auc')])
         return model
+
+# ...
+
