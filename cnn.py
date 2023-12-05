@@ -62,57 +62,57 @@ def resize(image, new_shape=(128, 128, 128), interpolation="linear"):
 
 
 
-def convolution_block(x, filters, kernel_size=(3,3,3), strides=(1,1,1)):
-    x = Conv3D(filters, kernel_size, strides=strides, padding='same', kernel_regularizer=l2(1e-5))(x)
+def convolution_block(x, filters, kernel_size=(3,3,3), strides=(1,1,1),regularizer=1e-5):
+    x = Conv3D(filters, kernel_size, strides=strides, padding='same', kernel_regularizer=l2(regularizer))(x)
     x = tfa.layers.InstanceNormalization()(x)
     x = LeakyReLU()(x)
     return x
 
-def context_module(x, filters):
+def context_module(x, filters, dr=0.3):
     # First convolution block
     x = convolution_block(x, filters)
     # Dropout layer
-    x = SpatialDropout3D(0.75)(x) 
+    x = SpatialDropout3D(dr)(x) 
     # Second convolution block
     x = convolution_block(x, filters)
     return x
 
-def create_cnn_model():
+def create_cnn_model(droprate=0.3,filters=16):
     input_img = Input(shape=(128, 128, 128, 1))
-    x = convolution_block(input_img, 8, strides=(1,1,1))
+    x = convolution_block(input_img, filters, strides=(1,1,1))
     conv1_out = x
 
     # Context 1
-    x = context_module(x, 8)
+    x = context_module(x, filters)
     x = Add()([x, conv1_out])
-    x = convolution_block(x, 16, strides=(2,2,2))
+    x = convolution_block(x, filters*2, strides=(2,2,2))
     conv2_out = x
 
     # Context 2
-    x = context_module(x, 16)
+    x = context_module(x, filters*2)
     x = Add()([x, conv2_out])
-    x = convolution_block(x, 32, strides=(2,2,2))
+    x = convolution_block(x, filters*4, strides=(2,2,2))
     conv3_out = x
 
     # Context 3
-    x = context_module(x, 32)
+    x = context_module(x, filters*4)
     x = Add()([x, conv3_out])
-    x = convolution_block(x, 64, strides=(2,2,2))
+    x = convolution_block(x, filters*8, strides=(2,2,2))
     conv4_out = x
 
     # Context 4
-    x = context_module(x, 64)
+    x = context_module(x, filters*8)
     x = Add()([x, conv4_out])
-    x = convolution_block(x, 128, strides=(2,2,2))
+    x = convolution_block(x, filters*16, strides=(2,2,2))
     
     # Context 5
-    x = context_module(x, 128)
+    x = context_module(x, filters*16)
 
     # Global Average Pooling
     x = GlobalAveragePooling3D()(x)
 
     # Dropout layer as described in the paper
-    x = Dropout(0.5)(x)  # The paper mentioned a dropout layer after GAP
+    x = Dropout(droprate)(x)  # The paper mentioned a dropout layer after GAP
 
     # Dense layer with 7 output nodes as described in the paper
     output = Dense(2, activation='softmax')(x) 
