@@ -105,7 +105,8 @@ class DataGenerator(tf.keras.utils.Sequence):
         self.augmentation_level = augmentation_level
 
     def __len__(self):
-        return np.ceil(len(self.images) / self.batch_size).astype(np.int)
+        return np.ceil(len(self.images) / self.batch_size).astype(int)  
+
 
     def __getitem__(self, idx):
         batch_x = self.images[idx * self.batch_size:(idx + 1) * self.batch_size]
