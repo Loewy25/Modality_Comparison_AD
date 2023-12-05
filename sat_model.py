@@ -16,7 +16,7 @@ from tensorflow.keras.utils import to_categorical
 import matplotlib.pyplot as plt
 from tensorflow.keras import backend as K 
 import scipy.ndimage
-
+from keras_tuner import Objective
 from kerastuner import Hyperband, HyperModel, RandomSearch
 from kerastuner.engine import tuner as tuner_module
 from kerastuner.engine import hyperparameters as hp_module
@@ -161,14 +161,18 @@ early_stopping_final = EarlyStopping(monitor='val_loss', patience=50)
 reduce_lr_final = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10)
 
 
+
+
 tuner = MyTuner(
     hypermodel,
-    objective='val_auc',
+    objective=Objective('val_auc', direction='max'),  # Specify the direction for the AUC metric
     max_epochs=200,
     factor=2,
     directory='./result',
     project_name='cnn_hyperparam_tuning'
 )
+
+
 
 tuner.search(
     X_train_full, Y_train_full,
