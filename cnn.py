@@ -12,7 +12,6 @@ from tensorflow_addons.layers import InstanceNormalization
 from kerastuner import Hyperband, HyperModel, RandomSearch
 from kerastuner.engine import tuner as tuner_module
 from kerastuner.engine import hyperparameters as hp_module
-from cnn import pad_image_to_shape, resize, convolution_block, context_module, CNNHyperModel
 
 from data_loading import generate, generate_data_path, binarylabel
 from sklearn.model_selection import StratifiedShuffleSplit
