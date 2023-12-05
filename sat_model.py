@@ -1,4 +1,5 @@
-from cnn import pad_image_to_shape, resize, convolution_block, context_module, create_cnn_model
+from cnn import pad_image_to_shape, resize, convolution_block, context_module, CNNHyperModel
+
 from data_loading import generate, generate_data_path, binarylabel
 from sklearn.model_selection import StratifiedShuffleSplit
 from nilearn.input_data import NiftiMasker
@@ -15,6 +16,10 @@ from tensorflow.keras.utils import to_categorical
 import matplotlib.pyplot as plt
 from tensorflow.keras import backend as K 
 import scipy.ndimage
+
+from kerastuner import Hyperband, HyperModel, RandomSearch
+from kerastuner.engine import tuner as tuner_module
+from kerastuner.engine import hyperparameters as hp_module
 
 def augment_data(image, augmentation_level=1):
     augmented_image = image.copy()
@@ -53,6 +58,58 @@ def augment_data(image, augmentation_level=1):
     return augmented_image
 
 
+class DataGenerator(tf.keras.utils.Sequence):
+    def __init__(self, images, labels, batch_size, augmentation_level):
+        self.images = images
+        self.labels = labels
+        self.batch_size = batch_size
+        self.augmentation_level = augmentation_level
+
+    def __len__(self):
+        return np.ceil(len(self.images) / self.batch_size).astype(np.int)
+
+    def __getitem__(self, idx):
+        batch_x = self.images[idx * self.batch_size:(idx + 1) * self.batch_size]
+        batch_y = self.labels[idx * self.batch_size:(idx + 1) * self.batch_size]
+
+        return np.array([
+            augment_data(file, self.augmentation_level) for file in batch_x]), np.array(batch_y)
+
+    def on_epoch_end(self):
+        # This method is called at the end of each epoch and could be used to shuffle the data
+        pass
+
+class MyTuner(Hyperband):
+    def run_trial(self, trial, *args, **kwargs):
+        # Retrieve hyperparameters
+        augmentation_level = trial.hyperparameters.Int('augmentation_level', 1, 5, step=1)
+        batch_size = trial.hyperparameters.get('batch_size')
+
+        # Set up k-fold stratified cross-validation
+        skf = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+        val_scores = []
+
+        for train_indices, val_indices in skf.split(X_train_full, Y_train_full.argmax(axis=1)):
+            X_train, X_val = X_train_full[train_indices], X_train_full[val_indices]
+            Y_train, Y_val = Y_train_full[train_indices], Y_train_full[val_indices]
+
+            # Data augmentation for the current fold
+            train_data_gen = DataGenerator(X_train, Y_train, batch_size, augmentation_level)
+            val_data_gen = DataGenerator(X_val, Y_val, batch_size, augmentation_level)
+
+            # Train the model
+            model = self.hypermodel.build(trial.hyperparameters)
+            model.fit(train_data_gen, epochs=kwargs['epochs'], validation_data=val_data_gen)
+
+            val_scores.append(model.evaluate(val_data_gen))
+
+        avg_val_score = np.mean(val_scores)
+        self.oracle.update_trial(trial.trial_id, {'val_auc': avg_val_score})
+        self.save_model(trial.trial_id, model)
+
+
+
+
 def loading_mask(task,modality):
     #Loading and generating data
     images_pet,images_mri,labels=generate_data_path()
@@ -82,62 +139,68 @@ print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 
 
-# Loading the dataset
 task = 'cd'
 modality = 'PET'
 train_data, train_label, masker = loading_mask(task, modality)
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
 
-# Apply StratifiedKFold on the entire dataset
-stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+# Split the dataset into an 80% training set and a 20% internal testing set
+X_train_full, X_internal_test, Y_train_full, Y_internal_test = train_test_split(
+    X, Y, test_size=0.2, random_state=42, stratify=Y.argmax(axis=1))
 
-# Initialize lists to store aggregated results
-all_y_test = []
-all_y_pred = []
+# Initialize the hypermodel with the input shape
+hypermodel = CNNHyperModel(input_shape=(128, 128, 128, 1))
 
-for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
-    X_train_val, Y_train_val = X[train_val_idx], Y[train_val_idx]
-    X_test, Y_test = X[test_idx], Y[test_idx]
+# Callbacks for the hyperparameter tuning phase
+early_stopping_tuner = EarlyStopping(monitor='val_loss', patience=20)
+reduce_lr_tuner = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10)
 
-    stratified_split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
-    for train_idx, val_idx in stratified_split.split(X_train_val, Y_train_val.argmax(axis=1)):
-        X_train, Y_train = X_train_val[train_idx], Y_train_val[train_idx]
-        X_val, Y_val = X_train_val[val_idx], Y_train_val[val_idx]
+# Callbacks for the final model training phase
+early_stopping_final = EarlyStopping(monitor='val_loss', patience=50)
+reduce_lr_final = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10)
 
-    X_train_augmented = np.array([augment_data(X_train[i], augmentation_level=5) for i in range(len(X_train))])
 
-    with tf.distribute.MirroredStrategy().scope():
-        model = create_cnn_model()
-        model.compile(optimizer=Adam(1e-4), loss='categorical_crossentropy', metrics=['accuracy', AUC(name='auc')])
+tuner = MyTuner(
+    hypermodel,
+    objective='val_auc',
+    max_epochs=200,
+    factor=2,
+    directory='./result',
+    project_name='cnn_hyperparam_tuning'
+)
 
-        early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
-        reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
+tuner.search(
+    X_train_full, Y_train_full,
+    epochs=400,
+    callbacks=[early_stopping_tuner, reduce_lr_tuner]
+)
 
-        history = model.fit(X_train_augmented, Y_train, batch_size=5, epochs=400, validation_data=(X_val, Y_val), callbacks=[early_stopping, reduce_lr])
 
-    # Predict and store results
-    y_test_pred = model.predict(X_test)
-    all_y_test.extend(Y_test[:, 1])  # Collect test labels from all folds
-    all_y_pred.extend(y_test_pred[:, 1])  # Collect predictions from all folds
+# Retrieve the best hyperparameters
+best_hps = tuner.get_best_hyperparameters()[0]
+print(best_hps)
 
-    # Calculate and print the AUC for the current fold
-    fold_auc = roc_auc_score(Y_test[:, 1], y_test_pred[:, 1])
-    print(f"AUC for fold {fold_num + 1}: {fold_auc:.4f}")
+# Retrieve the best augmentation level from the hyperparameters
+best_augmentation_level = best_hps.get('augmentation_level')
 
-    plt.figure()
-    plt.plot(history.history['auc'], label='Train AUC')
-    plt.plot(history.history['val_auc'], label='Validation AUC', linestyle='--')
-    plt.title(f'Fold {fold_num + 1} - AUC')
-    plt.xlabel('Epochs')
-    plt.ylabel('AUC')
-    plt.legend()
-    plt.show()
+# Apply data augmentation to the training data using the best augmentation level
+X_train_full_augmented = np.array([augment_data(x, best_augmentation_level) for x in X_train_full])
 
-    K.clear_session()
+# Build the model with the best hyperparameters
+model = tuner.hypermodel.build(best_hps)
 
-# Calculate the final AUC using aggregated results
-final_auc = roc_auc_score(all_y_test, all_y_pred)
-print(f"Final AUC using aggregated results from all folds: {final_auc:.4f}")
+# Retrain the model on the full training data
+best_batch_size = best_hps.get('batch_size')
+model.fit(
+    X_train_full_augmented, Y_train_full,
+    batch_size=best_batch_size,
+    epochs=400,
+    callbacks=[early_stopping_final, reduce_lr_final]
+)
 
+# Evaluate on the internal testing set
+y_internal_test_pred = model.predict(X_internal_test)
+final_auc = roc_auc_score(Y_internal_test[:, 1], y_internal_test_pred[:, 1])
+print(f"Final AUC on internal testing set: {final_auc:.4f}")
 
