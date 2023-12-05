@@ -193,12 +193,12 @@ X_train_full, X_internal_test, Y_train_full, Y_internal_test = train_test_split(
 hypermodel = CNNHyperModel(input_shape=(128, 128, 128, 1))
 
 # Callbacks for the hyperparameter tuning phase
-early_stopping_tuner = EarlyStopping(monitor='val_loss', patience=20)
-reduce_lr_tuner = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10)
+early_stopping_tuner = EarlyStopping(monitor='val_auc', mode='max', patience=20)
+reduce_lr_tuner = ReduceLROnPlateau(monitor='val_auc', mode='max', factor=0.5, patience=10)
 
 # Callbacks for the final model training phase
-early_stopping_final = EarlyStopping(monitor='val_loss', patience=50)
-reduce_lr_final = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10)
+early_stopping_final = EarlyStopping(monitor='val_auc', mode='max', patience=50)
+reduce_lr_final = ReduceLROnPlateau(monitor='val_auc', mode='max', patience=10)
 
 
 
@@ -206,7 +206,7 @@ reduce_lr_final = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10)
 tuner = MyTuner(
     hypermodel,
     objective=Objective('val_auc', direction='max'),  # Specify the direction for the AUC metric
-    max_epochs=200,
+    max_epochs=150,
     factor=2,
     directory='./result',
     project_name='cnn_hyperparam_tuning'
@@ -216,7 +216,7 @@ tuner = MyTuner(
 
 tuner.search(
     X_train_full, Y_train_full,
-    epochs=400,
+    epochs=50,
     callbacks=[early_stopping_tuner, reduce_lr_tuner]
 )
 
