@@ -109,7 +109,7 @@ for fold_num, (train_val_idx, test_idx) in enumerate(stratified_kfold.split(X, Y
 
     with tf.distribute.MirroredStrategy().scope():
         model = create_cnn_model()
-        model.compile(optimizer=Adam(5e-4), loss='categorical_crossentropy', metrics=['accuracy', AUC(name='auc')])
+        model.compile(optimizer=Adam(3e-4), loss='categorical_crossentropy', metrics=['accuracy', AUC(name='auc')])
 
         early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
