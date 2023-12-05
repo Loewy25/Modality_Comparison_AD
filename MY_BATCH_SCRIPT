@@ -1,10 +1,10 @@
 #!/bin/bash
 
-#SBATCH -J adam1
+#SBATCH -J ha
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH --mem 80000M
-#SBATCH -t 30:50:00
+#SBATCH --mem 100000M
+#SBATCH -t 130:50:00
 #SBATCH --gres=gpu:1
 #SBATCH --exclude=gpu06
 
