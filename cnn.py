@@ -9,6 +9,9 @@ from nilearn.image import resample_img, new_img_like, reorder_img
 from scipy.ndimage import zoom
 import tensorflow as tfwh
 from tensorflow_addons.layers import InstanceNormalization
+from kerastuner import Hyperband, HyperModel, RandomSearch
+from kerastuner.engine import tuner as tuner_module
+from kerastuner.engine import hyperparameters as hp_module
 
 
 def resample_to_spacing(data, original_spacing, new_spacing, interpolation='linear'):
