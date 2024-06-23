@@ -427,3 +427,185 @@ def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
     print(f"PPV per class: {ppv[0]} {negative} (95% CI: {confi_ppv[0]}), {ppv[1]} {positive} (95% CI: {confi_ppv[1]})")
     print(f"NPV: {npv} (95% CI: {confi_npv})")
     
+
+
+import numpy as np
+from sklearn.metrics import roc_auc_score, accuracy_score, balanced_accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from sklearn.model_selection import GridSearchCV, StratifiedKFold
+from sklearn.svm import SVC
+import os
+import pickle
+
+# Assuming compute_kernel_matrix, linear_kernel, normalize_features, apply_normalization, compute_bootstrap_confi, plot_roc_curve, plot_confusion_matrix are already defined
+
+def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task):
+    train_label = label
+    random_states = [10]
+    
+    performance_dict = {}
+    tasks_dict = {
+        'cd': ('AD', 'CN'),
+        'dm': ('AD', 'MCI'),
+        'cm': ('MCI', 'CN'),
+        'pc': ('Preclinical', 'CN')
+    }
+    
+    all_y_test = []
+    all_y_prob = []
+    all_predictions = []
+    performance_dict = {}
+    best_models_pet = []
+    best_models_mri = []
+    best_weights_list = []
+    best_auc_list = []
+    
+    positive, negative = tasks_dict[task]
+    train_data_pet = np.array(data_pet)
+    train_data_mri = np.array(data_mri)
+    train_label = np.array(train_label)
+    
+    for rs in random_states:
+        cv_outer = StratifiedKFold(n_splits=5, shuffle=True, random_state=rs)        
+        for train_ix, test_ix in cv_outer.split(train_data_pet, train_label):
+            X_train_pet, X_test_pet = train_data_pet[train_ix, :], train_data_pet[test_ix, :]
+            X_train_mri, X_test_mri = train_data_mri[train_ix, :], train_data_mri[test_ix, :]
+            y_train, y_test = train_label[train_ix], train_label[test_ix]
+        
+            # Normalize the PET and MRI training data based on control indices within this fold
+            control_indices_train = [i for i, label in enumerate(y_train) if label == 0]
+            
+            # Calculate normalization parameters from the training data
+            X_train_pet, normalization_params_pet = normalize_features(X_train_pet, control_indices_train, return_params=True)
+            X_train_mri, normalization_params_mri = normalize_features(X_train_mri, control_indices_train, return_params=True)
+            
+            # Use those normalization parameters to normalize the test data
+            X_test_pet = apply_normalization(X_test_pet, normalization_params_pet)
+            X_test_mri = apply_normalization(X_test_mri, normalization_params_mri)
+        
+            # Compute kernel matrices for PET and MRI data
+            K_train_pet = compute_kernel_matrix(X_train_pet, X_train_pet, linear_kernel)
+            K_test_pet = compute_kernel_matrix(X_test_pet, X_train_pet, linear_kernel)
+            
+            K_train_mri = compute_kernel_matrix(X_train_mri, X_train_mri, linear_kernel)
+            K_test_mri = compute_kernel_matrix(X_test_mri, X_train_mri, linear_kernel)
+
+            # Normalize kernel matrices so that diagonal elements are 1
+            def normalize_kernel(K):
+                diag_elements = np.diag(K)
+                K_normalized = K / np.sqrt(np.outer(diag_elements, diag_elements))
+                return K_normalized
+
+            K_train_pet = normalize_kernel(K_train_pet)
+            K_test_pet = normalize_kernel(K_test_pet)
+            K_train_mri = normalize_kernel(K_train_mri)
+            K_test_mri = normalize_kernel(K_test_mri)
+
+            best_auc = 0
+            best_weights = (0, 0)
+            
+            for w1 in np.linspace(0, 1, 51):  # 51 points for weights
+                w2 = 1 - w1
+                
+                # Combine kernels using weighted sum
+                K_train_combined = w1 * K_train_pet + w2 * K_train_mri
+                K_test_combined = w1 * K_test_pet + w2 * K_test_mri
+                
+                cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
+                
+                model = SVC(kernel="precomputed", class_weight='balanced', probability=True)
+                
+                space = {'C': [1, 100, 10, 0.1, 0.01, 0.001, 0.0001, 0.00001]}
+                
+                search = GridSearchCV(model, space, scoring='roc_auc', cv=cv_inner, refit=True)
+                
+                search.fit(K_train_combined, y_train)
+                
+                best_model = search.best_estimator_
+                
+                # Predict probabilities on the test set
+                test_prob = best_model.predict_proba(K_test_combined)[:, 1]
+                
+                # Calculate AUC
+                auc = roc_auc_score(y_test, test_prob)
+                
+                # Track the best AUC and corresponding weights
+                if auc > best_auc:
+                    best_auc = auc
+                    best_weights = (w1, w2)
+                    best_w1 = w1
+                    best_w2 = w2
+            
+            print(f"Best weights for this fold: {best_weights}, AUC: {best_auc}")
+            
+            # Re-train the best model with the best weights
+            K_train_combined = best_w1 * K_train_pet + best_w2 * K_train_mri
+            K_test_combined = best_w1 * K_test_pet + best_w2 * K_test_mri
+
+            search.fit(K_train_combined, y_train)
+            best_model = search.best_estimator_
+
+            # Predict probabilities on the test set
+            yhat = best_model.predict_proba(K_test_combined)[:, 1]
+            predictions = (yhat >= 0.5).astype(int)
+
+            all_y_test.extend(y_test.tolist())
+            all_y_prob.extend(yhat.tolist())
+            all_predictions.extend(predictions.tolist())
+            
+            for params, mean_score, std_score in zip(search.cv_results_['params'], 
+                                                     search.cv_results_['mean_test_score'], 
+                                                     search.cv_results_['std_test_score']):
+                C_value = params['C']
+                if C_value not in performance_dict:
+                    performance_dict[C_value] = {'mean_scores': [], 'std_scores': []}
+                performance_dict[C_value]['mean_scores'].append(mean_score)
+                performance_dict[C_value]['std_scores'].append(std_score)
+
+    auc = roc_auc_score(all_y_test, all_y_prob)
+    accuracy = accuracy_score(all_y_test, all_predictions)
+    balanced_accuracy = balanced_accuracy_score(all_y_test, all_predictions)
+    
+    # Handle UndefinedMetricWarning by setting zero_division=1
+    precision_classwise = precision_score(all_y_test, all_predictions, average=None, zero_division=1)
+    recall_classwise = recall_score(all_y_test, all_predictions, average=None)
+    f1_classwise = f1_score(all_y_test, all_predictions, average=None)
+    
+    ppv = precision_classwise  # since they are the same, no need to compute twice
+    
+    cm = confusion_matrix(all_y_test, all_predictions)
+    
+    # Handle RuntimeWarning by checking for zero denominator
+    denominator = cm[1,1] + cm[0,1]
+    npv = cm[1,1] / denominator if denominator != 0 else 0
+
+    
+    # 2. Compute bootstrap confidence intervals for each of these metrics.
+    confi_auc = compute_bootstrap_confi(all_y_prob, all_y_test, roc_auc_score)
+    confi_accuracy = compute_bootstrap_confi(all_predictions, all_y_test, accuracy_score)
+    confi_balanced_accuracy = compute_bootstrap_confi(all_predictions, all_y_test, balanced_accuracy_score)
+    confi_precision = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: precision_score(y_true, y_pred, average=None)[i]) for i in range(2)]
+    confi_recall = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: recall_score(y_true, y_pred, average=None)[i]) for i in range(2)]
+    confi_f1 = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: f1_score(y_true, y_pred, average=None)[i]) for i in range(2)]
+    confi_ppv = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: precision_score(y_true, y_pred, average=None)[i]) for i in range(2)]
+    confi_npv = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: (confusion_matrix(y_true, y_pred)[1,1] / (confusion_matrix(y_true, y_pred)[1,1] + confusion_matrix(y_true, y_pred)[0,1])))
+    
+    plot_roc_curve(all_y_test, all_y_prob, method, task)
+    plot_confusion_matrix(all_y_test, all_predictions, positive, negative, method, task)
+    
+    directory = './result'
+    os.makedirs(directory, exist_ok=True)
+    filename = os.path.join(directory, f'results_{method}_{task}.pickle')
+    
+    with open(filename, 'wb') as f:
+        pickle.dump((performance_dict, all_y_test, all_y_prob, all_predictions), f)
+        
+    print(f"AUC: {auc} (95% CI: {confi_auc})")
+    print(f"Accuracy: {accuracy} (95% CI: {confi_accuracy})")
+    print(f"Balanced accuracy: {balanced_accuracy} (95% CI: {confi_balanced_accuracy})")
+    print(f"Precision per class: {precision_classwise[0]} {negative} (95% CI: {confi_precision[0]}), {precision_classwise[1]} {positive} (95% CI: {confi_precision[1]})")
+    print(f"Recall per class: {recall_classwise[0]} {negative} (95% CI: {confi_recall[0]}), {recall_classwise[1]} {positive} (95% CI: {confi_recall[1]})")
+    print(f"F1-score per class: {f1_classwise[0]} {negative} (95% CI: {confi_f1[0]}), {f1_classwise[1]} {positive} (95% CI: {confi_f1[1]})")
+    print(f"PPV per class: {ppv[0]} {negative} (95% CI: {confi_ppv[0]}), {ppv[1]} {positive} (95% CI: {confi_ppv[1]})")
+    print(f"NPV: {npv} (95% CI: {confi_npv})")
+
+# The normalize_features, apply_normalization, compute_kernel_matrix, linear_kernel, compute_bootstrap_confi, plot_roc_curve, and plot_confusion_matrix functions are assumed to be defined elsewhere.
