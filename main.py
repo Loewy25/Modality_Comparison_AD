@@ -429,12 +429,6 @@ def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
     
 
 
-import numpy as np
-from sklearn.metrics import roc_auc_score, accuracy_score, balanced_accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
-from sklearn.model_selection import GridSearchCV, StratifiedKFold
-from sklearn.svm import SVC
-import os
-import pickle
 
 # Assuming compute_kernel_matrix, linear_kernel, normalize_features, apply_normalization, compute_bootstrap_confi, plot_roc_curve, plot_confusion_matrix are already defined
 
@@ -608,4 +602,5 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
     print(f"PPV per class: {ppv[0]} {negative} (95% CI: {confi_ppv[0]}), {ppv[1]} {positive} (95% CI: {confi_ppv[1]})")
     print(f"NPV: {npv} (95% CI: {confi_npv})")
 
+    return performance_dict, all_y_test, all_y_prob, all_predictions
 # The normalize_features, apply_normalization, compute_kernel_matrix, linear_kernel, compute_bootstrap_confi, plot_roc_curve, and plot_confusion_matrix functions are assumed to be defined elsewhere.
