@@ -10,7 +10,7 @@
 
 
 #SBATCH --partition=tier2_gpu
-##SBATCH --nodelist=gpu03
+
 
 
 #SBATCH --account=aristeidis_sotiras
