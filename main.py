@@ -431,8 +431,10 @@ def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
 
 
 # Function to normalize training kernel matrices
+# Function to normalize training kernel matrices
 def normalize_kernel(K):
     diag_elements = np.diag(K)
+    print(f"Diagonal elements (train): {diag_elements}")  # Debug: print diagonal elements
     if np.any(diag_elements == 0):
         raise ValueError("Zero diagonal element found in kernel matrix")
     K_normalized = K / np.sqrt(np.outer(diag_elements, diag_elements))
@@ -442,6 +444,7 @@ def normalize_kernel(K):
 def normalize_test_kernel(K_test, K_train):
     diag_elements_train = np.diag(K_train)
     diag_elements_test = np.diag(K_test)
+    print(f"Diagonal elements (test): {diag_elements_test}")  # Debug: print diagonal elements
     if np.any(diag_elements_train == 0) or np.any(diag_elements_test == 0):
         raise ValueError("Zero diagonal element found in kernel matrix")
     K_test_normalized = K_test / np.sqrt(np.outer(diag_elements_test, diag_elements_train))
