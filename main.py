@@ -428,9 +428,17 @@ def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
     print(f"NPV: {npv} (95% CI: {confi_npv})")
     
 
+def normalize_kernel(K):
+    diag_elements = np.diag(K)
+    K_normalized = K / np.sqrt(np.outer(diag_elements, diag_elements))
+    return K_normalized
 
-
-# Assuming compute_kernel_matrix, linear_kernel, normalize_features, apply_normalization, compute_bootstrap_confi, plot_roc_curve, plot_confusion_matrix are already defined
+# Function to normalize test kernel matrices using training kernel diagonal elements
+def normalize_test_kernel(K_test, K_train):
+    diag_elements_train = np.diag(K_train)
+    diag_elements_test = np.diag(K_test)
+    K_test_normalized = K_test / np.sqrt(np.outer(diag_elements_test, diag_elements_train))
+    return K_test_normalized
 
 def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task):
     train_label = label
@@ -484,15 +492,10 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             K_test_mri = compute_kernel_matrix(X_test_mri, X_train_mri, linear_kernel)
 
             # Normalize kernel matrices so that diagonal elements are 1
-            def normalize_kernel(K):
-                diag_elements = np.diag(K)
-                K_normalized = K / np.sqrt(np.outer(diag_elements, diag_elements))
-                return K_normalized
-
             K_train_pet = normalize_kernel(K_train_pet)
-            K_test_pet = normalize_kernel(K_test_pet)
+            K_test_pet = normalize_test_kernel(K_test_pet, K_train_pet)
             K_train_mri = normalize_kernel(K_train_mri)
-            K_test_mri = normalize_kernel(K_test_mri)
+            K_test_mri = normalize_test_kernel(K_test_mri, K_train_mri)
 
             best_auc = 0
             best_weights = (0, 0)
