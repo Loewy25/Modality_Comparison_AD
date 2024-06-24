@@ -428,8 +428,13 @@ def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
     print(f"NPV: {npv} (95% CI: {confi_npv})")
     
 
+
+
+# Function to normalize training kernel matrices
 def normalize_kernel(K):
     diag_elements = np.diag(K)
+    if np.any(diag_elements == 0):
+        raise ValueError("Zero diagonal element found in kernel matrix")
     K_normalized = K / np.sqrt(np.outer(diag_elements, diag_elements))
     return K_normalized
 
@@ -437,6 +442,8 @@ def normalize_kernel(K):
 def normalize_test_kernel(K_test, K_train):
     diag_elements_train = np.diag(K_train)
     diag_elements_test = np.diag(K_test)
+    if np.any(diag_elements_train == 0) or np.any(diag_elements_test == 0):
+        raise ValueError("Zero diagonal element found in kernel matrix")
     K_test_normalized = K_test / np.sqrt(np.outer(diag_elements_test, diag_elements_train))
     return K_test_normalized
 
@@ -491,11 +498,19 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             K_train_mri = compute_kernel_matrix(X_train_mri, X_train_mri, linear_kernel)
             K_test_mri = compute_kernel_matrix(X_test_mri, X_train_mri, linear_kernel)
 
+            # Check for NaN values before normalization
+            if np.isnan(K_train_pet).any() or np.isnan(K_test_pet).any() or np.isnan(K_train_mri).any() or np.isnan(K_test_mri).any():
+                raise ValueError("NaN values found in kernel matrices before normalization")
+
             # Normalize kernel matrices so that diagonal elements are 1
             K_train_pet = normalize_kernel(K_train_pet)
             K_test_pet = normalize_test_kernel(K_test_pet, K_train_pet)
             K_train_mri = normalize_kernel(K_train_mri)
             K_test_mri = normalize_test_kernel(K_test_mri, K_train_mri)
+
+            # Check for NaN values after normalization
+            if np.isnan(K_train_pet).any() or np.isnan(K_test_pet).any() or np.isnan(K_train_mri).any() or np.isnan(K_test_mri).any():
+                raise ValueError("NaN values found in kernel matrices after normalization")
 
             best_auc = 0
             best_weights = (0, 0)
