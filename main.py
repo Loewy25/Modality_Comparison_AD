@@ -175,6 +175,8 @@ def nested_crossvalidation(data, label, method, task):
             # Compute kernel matrices for both training and test data
             K_train = compute_kernel_matrix(X_train, X_train, linear_kernel)
             K_test = compute_kernel_matrix(X_test, X_train, linear_kernel)
+            print(np.diag(K_train))
+            print(np.diag(K_test))
             cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
             model = SVC(kernel="precomputed", class_weight='balanced', probability=True)
             space = {'C': [1, 100, 10, 0.1, 0.01, 0.001, 0.0001, 0.00001]}
@@ -493,12 +495,6 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             # Use those normalization parameters to normalize the test data
             X_test_pet = apply_normalization(X_test_pet, normalization_params_pet)
             X_test_mri = apply_normalization(X_test_mri, normalization_params_mri)
-            print("pet")
-            print(X_train_pet)
-            print(X_test_pet)
-            print("mri")
-            print(X_train_mri)
-            print(X_test_mrr)
         
             # Compute kernel matrices for PET and MRI data
             K_train_pet = compute_kernel_matrix(X_train_pet, X_train_pet, linear_kernel)
@@ -507,9 +503,6 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             K_train_mri = compute_kernel_matrix(X_train_mri, X_train_mri, linear_kernel)
             K_test_mri = compute_kernel_matrix(X_test_mri, X_train_mri, linear_kernel)
 
-            # Check for NaN values before normalization
-            if np.isnan(K_train_pet).any() or np.isnan(K_test_pet).any() or np.isnan(K_train_mri).any() or np.isnan(K_test_mri).any():
-                raise ValueError("NaN values found in kernel matrices before normalization")
 
             # Normalize kernel matrices so that diagonal elements are 1
             K_train_pet = normalize_kernel(K_train_pet)
