@@ -173,10 +173,10 @@ def nested_crossvalidation(data, label, method, task):
             X_test = apply_normalization(X_test, normalization_params)
             
             # Compute kernel matrices for both training and test data
+            print(X_train)
+            print(X_test)
             K_train = compute_kernel_matrix(X_train, X_train, linear_kernel)
             K_test = compute_kernel_matrix(X_test, X_train, linear_kernel)
-            print(np.diag(K_train))
-            print(np.diag(K_test))
             cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
             model = SVC(kernel="precomputed", class_weight='balanced', probability=True)
             space = {'C': [1, 100, 10, 0.1, 0.01, 0.001, 0.0001, 0.00001]}
