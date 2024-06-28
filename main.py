@@ -443,8 +443,11 @@ def normalize_kernel(K):
 # Function to adjust test kernel matrices using training kernel diagonal elements
 def normalize_test_kernel(K_test, K_train):
     diag_elements_train = np.diag(K_train)
-    K_test_normalized = K_test / np.sqrt(diag_elements_train[:, np.newaxis])
+    if np.any(diag_elements_train == 0):
+        raise ValueError("Zero diagonal element found in training kernel matrix")
+    K_test_normalized = K_test / np.sqrt(diag_elements_train)[np.newaxis, :]
     return K_test_normalized
+
 
 def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task):
     train_label = label
