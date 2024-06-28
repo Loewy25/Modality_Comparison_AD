@@ -432,24 +432,18 @@ def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
 
 
 
-# Function to normalize training kernel matrices
-# Function to normalize training kernel matrices
+
 def normalize_kernel(K):
     diag_elements = np.diag(K)
-    print(f"Diagonal elements (train): {diag_elements}")  # Debug: print diagonal elements
     if np.any(diag_elements == 0):
         raise ValueError("Zero diagonal element found in kernel matrix")
     K_normalized = K / np.sqrt(np.outer(diag_elements, diag_elements))
     return K_normalized
 
-# Function to normalize test kernel matrices using training kernel diagonal elements
+# Function to adjust test kernel matrices using training kernel diagonal elements
 def normalize_test_kernel(K_test, K_train):
     diag_elements_train = np.diag(K_train)
-    diag_elements_test = np.diag(K_test)
-    print(f"Diagonal elements (test): {diag_elements_test}")  # Debug: print diagonal elements
-    if np.any(diag_elements_train == 0) or np.any(diag_elements_test == 0):
-        raise ValueError("Zero diagonal element found in kernel matrix")
-    K_test_normalized = K_test / np.sqrt(np.outer(diag_elements_test, diag_elements_train))
+    K_test_normalized = K_test / np.sqrt(diag_elements_train[:, np.newaxis])
     return K_test_normalized
 
 def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task):
@@ -502,7 +496,6 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             
             K_train_mri = compute_kernel_matrix(X_train_mri, X_train_mri, linear_kernel)
             K_test_mri = compute_kernel_matrix(X_test_mri, X_train_mri, linear_kernel)
-
 
             # Normalize kernel matrices so that diagonal elements are 1
             K_train_pet = normalize_kernel(K_train_pet)
@@ -593,7 +586,7 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
     npv = cm[1,1] / denominator if denominator != 0 else 0
 
     
-    # 2. Compute bootstrap confidence intervals for each of these metrics.
+    # Compute bootstrap confidence intervals for each of these metrics
     confi_auc = compute_bootstrap_confi(all_y_prob, all_y_test, roc_auc_score)
     confi_accuracy = compute_bootstrap_confi(all_predictions, all_y_test, accuracy_score)
     confi_balanced_accuracy = compute_bootstrap_confi(all_predictions, all_y_test, balanced_accuracy_score)
@@ -623,4 +616,5 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
     print(f"NPV: {npv} (95% CI: {confi_npv})")
 
     return performance_dict, all_y_test, all_y_prob, all_predictions
+
 # The normalize_features, apply_normalization, compute_kernel_matrix, linear_kernel, compute_bootstrap_confi, plot_roc_curve, and plot_confusion_matrix functions are assumed to be defined elsewhere.
