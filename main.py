@@ -508,13 +508,13 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             K_test_pet_diag = np.diag(K_test_pet)
             
             # Normalize training kernels
-            K_train_mri_normalized = normalize_kernel(K_train_mri)
-            K_train_pet_normalized = normalize_kernel(K_train_pet)
+            K_train_mri = normalize_kernel(K_train_mri)
+            K_train_pet = normalize_kernel(K_train_pet)
             
             
             # Normalize test kernels using the original (unnormalized) training kernel diagonals
-            K_test_mri_normalized = normalize_test_kernel(K_test_mri, K_train_mri_diag, K_test_mri_diag)
-            K_test_pet_normalized = normalize_test_kernel(K_test_pet, K_train_pet_diag, K_test_pet_diag)
+            K_test_mri = normalize_test_kernel(K_test_mri, K_train_mri_diag, K_test_mri_diag)
+            K_test_pet = normalize_test_kernel(K_test_pet, K_train_pet_diag, K_test_pet_diag)
 
             # Check for NaN values after normalization
             if np.isnan(K_train_pet).any() or np.isnan(K_test_pet).any() or np.isnan(K_train_mri).any() or np.isnan(K_test_mri).any():
