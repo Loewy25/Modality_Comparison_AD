@@ -442,12 +442,21 @@ def normalize_kernel(K):
     return K_normalized
 
 def normalize_test_kernel(K_test, K_train_diag, K_test_diag):
-    if np.any(K_train_diag == 0):
-        raise ValueError("Zero diagonal element found in training kernel matrix")
-    if np.any(K_test_diag == 0):
-        raise ValueError("Zero diagonal element found in test kernel matrix")
-    K_test_normalized = K_test / np.sqrt(np.outer(K_train_diag, K_test_diag))
+    # Check for zeros to prevent division by zero errors
+    if np.any(K_train_diag == 0) or np.any(K_test_diag == 0):
+        raise ValueError("Zero diagonal element found in kernel matrix")
+    
+    # Compute the normalization factors: should result in a matrix of shape (len(K_train_diag), len(K_test_diag))
+    normalization_matrix = np.sqrt(np.outer(K_train_diag, K_test_diag))
+    
+    # Correctly reshape the normalization matrix to match K_test dimensions
+    # This involves transposing the matrix since np.outer produces (train, test) and we need (test, train)
+    normalization_matrix = normalization_matrix.T
+    
+    # Perform element-wise division
+    K_test_normalized = K_test / normalization_matrix
     return K_test_normalized
+
 
 
 def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task):
