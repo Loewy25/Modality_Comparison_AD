@@ -4,8 +4,8 @@ from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
 
 
 
-image_mri,label,masker=loading_mask('pc','MRI')
-image_pet,label,masker=loading_mask('pc','PET')
+image_mri,label,masker=loading_mask('dm','MRI')
+image_pet,label,masker=loading_mask('dm','PET')
 
 start_time = time.time()  # Capture start time
 
