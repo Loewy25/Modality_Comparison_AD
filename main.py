@@ -176,14 +176,8 @@ def nested_crossvalidation(data, label, method, task):
             
             # Normalize the training data based on control indices within this fold
             control_indices_train = [i for i, label in enumerate(y_train) if label == 0]
-            X_train, normalization_params = normalize_features(X_train, control_indices_train, return_params=True)
-            
-            # Normalize the test data using the same normalization parameters
-            X_test = apply_normalization(X_test, normalization_params)
-            
-            # Compute kernel matrices for both training and test data
-            print(X_train)
-            print(X_test)
+            X_train, scaler = normalize_features(X_train, control_indices_train, return_params=True)
+            X_test = apply_normalization(X_test, scaler)
             K_train = compute_kernel_matrix(X_train, X_train, linear_kernel)
             K_test = compute_kernel_matrix(X_test, X_train, linear_kernel)
             cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
