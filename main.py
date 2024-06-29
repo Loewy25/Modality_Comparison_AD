@@ -505,8 +505,8 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             K_test_mri = compute_kernel_matrix(X_test_mri, X_train_mri, linear_kernel)
 
             # Normalize kernel matrices so that diagonal elements are 1
-            K_test_pet_diag = np.diag(K_test_pet_self)  # K_test_pet_self should be defined elsewhere
-            K_test_mri_diag = np.diag(K_test_mri_self)  # K_test_mri_self should be defined elsewhere
+            K_test_pet_diag = np.diag(K_test_pet)  # K_test_pet_self should be defined elsewhere
+            K_test_mri_diag = np.diag(K_test_mri)  # K_test_mri_self should be defined elsewhere
             
             # Normalize kernel matrices so that diagonal elements are 1
             K_train_pet = normalize_kernel(K_train_pet)
