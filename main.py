@@ -33,6 +33,7 @@ from sklearn.model_selection import (GridSearchCV, KFold, StratifiedKFold,
 from sklearn.preprocessing import Binarizer, label_binarize
 from sklearn.svm import LinearSVC, SVC
 from sklearn.metrics import auc as calculate_auc
+from sklearn.preprocessing import MinMaxScaler
 
 
 
