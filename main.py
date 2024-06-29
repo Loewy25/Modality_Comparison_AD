@@ -438,18 +438,15 @@ def normalize_kernel(K):
     diag_elements = np.diag(K)
     if np.any(diag_elements == 0):
         raise ValueError("Zero diagonal element found in kernel matrix")
-    # Ensuring that we're dividing a matrix by an outer product of the vector with itself
     K_normalized = K / np.sqrt(np.outer(diag_elements, diag_elements))
     return K_normalized
 
-def normalize_test_kernel(K_test, K_train, K_test_diag):
-    diag_elements_train = np.diag(K_train)
-    if np.any(diag_elements_train == 0):
+def normalize_test_kernel(K_test, K_train_diag, K_test_diag):
+    if np.any(K_train_diag == 0):
         raise ValueError("Zero diagonal element found in training kernel matrix")
     if np.any(K_test_diag == 0):
         raise ValueError("Zero diagonal element found in test kernel matrix")
-    # Correct normalization using sqrt of outer product of training and test kernel diagonals
-    K_test_normalized = K_test / np.sqrt(np.outer(diag_elements_train, K_test_diag))
+    K_test_normalized = K_test / np.sqrt(np.outer(K_train_diag, K_test_diag))
     return K_test_normalized
 
 
@@ -504,16 +501,20 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             K_train_mri = compute_kernel_matrix(X_train_mri, X_train_mri, linear_kernel)
             K_test_mri = compute_kernel_matrix(X_test_mri, X_train_mri, linear_kernel)
 
-            # Normalize kernel matrices so that diagonal elements are 1
-            K_test_pet_diag = np.diag(K_test_pet)  # K_test_pet_self should be defined elsewhere
-            K_test_mri_diag = np.diag(K_test_mri)  # K_test_mri_self should be defined elsewhere
+            # Extract diagonals before normalizing
+            K_train_mri_diag = np.diag(K_train_mri)
+            K_train_pet_diag = np.diag(K_train_pet)
+            K_test_mri_diag = np.diag(K_test_mri)
+            K_test_pet_diag = np.diag(K_test_pet)
             
-            # Normalize kernel matrices so that diagonal elements are 1
-            K_train_pet = normalize_kernel(K_train_pet)
-            K_test_pet = normalize_test_kernel(K_test_pet, np.diag(K_train_pet), K_test_pet_diag)
+            # Normalize training kernels
+            K_train_mri_normalized = normalize_kernel(K_train_mri)
+            K_train_pet_normalized = normalize_kernel(K_train_pet)
             
-            K_train_mri = normalize_kernel(K_train_mri)
-            K_test_mri = normalize_test_kernel(K_test_mri, np.diag(K_train_mri), K_test_mri_diag)
+            
+            # Normalize test kernels using the original (unnormalized) training kernel diagonals
+            K_test_mri_normalized = normalize_test_kernel(K_test_mri, K_train_mri_diag, K_test_mri_diag)
+            K_test_pet_normalized = normalize_test_kernel(K_test_pet, K_train_pet_diag, K_test_pet_diag)
 
             # Check for NaN values after normalization
             if np.isnan(K_train_pet).any() or np.isnan(K_test_pet).any() or np.isnan(K_train_mri).any() or np.isnan(K_test_mri).any():
