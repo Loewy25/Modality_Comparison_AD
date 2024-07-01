@@ -69,6 +69,7 @@ def compute_auprc(y_true, y_pred_probs):
 
 def normalize_features(X, indices, return_params=False):
     scaler = MinMaxScaler()
+    print("j")
     scaler.fit(X[indices])  # Fit only to control group data
     X_scaled = scaler.transform(X)  # Apply to all data
     if return_params:
