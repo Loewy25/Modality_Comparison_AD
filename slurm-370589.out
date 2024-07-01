@@ -1,0 +1,408 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jul  1 12:09:08 CDT 2024 1719853748
+Job ID:		370589
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Mon Jul  1 12:09:08 CDT 2024 1719853748
+--------------------------------------------------------------
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+j
+j
+j
+j
+j
+Overall ROC AUC for all data: 0.9916651977941732
+AUC: 0.9916651977941732 (95% CI: (0.9839408563981384, 0.9971355417973881))
+Accuracy: 0.9565217391304348 (95% CI: (0.9371980676328503, 0.9734299516908212))
+Balanced accuracy: 0.9502681741495228 (95% CI: (0.926389696890495, 0.9725029633344413))
+Precision per class: 0.9588014981273408 CN (95% CI: (0.933811274509804, 0.9812047675368195)), 0.9523809523809523 AD (95% CI: (0.9171974522292994, 0.9850801141352062))
+Recall per class: 0.973384030418251 CN (95% CI: (0.9523809523809523, 0.9921882599708172)), 0.9271523178807947 AD (95% CI: (0.8819864993098688, 0.9666721854304636))
+F1-score per class: 0.9660377358490566 CN (95% CI: (0.949492984317887, 0.9811373556744579)), 0.9395973154362416 AD (95% CI: (0.9078924038820455, 0.9655172413793103))
+AUPRC: 1.0 (95% CI: (0.9999999999999999, 1.0))
+Specificity: 0.973384030418251 (95% CI: (0.973384030418251, 0.973384030418251))
+PPV per class: 0.9588014981273408 CN (95% CI: (0.9325344611528822, 0.9810606060606061)), 0.9523809523809523 AD (95% CI: (0.9155671456203371, 0.9813749810634752))
+NPV: 0.9523809523809523 (95% CI: (0.9139013292677116, 0.9849624060150376))
+j
+j
+j
+j
+j
+Overall ROC AUC for all data: 0.9594087578374839
+AUC: 0.9594087578374839 (95% CI: (0.941824876244576, 0.9749527896830528))
+Accuracy: 0.8768115942028986 (95% CI: (0.8429951690821256, 0.9082125603864735))
+Balanced accuracy: 0.846637121345655 (95% CI: (0.8079361954311898, 0.8816824832708627))
+Precision per class: 0.863013698630137 CN (95% CI: (0.8196590512731078, 0.9)), 0.9098360655737705 AD (95% CI: (0.8547008547008547, 0.9569057618626584))
+Recall per class: 0.9581749049429658 CN (95% CI: (0.9320625582896908, 0.9797690867484918)), 0.7350993377483444 AD (95% CI: (0.6666666666666666, 0.8040575978075978))
+F1-score per class: 0.9081081081081079 CN (95% CI: (0.8825622775800712, 0.931977817213842)), 0.8131868131868132 AD (95% CI: (0.7603145621116023, 0.85944862251554))
+AUPRC: 1.0 (95% CI: (0.9999999999999999, 1.0))
+Specificity: 0.9581749049429658 (95% CI: (0.9581749049429658, 0.9581749049429658))
+PPV per class: 0.863013698630137 CN (95% CI: (0.8219085835524191, 0.9010759417859495)), 0.9098360655737705 AD (95% CI: (0.8536532800672834, 0.9569057618626584))
+NPV: 0.9098360655737705 (95% CI: (0.8571428571428571, 0.9583333333333334))
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+721
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+721
+j
+j
+j
+j
+j
+Overall ROC AUC for all data: 0.8214339083799624
+AUC: 0.8214339083799624 (95% CI: (0.7890738068576253, 0.8507387861623114))
+Accuracy: 0.7447988904299584 (95% CI: (0.7128987517337032, 0.7767337031900138))
+Balanced accuracy: 0.7529886927789862 (95% CI: (0.7193744565222957, 0.7848082364600222))
+Precision per class: 0.6186186186186187 CN (95% CI: (0.5666592920353982, 0.6686135116721053)), 0.8530927835051546 AD (95% CI: (0.8162544912468466, 0.8846177944862155))
+Recall per class: 0.7832699619771863 CN (95% CI: (0.7328512966076005, 0.8321306016808677)), 0.722707423580786 AD (95% CI: (0.6820175438596491, 0.7608250664608978))
+F1-score per class: 0.6912751677852349 CN (95% CI: (0.6480046596159074, 0.7351099607209112)), 0.7825059101654847 AD (95% CI: (0.7482266373376855, 0.8112645161629491))
+AUPRC: 1.0 (95% CI: (0.9999999999999999, 1.0))
+Specificity: 0.7832699619771863 (95% CI: (0.7832699619771863, 0.7832699619771863))
+PPV per class: 0.6186186186186187 CN (95% CI: (0.5666666666666667, 0.6725256537570341)), 0.8530927835051546 AD (95% CI: (0.8170299780458898, 0.8880005208333334))
+NPV: 0.8530927835051546 (95% CI: (0.8183792332752481, 0.8866052261945776))
+j
+j
+j
+j
+j
+Overall ROC AUC for all data: 0.7469905524100487
+AUC: 0.7469905524100487 (95% CI: (0.7119618813273366, 0.784600783895505))
+Accuracy: 0.6879334257975035 (95% CI: (0.6546463245492372, 0.7212205270457698))
+Balanced accuracy: 0.6248567918043402 (95% CI: (0.5926521199521815, 0.6588414177226618))
+Precision per class: 0.6130952380952381 CN (95% CI: (0.5361167600337656, 0.6892655367231638)), 0.7106690777576854 AD (95% CI: (0.6725385678651435, 0.7450717968446873))
+Recall per class: 0.3916349809885932 CN (95% CI: (0.3308001185760099, 0.4484156162464986)), 0.8580786026200873 AD (95% CI: (0.8259709119496855, 0.8896103896103896))
+F1-score per class: 0.47795823665893267 CN (95% CI: (0.4205197328966186, 0.5299461123941493)), 0.7774480712166173 AD (95% CI: (0.7489656322989655, 0.8034363615202146))
+AUPRC: 1.0 (95% CI: (0.9999999999999999, 1.0))
+Specificity: 0.3916349809885932 (95% CI: (0.3916349809885932, 0.3916349809885932))
+PPV per class: 0.6130952380952381 CN (95% CI: (0.537120082815735, 0.6787934904601571)), 0.7106690777576854 AD (95% CI: (0.673991673172001, 0.7477584336160978))
+NPV: 0.7106690777576854 (95% CI: (0.6721135831381733, 0.7477092285655821))
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+609
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+609
+j
+j
+j
+j
+j
+Overall ROC AUC for all data: 0.865265045258683
+AUC: 0.865265045258683 (95% CI: (0.8322626041758695, 0.8945317240800851))
+Accuracy: 0.7881773399014779 (95% CI: (0.7536945812807881, 0.819376026272578))
+Balanced accuracy: 0.7659489863790161 (95% CI: (0.7223683499564817, 0.804741169413637))
+Precision per class: 0.8983050847457628 CN (95% CI: (0.8679131620822914, 0.9261929624429625)), 0.5561224489795918 AD (95% CI: (0.48385284523378036, 0.627456195244055))
+Recall per class: 0.8100436681222707 CN (95% CI: (0.7735344894381544, 0.8463204668382842)), 0.7218543046357616 AD (95% CI: (0.65189158840343, 0.7935570056636296))
+F1-score per class: 0.851894374282434 CN (95% CI: (0.8262897291690303, 0.8763600915936967)), 0.6282420749279539 AD (95% CI: (0.5677646650142706, 0.6822978670634922))
+AUPRC: 1.0 (95% CI: (0.9999999999999999, 1.0))
+Specificity: 0.8100436681222707 (95% CI: (0.8100436681222707, 0.8100436681222707))
+PPV per class: 0.8983050847457628 CN (95% CI: (0.8689290348937806, 0.926475082698116)), 0.5561224489795918 AD (95% CI: (0.4895690247252747, 0.6282971523432511))
+NPV: 0.5561224489795918 (95% CI: (0.48403388066604996, 0.625))
+j
+j
+j
+j
+j
+Overall ROC AUC for all data: 0.7062378900488736
+AUC: 0.7062378900488736 (95% CI: (0.6613348790349154, 0.7494431127114051))
+Accuracy: 0.7175697865353038 (95% CI: (0.6798029556650246, 0.7553366174055829))
+Balanced accuracy: 0.5702955551057 (95% CI: (0.5315519618826868, 0.6132661337992226))
+Precision per class: 0.7837301587301587 CN (95% CI: (0.7455111169716395, 0.8205825317398626)), 0.4 AD (95% CI: (0.3042634022794428, 0.49057040531097135))
+Recall per class: 0.8624454148471615 CN (95% CI: (0.8307760724437131, 0.8927809471709909)), 0.2781456953642384 AD (95% CI: (0.204078276047261, 0.3481541218637993))
+F1-score per class: 0.8212058212058212 CN (95% CI: (0.7917937065344626, 0.8458335446247466)), 0.328125 AD (95% CI: (0.25217208622579473, 0.40613026819923376))
+AUPRC: 1.0 (95% CI: (0.9999999999999999, 1.0))
+Specificity: 0.8624454148471615 (95% CI: (0.8624454148471615, 0.8624454148471615))
+PPV per class: 0.7837301587301587 CN (95% CI: (0.7495029821073559, 0.8176397329071098)), 0.4 AD (95% CI: (0.3076923076923077, 0.4954439252336448))
+NPV: 0.4 (95% CI: (0.30392156862745096, 0.4947470618293306))
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+403
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+403
+j
+j
+j
+j
+j
+Overall ROC AUC for all data: 0.5857550244432373
+AUC: 0.5857550244432373 (95% CI: (0.5274322407396715, 0.6434648307659866))
+Accuracy: 0.5806451612903226 (95% CI: (0.5383995037220843, 0.630272952853598))
+Balanced accuracy: 0.5500950570342206 (95% CI: (0.4953536052978488, 0.6026941544236458))
+Precision per class: 0.6895161290322581 CN (95% CI: (0.6344321316312784, 0.7500247035573122)), 0.4064516129032258 AD (95% CI: (0.3270440251572327, 0.4866987951807229))
+Recall per class: 0.6501901140684411 CN (95% CI: (0.5932591848450057, 0.7061068702290076)), 0.45 AD (95% CI: (0.362960912555361, 0.5323980815347722))
+F1-score per class: 0.6692759295499022 CN (95% CI: (0.6214862996991625, 0.7142857142857143)), 0.4271186440677966 AD (95% CI: (0.3521029626032054, 0.49526973026973026))
+AUPRC: 1.0 (95% CI: (0.9999999999999999, 1.0))
+Specificity: 0.6501901140684411 (95% CI: (0.6501901140684411, 0.6501901140684411))
+PPV per class: 0.6895161290322581 CN (95% CI: (0.6374899193548387, 0.7431059288537549)), 0.4064516129032258 AD (95% CI: (0.3333333333333333, 0.47683614612262337))
+NPV: 0.4064516129032258 (95% CI: (0.33094480053976555, 0.48466722439115073))
+j
+j
+j
+j
+j
+Overall ROC AUC for all data: 0.5588810429114611
+AUC: 0.5588810429114611 (95% CI: (0.5032547480050777, 0.6114631272086727))
+Accuracy: 0.5806451612903226 (95% CI: (0.533498759305211, 0.6253101736972705))
+Balanced accuracy: 0.5166892992938621 (95% CI: (0.47010470368637003, 0.5588787314879877))
+Precision per class: 0.6631944444444444 CN (95% CI: (0.6101083032490975, 0.716175128151113)), 0.3739130434782609 AD (95% CI: (0.28679401993355486, 0.46555963821368))
+Recall per class: 0.7262357414448669 CN (95% CI: (0.674072039072039, 0.7748116250246472)), 0.30714285714285716 AD (95% CI: (0.2352738336713996, 0.383572602739726))
+F1-score per class: 0.6932849364791287 CN (95% CI: (0.6475095785440612, 0.7332241843433617)), 0.33725490196078434 AD (95% CI: (0.2650180970796768, 0.4045010700909577))
+AUPRC: 0.9964285714285714 (95% CI: (0.9895104895104895, 1.0))
+Specificity: 0.7262357414448669 (95% CI: (0.7262357414448669, 0.7262357414448669))
+PPV per class: 0.6631944444444444 CN (95% CI: (0.6086956521739131, 0.718869131770097)), 0.3739130434782609 AD (95% CI: (0.28568524970963993, 0.4596774193548387))
+NPV: 0.3739130434782609 (95% CI: (0.28970319801401867, 0.4690265486725664))
+Traceback (most recent call last):
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/cd.py", line 33, in <module>
+    print(f"The function took {elapsed_time:.2f} seconds to run.")
+NameError: name 'elapsed_time' is not defined
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jul  1 12:46:36 CDT 2024 1719855996
+Name                : ha
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpu07
+Cores               : 1
+State               : COMPLETED
+Submit              : 2024-07-01T12:09:07
+Start               : 2024-07-01T12:09:07
+End                 : 2024-07-01T12:46:33
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:37:26
+Used CPU Time       :   00:35:50
+% User (Computation): 97.97%
+% System (I/O)      :  2.03%
+Mem Reserved        : 100000M
+Max Mem Used        : 2.13G (2283036672.0)
+Max Disk Write      : 337.92K (346030.08)
+Max Disk Read       : 55.65G (59753648619.5)
+Max-Mem-Used Node   : gpu07
+Max-Disk-Write Node : gpu07
+Max-Disk-Read Node  : gpu07
+Tesla V100-PCIE-32GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Mon Jul  1 12:46:36 CDT 2024 1719855996
+--------------------------------------------------------------
