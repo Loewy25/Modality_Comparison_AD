@@ -459,6 +459,20 @@ def normalize_test_kernel(K_test, K_train_diag, K_test_diag):
     K_test_normalized = K_test / normalization_matrix
     return K_test_normalized
 
+import numpy as np
+
+# Assuming K_train_pet, K_test_pet, K_train_mri, K_test_mri are your matrices
+
+# Function to check and print NaN indices in a matrix
+def print_nan_indices(matrix, matrix_name):
+    nan_indices = np.argwhere(np.isnan(matrix))
+    if nan_indices.size > 0:
+        print(f"NaN values found in {matrix_name} at indices:")
+        for index in nan_indices:
+            print(f"Row: {index[0]}, Column: {index[1]}")
+    else:
+        print(f"No NaN values found in {matrix_name}")
+
 
 
 def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task):
@@ -552,14 +566,12 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             print(K_test_mri)          
 
             # Check for NaN values after normalization
-            if np.isnan(K_train_pet).any():
-                raise ValueError("NaN values found in PET TRAIN kernel matrices after normalization")
-            if  np.isnan(K_test_pet).any():
-                raise ValueError("NaN values found in PET TEST kernel matrices after normalization")
-            if np.isnan(K_train_mri).any() :
-                raise ValueError("NaN values found in MRI TRAIN kernel matrices after normalization")
-            if np.isnan(K_test_mri).any():
-                raise ValueError("NaN values found in MRI TEST kernel matrices after normalization")
+            # Check and print NaN indices for each matrix
+            print_nan_indices(K_train_pet, "PET TRAIN kernel matrices")
+            print_nan_indices(K_test_pet, "PET TEST kernel matrices")
+            print_nan_indices(K_train_mri, "MRI TRAIN kernel matrices")
+            print_nan_indices(K_test_mri, "MRI TEST kernel matrices")
+
 
             best_auc = 0
             best_weights = (0, 0)
