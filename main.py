@@ -69,7 +69,6 @@ def compute_auprc(y_true, y_pred_probs):
 
 def normalize_features(X, indices, return_params=False):
     scaler = MinMaxScaler()
-    print("j")
     scaler.fit(X[indices])  # Fit only to control group data
     X_scaled = scaler.transform(X)  # Apply to all data
     if return_params:
@@ -104,7 +103,6 @@ def hyperparameter_tuning_visual_cov_V3(data, label, randomseed, outer, inner, n
             
             # Normalize the test data using the same normalization parameters
             X_test = apply_normalization(X_test, normalization_params)
-            
             # Compute kernel matrices for both training and test data
             K_train = compute_kernel_matrix(X_train, X_train, linear_kernel)
             K_test = compute_kernel_matrix(X_test, X_train, linear_kernel)
@@ -175,7 +173,6 @@ def nested_crossvalidation(data, label, method, task):
         for train_ix, test_ix in cv_outer.split(train_data, train_label):
             X_train, X_test = train_data[train_ix, :], train_data[test_ix, :]
             y_train, y_test = np.array(train_label)[train_ix], np.array(train_label)[test_ix]
-            
             # Normalize the training data based on control indices within this fold
             control_indices_train = [i for i, label in enumerate(y_train) if label == 0]
             X_train, scaler = normalize_features(X_train, control_indices_train, return_params=True)
@@ -496,7 +493,13 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             X_train_pet, X_test_pet = train_data_pet[train_ix, :], train_data_pet[test_ix, :]
             X_train_mri, X_test_mri = train_data_mri[train_ix, :], train_data_mri[test_ix, :]
             y_train, y_test = train_label[train_ix], train_label[test_ix]
-        
+            print("like it!!!!!!!!!!!!!!!!!!!!!!!")
+            print(X_train_pet)
+            print(X_train_mri)
+            print(X_test_pet)
+            print(X_test_mri)
+            print(y_train)
+            print(y_test)
             # Normalize the PET and MRI training data based on control indices within this fold
             control_indices_train = [i for i, label in enumerate(y_train) if label == 0]
             
@@ -505,6 +508,11 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             
             X_test_pet = apply_normalization(X_test_pet, scaler_pet)
             X_test_mri = apply_normalization(X_test_mri, scaler_mri)
+            print("first normalization")
+            print(X_train_pet)
+            print(X_train_mri)
+            print(X_test_pet)
+            print(X_test_mri)
         
             # Compute kernel matrices for PET and MRI data
             K_train_pet = compute_kernel_matrix(X_train_pet, X_train_pet, linear_kernel)
@@ -512,12 +520,22 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             
             K_train_mri = compute_kernel_matrix(X_train_mri, X_train_mri, linear_kernel)
             K_test_mri = compute_kernel_matrix(X_test_mri, X_train_mri, linear_kernel)
+            print("kernelxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+            print(K_train_pet)
+            print(K_train_mri)
+            print(K_test_pet)
+            print(K_test_mri)
 
             # Extract diagonals before normalizing
             K_train_mri_diag = np.diag(K_train_mri)
             K_train_pet_diag = np.diag(K_train_pet)
             K_test_mri_diag = np.diag(K_test_mri)
             K_test_pet_diag = np.diag(K_test_pet)
+            print("diagxxhfujewifjiwejfpiwejffjiowejfipwejfipwejfipwejf")
+            print(K_train_mri_diag)
+            print(K_train_pet_diag)
+            print(K_test_mri_diag)
+            print(K_test_pet_diag)
             
             # Normalize training kernels
             K_train_mri = normalize_kernel(K_train_mri)
@@ -527,10 +545,21 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             # Normalize test kernels using the original (unnormalized) training kernel diagonals
             K_test_mri = normalize_test_kernel(K_test_mri, K_train_mri_diag, K_test_mri_diag)
             K_test_pet = normalize_test_kernel(K_test_pet, K_train_pet_diag, K_test_pet_diag)
+            print("second normalization")
+            print(K_train_pet)
+            print(K_train_mri)
+            print(K_test_pet)
+            print(K_test_mri)          
 
             # Check for NaN values after normalization
-            if np.isnan(K_train_pet).any() or np.isnan(K_test_pet).any() or np.isnan(K_train_mri).any() or np.isnan(K_test_mri).any():
-                raise ValueError("NaN values found in kernel matrices after normalization")
+            if np.isnan(K_train_pet).any():
+                raise ValueError("NaN values found in PET TRAIN kernel matrices after normalization")
+            if  np.isnan(K_test_pet).any():
+                raise ValueError("NaN values found in PET TEST kernel matrices after normalization")
+            if np.isnan(K_train_mri).any() :
+                raise ValueError("NaN values found in MRI TRAIN kernel matrices after normalization")
+            if np.isnan(K_test_mri).any():
+                raise ValueError("NaN values found in MRI TEST kernel matrices after normalization")
 
             best_auc = 0
             best_weights = (0, 0)
