@@ -527,7 +527,11 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             print(X_train_mri)
             print(X_test_pet)
             print(X_test_mri)
-        
+            print_nan_indices(X_train_pet, "PET TRAIN kernel matrices")
+            print_nan_indices(X_test_pet, "PET TEST kernel matrices")
+            print_nan_indices(X_train_mri, "MRI TRAIN kernel matrices")
+            print_nan_indices(X_test_mri, "MRI TEST kernel matrices")
+
             # Compute kernel matrices for PET and MRI data
             K_train_pet = compute_kernel_matrix(X_train_pet, X_train_pet, linear_kernel)
             K_test_pet = compute_kernel_matrix(X_test_pet, X_train_pet, linear_kernel)
@@ -550,7 +554,13 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             print(K_train_pet_diag)
             print(K_test_mri_diag)
             print(K_test_pet_diag)
-            
+
+
+            print_nan_indices(K_train_pet, "PET TRAIN kernel matrices")
+            print_nan_indices(K_test_pet, "PET TEST kernel matrices")
+            print_nan_indices(K_train_mri, "MRI TRAIN kernel matrices")
+            print_nan_indices(K_test_mri, "MRI TEST kernel matrices")
+
             # Normalize training kernels
             K_train_mri = normalize_kernel(K_train_mri)
             K_train_pet = normalize_kernel(K_train_pet)
