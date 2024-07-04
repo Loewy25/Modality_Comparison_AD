@@ -179,7 +179,7 @@ def nested_crossvalidation(data, label, method, task):
             X_test = apply_normalization(X_test, scaler)
             K_train = compute_kernel_matrix(X_train, X_train, linear_kernel)
             K_test = compute_kernel_matrix(X_test, X_train, linear_kernel)
-            cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
+            cv_inner = StratifiedKFold(n_splits=5, shuffle=True, random_state=1)
             model = SVC(kernel="precomputed", class_weight='balanced', probability=True)
             space = {'C': [1, 100, 10, 0.1, 0.01, 0.001, 0.0001, 0.00001]}
             search = GridSearchCV(model, space, scoring='roc_auc', cv=cv_inner, refit=True)
@@ -329,7 +329,7 @@ def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
             for w1 in np.linspace(0, 1, 51):  # 51 points for weights
                 w2 = 1 - w1
                 
-                cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
+                cv_inner = StratifiedKFold(n_splits=5, shuffle=True, random_state=1)
                 
                 model_pet = SVC(kernel="precomputed", class_weight='balanced', probability=True)
                 model_mri = SVC(kernel="precomputed", class_weight='balanced', probability=True)
@@ -579,7 +579,7 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
                 K_train_combined = w1 * K_train_pet + w2 * K_train_mri
                 K_test_combined = w1 * K_test_pet + w2 * K_test_mri
                 
-                cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
+                cv_inner = StratifiedKFold(n_splits=5, shuffle=True, random_state=1)
                 
                 model = SVC(kernel="precomputed", class_weight='balanced', probability=True)
                 
