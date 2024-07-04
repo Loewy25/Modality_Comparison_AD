@@ -450,6 +450,7 @@ def normalize_test_kernel(K_test, K_train_diag, K_test_diag):
     
     # Compute the normalization factors: should result in a matrix of shape (len(K_train_diag), len(K_test_diag))
     normalization_matrix = np.sqrt(np.outer(K_train_diag, K_test_diag))
+    np.savetxt("K_kernel_pet.txt", normalization_matrix, delimiter=",")
     
     # Correctly reshape the normalization matrix to match K_test dimensions
     # This involves transposing the matrix since np.outer produces (train, test) and we need (test, train)
@@ -560,7 +561,7 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             print_nan_indices(K_test_pet, "PET TEST kernel matrices")
             print_nan_indices(K_train_mri, "MRI TRAIN kernel matrices")
             print_nan_indices(K_test_mri, "MRI TEST kernel matrices")
-            np.savetxt("K_train_pet.txt", K_test_mri, delimiter=",")
+            np.savetxt("K_test_pet_pre.txt", K_test_mri, delimiter=",")
             # Normalize training kernels
             K_train_mri = normalize_kernel(K_train_mri)
             K_train_pet = normalize_kernel(K_train_pet)
@@ -577,7 +578,7 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
 
             # Check for NaN values after normalization
             # Check and print NaN indices for each matrix
-            np.savetxt("K_train_pet.txt", K_test_mri, delimiter=",")
+            np.savetxt("K_test_pet.txt", K_test_mri, delimiter=",")
             print_nan_indices(K_train_pet, "PET TRAIN kernel matrices")
             print_nan_indices(K_test_pet, "PET TEST kernel matrices")
             print_nan_indices(K_train_mri, "MRI TRAIN kernel matrices")
