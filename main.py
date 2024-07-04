@@ -474,28 +474,35 @@ def print_nan_indices(matrix, matrix_name):
     else:
         print(f"No NaN values found in {matrix_name}")
 
-
-
-
-def remove_subjects_with_negatives(X_test_pet, X_test_mri, y_test):
-    # Find indices of subjects with any negative values
-    pet_negative_indices = np.any(X_test_pet < 0, axis=1)
-    mri_negative_indices = np.any(X_test_mri < 0, axis=1)
+def remove_nan_subjects(K_train_pet, K_train_mri, K_test_pet, K_test_mri, y_train, y_test):
+    # Find indices of subjects with any NaN values
+    nan_indices_train_pet = np.any(np.isnan(K_train_pet), axis=1)
+    nan_indices_train_mri = np.any(np.isnan(K_train_mri), axis=1)
+    nan_indices_test_pet = np.any(np.isnan(K_test_pet), axis=1)
+    nan_indices_test_mri = np.any(np.isnan(K_test_mri), axis=1)
     
-    # Combine indices to find subjects with negatives in either matrix
-    negative_indices = pet_negative_indices | mri_negative_indices
+    # Combine indices to find subjects with NaNs in any matrix
+    nan_indices_train = nan_indices_train_pet | nan_indices_train_mri
+    nan_indices_test = nan_indices_test_pet | nan_indices_test_mri
     
-    # Count number of subjects with negatives
-    num_subjects_with_negatives = np.sum(negative_indices)
+    # Count number of subjects with NaNs
+    num_subjects_with_nans_train = np.sum(nan_indices_train)
+    num_subjects_with_nans_test = np.sum(nan_indices_test)
     
-    # Remove subjects with negatives
-    X_test_pet_clean = X_test_pet[~negative_indices]
-    X_test_mri_clean = X_test_mri[~negative_indices]
-    y_test_clean = y_test[~negative_indices]
+    # Remove subjects with NaNs from training data and labels
+    K_train_pet_clean = K_train_pet[~nan_indices_train]
+    K_train_mri_clean = K_train_mri[~nan_indices_train]
+    y_train_clean = y_train[~nan_indices_train]
     
-    print(f"Number of subjects with negative values: {num_subjects_with_negatives}")
+    # Remove subjects with NaNs from test data and labels
+    K_test_pet_clean = K_test_pet[~nan_indices_test]
+    K_test_mri_clean = K_test_mri[~nan_indices_test]
+    y_test_clean = y_test[~nan_indices_test]
     
-    return X_test_pet_clean, X_test_mri_clean, y_test_clean
+    print(f"Number of subjects with NaN values in training data: {num_subjects_with_nans_train}")
+    print(f"Number of subjects with NaN values in test data: {num_subjects_with_nans_test}")
+    
+    return K_train_pet_clean, K_train_mri_clean, K_test_pet_clean, K_test_mri_clean, y_train_clean, y_test_clean
 
 
 def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task):
@@ -538,7 +545,6 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             
             X_test_pet = apply_normalization(X_test_pet, scaler_pet)
             X_test_mri = apply_normalization(X_test_mri, scaler_mri)
-            X_test_pet, X_test_mri, y_test = remove_subjects_with_negatives(X_test_pet, X_test_mri, y_test)
           
             # Compute kernel matrices for PET and MRI data
             K_train_pet = compute_kernel_matrix(X_train_pet, X_train_pet, linear_kernel)
@@ -561,7 +567,8 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             K_test_mri = normalize_test_kernel(K_test_mri, K_train_mri_diag, K_test_mri_diag)
             K_test_pet = normalize_test_kernel(K_test_pet, K_train_pet_diag, K_test_pet_diag)
 
-
+            K_train_pet, K_train_mri, K_test_pet, K_test_mri, y_train, y_test = remove_nan_subjects(K_train_pet, K_train_mri, K_test_pet, K_test_mri, y_train, y_test)
+          
             best_auc = 0
             best_weights = (0, 0)
             
