@@ -560,7 +560,7 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             print_nan_indices(K_test_pet, "PET TEST kernel matrices")
             print_nan_indices(K_train_mri, "MRI TRAIN kernel matrices")
             print_nan_indices(K_test_mri, "MRI TEST kernel matrices")
-
+            np.savetxt("K_train_pet.txt", K_test_mri, delimiter=",")
             # Normalize training kernels
             K_train_mri = normalize_kernel(K_train_mri)
             K_train_pet = normalize_kernel(K_train_pet)
@@ -577,10 +577,12 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
 
             # Check for NaN values after normalization
             # Check and print NaN indices for each matrix
+            np.savetxt("K_train_pet.txt", K_test_mri, delimiter=",")
             print_nan_indices(K_train_pet, "PET TRAIN kernel matrices")
             print_nan_indices(K_test_pet, "PET TEST kernel matrices")
             print_nan_indices(K_train_mri, "MRI TRAIN kernel matrices")
             print_nan_indices(K_test_mri, "MRI TEST kernel matrices")
+
 
 
             best_auc = 0
