@@ -476,6 +476,28 @@ def print_nan_indices(matrix, matrix_name):
 
 
 
+
+def remove_subjects_with_negatives(X_test_pet, X_test_mri, y_test):
+    # Find indices of subjects with any negative values
+    pet_negative_indices = np.any(X_test_pet < 0, axis=1)
+    mri_negative_indices = np.any(X_test_mri < 0, axis=1)
+    
+    # Combine indices to find subjects with negatives in either matrix
+    negative_indices = pet_negative_indices | mri_negative_indices
+    
+    # Count number of subjects with negatives
+    num_subjects_with_negatives = np.sum(negative_indices)
+    
+    # Remove subjects with negatives
+    X_test_pet_clean = X_test_pet[~negative_indices]
+    X_test_mri_clean = X_test_mri[~negative_indices]
+    y_test_clean = y_test[~negative_indices]
+    
+    print(f"Number of subjects with negative values: {num_subjects_with_negatives}")
+    
+    return X_test_pet_clean, X_test_mri_clean, y_test_clean
+
+
 def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task):
     train_label = label
     random_states = [10]
@@ -508,13 +530,6 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             X_train_pet, X_test_pet = train_data_pet[train_ix, :], train_data_pet[test_ix, :]
             X_train_mri, X_test_mri = train_data_mri[train_ix, :], train_data_mri[test_ix, :]
             y_train, y_test = train_label[train_ix], train_label[test_ix]
-            print("like it!!!!!!!!!!!!!!!!!!!!!!!")
-            print(X_train_pet)
-            print(X_train_mri)
-            print(X_test_pet)
-            print(X_test_mri)
-            print(y_train)
-            print(y_test)
             # Normalize the PET and MRI training data based on control indices within this fold
             control_indices_train = [i for i, label in enumerate(y_train) if label == 0]
             
@@ -523,45 +538,20 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             
             X_test_pet = apply_normalization(X_test_pet, scaler_pet)
             X_test_mri = apply_normalization(X_test_mri, scaler_mri)
-            print("first normalization")
-            print(X_train_pet)
-            print(X_train_mri)
-            print(X_test_pet)
-            print(X_test_mri)
-            print_nan_indices(X_train_pet, "PET TRAIN kernel matrices")
-            print_nan_indices(X_test_pet, "PET TEST kernel matrices")
-            print_nan_indices(X_train_mri, "MRI TRAIN kernel matrices")
-            print_nan_indices(X_test_mri, "MRI TEST kernel matrices")
-
+            X_test_pet, X_test_mri, y_test = remove_subjects_with_negatives(X_test_pet, X_test_mri, y_test)
+          
             # Compute kernel matrices for PET and MRI data
             K_train_pet = compute_kernel_matrix(X_train_pet, X_train_pet, linear_kernel)
             K_test_pet = compute_kernel_matrix(X_test_pet, X_train_pet, linear_kernel)
             
             K_train_mri = compute_kernel_matrix(X_train_mri, X_train_mri, linear_kernel)
             K_test_mri = compute_kernel_matrix(X_test_mri, X_train_mri, linear_kernel)
-            print("kernelxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-            print(K_train_pet)
-            print(K_train_mri)
-            print(K_test_pet)
-            print(K_test_mri)
 
             # Extract diagonals before normalizing
             K_train_mri_diag = np.diag(K_train_mri)
             K_train_pet_diag = np.diag(K_train_pet)
             K_test_mri_diag = np.diag(K_test_mri)
             K_test_pet_diag = np.diag(K_test_pet)
-            print("diagxxhfujewifjiwejfpiwejffjiowejfipwejfipwejfipwejf")
-            print(K_train_mri_diag)
-            print(K_train_pet_diag)
-            print(K_test_mri_diag)
-            print(K_test_pet_diag)
-
-
-            print_nan_indices(K_train_pet, "PET TRAIN kernel matrices")
-            print_nan_indices(K_test_pet, "PET TEST kernel matrices")
-            print_nan_indices(K_train_mri, "MRI TRAIN kernel matrices")
-            print_nan_indices(K_test_mri, "MRI TEST kernel matrices")
-            np.savetxt("K_test_pet_pre.txt", K_test_mri, delimiter=",")
             # Normalize training kernels
             K_train_mri = normalize_kernel(K_train_mri)
             K_train_pet = normalize_kernel(K_train_pet)
@@ -570,20 +560,6 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             # Normalize test kernels using the original (unnormalized) training kernel diagonals
             K_test_mri = normalize_test_kernel(K_test_mri, K_train_mri_diag, K_test_mri_diag)
             K_test_pet = normalize_test_kernel(K_test_pet, K_train_pet_diag, K_test_pet_diag)
-            print("second normalization")
-            print(K_train_pet)
-            print(K_train_mri)
-            print(K_test_pet)
-            print(K_test_mri)          
-
-            # Check for NaN values after normalization
-            # Check and print NaN indices for each matrix
-            np.savetxt("K_test_pet.txt", K_test_mri, delimiter=",")
-            print_nan_indices(K_train_pet, "PET TRAIN kernel matrices")
-            print_nan_indices(K_test_pet, "PET TEST kernel matrices")
-            print_nan_indices(K_train_mri, "MRI TRAIN kernel matrices")
-            print_nan_indices(K_test_mri, "MRI TEST kernel matrices")
-
 
 
             best_auc = 0
