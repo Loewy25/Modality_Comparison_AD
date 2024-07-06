@@ -67,16 +67,16 @@ from plot_utils import (
     unique_precision = np.array([max(sorted_precision[:i + 1]) for i in unique_indices])
     return calculate_auc(unique_recall, unique_precision)
 
-#def normalize_features(X, indices, return_params=False):
-#    scaler = MinMaxScaler()
-#    scaler.fit(X[indices])  # Fit only to control group data
-#    X_scaled = scaler.transform(X)  # Apply to all data
-#    if return_params:
-#        return X_scaled, scaler
-#    return X_scaled
+def normalize_features(X, indices, return_params=False):
+    scaler = MinMaxScaler()
+    scaler.fit(X[indices])  # Fit only to control group data
+    X_scaled = scaler.transform(X)  # Apply to all data
+    if return_params:
+        return X_scaled, scaler
+    return X_scaled
 
-#def apply_normalization(X, scaler):
-#    return scaler.transform(X)
+def apply_normalization(X, scaler):
+    return scaler.transform(X)
 
 def hyperparameter_tuning_visual_cov_V3(data, label, randomseed, outer, inner, num_permutations):
     train_data = data
