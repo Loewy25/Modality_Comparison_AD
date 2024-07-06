@@ -11,12 +11,10 @@ task="cd"
 method="MRI"
 threshold=0.05
 
-image1,label1,masker=loading_mask(task,method)
+image,label,masker=loading_mask(task,method)
 
 
-control_indices = [i for i, label in enumerate(label1) if label == 0]
-image = normalize_features(image1, control_indices)
-average_single_weights,average_corrected_weights,average_permuted_single_weights,average_permuted_corrected_weights=nested_crossvalidation_multi_kernel(image,label1,[30],2,2,1000)
+average_single_weights,average_corrected_weights,average_permuted_single_weights,average_permuted_corrected_weights=hyperparameter_tuning_visual_cov_V3(image,label,[30],5,3,1000)
 average_single_weights=1-average_single_weights
 average_permuted_corrected_weights=1-average_permuted_corrected_weights
 small_value = 1e-10
