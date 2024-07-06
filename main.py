@@ -329,7 +329,7 @@ def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
             for w1 in np.linspace(0, 1, 201):  # 51 points for weights
                 w2 = 1 - w1
                 
-                cv_inner = StratifiedKFold(n_splits=5, shuffle=True, random_state=1)
+                cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
                 
                 model_pet = SVC(kernel="precomputed", class_weight='balanced', probability=True)
                 model_mri = SVC(kernel="precomputed", class_weight='balanced', probability=True)
