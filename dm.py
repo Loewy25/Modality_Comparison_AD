@@ -3,7 +3,7 @@ from data_loading import loading_mask
 from main import nested_crossvalidation
 
 
-
+nested_crossvalidation_late_fusion
 image_mri,label,masker=loading_mask('dm','MRI')
 #image_pet,label,masker=loading_mask('cd','PET')
 
