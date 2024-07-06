@@ -58,7 +58,7 @@ from plot_utils import (
 )
 
 
-def compute_auprc(y_true, y_pred_probs):
+3def compute_auprc(y_true, y_pred_probs):
     precision, recall, _ = precision_recall_curve(y_true, y_pred_probs)
     sorted_indices = np.argsort(recall)
     sorted_recall = recall[sorted_indices]
@@ -67,16 +67,16 @@ def compute_auprc(y_true, y_pred_probs):
     unique_precision = np.array([max(sorted_precision[:i + 1]) for i in unique_indices])
     return calculate_auc(unique_recall, unique_precision)
 
-def normalize_features(X, indices, return_params=False):
-    scaler = MinMaxScaler()
-    scaler.fit(X[indices])  # Fit only to control group data
-    X_scaled = scaler.transform(X)  # Apply to all data
-    if return_params:
-        return X_scaled, scaler
-    return X_scaled
+#def normalize_features(X, indices, return_params=False):
+#    scaler = MinMaxScaler()
+#    scaler.fit(X[indices])  # Fit only to control group data
+#    X_scaled = scaler.transform(X)  # Apply to all data
+#    if return_params:
+#        return X_scaled, scaler
+#    return X_scaled
 
-def apply_normalization(X, scaler):
-    return scaler.transform(X)
+#def apply_normalization(X, scaler):
+#    return scaler.transform(X)
 
 def hyperparameter_tuning_visual_cov_V3(data, label, randomseed, outer, inner, num_permutations):
     train_data = data
