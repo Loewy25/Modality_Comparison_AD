@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J early
+#SBATCH -J inter-mri-cd
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 100000M
@@ -21,5 +21,5 @@ module load python
 source ~/liuenv/bin/activate
 
 
-python early.py
+python cd_interpretation_MRI.py
 sleep 1
