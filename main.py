@@ -326,7 +326,7 @@ def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
             best_auc = 0
             best_weights = (0, 0)
             
-            for w1 in np.linspace(0, 1, 51):  # 51 points for weights
+            for w1 in np.linspace(0, 1, 201):  # 51 points for weights
                 w2 = 1 - w1
                 
                 cv_inner = StratifiedKFold(n_splits=5, shuffle=True, random_state=1)
