@@ -1,7 +1,7 @@
 
 import time
 from data_loading import loading_mask
-from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
+from main import nested_crossvalidation_multi_kernel, nested_crossvalidation, nested_crossvalidation_late_fusion
 
 
 
