@@ -13,7 +13,7 @@ threshold=0.05
 
 image,label,masker=loading_mask(task,method)
 
-average_single_weights,average_corrected_weights,average_permuted_single_weights,average_permuted_corrected_weights=hyperparameter_tuning_visual_cov_V3(image,label,[30],5,3,1000)
+average_single_weights,average_corrected_weights,average_permuted_single_weights,average_permuted_corrected_weights=hyperparameter_tuning_visual_cov_V3(image,label,[22],5,3,1000)
 average_single_weights=1-average_single_weights
 average_permuted_corrected_weights=1-average_permuted_corrected_weights
 small_value = 1e-10
