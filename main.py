@@ -572,14 +572,14 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             best_auc = 0
             best_weights = (0, 0)
             
-            for w1 in np.linspace(0, 1, 51):  # 51 points for weights
+            for w1 in np.linspace(0, 1, 201):  # 51 points for weights
                 w2 = 1 - w1
                 
                 # Combine kernels using weighted sum
                 K_train_combined = w1 * K_train_pet + w2 * K_train_mri
                 K_test_combined = w1 * K_test_pet + w2 * K_test_mri
                 
-                cv_inner = StratifiedKFold(n_splits=5, shuffle=True, random_state=1)
+                cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
                 
                 model = SVC(kernel="precomputed", class_weight='balanced', probability=True)
                 
