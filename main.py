@@ -58,7 +58,7 @@ from plot_utils import (
 )
 
 
-3def compute_auprc(y_true, y_pred_probs):
+def compute_auprc(y_true, y_pred_probs):
     precision, recall, _ = precision_recall_curve(y_true, y_pred_probs)
     sorted_indices = np.argsort(recall)
     sorted_recall = recall[sorted_indices]
