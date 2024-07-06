@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J inter-pet-cd
+#SBATCH -J inter-pet-cm
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 100000M
@@ -21,5 +21,5 @@ module load python
 source ~/liuenv/bin/activate
 
 
-python cd_interpretation_PET.py
+python cm_interpretation_PET.py
 sleep 1
