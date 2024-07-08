@@ -1,0 +1,80 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sat Jul  6 07:29:44 CDT 2024 1720268984
+Job ID:		375919
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Sat Jul  6 07:29:44 CDT 2024 1720268984
+--------------------------------------------------------------
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Traceback (most recent call last):
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/early.py", line 12, in <module>
+    combined_data = np.hstack((image_pet, image_mri))
+NameError: name 'np' is not defined
+--------------------------------------------------------------
+Begin Slurm Epilogue Sat Jul  6 07:33:22 CDT 2024 1720269202
+Name                : early
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpu08
+Cores               : 1
+State               : COMPLETED
+Submit              : 2024-07-06T07:29:43
+Start               : 2024-07-06T07:29:43
+End                 : 2024-07-06T07:33:19
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:03:36
+Used CPU Time       :   00:03:32
+% User (Computation): 97.05%
+% System (I/O)      :  2.95%
+Mem Reserved        : 100000M
+Max Mem Used        : 918.17M (962768896.0)
+Max Disk Write      : 10.24K (10485.76)
+Max Disk Read       : 10.08G (10820958289.9)
+Max-Mem-Used Node   : gpu08
+Max-Disk-Write Node : gpu08
+Max-Disk-Read Node  : gpu08
+Tesla T4
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Sat Jul  6 07:33:22 CDT 2024 1720269202
+--------------------------------------------------------------

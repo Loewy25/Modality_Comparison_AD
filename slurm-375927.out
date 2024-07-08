@@ -1,0 +1,60 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sat Jul  6 07:34:24 CDT 2024 1720269264
+Job ID:		375927
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Sat Jul  6 07:34:24 CDT 2024 1720269264
+--------------------------------------------------------------
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/displays/_slicers.py:382: UserWarning: empty mask
+  get_mask_bounds(new_img_like(img, not_mask, affine))
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/displays/_slicers.py:382: UserWarning: empty mask
+  get_mask_bounds(new_img_like(img, not_mask, affine))
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+403
+Running outer loop with random state: 22
+Average outer loop performance (AUC): 0.48158822309765703
+Glass brain plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/glass_brain_average_single_weights_masking_pc_MRI_vmax0.05.png
+Stat map plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/stat_map_average_single_weights_masking_pc_MRI_vmax0.05.png
+Glass brain plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/glass_brain_average_corrected_weights_masking_pc_MRI_vmax0.05.png
+Stat map plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/stat_map_average_corrected_weights_masking_pc_MRI_vmax0.05.png
+Glass brain plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/glass_brain_average_permuted_single_weights_masking_pc_MRI_vmax0.05.png
+Stat map plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/stat_map_average_permuted_single_weights_masking_pc_MRI_vmax0.05.png
+Glass brain plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/glass_brain_average_permuted_corrected_weights_masking_pc_MRI_vmax0.05.png
+Stat map plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/stat_map_average_permuted_corrected_weights_masking_pc_MRI_vmax0.05.png
+--------------------------------------------------------------
+Begin Slurm Epilogue Sat Jul  6 14:46:41 CDT 2024 1720295201
+Name                : inter-mri-pc
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua401
+Cores               : 2
+State               : COMPLETED
+Submit              : 2024-07-06T07:34:23
+Start               : 2024-07-06T07:34:23
+End                 : 2024-07-06T14:46:38
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   07:12:15
+Used CPU Time       :   07:21:06
+% User (Computation): 97.66%
+% System (I/O)      :  2.34%
+Mem Reserved        : 100000M
+Max Mem Used        : 2.64G (2834558976.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 3.53G (3785181102.08)
+Max-Mem-Used Node   : gpua401
+Max-Disk-Write Node : gpua401
+Max-Disk-Read Node  : gpua401
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Sat Jul  6 14:46:41 CDT 2024 1720295201
+--------------------------------------------------------------

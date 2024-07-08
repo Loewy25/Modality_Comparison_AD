@@ -1,0 +1,72 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sat Jul  6 07:33:55 CDT 2024 1720269235
+Job ID:		375926
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Sat Jul  6 07:33:55 CDT 2024 1720269235
+--------------------------------------------------------------
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/displays/_slicers.py:382: UserWarning: empty mask
+  get_mask_bounds(new_img_like(img, not_mask, affine))
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/displays/_slicers.py:382: UserWarning: empty mask
+  get_mask_bounds(new_img_like(img, not_mask, affine))
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+403
+Running outer loop with random state: 22
+Average outer loop performance (AUC): 0.6411297428986108
+Glass brain plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/glass_brain_average_single_weights_masking_pc_PET_vmax0.05.png
+Stat map plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/stat_map_average_single_weights_masking_pc_PET_vmax0.05.png
+Glass brain plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/glass_brain_average_corrected_weights_masking_pc_PET_vmax0.05.png
+Stat map plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/stat_map_average_corrected_weights_masking_pc_PET_vmax0.05.png
+Glass brain plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/glass_brain_average_permuted_single_weights_masking_pc_PET_vmax0.05.png
+Stat map plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/stat_map_average_permuted_single_weights_masking_pc_PET_vmax0.05.png
+Glass brain plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/glass_brain_average_permuted_corrected_weights_masking_pc_PET_vmax0.05.png
+Stat map plot saved at /ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/result/stat_map_average_permuted_corrected_weights_masking_pc_PET_vmax0.05.png
+--------------------------------------------------------------
+Begin Slurm Epilogue Sat Jul  6 14:47:59 CDT 2024 1720295279
+Name                : inter-pet-pc
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua401
+Cores               : 2
+State               : COMPLETED
+Submit              : 2024-07-06T07:33:54
+Start               : 2024-07-06T07:33:54
+End                 : 2024-07-06T14:47:57
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   07:14:03
+Used CPU Time       :   07:23:16
+% User (Computation): 97.54%
+% System (I/O)      :  2.45%
+Mem Reserved        : 100000M
+Max Mem Used        : 2.69G (2883825664.0)
+Max Disk Write      : 686.08K (702545.92)
+Max Disk Read       : 7.22G (7753338716.16)
+Max-Mem-Used Node   : gpua401
+Max-Disk-Write Node : gpua401
+Max-Disk-Read Node  : gpua401
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Sat Jul  6 14:47:59 CDT 2024 1720295279
+--------------------------------------------------------------
