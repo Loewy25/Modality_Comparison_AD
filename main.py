@@ -216,7 +216,7 @@ def nested_crossvalidation(data, label, method, task):
     sensitivity = recall_score(all_y_test, all_predictions, average='binary')
     print(f"Sensitivity: {sensitivity}")
     
-    npv = cm[1, 1] / (cm[1, 1] + cm[0, 1]) if (cm[1, 1] + cm[0, 1]) != 0 else 0
+    npv = cm[0, 0] / (cm[0, 0] + cm[1, 0]) if (cm[0, 0] + cm[1, 0]) != 0 else 0
     print(f"NPV: {npv}")
     
     ppv = precision_score(all_y_test, all_predictions, average='binary', zero_division=1)
@@ -235,7 +235,7 @@ def nested_crossvalidation(data, label, method, task):
     confi_f1 = compute_bootstrap_confi(all_predictions, all_y_test, f1_score)
     confi_specificity = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[0, 0] / (confusion_matrix(y_true, y_pred)[0, 0] + confusion_matrix(y_true, y_pred)[0, 1]))
     confi_sensitivity = compute_bootstrap_confi(all_predictions, all_y_test, recall_score)
-    confi_npv = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[1, 1] / (confusion_matrix(y_true, y_pred)[1, 1] + confusion_matrix(y_true, y_pred)[0, 1]))
+    confi_npv = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[0, 0] / (confusion_matrix(y_true, y_pred)[0, 0] + confusion_matrix(y_true, y_pred)[1, 0]))
     confi_ppv = compute_bootstrap_confi(all_predictions, all_y_test, precision_score)
     confi_auprc = compute_bootstrap_confi(all_y_prob, all_y_test, compute_auprc)
     confi_accuracy = compute_bootstrap_confi(all_predictions, all_y_test, accuracy_score)
@@ -265,6 +265,7 @@ def nested_crossvalidation(data, label, method, task):
     print(f"Balanced accuracy: {balanced_accuracy} (95% CI: {confi_balanced_accuracy})")
     
     return performance_dict, all_y_test, all_y_prob, all_predictions
+
 
 
 
