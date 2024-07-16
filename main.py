@@ -216,7 +216,38 @@ def nested_crossvalidation(data, label, method, task):
     confi_f1 = compute_bootstrap_confi(all_predictions, all_y_test, f1_score)
     confi_specificity = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[0, 0] / (confusion_matrix(y_true, y_pred)[0, 0] + confusion_matrix(y_true, y_pred)[0, 1]))
     confi_sensitivity = compute_bootstrap_confi(all_predictions, all_y_test, recall_score)
-    confi_npv = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[1, 
+    confi_npv = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[1, 1] / (confusion_matrix(y_true, y_pred)[1, 1] + confusion_matrix(y_true, y_pred)[0, 1]))
+    confi_ppv = compute_bootstrap_confi(all_predictions, all_y_test, precision_score)
+    confi_auprc = compute_bootstrap_confi(all_y_prob, all_y_test, compute_auprc)
+    confi_accuracy = compute_bootstrap_confi(all_predictions, all_y_test, accuracy_score)
+    confi_balanced_accuracy = compute_bootstrap_confi(all_predictions, all_y_test, balanced_accuracy_score)
+
+    plot_roc_curve(all_y_test, all_y_prob, method, task)
+    plot_confusion_matrix(all_y_test, all_predictions, positive, negative, method, task)
+    
+    directory = "./result"
+    task_directory = os.path.join(directory, task)
+    os.makedirs(task_directory, exist_ok=True)
+    
+    filename = f"results_{task}_{method}.pickle"
+    file_path = os.path.join(task_directory, filename)
+    
+    with open(file_path, 'wb') as f:
+        pickle.dump((performance_dict, all_y_test, all_y_prob, all_predictions), f)
+
+    print(f"AUC: {auc} (95% CI: {confi_auc})")
+    print(f"F1-score: {f1} (95% CI: {confi_f1})")
+    print(f"Specificity: {specificity} (95% CI: {confi_specificity})")
+    print(f"Sensitivity: {sensitivity} (95% CI: {confi_sensitivity})")
+    print(f"NPV: {npv} (95% CI: {confi_npv})")
+    print(f"PPV (Precision): {ppv} (95% CI: {confi_ppv})")
+    print(f"AUPRC: {auprc} (95% CI: {confi_auprc})")
+    print(f"Accuracy: {accuracy} (95% CI: {confi_accuracy})")
+    print(f"Balanced accuracy: {balanced_accuracy} (95% CI: {confi_balanced_accuracy})")
+    print(f"Precision: {precision} (95% CI: {confi_ppv})")  # Precision already calculated as PPV
+    
+    return performance_dict, all_y_test, all_y_prob, all_predictions
+
 
 
 
