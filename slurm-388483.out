@@ -1,0 +1,88 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jul 16 06:05:43 CDT 2024 1721127943
+Job ID:		388483
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Tue Jul 16 06:05:43 CDT 2024 1721127943
+--------------------------------------------------------------
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Overall ROC AUC for all data: 0.9919170045073401
+AUC: 0.9919170045073401 (95% CI: (0.9839699473674833, 0.9980614816134301))
+Accuracy: 0.9565217391304348 (95% CI: (0.9371376811594203, 0.9758454106280193))
+Balanced accuracy: 0.9502681741495228 (95% CI: (0.9243313524884924, 0.9717561295545212))
+Precision per class: 0.9588014981273408 CN (95% CI: (0.935251798561151, 0.9817518248175182)), 0.9523809523809523 AD (95% CI: (0.91502920317063, 0.9857142857142858))
+Recall per class: 0.973384030418251 CN (95% CI: (0.9534820980424963, 0.9920634920634921)), 0.9271523178807947 AD (95% CI: (0.8819864993098688, 0.96296977124183))
+F1-score per class: 0.9660377358490566 CN (95% CI: (0.9495308546172274, 0.9803220035778175)), 0.9395973154362416 AD (95% CI: (0.9109413417632596, 0.9653051234635048))
+AUPRC: 1.0 (95% CI: (0.9999999999999999, 1.0))
+Specificity: 0.973384030418251 (95% CI: (0.973384030418251, 0.973384030418251))
+PPV per class: 0.9588014981273408 CN (95% CI: (0.9330792598346557, 0.980696836946837)), 0.9523809523809523 AD (95% CI: (0.9136619837987877, 0.9855098529871755))
+NPV: 0.9523809523809523 (95% CI: (0.9171841825902336, 0.9855072463768116))
+The function took 88.76 seconds to run.
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jul 16 06:11:44 CDT 2024 1721128304
+Name                : base_old
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpu08
+Cores               : 1
+State               : COMPLETED
+Submit              : 2024-07-16T06:05:42
+Start               : 2024-07-16T06:05:42
+End                 : 2024-07-16T06:11:42
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:06:00
+Used CPU Time       :   00:04:46
+% User (Computation): 97.03%
+% System (I/O)      :  2.97%
+Mem Reserved        : 100000M
+Max Mem Used        : 1.46G (1568493568.0)
+Max Disk Write      : 10.24K (10485.76)
+Max Disk Read       : 10.43G (11195918581.8)
+Max-Mem-Used Node   : gpu08
+Max-Disk-Write Node : gpu08
+Max-Disk-Read Node  : gpu08
+Tesla T4
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Tue Jul 16 06:11:44 CDT 2024 1721128304
+--------------------------------------------------------------
