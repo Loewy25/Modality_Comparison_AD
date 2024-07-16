@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J base_old
+#SBATCH -J base_new
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 100000M
