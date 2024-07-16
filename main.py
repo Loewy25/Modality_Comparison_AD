@@ -201,16 +201,35 @@ def nested_crossvalidation(data, label, method, task):
                 performance_dict[C_value]['std_scores'].append(std_score)
 
     auc = roc_auc_score(all_y_test, all_y_prob)
+    print(f"AUC: {auc}")
+    
     f1 = f1_score(all_y_test, all_predictions, average='binary')
+    print(f"F1 Score: {f1}")
+    
     cm = confusion_matrix(all_y_test, all_predictions)
+    print("Confusion Matrix:")
+    print(cm)
+    
     specificity = cm[0, 0] / (cm[0, 0] + cm[0, 1])
+    print(f"Specificity: {specificity}")
+    
     sensitivity = recall_score(all_y_test, all_predictions, average='binary')
+    print(f"Sensitivity: {sensitivity}")
+    
     npv = cm[1, 1] / (cm[1, 1] + cm[0, 1]) if (cm[1, 1] + cm[0, 1]) != 0 else 0
+    print(f"NPV: {npv}")
+    
     ppv = precision_score(all_y_test, all_predictions, average='binary', zero_division=1)
+    print(f"PPV (Precision): {ppv}")
+    
     auprc = compute_auprc(all_y_test, all_y_prob)
+    print(f"AUPRC: {auprc}")
+    
     accuracy = accuracy_score(all_y_test, all_predictions)
+    print(f"Accuracy: {accuracy}")
+    
     balanced_accuracy = balanced_accuracy_score(all_y_test, all_predictions)
-    precision = ppv  # Already computed as PPV
+    print(f"Balanced Accuracy: {balanced_accuracy}")
 
     confi_auc = compute_bootstrap_confi(all_y_prob, all_y_test, roc_auc_score)
     confi_f1 = compute_bootstrap_confi(all_predictions, all_y_test, f1_score)
@@ -244,9 +263,9 @@ def nested_crossvalidation(data, label, method, task):
     print(f"AUPRC: {auprc} (95% CI: {confi_auprc})")
     print(f"Accuracy: {accuracy} (95% CI: {confi_accuracy})")
     print(f"Balanced accuracy: {balanced_accuracy} (95% CI: {confi_balanced_accuracy})")
-    print(f"Precision: {precision} (95% CI: {confi_ppv})")  # Precision already calculated as PPV
     
     return performance_dict, all_y_test, all_y_prob, all_predictions
+
 
 
 
