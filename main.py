@@ -46,8 +46,8 @@ from utils import (
     compute_weights_for_linear_kernel,
     compute_covariance_directly,
     compute_p_values_with_correction,
-    normalize_features,
-    apply_normalization,
+    normalize_features_z,
+    apply_normalization_z,
     compute_bootstrap_confi
 
 )
