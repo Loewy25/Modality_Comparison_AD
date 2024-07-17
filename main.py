@@ -201,35 +201,15 @@ def nested_crossvalidation(data, label, method, task):
                 performance_dict[C_value]['std_scores'].append(std_score)
 
     auc = roc_auc_score(all_y_test, all_y_prob)
-    print(f"AUC: {auc}")
-    
-    f1 = f1_score(all_y_test, all_predictions, average='binary')
-    print(f"F1 Score: {f1}")
-    
-    cm = confusion_matrix(all_y_test, all_predictions)
-    print("Confusion Matrix:")
-    print(cm)
-    
+    f1 = f1_score(all_y_test, all_predictions, average='binary')  
+    cm = confusion_matrix(all_y_test, all_predictions) 
     specificity = cm[0, 0] / (cm[0, 0] + cm[0, 1])
-    print(f"Specificity: {specificity}")
-    
     sensitivity = recall_score(all_y_test, all_predictions, average='binary')
-    print(f"Sensitivity: {sensitivity}")
-    
     npv = cm[0, 0] / (cm[0, 0] + cm[1, 0]) if (cm[0, 0] + cm[1, 0]) != 0 else 0
-    print(f"NPV: {npv}")
-    
     ppv = precision_score(all_y_test, all_predictions, average='binary', zero_division=1)
-    print(f"PPV (Precision): {ppv}")
-    
     auprc = compute_auprc(all_y_test, all_y_prob)
-    print(f"AUPRC: {auprc}")
-    
     accuracy = accuracy_score(all_y_test, all_predictions)
-    print(f"Accuracy: {accuracy}")
-    
     balanced_accuracy = balanced_accuracy_score(all_y_test, all_predictions)
-    print(f"Balanced Accuracy: {balanced_accuracy}")
 
     confi_auc = compute_bootstrap_confi(all_y_prob, all_y_test, roc_auc_score)
     confi_f1 = compute_bootstrap_confi(all_predictions, all_y_test, f1_score)
@@ -444,22 +424,7 @@ def normalize_kernel(K):
     K_normalized = K / np.sqrt(np.outer(diag_elements, diag_elements))
     return K_normalized
 
-def normalize_test_kernel(K_test, K_train_diag, K_test_diag):
-    # Check for zeros to prevent division by zero errors
-    if np.any(K_train_diag == 0) or np.any(K_test_diag == 0):
-        raise ValueError("Zero diagonal element found in kernel matrix")
-    
-    # Compute the normalization factors: should result in a matrix of shape (len(K_train_diag), len(K_test_diag))
-    normalization_matrix = np.sqrt(np.outer(K_train_diag, K_test_diag))
-    np.savetxt("K_kernel_pet.txt", normalization_matrix, delimiter=",")
-    
-    # Correctly reshape the normalization matrix to match K_test dimensions
-    # This involves transposing the matrix since np.outer produces (train, test) and we need (test, train)
-    normalization_matrix = normalization_matrix.T
-    
-    # Perform element-wise division
-    K_test_normalized = K_test / normalization_matrix
-    return K_test_normalized
+
 
 import numpy as np
 
@@ -506,6 +471,13 @@ def remove_nan_subjects(K_train_pet, K_train_mri, K_test_pet, K_test_mri, y_trai
     return K_train_pet_clean, K_train_mri_clean, K_test_pet_clean, K_test_mri_clean, y_train_clean, y_test_clean
 
 
+def normalize_kernel(K):
+    diag_elements = np.diag(K)
+    if np.any(diag_elements == 0):
+        raise ValueError("Zero diagonal element found in kernel matrix")
+    K_normalized = K / np.sqrt(np.outer(diag_elements, diag_elements))
+    return K_normalized
+
 def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task):
     train_label = label
     random_states = [10]
@@ -538,6 +510,7 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             X_train_pet, X_test_pet = train_data_pet[train_ix, :], train_data_pet[test_ix, :]
             X_train_mri, X_test_mri = train_data_mri[train_ix, :], train_data_mri[test_ix, :]
             y_train, y_test = train_label[train_ix], train_label[test_ix]
+            
             # Normalize the PET and MRI training data based on control indices within this fold
             control_indices_train = [i for i, label in enumerate(y_train) if label == 0]
             
@@ -546,30 +519,30 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             
             X_test_pet = apply_normalization(X_test_pet, scaler_pet)
             X_test_mri = apply_normalization(X_test_mri, scaler_mri)
-          
-            # Compute kernel matrices for PET and MRI data
-            K_train_pet = compute_kernel_matrix(X_train_pet, X_train_pet, linear_kernel)
-            K_test_pet = compute_kernel_matrix(X_test_pet, X_train_pet, linear_kernel)
             
-            K_train_mri = compute_kernel_matrix(X_train_mri, X_train_mri, linear_kernel)
-            K_test_mri = compute_kernel_matrix(X_test_mri, X_train_mri, linear_kernel)
-
-            # Extract diagonals before normalizing
-            K_train_mri_diag = np.diag(K_train_mri)
-            K_train_pet_diag = np.diag(K_train_pet)
-            K_test_mri_diag = np.diag(K_test_mri)
-            K_test_pet_diag = np.diag(K_test_pet)
-            # Normalize training kernels
-            K_train_mri = normalize_kernel(K_train_mri)
-            K_train_pet = normalize_kernel(K_train_pet)
+            # Combine training and test data
+            X_combined_pet = np.vstack((X_train_pet, X_test_pet))
+            X_combined_mri = np.vstack((X_train_mri, X_test_mri))
             
+            # Compute the combined kernel matrices
+            K_combined_pet = np.dot(X_combined_pet, X_combined_pet.T)
+            K_combined_mri = np.dot(X_combined_mri, X_combined_mri.T)
             
-            # Normalize test kernels using the original (unnormalized) training kernel diagonals
-            K_test_mri = normalize_test_kernel(K_test_mri, K_train_mri_diag, K_test_mri_diag)
-            K_test_pet = normalize_test_kernel(K_test_pet, K_train_pet_diag, K_test_pet_diag)
-
-            K_train_pet, K_train_mri, K_test_pet, K_test_mri, y_train, y_test = remove_nan_subjects(K_train_pet, K_train_mri, K_test_pet, K_test_mri, y_train, y_test)
-          
+            # Normalize the combined kernel matrices
+            K_combined_pet_normalized = normalize_kernel(K_combined_pet)
+            K_combined_mri_normalized = normalize_kernel(K_combined_mri)
+            
+            # Extract the training and test kernel matrices
+            K_train_pet = K_combined_pet_normalized[:len(train_ix), :len(train_ix)]
+            K_test_pet = K_combined_pet_normalized[len(train_ix):, :len(train_ix)]
+            
+            K_train_mri = K_combined_mri_normalized[:len(train_ix), :len(train_ix)]
+            K_test_mri = K_combined_mri_normalized[len(train_ix):, :len(train_ix)]
+            
+            cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
+            model = SVC(kernel="precomputed", class_weight='balanced', probability=True)
+            space = {'C': [1, 100, 10, 0.1, 0.01, 0.001, 0.0001, 0.00001]}
+            
             best_auc = 0
             best_weights = (0, 0)
             
@@ -580,16 +553,8 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
                 K_train_combined = w1 * K_train_pet + w2 * K_train_mri
                 K_test_combined = w1 * K_test_pet + w2 * K_test_mri
                 
-                cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
-                
-                model = SVC(kernel="precomputed", class_weight='balanced', probability=True)
-                
-                space = {'C': [1, 100, 10, 0.1, 0.01, 0.001, 0.0001, 0.00001]}
-                
                 search = GridSearchCV(model, space, scoring='roc_auc', cv=cv_inner, refit=True)
-                
                 search.fit(K_train_combined, y_train)
-                
                 best_model = search.best_estimator_
                 
                 # Predict probabilities on the test set
@@ -679,5 +644,6 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
     print(f"NPV: {npv} (95% CI: {confi_npv})")
 
     return performance_dict, all_y_test, all_y_prob, all_predictions
+
 
 # The normalize_features, apply_normalization, compute_kernel_matrix, linear_kernel, compute_bootstrap_confi, plot_roc_curve, and plot_confusion_matrix functions are assumed to be defined elsewhere.
