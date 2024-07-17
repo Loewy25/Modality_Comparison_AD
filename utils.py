@@ -161,7 +161,7 @@ def min_max_normalization(arr):
     return normalized_arr
 
 
-def normalize_features(data, control_indices, return_params=False):
+def normalize_features_z(data, control_indices, return_params=False):
     """
     Normalize features using the control group data.
     
@@ -189,7 +189,7 @@ def normalize_features(data, control_indices, return_params=False):
     else:
         return normalized_data
 
-def apply_normalization(data, params):
+def apply_normalization_z(data, params):
     """
     Apply normalization to the data using provided parameters.
     
