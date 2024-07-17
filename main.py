@@ -517,8 +517,8 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             X_train_pet, scaler_pet = normalize_features_z(X_train_pet, control_indices_train, return_params=True)
             X_train_mri, scaler_mri = normalize_features_z(X_train_mri, control_indices_train, return_params=True)
             
-            X_test_pet = apply_normalization_z(X_test_pet, scaler_pet)
-            X_test_mri = apply_normalization_z(X_test_mri, scaler_mri)
+            X_test_pet = apply_normalization(X_test_pet, scaler_pet)
+            X_test_mri = apply_normalization(X_test_mri, scaler_mri)
             
             # Combine training and test data
             X_combined_pet = np.vstack((X_train_pet, X_test_pet))
