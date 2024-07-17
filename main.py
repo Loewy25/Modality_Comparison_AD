@@ -514,8 +514,8 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             # Normalize the PET and MRI training data based on control indices within this fold
             control_indices_train = [i for i, label in enumerate(y_train) if label == 0]
             
-            X_train_pet, scaler_pet = normalize_features_z(X_train_pet, control_indices_train, return_params=True)
-            X_train_mri, scaler_mri = normalize_features_z(X_train_mri, control_indices_train, return_params=True)
+            X_train_pet, scaler_pet = normalize_features(X_train_pet, control_indices_train, return_params=True)
+            X_train_mri, scaler_mri = normalize_features(X_train_mri, control_indices_train, return_params=True)
             
             X_test_pet = apply_normalization(X_test_pet, scaler_pet)
             X_test_mri = apply_normalization(X_test_mri, scaler_mri)
