@@ -597,52 +597,49 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
                 performance_dict[C_value]['std_scores'].append(std_score)
 
     auc = roc_auc_score(all_y_test, all_y_prob)
+    f1 = f1_score(all_y_test, all_predictions, average='binary')  
+    cm = confusion_matrix(all_y_test, all_predictions) 
+    specificity = cm[0, 0] / (cm[0, 0] + cm[0, 1])
+    sensitivity = recall_score(all_y_test, all_predictions, average='binary')
+    npv = cm[0, 0] / (cm[0, 0] + cm[1, 0]) if (cm[0, 0] + cm[1, 0]) != 0 else 0
+    ppv = precision_score(all_y_test, all_predictions, average='binary', zero_division=1)
+    auprc = compute_auprc(all_y_test, all_y_prob)
     accuracy = accuracy_score(all_y_test, all_predictions)
     balanced_accuracy = balanced_accuracy_score(all_y_test, all_predictions)
-    
-    # Handle UndefinedMetricWarning by setting zero_division=1
-    precision_classwise = precision_score(all_y_test, all_predictions, average=None, zero_division=1)
-    recall_classwise = recall_score(all_y_test, all_predictions, average=None)
-    f1_classwise = f1_score(all_y_test, all_predictions, average=None)
-    
-    ppv = precision_classwise  # since they are the same, no need to compute twice
-    
-    cm = confusion_matrix(all_y_test, all_predictions)
-    
-    # Handle RuntimeWarning by checking for zero denominator
-    denominator = cm[1,1] + cm[0,1]
-    npv = cm[1,1] / denominator if denominator != 0 else 0
 
-    
-    # Compute bootstrap confidence intervals for each of these metrics
     confi_auc = compute_bootstrap_confi(all_y_prob, all_y_test, roc_auc_score)
+    confi_f1 = compute_bootstrap_confi(all_predictions, all_y_test, f1_score)
+    confi_specificity = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[0, 0] / (confusion_matrix(y_true, y_pred)[0, 0] + confusion_matrix(y_true, y_pred)[0, 1]))
+    confi_sensitivity = compute_bootstrap_confi(all_predictions, all_y_test, recall_score)
+    confi_npv = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[0, 0] / (confusion_matrix(y_true, y_pred)[0, 0] + confusion_matrix(y_true, y_pred)[1, 0]))
+    confi_ppv = compute_bootstrap_confi(all_predictions, all_y_test, precision_score)
+    confi_auprc = compute_bootstrap_confi(all_y_prob, all_y_test, compute_auprc)
     confi_accuracy = compute_bootstrap_confi(all_predictions, all_y_test, accuracy_score)
     confi_balanced_accuracy = compute_bootstrap_confi(all_predictions, all_y_test, balanced_accuracy_score)
-    confi_precision = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: precision_score(y_true, y_pred, average=None)[i]) for i in range(2)]
-    confi_recall = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: recall_score(y_true, y_pred, average=None)[i]) for i in range(2)]
-    confi_f1 = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: f1_score(y_true, y_pred, average=None)[i]) for i in range(2)]
-    confi_ppv = [compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: precision_score(y_true, y_pred, average=None)[i]) for i in range(2)]
-    confi_npv = compute_bootstrap_confi(all_predictions, all_y_test, lambda y_true, y_pred: (confusion_matrix(y_true, y_pred)[1,1] / (confusion_matrix(y_true, y_pred)[1,1] + confusion_matrix(y_true, y_pred)[0,1])))
-    
+
     plot_roc_curve(all_y_test, all_y_prob, method, task)
     plot_confusion_matrix(all_y_test, all_predictions, positive, negative, method, task)
     
-    directory = './result'
-    os.makedirs(directory, exist_ok=True)
-    filename = os.path.join(directory, f'results_{method}_{task}.pickle')
+    directory = "./result"
+    task_directory = os.path.join(directory, task)
+    os.makedirs(task_directory, exist_ok=True)
     
-    with open(filename, 'wb') as f:
+    filename = f"results_{task}_{method}.pickle"
+    file_path = os.path.join(task_directory, filename)
+    
+    with open(file_path, 'wb') as f:
         pickle.dump((performance_dict, all_y_test, all_y_prob, all_predictions), f)
-        
+
     print(f"AUC: {auc} (95% CI: {confi_auc})")
+    print(f"F1-score: {f1} (95% CI: {confi_f1})")
+    print(f"Specificity: {specificity} (95% CI: {confi_specificity})")
+    print(f"Sensitivity: {sensitivity} (95% CI: {confi_sensitivity})")
+    print(f"NPV: {npv} (95% CI: {confi_npv})")
+    print(f"PPV (Precision): {ppv} (95% CI: {confi_ppv})")
+    print(f"AUPRC: {auprc} (95% CI: {confi_auprc})")
     print(f"Accuracy: {accuracy} (95% CI: {confi_accuracy})")
     print(f"Balanced accuracy: {balanced_accuracy} (95% CI: {confi_balanced_accuracy})")
-    print(f"Precision per class: {precision_classwise[0]} {negative} (95% CI: {confi_precision[0]}), {precision_classwise[1]} {positive} (95% CI: {confi_precision[1]})")
-    print(f"Recall per class: {recall_classwise[0]} {negative} (95% CI: {confi_recall[0]}), {recall_classwise[1]} {positive} (95% CI: {confi_recall[1]})")
-    print(f"F1-score per class: {f1_classwise[0]} {negative} (95% CI: {confi_f1[0]}), {f1_classwise[1]} {positive} (95% CI: {confi_f1[1]})")
-    print(f"PPV per class: {ppv[0]} {negative} (95% CI: {confi_ppv[0]}), {ppv[1]} {positive} (95% CI: {confi_ppv[1]})")
-    print(f"NPV: {npv} (95% CI: {confi_npv})")
-
+    
     return performance_dict, all_y_test, all_y_prob, all_predictions
 
 
