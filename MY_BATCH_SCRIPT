@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J early_z
+#SBATCH -J early
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 100000M
