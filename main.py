@@ -68,6 +68,7 @@ def compute_auprc(y_true, y_pred_probs):
     return calculate_auc(unique_recall, unique_precision)
 
 def normalize_features(X, indices, return_params=False):
+    print("min-max")
     scaler = MinMaxScaler()
     scaler.fit(X[indices])  # Fit only to control group data
     X_scaled = scaler.transform(X)  # Apply to all data
@@ -76,6 +77,7 @@ def normalize_features(X, indices, return_params=False):
     return X_scaled
 
 def apply_normalization(X, scaler):
+    print("min-max")
     return scaler.transform(X)
 
 def hyperparameter_tuning_visual_cov_V3(data, label, randomseed, outer, inner, num_permutations):
