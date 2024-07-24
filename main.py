@@ -528,17 +528,17 @@ def nested_crossvalidation_multi_kernel(data_pet, data_mri, label, method, task)
             K_combined_mri = np.dot(X_combined_mri, X_combined_mri.T)
             
             # Normalize the combined kernel matrices
-            #K_combined_pet_normalized = normalize_kernel(K_combined_pet)
-            #K_combined_mri_normalized = normalize_kernel(K_combined_mri)
+            K_combined_pet_normalized = normalize_kernel(K_combined_pet)
+            K_combined_mri_normalized = normalize_kernel(K_combined_mri)
             
             # Extract the training and test kernel matrices
-            # K_train_pet = K_combined_pet_normalized[:len(train_ix), :len(train_ix)]
-            # K_test_pet = K_combined_pet_normalized[len(train_ix):, :len(train_ix)]
-            K_train_pet = K_combined_pet[:len(train_ix), :len(train_ix)]
-            K_test_pet = K_combined_pet[len(train_ix):, :len(train_ix)]
+            K_train_pet = K_combined_pet_normalized[:len(train_ix), :len(train_ix)]
+            K_test_pet = K_combined_pet_normalized[len(train_ix):, :len(train_ix)]
+            # K_train_pet = K_combined_pet[:len(train_ix), :len(train_ix)]
+            # K_test_pet = K_combined_pet[len(train_ix):, :len(train_ix)]
             
-            K_train_mri = K_combined_mri[:len(train_ix), :len(train_ix)]
-            K_test_mri = K_combined_mri[len(train_ix):, :len(train_ix)]
+            K_train_mri = K_combined_mri_normalized[:len(train_ix), :len(train_ix)]
+            K_test_mri = K_combined_mri_normalized[len(train_ix):, :len(train_ix)]
             
             cv_inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
             model = SVC(kernel="precomputed", class_weight='balanced', probability=True)
