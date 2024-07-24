@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J multi-z
+#SBATCH -J multi-z-without
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 100000M
