@@ -292,12 +292,12 @@ def nested_crossvalidation_late_fusion(data_pet, data_mri, label, method, task):
             control_indices_train = [i for i, label in enumerate(y_train) if label == 0]
             
             # Calculate normalization parameters from the training data
-            X_train_pet, normalization_params_pet = normalize_features_z(X_train_pet, control_indices_train, return_params=True)
-            X_train_mri, normalization_params_mri = normalize_features_z(X_train_mri, control_indices_train, return_params=True)
+            X_train_pet, normalization_params_pet = normalize_features(X_train_pet, control_indices_train, return_params=True)
+            X_train_mri, normalization_params_mri = normalize_features(X_train_mri, control_indices_train, return_params=True)
             
             # Use those normalization parameters to normalize the test data
-            X_test_pet = apply_normalization_z(X_test_pet, normalization_params_pet)
-            X_test_mri = apply_normalization_z(X_test_mri, normalization_params_mri)
+            X_test_pet = apply_normalization(X_test_pet, normalization_params_pet)
+            X_test_mri = apply_normalization(X_test_mri, normalization_params_mri)
         
             # Compute kernel matrices for PET and MRI data
             K_train_pet = compute_kernel_matrix(X_train_pet, X_train_pet, linear_kernel)
