@@ -12,7 +12,7 @@ image_pet,label,masker=loading_mask('cd','PET')
 
 start_time = time.time()  # Capture start time
 
-performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_late_fusion(image_mri, image_pet, label, 'Late_z', 'cd')
+performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_late_fusion(image_mri, image_pet, label, 'Late_min', 'cd')
 end_time = time.time()  # Capture end time
 
 elapsed_time = end_time - start_time  # Calculate elapsed time
@@ -24,7 +24,7 @@ image_pet,label,masker=loading_mask('cm','PET')
 
 start_time = time.time()  # Capture start time
 
-performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_late_fusion(image_mri, image_pet, label, 'Late_z', 'cm')
+performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_late_fusion(image_mri, image_pet, label, 'Late_min', 'cm')
 end_time = time.time()  # Capture end time
 
 elapsed_time = end_time - start_time  # Calculate elapsed time
@@ -36,7 +36,7 @@ image_pet,label,masker=loading_mask('dm','PET')
 
 start_time = time.time()  # Capture start time
 
-performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_late_fusion(image_mri, image_pet, label, 'Late_z', 'dm')
+performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_late_fusion(image_mri, image_pet, label, 'Late_min', 'dm')
 end_time = time.time()  # Capture end time
 
 elapsed_time = end_time - start_time  # Calculate elapsed time
@@ -48,7 +48,7 @@ image_pet,label,masker=loading_mask('pc','PET')
 
 start_time = time.time()  # Capture start time
 
-performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_late_fusion(image_mri, image_pet, label, 'Late_z', 'pc')
+performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_late_fusion(image_mri, image_pet, label, 'Late_min', 'pc')
 end_time = time.time()  # Capture end time
 
 elapsed_time = end_time - start_time  # Calculate elapsed time
