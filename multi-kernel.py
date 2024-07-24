@@ -11,7 +11,7 @@ image_pet,label,masker=loading_mask('cd','PET')
 
 start_time = time.time()  # Capture start time
 
-performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_multi_kernel(image_mri, image_pet, label, 'multi_kernel_min', 'cd')
+performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_multi_kernel(image_mri, image_pet, label, 'multi_kernel_z', 'cd')
 end_time = time.time()  # Capture end time
 
 elapsed_time = end_time - start_time  # Calculate elapsed time
@@ -23,7 +23,7 @@ image_pet,label,masker=loading_mask('cm','PET')
 
 start_time = time.time()  # Capture start time
 
-performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_multi_kernel(image_mri, image_pet, label, 'multi_kernel_min', 'cm')
+performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_multi_kernel(image_mri, image_pet, label, 'multi_kernel_z', 'cm')
 end_time = time.time()  # Capture end time
 
 elapsed_time = end_time - start_time  # Calculate elapsed time
@@ -35,7 +35,7 @@ image_pet,label,masker=loading_mask('dm','PET')
 
 start_time = time.time()  # Capture start time
 
-performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_multi_kernel(image_mri, image_pet, label, 'multi_kernel_min', 'dm')
+performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_multi_kernel(image_mri, image_pet, label, 'multi_kernel_z', 'dm')
 end_time = time.time()  # Capture end time
 
 elapsed_time = end_time - start_time  # Calculate elapsed time
@@ -47,7 +47,7 @@ image_pet,label,masker=loading_mask('pc','PET')
 
 start_time = time.time()  # Capture start time
 
-performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_multi_kernel(image_mri, image_pet, label, 'multi_kernel_min', 'pc')
+performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation_multi_kernel(image_mri, image_pet, label, 'multi_kernel_z', 'pc')
 end_time = time.time()  # Capture end time
 
 elapsed_time = end_time - start_time  # Calculate elapsed time
