@@ -18,7 +18,7 @@ reduced_data = srp.fit_transform(combined_data)
 start_time = time.time()  # Capture start time
 
 # Run your function (replace with actual arguments)
-performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation(reduced_data, label, 'early', 'cd')
+performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation(reduced_data, label, 'early-min', 'cd')
 end_time = time.time()  # Capture end time
 
 elapsed_time = end_time - start_time  # Calculate elapsed time
@@ -37,7 +37,7 @@ reduced_data = srp.fit_transform(combined_data)
 start_time = time.time()  # Capture start time
 
 # Run your function (replace with actual arguments)
-performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation(reduced_data, label, 'early', 'cm')
+performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation(reduced_data, label, 'early-min', 'cm')
 end_time = time.time()  # Capture end time
 
 elapsed_time = end_time - start_time  # Calculate elapsed time
@@ -56,7 +56,7 @@ reduced_data = srp.fit_transform(combined_data)
 start_time = time.time()  # Capture start time
 
 # Run your function (replace with actual arguments)
-performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation(reduced_data, label, 'early', 'dm')
+performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation(reduced_data, label, 'early-min', 'dm')
 end_time = time.time()  # Capture end time
 
 elapsed_time = end_time - start_time  # Calculate elapsed time
@@ -75,7 +75,7 @@ reduced_data = srp.fit_transform(combined_data)
 start_time = time.time()  # Capture start time
 
 # Run your function (replace with actual arguments)
-performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation(reduced_data, label, 'early', 'pc')
+performance_dict_mri,all_y_test_mri, all_y_prob_mri, all_predictions_mri=nested_crossvalidation(reduced_data, label, 'early-min', 'pc')
 end_time = time.time()  # Capture end time
 
 elapsed_time = end_time - start_time  # Calculate elapsed time
