@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J late-min
+#SBATCH -J late-z
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 100000M
