@@ -189,6 +189,15 @@ def calculate_class_weights(labels):
 
 
 from nilearn.image import resample_img
+def pad_image_to_shape(image, target_shape=(128, 128, 128)):
+    """Pads or crops an image to the target shape."""
+    current_shape = image.shape
+    padding = [(0, max(target_shape[i] - current_shape[i], 0)) for i in range(3)]
+    padded_image = np.pad(image, padding, mode='constant', constant_values=0)
+    
+    # If the image is larger than the target shape, crop it
+    slices = [slice(0, min(current_shape[i], target_shape[i])) for i in range(3)]
+    return padded_image[slices[0], slices[1], slices[2]]
 
 def loading_mask_3d(task, modality):
     # Loading and generating data
@@ -199,28 +208,36 @@ def loading_mask_3d(task, modality):
     elif modality == 'MRI':
         data_train, train_label = generate(images_mri, labels, task)
     
+    # Instantiate NiftiMasker
     masker = NiftiMasker(mask_img='/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
-    train_data = []
     
-    # Extract the 3D shape of the original images
-    original_shape = None
+    train_data = []
+    target_shape = (128, 128, 128)  # Define your desired shape (128, 128, 128)
     
     for i in range(len(data_train)):
-        # Apply the mask, which flattens the image into 1D
-        masked_data = masker.fit_transform(data_train[i])
+        # Load the NIfTI image using nibabel (data_train[i] is a file path)
+        nifti_img = nib.load(data_train[i])
         
+        # Apply the mask, which flattens the image into 1D
+        masked_data = masker.fit_transform(nifti_img)
         
         # Reshape the flattened data back into the original 3D shape
-        reshaped_data = masker.inverse_transform(masked_data).get_fdata().reshape(original_shape)
+        reshaped_data = masker.inverse_transform(masked_data).get_fdata()
+        
+        # Resize or pad the image to the target shape
+        padded_data = pad_image_to_shape(reshaped_data, target_shape=target_shape)
         
         # Add reshaped 3D data to the list
-        train_data.append(reshaped_data)
+        train_data.append(padded_data)
     
     # Convert the train_label to binary if necessary
     train_label = binarylabel(train_label, task)
     
     # Convert list to numpy array for consistency
     train_data = np.array(train_data)
+    
+    # Add channel dimension for the CNN (128, 128, 128, 1)
+    train_data = train_data[..., np.newaxis]
     
     return train_data, train_label, masker
 
@@ -229,7 +246,7 @@ modality = 'PET'
 # Example usage
 train_data, train_label, masker = loading_mask_3d(task, modality)  # Assume function is available
 X = np.array(train_data)
-Y = to_categorical(train_label, num_classes=7)
+Y = to_categorical(train_label, num_classes=2)
 
 # Calculate class weights manually
 class_weights = calculate_class_weights(train_label)
