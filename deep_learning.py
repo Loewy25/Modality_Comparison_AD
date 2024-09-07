@@ -185,10 +185,53 @@ def calculate_class_weights(labels):
     total_samples = len(labels)
     class_weights = {int(c): total_samples / (len(classes) * count) for c, count in zip(classes, class_counts)}
     return class_weights
+
+
+from nilearn.image import resample_img
+
+def loading_mask_3d(task, modality):
+    # Loading and generating data
+    images_pet, images_mri, labels = generate_data_path()
+    
+    if modality == 'PET':
+        data_train, train_label = generate(images_pet, labels, task)
+    elif modality == 'MRI':
+        data_train, train_label = generate(images_mri, labels, task)
+    
+    masker = NiftiMasker(mask_img='/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
+    train_data = []
+    
+    # Extract the 3D shape of the original images
+    original_shape = None
+    
+    for i in range(len(data_train)):
+        # Apply the mask, which flattens the image into 1D
+        masked_data = masker.fit_transform(data_train[i])
+        
+        # If we don't know the original shape yet, extract it from the first image
+        if original_shape is None:
+            # Infer the original 3D shape (before the mask flattened it)
+            original_shape = data_train[i].shape[:3]
+            print(f"Original shape of the image: {original_shape}")
+        
+        # Reshape the flattened data back into the original 3D shape
+        reshaped_data = masker.inverse_transform(masked_data).get_fdata().reshape(original_shape)
+        
+        # Add reshaped 3D data to the list
+        train_data.append(reshaped_data)
+    
+    # Convert the train_label to binary if necessary
+    train_label = binarylabel(train_label, task)
+    
+    # Convert list to numpy array for consistency
+    train_data = np.array(train_data)
+    
+    return train_data, train_label, masker
+
 task = 'cd'
 modality = 'PET'
 # Example usage
-train_data, train_label, masker = loading_mask(task, modality)  # Assume function is available
+train_data, train_label, masker = loading_mask_3d(task, modality)  # Assume function is available
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=7)
 
