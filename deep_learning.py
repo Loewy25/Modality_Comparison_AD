@@ -13,8 +13,8 @@ import matplotlib.pyplot as plt
 from tensorflow.keras import backend as K
 from nilearn.image import reorder_img, new_img_like
 
-# Additional Imports (as per your request)
-from data_loading import loading_mask
+# Additional Imports (as per your request
+from data_loading import loading_mask, generate_data_path, generate, binarylabel
 from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
 
 from tensorflow.keras.layers import Conv3D, Input, LeakyReLU, Add, GlobalAveragePooling3D, Dense, Dropout, SpatialDropout3D
