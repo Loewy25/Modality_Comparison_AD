@@ -7,23 +7,56 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.metrics import AUC
 from tensorflow.keras.utils import to_categorical
-from sklearn.model_selection import StratifiedKFold 
 from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import StratifiedKFold
 import matplotlib.pyplot as plt
 from tensorflow.keras import backend as K
+from nilearn.image import reorder_img, new_img_like
+
+# Additional Imports (as per your request)
 from data_loading import loading_mask
 from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
 
+# Utility functions
+def resample_to_spacing(data, original_spacing, new_spacing, interpolation='linear'):
+    zoom_factors = [o / n for o, n in zip(original_spacing, new_spacing)] + [1]
+    return scipy.ndimage.zoom(data, zoom_factors, order=1 if interpolation == 'linear' else 0)
+
+def calculate_origin_offset(new_spacing, original_spacing):
+    return [(o - n) / 2 for o, n in zip(original_spacing, new_spacing)]
+
+# Function to resize the image
+def resize(image, new_shape=(128, 128, 128), interpolation="linear"):
+    print(f"Original image shape: {image.shape}")
+    image = reorder_img(image, resample=interpolation)
+    zoom_level = np.divide(new_shape, image.shape[:3])
+    new_spacing = np.divide(image.header.get_zooms()[:3], zoom_level)
+    new_data = resample_to_spacing(image.get_fdata(), image.header.get_zooms()[:3], new_spacing, interpolation=interpolation)
+    new_affine = np.copy(image.affine)
+    np.fill_diagonal(new_affine, new_spacing.tolist() + [1])
+    new_affine[:3, 3] += calculate_origin_offset(new_spacing, image.header.get_zooms()[:3])
+    print(f"Resized image shape: {new_data.shape}")
+    return new_img_like(image, new_data, affine=new_affine)
+
+# Combine resize (no padding needed if resizing to the optimal size)
+def preprocess_image(image, target_shape=(128, 128, 128), interpolation="linear"):
+    # Resize the image to match the target shape
+    resized_image = resize(image, new_shape=target_shape, interpolation=interpolation)
+    print(f"Preprocessed image shape (after resize): {resized_image.shape}")
+    return resized_image
+
 # Data augmentation function: Mirroring with probability of 0.5
 def augment_data(image):
+    print(f"Image shape before augmentation: {image.shape}")
     augmented_image = image.copy()
     for axis in range(3):
         if np.random.rand() > 0.5:
             augmented_image = np.flip(augmented_image, axis=axis)
+    print(f"Image shape after augmentation: {augmented_image.shape}")
     return augmented_image
 
 # Convolution block with L2 regularization
-def convolution_block(x, filters, kernel_size=(3,3,3), strides=(1,1,1)):
+def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
     x = Conv3D(filters, kernel_size, strides=strides, padding='same', kernel_regularizer=l2(1e-5))(x)
     x = tfa.layers.InstanceNormalization()(x)
     x = LeakyReLU()(x)
@@ -39,32 +72,32 @@ def context_module(x, filters):
 # CNN Model definition
 def create_cnn_model():
     input_img = Input(shape=(128, 128, 128, 1))
-    x = convolution_block(input_img, 16, strides=(1,1,1))
+    x = convolution_block(input_img, 16, strides=(1, 1, 1))
     conv1_out = x
 
     # Context 1
     x = context_module(x, 16)
     x = Add()([x, conv1_out])
-    x = convolution_block(x, 32, strides=(2,2,2))
+    x = convolution_block(x, 32, strides=(2, 2, 2))
     conv2_out = x
 
     # Context 2
     x = context_module(x, 32)
     x = Add()([x, conv2_out])
-    x = convolution_block(x, 64, strides=(2,2,2))
+    x = convolution_block(x, 64, strides=(2, 2, 2))
     conv3_out = x
 
     # Context 3
     x = context_module(x, 64)
     x = Add()([x, conv3_out])
-    x = convolution_block(x, 128, strides=(2,2,2))
+    x = convolution_block(x, 128, strides=(2, 2, 2))
     conv4_out = x
 
     # Context 4
     x = context_module(x, 128)
     x = Add()([x, conv4_out])
-    x = convolution_block(x, 256, strides=(2,2,2))
-    
+    x = convolution_block(x, 256, strides=(2, 2, 2))
+
     # Context 5
     x = context_module(x, 256)
 
@@ -90,14 +123,16 @@ def train_model(X, Y):
     all_auc_scores = []
 
     for fold_num, (train, val) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
-        X_train_augmented = np.array([augment_data(X[i]) for i in train])
+        # Preprocess and augment training data
+        X_train_preprocessed = np.array([preprocess_image(X[i]) for i in train])
+        X_train_augmented = np.array([augment_data(X_train_preprocessed[i]) for i in range(len(train))])
         Y_train = Y[train]
 
         # Create and compile the model
         with tf.distribute.MirroredStrategy().scope():
             model = create_cnn_model()
-            model.compile(optimizer=Adam(learning_rate=5e-4), 
-                          loss='categorical_crossentropy', 
+            model.compile(optimizer=Adam(learning_rate=5e-4),
+                          loss='categorical_crossentropy',
                           metrics=['accuracy', AUC(name='auc')])
 
             # Callbacks for early stopping and learning rate reduction
@@ -105,9 +140,9 @@ def train_model(X, Y):
             reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
 
             # Train the model
-            history = model.fit(X_train_augmented, Y_train, 
-                                batch_size=5, 
-                                epochs=200, 
+            history = model.fit(X_train_augmented, Y_train,
+                                batch_size=5,
+                                epochs=200,
                                 validation_data=(X[val], Y[val]),
                                 callbacks=[early_stopping, reduce_lr])
 
@@ -140,7 +175,7 @@ def train_model(X, Y):
 # Example data loading
 task = 'cd'
 modality = 'PET'
-train_data, train_label, masker = loading_mask(task, modality)
+train_data, train_label, masker = loading_mask(task, modality)  # Assumed this function is available in your environment
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
 
