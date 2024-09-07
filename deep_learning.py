@@ -161,7 +161,8 @@ def calculate_class_weights(labels):
     total_samples = len(labels)
     class_weights = {int(c): total_samples / (len(classes) * count) for c, count in zip(classes, class_counts)}
     return class_weights
-
+task = 'cd'
+modality = 'PET'
 # Example usage
 train_data, train_label, masker = loading_mask(task, modality)  # Assume function is available
 X = np.array(train_data)
