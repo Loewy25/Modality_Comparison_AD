@@ -17,156 +17,139 @@ from nilearn.image import reorder_img, new_img_like
 from data_loading import loading_mask
 from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
 
-# Utility functions
-def resample_to_spacing(data, original_spacing, new_spacing, interpolation='linear'):
-    zoom_factors = [o / n for o, n in zip(original_spacing, new_spacing)] + [1]
-    return scipy.ndimage.zoom(data, zoom_factors, order=1 if interpolation == 'linear' else 0)
+from tensorflow.keras.layers import Conv3D, Input, LeakyReLU, Add, GlobalAveragePooling3D, Dense, Dropout, SpatialDropout3D
+from tensorflow.keras.models import Model
+from tensorflow.keras.regularizers import l2
+import tensorflow_addons as tfa
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.metrics import AUC
+from sklearn.utils.class_weight import compute_class_weight
+import numpy as np
 
-def calculate_origin_offset(new_spacing, original_spacing):
-    return [(o - n) / 2 for o, n in zip(original_spacing, new_spacing)]
-
-# Function to resize the image
-def resize(image, new_shape=(128, 128, 128), interpolation="linear"):
-    print(f"Original image shape: {image.shape}")
-    image = reorder_img(image, resample=interpolation)
-    zoom_level = np.divide(new_shape, image.shape[:3])
-    new_spacing = np.divide(image.header.get_zooms()[:3], zoom_level)
-    new_data = resample_to_spacing(image.get_fdata(), image.header.get_zooms()[:3], new_spacing, interpolation=interpolation)
-    new_affine = np.copy(image.affine)
-    np.fill_diagonal(new_affine, new_spacing.tolist() + [1])
-    new_affine[:3, 3] += calculate_origin_offset(new_spacing, image.header.get_zooms()[:3])
-    print(f"Resized image shape: {new_data.shape}")
-    return new_img_like(image, new_data, affine=new_affine)
-
-# Combine resize (no padding needed if resizing to the optimal size)
-def preprocess_image(image, target_shape=(128, 128, 128), interpolation="linear"):
-    # Resize the image to match the target shape
-    resized_image = resize(image, new_shape=target_shape, interpolation=interpolation)
-    print(f"Preprocessed image shape (after resize): {resized_image.shape}")
-    return resized_image
-
-# Data augmentation function: Mirroring with probability of 0.5
-def augment_data(image):
-    print(f"Image shape before augmentation: {image.shape}")
-    augmented_image = image.copy()
-    for axis in range(3):
-        if np.random.rand() > 0.5:
-            augmented_image = np.flip(augmented_image, axis=axis)
-    print(f"Image shape after augmentation: {augmented_image.shape}")
-    return augmented_image
-
-# Convolution block with L2 regularization
+# Convolution block with L2 regularization, InstanceNorm, and Leaky ReLU
 def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
     x = Conv3D(filters, kernel_size, strides=strides, padding='same', kernel_regularizer=l2(1e-5))(x)
     x = tfa.layers.InstanceNormalization()(x)
     x = LeakyReLU()(x)
     return x
 
-# Context module
+# Context module: two convolution blocks with optional dropout
 def context_module(x, filters):
     x = convolution_block(x, filters)
     x = SpatialDropout3D(0.4)(x)
     x = convolution_block(x, filters)
     return x
 
-# CNN Model definition
-def create_cnn_model():
-    input_img = Input(shape=(128, 128, 128, 1))
-    x = convolution_block(input_img, 16, strides=(1, 1, 1))
+# Full 3D CNN classification architecture based on the encoder path
+def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=7):
+    # Input layer
+    input_img = Input(shape=input_shape)
+    
+    # Conv1 block (16 filters)
+    x = convolution_block(input_img, 16)
     conv1_out = x
-
-    # Context 1
+    
+    # Context 1 (16 filters)
     x = context_module(x, 16)
     x = Add()([x, conv1_out])
+    
+    # Conv2 block (32 filters, stride 2)
     x = convolution_block(x, 32, strides=(2, 2, 2))
     conv2_out = x
-
-    # Context 2
+    
+    # Context 2 (32 filters)
     x = context_module(x, 32)
     x = Add()([x, conv2_out])
+    
+    # Conv3 block (64 filters, stride 2)
     x = convolution_block(x, 64, strides=(2, 2, 2))
     conv3_out = x
-
-    # Context 3
+    
+    # Context 3 (64 filters)
     x = context_module(x, 64)
     x = Add()([x, conv3_out])
+    
+    # Conv4 block (128 filters, stride 2)
     x = convolution_block(x, 128, strides=(2, 2, 2))
     conv4_out = x
-
-    # Context 4
+    
+    # Context 4 (128 filters)
     x = context_module(x, 128)
     x = Add()([x, conv4_out])
+    
+    # Conv5 block (256 filters, stride 2)
     x = convolution_block(x, 256, strides=(2, 2, 2))
-
-    # Context 5
+    conv5_out = x
+    
+    # Context 5 (256 filters)
     x = context_module(x, 256)
-
+    x = Add()([x, conv5_out])
+    
     # Global Average Pooling
     x = GlobalAveragePooling3D()(x)
-
-    # Dropout layer after GAP
+    
+    # Dropout
     x = Dropout(0.4)(x)
-
-    # Output layer
-    output = Dense(2, activation='softmax')(x)
-
+    
+    # Dense layer with softmax for classification
+    output = Dense(num_classes, activation='softmax')(x)
+    
+    # Create model
     model = Model(inputs=input_img, outputs=output)
     model.summary()
-
+    
     return model
 
-# Training loop using StratifiedKFold
-def train_model(X, Y):
+# Data augmentation (mirroring along each axis with a 50% probability)
+def augment_data(image):
+    augmented_image = image.copy()
+    for axis in range(3):
+        if np.random.rand() > 0.5:
+            augmented_image = np.flip(augmented_image, axis=axis)
+    return augmented_image
+
+# Training loop
+def train_model(X, Y, class_weights):
     stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
     all_y_val = []
     all_y_val_pred = []
     all_auc_scores = []
 
-    for fold_num, (train, val) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
-        # Preprocess and augment training data
-        X_train_preprocessed = np.array([preprocess_image(X[i]) for i in train])
-        X_train_augmented = np.array([augment_data(X_train_preprocessed[i]) for i in range(len(train))])
-        Y_train = Y[train]
+    for fold_num, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
+        X_train, X_val = X[train_idx], X[val_idx]
+        Y_train, Y_val = Y[train_idx], Y[val_idx]
+
+        # Augment the training data
+        X_train_augmented = np.array([augment_data(X[i]) for i in train_idx])
 
         # Create and compile the model
-        with tf.distribute.MirroredStrategy().scope():
-            model = create_cnn_model()
-            model.compile(optimizer=Adam(learning_rate=5e-4),
-                          loss='categorical_crossentropy',
-                          metrics=['accuracy', AUC(name='auc')])
+        model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=7)
+        model.compile(optimizer=Adam(learning_rate=5e-4),
+                      loss='categorical_crossentropy',
+                      metrics=['accuracy', AUC(name='auc')])
 
-            # Callbacks for early stopping and learning rate reduction
-            early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
-            reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
+        # Callbacks for early stopping and learning rate reduction
+        early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
+        reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
 
-            # Train the model
-            history = model.fit(X_train_augmented, Y_train,
-                                batch_size=5,
-                                epochs=200,
-                                validation_data=(X[val], Y[val]),
-                                callbacks=[early_stopping, reduce_lr])
+        # Train the model
+        history = model.fit(X_train_augmented, Y_train,
+                            batch_size=5,
+                            epochs=200,
+                            validation_data=(X_val, Y_val),
+                            callbacks=[early_stopping, reduce_lr],
+                            class_weight=class_weights)
 
         # Make predictions on the validation set
-        y_val_pred = model.predict(X[val])
-        all_y_val.extend(Y[val][:, 1])
+        y_val_pred = model.predict(X_val)
+        all_y_val.extend(Y_val[:, 1])
         all_y_val_pred.extend(y_val_pred[:, 1])
 
         # Calculate AUC for the current fold
-        auc_score = roc_auc_score(Y[val][:, 1], y_val_pred[:, 1])
+        auc_score = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
         all_auc_scores.append(auc_score)
         print(f"AUC for fold {fold_num + 1}: {auc_score:.4f}")
-
-        # Plot the AUC history for the current fold
-        plt.figure()
-        plt.plot(history.history['auc'], label='Train AUC')
-        plt.plot(history.history['val_auc'], label='Validation AUC', linestyle='--')
-        plt.title(f'Fold {fold_num + 1} - AUC')
-        plt.xlabel('Epochs')
-        plt.ylabel('AUC')
-        plt.legend()
-        plt.show()
-
-        K.clear_session()
 
     # Calculate and print the average AUC across all folds
     average_auc = sum(all_auc_scores) / len(all_auc_scores)
@@ -177,7 +160,11 @@ task = 'cd'
 modality = 'PET'
 train_data, train_label, masker = loading_mask(task, modality)  # Assumed this function is available in your environment
 X = np.array(train_data)
-Y = to_categorical(train_label, num_classes=2)
+Y = to_categorical(train_label, num_classes=7)
 
-# Train the model without class weights
-train_model(X, Y)
+# Compute class weights to handle class imbalance
+class_weights = compute_class_weight('balanced', np.unique(train_label), train_label)
+class_weights_dict = {i: class_weights[i] for i in range(len(class_weights))}
+
+# Train the model
+train_model(X, Y, class_weights_dict)
