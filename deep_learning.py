@@ -22,6 +22,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 import tensorflow_addons as tfa
 from tensorflow.keras.optimizers import Adam
+from nilearn.input_data import NiftiMasker
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.metrics import AUC
 from sklearn.utils.class_weight import compute_class_weight
