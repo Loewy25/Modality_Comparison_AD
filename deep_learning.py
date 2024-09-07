@@ -10,6 +10,8 @@ from tensorflow.keras.utils import to_categorical
 from sklearn.metrics import roc_auc_score
 import matplotlib.pyplot as plt
 from tensorflow.keras import backend as K
+from data_loading import loading_mask
+from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
 
 # Data augmentation function: Mirroring with probability of 0.5
 def augment_data(image):
