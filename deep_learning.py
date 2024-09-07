@@ -209,11 +209,6 @@ def loading_mask_3d(task, modality):
         # Apply the mask, which flattens the image into 1D
         masked_data = masker.fit_transform(data_train[i])
         
-        # If we don't know the original shape yet, extract it from the first image
-        if original_shape is None:
-            # Infer the original 3D shape (before the mask flattened it)
-            original_shape = data_train[i].shape[:3]
-            print(f"Original shape of the image: {original_shape}")
         
         # Reshape the flattened data back into the original 3D shape
         reshaped_data = masker.inverse_transform(masked_data).get_fdata().reshape(original_shape)
