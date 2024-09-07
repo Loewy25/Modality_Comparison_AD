@@ -155,16 +155,20 @@ def train_model(X, Y, class_weights):
     average_auc = sum(all_auc_scores) / len(all_auc_scores)
     print(f"Average AUC across all folds: {average_auc:.4f}")
 
-# Example data loading
-task = 'cd'
-modality = 'PET'
-train_data, train_label, masker = loading_mask(task, modality)  # Assumed this function is available in your environment
+# Calculate class weights manually
+def calculate_class_weights(labels):
+    classes, class_counts = np.unique(labels, return_counts=True)
+    total_samples = len(labels)
+    class_weights = {int(c): total_samples / (len(classes) * count) for c, count in zip(classes, class_counts)}
+    return class_weights
+
+# Example usage
+train_data, train_label, masker = loading_mask(task, modality)  # Assume function is available
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=7)
 
-# Compute class weights to handle class imbalance
-class_weights = compute_class_weight('balanced', np.unique(train_label), train_label)
-class_weights_dict = {i: class_weights[i] for i in range(len(class_weights))}
+# Calculate class weights manually
+class_weights = calculate_class_weights(train_label)
 
 # Train the model
-train_model(X, Y, class_weights_dict)
+train_model(X, Y, class_weights)
