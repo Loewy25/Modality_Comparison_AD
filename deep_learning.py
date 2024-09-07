@@ -145,4 +145,3 @@ Y = to_categorical(train_label, num_classes=2)
 
 # Train the model without class weights
 train_model(X, Y)
-
