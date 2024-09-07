@@ -109,19 +109,42 @@ def augment_data(image):
             augmented_image = np.flip(augmented_image, axis=axis)
     return augmented_image
 
-# Training loop
+# Training loop with added print statements to confirm shapes
 def train_model(X, Y, class_weights):
     stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
     all_y_val = []
     all_y_val_pred = []
     all_auc_scores = []
 
+    # Print shape of X after loading
+    print(f"Shape of X after loading: {X.shape}")
+
     for fold_num, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
+        # Print the shape of the input data X to confirm what it looks like
+        print(f"Shape of X (full dataset): {X.shape}")
+        
         X_train, X_val = X[train_idx], X[val_idx]
         Y_train, Y_val = Y[train_idx], Y[val_idx]
 
+        # Print the shape of X_train and X_val
+        print(f"Shape of X_train: {X_train.shape}")
+        print(f"Shape of X_val: {X_val.shape}")
+
+        # Debug inside the augment_data function: check X[i] shape before augmentation
+        def augment_data_debug(image):
+            print(f"Shape of image before augmentation: {image.shape}")
+            augmented_image = image.copy()
+            for axis in range(3):  # Assuming a 3D image
+                if np.random.rand() > 0.5:
+                    augmented_image = np.flip(augmented_image, axis=axis)
+            print(f"Shape of image after augmentation: {augmented_image.shape}")
+            return augmented_image
+
         # Augment the training data
-        X_train_augmented = np.array([augment_data(X[i]) for i in train_idx])
+        X_train_augmented = np.array([augment_data_debug(X[i]) for i in train_idx])
+
+        # Print the shape before passing it into the model
+        print(f"Shape of X_train_augmented: {X_train_augmented.shape}")
 
         # Create and compile the model
         model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=7)
@@ -154,6 +177,7 @@ def train_model(X, Y, class_weights):
     # Calculate and print the average AUC across all folds
     average_auc = sum(all_auc_scores) / len(all_auc_scores)
     print(f"Average AUC across all folds: {average_auc:.4f}")
+
 
 # Calculate class weights manually
 def calculate_class_weights(labels):
