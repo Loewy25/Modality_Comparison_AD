@@ -7,6 +7,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.metrics import AUC
 from tensorflow.keras.utils import to_categorical
+from sklearn.model_selection import StratifiedKFold 
 from sklearn.metrics import roc_auc_score
 import matplotlib.pyplot as plt
 from tensorflow.keras import backend as K
