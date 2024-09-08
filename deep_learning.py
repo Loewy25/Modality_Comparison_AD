@@ -197,21 +197,22 @@ def pad_image_to_shape(image, target_shape=(128, 128, 128)):
     Assumes that the input is 3D (without a channel dimension).
     """
     current_shape = image.shape  # Get the shape of the 3D image
-    
+
     # Calculate the padding needed for each dimension (height, width, depth)
     padding = [(0, max(target_shape[i] - current_shape[i], 0)) for i in range(3)]
-    
+
     # Apply padding to the image to match the target shape
     padded_image = np.pad(image, padding, mode='constant', constant_values=0)
-    
+
     # If the image is larger than the target shape, crop it
-    slices = [slice(0, target_shape[i]) for i in range(3)]
-    padded_image = padded_image[slices[0], slices[1], slices[2]]
-    
+    slices = [slice(0, min(current_shape[i], target_shape[i])) for i in range(3)]
+    cropped_image = padded_image[slices[0], slices[1], slices[2]]
+
     # Add a channel dimension to make it (128, 128, 128, 1) for CNN input
-    padded_image = padded_image[..., np.newaxis]  # Add channel dimension
-    
-    return padded_image
+    final_image = cropped_image[..., np.newaxis]  # Add channel dimension
+
+    return final_image
+
 
 
 
