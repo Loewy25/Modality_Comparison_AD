@@ -275,6 +275,8 @@ Y = to_categorical(train_label, num_classes=2)
 
 # Calculate class weights manually
 class_weights = calculate_class_weights(train_label)
+import tensorflow as tf
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 # Train the model
 train_model(X, Y, class_weights)
