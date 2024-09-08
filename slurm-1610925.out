@@ -1,12 +1,23 @@
---------------------------------------------------------------
-Begin Slurm Prologue Sun Sep  8 17:19:13 CDT 2024 1725833953
-Job ID:		1610870
-Username:	l.peiwang
-Partition:	tier2_gpu
-End Slurm Prologue Sun Sep  8 17:19:13 CDT 2024 1725833953
---------------------------------------------------------------
-2024-09-08 17:19:13.450306: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
-2024-09-08 17:19:13.450343: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+Sun Sep  8 17:50:02 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 545.23.08              Driver Version: 545.23.08    CUDA Version: 12.3     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla T4                       Off | 00000000:3D:00.0 Off |                    0 |
+| N/A   26C    P8               9W /  70W |      2MiB / 15360MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
 /home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow_addons/utils/tfa_eol_msg.py:23: UserWarning: 
 
 TensorFlow Addons (TFA) has ended development and introduction of new features.
@@ -46,16 +57,9 @@ https://github.com/tensorflow/addons
   warnings.warn(
 /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
   warnings.warn(
-2024-09-08 17:23:05.222077: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
-2024-09-08 17:23:05.222167: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublas.so.11'; dlerror: libcublas.so.11: cannot open shared object file: No such file or directory
-2024-09-08 17:23:05.222214: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublasLt.so.11'; dlerror: libcublasLt.so.11: cannot open shared object file: No such file or directory
-2024-09-08 17:23:05.223979: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusolver.so.11'; dlerror: libcusolver.so.11: cannot open shared object file: No such file or directory
-2024-09-08 17:23:05.224040: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusparse.so.11'; dlerror: libcusparse.so.11: cannot open shared object file: No such file or directory
-2024-09-08 17:23:05.224085: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudnn.so.8'; dlerror: libcudnn.so.8: cannot open shared object file: No such file or directory
-2024-09-08 17:23:05.224103: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1850] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
-Skipping registering GPU devices...
-2024-09-08 17:23:10.677806: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+2024-09-08 17:54:01.220982: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
 To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-09-08 17:54:04.263223: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 13624 MB memory:  -> device: 0, name: Tesla T4, pci bus id: 0000:3d:00.0, compute capability: 7.5
 Number of CN subjects:
 263
 Number of PCN subjects:
@@ -481,7 +485,7 @@ Current spatial shape: (91, 109, 91)
 Current spatial shape: (91, 109, 91)
 Current spatial shape: (91, 109, 91)
 Built with CUDA: True
-Available GPU Devices: []
+Available GPU Devices: [PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
 Shape of X after loading: (414, 128, 128, 128, 1)
 Shape of X (full dataset): (414, 128, 128, 128, 1)
 Shape of X_train: (276, 128, 128, 128, 1)
@@ -1225,31 +1229,4 @@ Trainable params: 5,894,434
 Non-trainable params: 0
 __________________________________________________________________________________________________
 Epoch 1/200
- 1/56 [..............................] - ETA: 1:30:47 - loss: 1.5431 - accuracy: 0.0000e+00 - auc: 0.0000e+00 2/56 [>.............................] - ETA: 1:26:00 - loss: 1.5139 - accuracy: 0.0000e+00 - auc: 0.0000e+00 3/56 [>.............................] - ETA: 1:24:21 - loss: 1.4067 - accuracy: 0.0667 - auc: 0.0400         4/56 [=>............................] - ETA: 1:22:43 - loss: 1.3078 - accuracy: 0.1500 - auc: 0.0725 5/56 [=>............................] - ETA: 1:21:19 - loss: 1.2636 - accuracy: 0.2000 - auc: 0.0960 6/56 [==>...........................] - ETA: 1:19:49 - loss: 1.1245 - accuracy: 0.3000 - auc: 0.1989 7/56 [==>...........................] - ETA: 1:18:17 - loss: 1.0278 - accuracy: 0.3714 - auc: 0.2849 8/56 [===>..........................] - ETA: 1:16:44 - loss: 0.9872 - accuracy: 0.4000 - auc: 0.3006 9/56 [===>..........................] - ETA: 1:15:09 - loss: 1.0028 - accuracy: 0.4000 - auc: 0.310610/56 [====>.........................] - ETA: 1:13:35 - loss: 1.0201 - accuracy: 0.4000 - auc: 0.310011/56 [====>.........................] - ETA: 1:12:00 - loss: 1.0277 - accuracy: 0.3636 - auc: 0.288612/56 [=====>........................] - ETA: 1:10:25 - loss: 1.0297 - accuracy: 0.3667 - auc: 0.295013/56 [=====>........................] - ETA: 1:08:49 - loss: 1.0101 - accuracy: 0.3846 - auc: 0.299614/56 [======>.......................] - ETA: 1:07:14 - loss: 1.0044 - accuracy: 0.4000 - auc: 0.309415/56 [=======>......................] - ETA: 1:05:38 - loss: 1.0157 - accuracy: 0.4000 - auc: 0.304716/56 [=======>......................] - ETA: 1:04:02 - loss: 1.0140 - accuracy: 0.4000 - auc: 0.3059slurmstepd: error: *** JOB 1610870 ON gpu08 CANCELLED AT 2024-09-08T17:49:51 ***
---------------------------------------------------------------
-Begin Slurm Epilogue Sun Sep  8 17:49:55 CDT 2024 1725835795
-Name                : early-min
-User                : l.peiwang
-Partition           : tier2_gpu
-Nodes               : gpu08
-Cores               : 1
-State               : CANCELLED,CANCELLED by 2035263
-Submit              : 2024-09-08T17:19:12
-Start               : 2024-09-08T17:19:13
-End                 : 2024-09-08T17:49:52
-Reserved Walltime   : 5-10:50:00
-Used Walltime       :   00:30:39
-Used CPU Time       :   00:30:31
-% User (Computation): 93.01%
-% System (I/O)      :  6.99%
-Mem Reserved        : 100000M
-Max Mem Used        : 36.19G (38856224768.0)
-Max Disk Write      : 92.16K (94371.84)
-Max Disk Read       : 6.29G (6757055201.28)
-Max-Mem-Used Node   : gpu08
-Max-Disk-Write Node : gpu08
-Max-Disk-Read Node  : gpu08
-Tesla T4
-Error: Unable to retrieve job statistics. Return: No data is available.
-End Slurm Epilogue Sun Sep  8 17:49:55 CDT 2024 1725835795
---------------------------------------------------------------
+2024-09-08 17:54:14.307608: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8101
