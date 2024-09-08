@@ -1,5 +1,25 @@
-2024-09-08 17:19:13.450306: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
-2024-09-08 17:19:13.450343: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+Sun Sep  8 17:30:13 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 545.23.08              Driver Version: 545.23.08    CUDA Version: 12.3     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla T4                       Off | 00000000:3E:00.0 Off |                    0 |
+| N/A   25C    P8               9W /  70W |      2MiB / 15360MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+2024-09-08 17:30:14.128156: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2024-09-08 17:30:14.128185: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
 /home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow_addons/utils/tfa_eol_msg.py:23: UserWarning: 
 
 TensorFlow Addons (TFA) has ended development and introduction of new features.
@@ -39,15 +59,15 @@ https://github.com/tensorflow/addons
   warnings.warn(
 /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
   warnings.warn(
-2024-09-08 17:23:05.222077: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
-2024-09-08 17:23:05.222167: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublas.so.11'; dlerror: libcublas.so.11: cannot open shared object file: No such file or directory
-2024-09-08 17:23:05.222214: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublasLt.so.11'; dlerror: libcublasLt.so.11: cannot open shared object file: No such file or directory
-2024-09-08 17:23:05.223979: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusolver.so.11'; dlerror: libcusolver.so.11: cannot open shared object file: No such file or directory
-2024-09-08 17:23:05.224040: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusparse.so.11'; dlerror: libcusparse.so.11: cannot open shared object file: No such file or directory
-2024-09-08 17:23:05.224085: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudnn.so.8'; dlerror: libcudnn.so.8: cannot open shared object file: No such file or directory
-2024-09-08 17:23:05.224103: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1850] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+2024-09-08 17:34:15.622987: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2024-09-08 17:34:15.623068: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublas.so.11'; dlerror: libcublas.so.11: cannot open shared object file: No such file or directory
+2024-09-08 17:34:15.623109: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublasLt.so.11'; dlerror: libcublasLt.so.11: cannot open shared object file: No such file or directory
+2024-09-08 17:34:15.624816: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusolver.so.11'; dlerror: libcusolver.so.11: cannot open shared object file: No such file or directory
+2024-09-08 17:34:15.624875: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusparse.so.11'; dlerror: libcusparse.so.11: cannot open shared object file: No such file or directory
+2024-09-08 17:34:15.624914: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudnn.so.8'; dlerror: libcudnn.so.8: cannot open shared object file: No such file or directory
+2024-09-08 17:34:15.624931: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1850] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
 Skipping registering GPU devices...
-2024-09-08 17:23:10.677806: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+2024-09-08 17:34:21.132749: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
 To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
 Number of CN subjects:
 263
@@ -1218,4 +1238,4 @@ Trainable params: 5,894,434
 Non-trainable params: 0
 __________________________________________________________________________________________________
 Epoch 1/200
- 1/56 [..............................] - ETA: 1:30:47 - loss: 1.5431 - accuracy: 0.0000e+00 - auc: 0.0000e+00 2/56 [>.............................] - ETA: 1:26:00 - loss: 1.5139 - accuracy: 0.0000e+00 - auc: 0.0000e+00 3/56 [>.............................] - ETA: 1:24:21 - loss: 1.4067 - accuracy: 0.0667 - auc: 0.0400         4/56 [=>............................] - ETA: 1:22:43 - loss: 1.3078 - accuracy: 0.1500 - auc: 0.0725 5/56 [=>............................] - ETA: 1:21:19 - loss: 1.2636 - accuracy: 0.2000 - auc: 0.0960 6/56 [==>...........................] - ETA: 1:19:49 - loss: 1.1245 - accuracy: 0.3000 - auc: 0.1989 7/56 [==>...........................] - ETA: 1:18:17 - loss: 1.0278 - accuracy: 0.3714 - auc: 0.2849 8/56 [===>..........................] - ETA: 1:16:44 - loss: 0.9872 - accuracy: 0.4000 - auc: 0.3006
+ 1/56 [..............................] - ETA: 1:31:08 - loss: 1.8178 - accuracy: 0.0000e+00 - auc: 0.0000e+00
