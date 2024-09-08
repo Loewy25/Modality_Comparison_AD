@@ -190,14 +190,25 @@ def calculate_class_weights(labels):
 
 from nilearn.image import resample_img
 def pad_image_to_shape(image, target_shape=(128, 128, 128)):
-    """Pads or crops an image to the target shape."""
-    current_shape = image.shape
+    """Pads or crops an image to the target shape. Handles both 3D and 4D images."""
+    current_shape = image.shape[:3]  # Only consider the spatial dimensions (ignore channels)
+    
+    # Calculate padding for each spatial dimension (height, width, depth)
     padding = [(0, max(target_shape[i] - current_shape[i], 0)) for i in range(3)]
+    
+    # Pad the image only on the spatial dimensions (3D)
     padded_image = np.pad(image, padding, mode='constant', constant_values=0)
     
     # If the image is larger than the target shape, crop it
     slices = [slice(0, min(current_shape[i], target_shape[i])) for i in range(3)]
-    return padded_image[slices[0], slices[1], slices[2]]
+    padded_image = padded_image[slices[0], slices[1], slices[2]]
+    
+    # If the image had a channel dimension (e.g., shape (128, 128, 128, 1)), retain that
+    if len(image.shape) == 4:
+        padded_image = padded_image[..., np.newaxis]
+    
+    return padded_image
+
 
 def loading_mask_3d(task, modality):
     # Loading and generating data
