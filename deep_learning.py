@@ -193,33 +193,28 @@ def pad_image_to_shape(image, target_shape=(128, 128, 128)):
     """
     Pads or crops an image to the target shape. Handles both 3D and 4D images.
     """
-    # If the image has 4 dimensions (e.g., (128, 128, 128, 1)), handle it separately
+    # Check if image has 4 dimensions (e.g., (128, 128, 128, 1)) or just 3D
     if len(image.shape) == 4:
         current_shape = image.shape[:3]  # Only consider the spatial dimensions
-        channel_dim = image.shape[3]     # Channel dimension (keep it as is)
     else:
-        current_shape = image.shape  # Only spatial dimensions (3D)
-        channel_dim = None  # No channel dimension
+        current_shape = image.shape  # Only spatial dimensions
 
     # Calculate padding for each spatial dimension (height, width, depth)
     padding = [(0, max(target_shape[i] - current_shape[i], 0)) for i in range(3)]
-    
-    # If the image is 4D, add padding for the channel dimension (no padding needed for channels)
-    if channel_dim is not None:
-        padding.append((0, 0))  # No padding for the channel dimension
 
-    # Pad the image on the spatial dimensions (and channel if 4D)
+    # Pad the image on the spatial dimensions
     padded_image = np.pad(image, padding, mode='constant', constant_values=0)
 
     # If the image is larger than the target shape, crop it
     slices = [slice(0, min(current_shape[i], target_shape[i])) for i in range(3)]
     padded_image = padded_image[slices[0], slices[1], slices[2]]
 
-    # If the image had a channel dimension (4D), preserve it
-    if channel_dim is not None:
-        padded_image = np.expand_dims(padded_image, axis=-1)  # Keep channel dimension
+    # Ensure the image has a channel dimension (128, 128, 128, 1)
+    if len(padded_image.shape) == 3:  # Only add channel dimension if it's missing
+        padded_image = padded_image[..., np.newaxis]  # Add single channel
 
     return padded_image
+
 
 def loading_mask_3d(task, modality):
     """
