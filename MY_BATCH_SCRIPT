@@ -16,6 +16,8 @@
 #SBATCH --account=aristeidis_sotiras
 
 module load python
+module load cuda/11.3
+module load cudnn/8.1.1
 nvidia-smi
 
 
