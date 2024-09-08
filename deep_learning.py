@@ -43,7 +43,7 @@ def context_module(x, filters):
     return x
 
 # Full 3D CNN classification architecture based on the encoder path
-def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=7):
+def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     # Input layer
     input_img = Input(shape=input_shape)
     
