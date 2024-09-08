@@ -190,24 +190,33 @@ def calculate_class_weights(labels):
 
 from nilearn.image import resample_img
 def pad_image_to_shape(image, target_shape=(128, 128, 128)):
-    """Pads or crops an image to the target shape. Handles both 3D and 4D images."""
-    current_shape = image.shape[:3]  # Only consider the spatial dimensions (ignore channels)
-    
+    """
+    Pads or crops an image to the target shape. Handles both 3D and 4D images.
+    """
+    # If the image has 4 dimensions (e.g., (128, 128, 128, 1)), handle it separately
+    if len(image.shape) == 4:
+        current_shape = image.shape[:3]  # Only consider the spatial dimensions
+        channel_dim = image.shape[3]  # Channel dimension
+    else:
+        current_shape = image.shape  # Only spatial dimensions
+        channel_dim = None  # No channel dimension
+
     # Calculate padding for each spatial dimension (height, width, depth)
     padding = [(0, max(target_shape[i] - current_shape[i], 0)) for i in range(3)]
     
-    # Pad the image only on the spatial dimensions (3D)
+    # Pad the image only on the spatial dimensions
     padded_image = np.pad(image, padding, mode='constant', constant_values=0)
-    
+
     # If the image is larger than the target shape, crop it
     slices = [slice(0, min(current_shape[i], target_shape[i])) for i in range(3)]
     padded_image = padded_image[slices[0], slices[1], slices[2]]
-    
-    # If the image had a channel dimension (e.g., shape (128, 128, 128, 1)), retain that
-    if len(image.shape) == 4:
-        padded_image = padded_image[..., np.newaxis]
-    
+
+    # If the image had a channel dimension (4D), preserve it
+    if channel_dim is not None:
+        padded_image = np.expand_dims(padded_image, axis=-1)
+
     return padded_image
+
 
 
 def loading_mask_3d(task, modality):
