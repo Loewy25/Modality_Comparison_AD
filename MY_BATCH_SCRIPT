@@ -6,7 +6,7 @@
 #SBATCH --mem 100000M
 #SBATCH -t 130:50:00
 #SBATCH --gres=gpu:1
-#SBATCH --exclude=gpu06
+
 
 
 #SBATCH --partition=tier2_gpu
@@ -16,6 +16,7 @@
 #SBATCH --account=aristeidis_sotiras
 
 module load python
+nvidia-smi
 
 
 source ~/liuenv/bin/activate
