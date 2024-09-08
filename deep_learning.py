@@ -193,30 +193,32 @@ import numpy as np
 
 def pad_image_to_shape(image, target_shape=(128, 128, 128)):
     """
-    Pads or crops a 3D image to the target shape of (128, 128, 128).
-    Assumes that the input is 3D (without a channel dimension).
+    Pads or crops an image to the target shape of (128, 128, 128).
+    Assumes that the input may already include a channel dimension.
     """
-    current_shape = image.shape  # Get the shape of the 3D image
-    print(current_shape)
+    # Assume the last dimension is the channel if its size is 1
+    if image.shape[-1] == 1:
+        spatial_shape = image.shape[:-1]
+    else:
+        spatial_shape = image.shape  # Handle the case if no channel dimension is present
 
-    # Calculate the padding needed for each dimension (height, width, depth)
-    padding = [(max((target_shape[i] - current_shape[i]) // 2, 0),
-                max((target_shape[i] - current_shape[i]) - (target_shape[i] - current_shape[i]) // 2, 0))
+    print("Current spatial shape:", spatial_shape)
+
+    # Calculate the padding needed for each spatial dimension (height, width, depth)
+    padding = [(max((target_shape[i] - spatial_shape[i]) // 2, 0),
+                max((target_shape[i] - spatial_shape[i]) - (target_shape[i] - spatial_shape[i]) // 2, 0))
                for i in range(3)]
 
-    # Apply padding to the image to match the target shape
-    padded_image = np.pad(image, padding, mode='constant', constant_values=0)
+    # Apply padding to the spatial dimensions
+    padded_image = np.pad(image, [(p[0], p[1]) for p in padding] + [(0,0)], mode='constant', constant_values=0)
 
-    # If the image is larger than the target shape, crop it
-    start = [(current_shape[i] - target_shape[i]) // 2 if current_shape[i] > target_shape[i] else 0 for i in range(3)]
-    end = [start[i] + target_shape[i] if current_shape[i] > target_shape[i] else target_shape[i] for i in range(3)]
-    slices = tuple(slice(start[dim], end[dim]) for dim in range(3))
+    # If the image's spatial dimensions are larger than the target shape, crop it
+    start = [(spatial_shape[i] - target_shape[i]) // 2 if spatial_shape[i] > target_shape[i] else 0 for i in range(3)]
+    end = [start[i] + target_shape[i] if spatial_shape[i] > target_shape[i] else target_shape[i] for i in range(3)]
+    slices = tuple(slice(start[dim], end[dim]) for dim in range(3)) + (slice(None),)  # Preserve the channel dimension
     cropped_image = padded_image[slices]
 
-    # Add a channel dimension to make it (128, 128, 128, 1) for CNN input
-    final_image = cropped_image[..., np.newaxis]  # Add channel dimension
-
-    return final_image
+    return cropped_image
 
 
 
