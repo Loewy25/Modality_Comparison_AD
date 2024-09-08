@@ -189,36 +189,35 @@ def calculate_class_weights(labels):
 
 
 from nilearn.image import resample_img
+import numpy as np
+
 def pad_image_to_shape(image, target_shape=(128, 128, 128)):
     """
-    Pads or crops an image to the target shape. Handles both 3D and 4D images.
+    Pads or crops a 3D image to the target shape of (128, 128, 128).
+    Assumes that the input is 3D (without a channel dimension).
     """
-    # Check if image has 4 dimensions (e.g., (128, 128, 128, 1)) or just 3D
-    if len(image.shape) == 4:
-        current_shape = image.shape[:3]  # Only consider the spatial dimensions
-    else:
-        current_shape = image.shape  # Only spatial dimensions
-
-    # Calculate padding for each spatial dimension (height, width, depth)
+    current_shape = image.shape  # Get the shape of the 3D image
+    
+    # Calculate the padding needed for each dimension (height, width, depth)
     padding = [(0, max(target_shape[i] - current_shape[i], 0)) for i in range(3)]
-
-    # Pad the image on the spatial dimensions
+    
+    # Apply padding to the image to match the target shape
     padded_image = np.pad(image, padding, mode='constant', constant_values=0)
-
+    
     # If the image is larger than the target shape, crop it
-    slices = [slice(0, min(current_shape[i], target_shape[i])) for i in range(3)]
+    slices = [slice(0, target_shape[i]) for i in range(3)]
     padded_image = padded_image[slices[0], slices[1], slices[2]]
-
-    # Ensure the image has a channel dimension (128, 128, 128, 1)
-    if len(padded_image.shape) == 3:  # Only add channel dimension if it's missing
-        padded_image = padded_image[..., np.newaxis]  # Add single channel
-
+    
+    # Add a channel dimension to make it (128, 128, 128, 1) for CNN input
+    padded_image = padded_image[..., np.newaxis]  # Add channel dimension
+    
     return padded_image
+
 
 
 def loading_mask_3d(task, modality):
     """
-    Load the data, apply NiftiMasker, and pad the images to the target shape.
+    Load the data, apply NiftiMasker, and pad the images to the target shape (128, 128, 128).
     """
     # Loading and generating data
     images_pet, images_mri, labels = generate_data_path()
@@ -256,10 +255,8 @@ def loading_mask_3d(task, modality):
     # Convert list to numpy array for consistency
     train_data = np.array(train_data)
     
-    # Add channel dimension for the CNN (128, 128, 128, 1)
-    train_data = train_data[..., np.newaxis]
-    
     return train_data, train_label, masker
+
 task = 'cd'
 modality = 'PET'
 # Example usage
