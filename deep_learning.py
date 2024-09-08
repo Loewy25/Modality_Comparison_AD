@@ -196,15 +196,19 @@ def pad_image_to_shape(image, target_shape=(128, 128, 128)):
     # If the image has 4 dimensions (e.g., (128, 128, 128, 1)), handle it separately
     if len(image.shape) == 4:
         current_shape = image.shape[:3]  # Only consider the spatial dimensions
-        channel_dim = image.shape[3]  # Channel dimension
+        channel_dim = image.shape[3]     # Channel dimension (keep it as is)
     else:
-        current_shape = image.shape  # Only spatial dimensions
+        current_shape = image.shape  # Only spatial dimensions (3D)
         channel_dim = None  # No channel dimension
 
     # Calculate padding for each spatial dimension (height, width, depth)
     padding = [(0, max(target_shape[i] - current_shape[i], 0)) for i in range(3)]
     
-    # Pad the image only on the spatial dimensions
+    # If the image is 4D, add padding for the channel dimension (no padding needed for channels)
+    if channel_dim is not None:
+        padding.append((0, 0))  # No padding for the channel dimension
+
+    # Pad the image on the spatial dimensions (and channel if 4D)
     padded_image = np.pad(image, padding, mode='constant', constant_values=0)
 
     # If the image is larger than the target shape, crop it
@@ -213,13 +217,14 @@ def pad_image_to_shape(image, target_shape=(128, 128, 128)):
 
     # If the image had a channel dimension (4D), preserve it
     if channel_dim is not None:
-        padded_image = np.expand_dims(padded_image, axis=-1)
+        padded_image = np.expand_dims(padded_image, axis=-1)  # Keep channel dimension
 
     return padded_image
 
-
-
 def loading_mask_3d(task, modality):
+    """
+    Load the data, apply NiftiMasker, and pad the images to the target shape.
+    """
     # Loading and generating data
     images_pet, images_mri, labels = generate_data_path()
     
@@ -244,7 +249,7 @@ def loading_mask_3d(task, modality):
         # Reshape the flattened data back into the original 3D shape
         reshaped_data = masker.inverse_transform(masked_data).get_fdata()
         
-        # Resize or pad the image to the target shape
+        # Resize or pad the image to the target shape using the updated function
         padded_data = pad_image_to_shape(reshaped_data, target_shape=target_shape)
         
         # Add reshaped 3D data to the list
@@ -260,7 +265,6 @@ def loading_mask_3d(task, modality):
     train_data = train_data[..., np.newaxis]
     
     return train_data, train_label, masker
-
 task = 'cd'
 modality = 'PET'
 # Example usage
