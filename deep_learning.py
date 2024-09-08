@@ -148,7 +148,7 @@ def train_model(X, Y, class_weights):
         print(f"Shape of X_train_augmented: {X_train_augmented.shape}")
 
         # Create and compile the model
-        model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=7)
+        model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
         model.compile(optimizer=Adam(learning_rate=5e-4),
                       loss='categorical_crossentropy',
                       metrics=['accuracy', AUC(name='auc')])
