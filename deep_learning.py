@@ -258,7 +258,7 @@ def loading_mask_3d(task, modality):
     return train_data, train_label, masker
 
 task = 'cd'
-modality = 'MRI'
+modality = 'PET'
 # Example usage
 train_data, train_label, masker = loading_mask_3d(task, modality)  # Assume function is available
 X = np.array(train_data)
@@ -273,3 +273,4 @@ print("Available GPU Devices:", tf.config.list_physical_devices('GPU'))
 
 # Train the model
 train_model(X, Y, class_weights)
+
