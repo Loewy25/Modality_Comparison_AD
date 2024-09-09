@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J cm-pet
+#SBATCH -J cm-pet-OLD
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 100000M
