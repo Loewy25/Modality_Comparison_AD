@@ -1,0 +1,1270 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Sep  9 09:37:56 CDT 2024 1725892676
+Job ID:		1611097
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Mon Sep  9 09:37:56 CDT 2024 1725892676
+--------------------------------------------------------------
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow_addons/utils/tfa_eol_msg.py:23: UserWarning: 
+
+TensorFlow Addons (TFA) has ended development and introduction of new features.
+TFA has entered a minimal maintenance and release mode until a planned end of life in May 2024.
+Please modify downstream libraries to take dependencies from other repositories in our TensorFlow community (e.g. Keras, Keras-CV, and Keras-NLP). 
+
+For more information see: https://github.com/tensorflow/addons/issues/2807 
+
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow_addons/utils/ensure_tf_install.py:53: UserWarning: Tensorflow Addons supports using Python ops for all Tensorflow versions above or equal to 2.11.0 and strictly below 2.14.0 (nightly versions are not supported). 
+ The versions of TensorFlow you are currently using is 2.8.4 and is not supported. 
+Some things might work, some things might not.
+If you were to encounter a bug, do not file an issue.
+If you want to make sure you're using a tested and supported configuration, either change the TensorFlow version or the TensorFlow Addons's version. 
+You can find the compatibility matrix in TensorFlow Addon's readme:
+https://github.com/tensorflow/addons
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
+  warnings.warn(
+2024-09-09 09:43:54.987104: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-09-09 09:43:56.841817: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 38330 MB memory:  -> device: 0, name: NVIDIA A100-SXM4-40GB, pci bus id: 0000:17:00.0, compute capability: 8.0
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Built with CUDA: True
+Available GPU Devices: [PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_1 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d (Conv3D)                (None, 128, 128, 12  224         ['input_1[0][0]']                
+                                8, 8)                                                             
+                                                                                                  
+ instance_normalization (Instan  (None, 128, 128, 12  16         ['conv3d[0][0]']                 
+ ceNormalization)               8, 8)                                                             
+                                                                                                  
+ leaky_re_lu (LeakyReLU)        (None, 128, 128, 12  0           ['instance_normalization[0][0]'] 
+                                8, 8)                                                             
+                                                                                                  
+ conv3d_1 (Conv3D)              (None, 128, 128, 12  1736        ['leaky_re_lu[0][0]']            
+                                8, 8)                                                             
+                                                                                                  
+ instance_normalization_1 (Inst  (None, 128, 128, 12  16         ['conv3d_1[0][0]']               
+ anceNormalization)             8, 8)                                                             
+                                                                                                  
+ leaky_re_lu_1 (LeakyReLU)      (None, 128, 128, 12  0           ['instance_normalization_1[0][0]'
+                                8, 8)                            ]                                
+                                                                                                  
+ spatial_dropout3d (SpatialDrop  (None, 128, 128, 12  0          ['leaky_re_lu_1[0][0]']          
+ out3D)                         8, 8)                                                             
+                                                                                                  
+ conv3d_2 (Conv3D)              (None, 128, 128, 12  1736        ['spatial_dropout3d[0][0]']      
+                                8, 8)                                                             
+                                                                                                  
+ instance_normalization_2 (Inst  (None, 128, 128, 12  16         ['conv3d_2[0][0]']               
+ anceNormalization)             8, 8)                                                             
+                                                                                                  
+ leaky_re_lu_2 (LeakyReLU)      (None, 128, 128, 12  0           ['instance_normalization_2[0][0]'
+                                8, 8)                            ]                                
+                                                                                                  
+ add (Add)                      (None, 128, 128, 12  0           ['leaky_re_lu_2[0][0]',          
+                                8, 8)                             'leaky_re_lu[0][0]']            
+                                                                                                  
+ conv3d_3 (Conv3D)              (None, 64, 64, 64,   3472        ['add[0][0]']                    
+                                16)                                                               
+                                                                                                  
+ instance_normalization_3 (Inst  (None, 64, 64, 64,   32         ['conv3d_3[0][0]']               
+ anceNormalization)             16)                                                               
+                                                                                                  
+ leaky_re_lu_3 (LeakyReLU)      (None, 64, 64, 64,   0           ['instance_normalization_3[0][0]'
+                                16)                              ]                                
+                                                                                                  
+ conv3d_4 (Conv3D)              (None, 64, 64, 64,   6928        ['leaky_re_lu_3[0][0]']          
+                                16)                                                               
+                                                                                                  
+ instance_normalization_4 (Inst  (None, 64, 64, 64,   32         ['conv3d_4[0][0]']               
+ anceNormalization)             16)                                                               
+                                                                                                  
+ leaky_re_lu_4 (LeakyReLU)      (None, 64, 64, 64,   0           ['instance_normalization_4[0][0]'
+                                16)                              ]                                
+                                                                                                  
+ spatial_dropout3d_1 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_4[0][0]']          
+ opout3D)                       16)                                                               
+                                                                                                  
+ conv3d_5 (Conv3D)              (None, 64, 64, 64,   6928        ['spatial_dropout3d_1[0][0]']    
+                                16)                                                               
+                                                                                                  
+ instance_normalization_5 (Inst  (None, 64, 64, 64,   32         ['conv3d_5[0][0]']               
+ anceNormalization)             16)                                                               
+                                                                                                  
+ leaky_re_lu_5 (LeakyReLU)      (None, 64, 64, 64,   0           ['instance_normalization_5[0][0]'
+                                16)                              ]                                
+                                                                                                  
+ add_1 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_5[0][0]',          
+                                16)                               'leaky_re_lu_3[0][0]']          
+                                                                                                  
+ conv3d_6 (Conv3D)              (None, 32, 32, 32,   13856       ['add_1[0][0]']                  
+                                32)                                                               
+                                                                                                  
+ instance_normalization_6 (Inst  (None, 32, 32, 32,   64         ['conv3d_6[0][0]']               
+ anceNormalization)             32)                                                               
+                                                                                                  
+ leaky_re_lu_6 (LeakyReLU)      (None, 32, 32, 32,   0           ['instance_normalization_6[0][0]'
+                                32)                              ]                                
+                                                                                                  
+ conv3d_7 (Conv3D)              (None, 32, 32, 32,   27680       ['leaky_re_lu_6[0][0]']          
+                                32)                                                               
+                                                                                                  
+ instance_normalization_7 (Inst  (None, 32, 32, 32,   64         ['conv3d_7[0][0]']               
+ anceNormalization)             32)                                                               
+                                                                                                  
+ leaky_re_lu_7 (LeakyReLU)      (None, 32, 32, 32,   0           ['instance_normalization_7[0][0]'
+                                32)                              ]                                
+                                                                                                  
+ spatial_dropout3d_2 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_7[0][0]']          
+ opout3D)                       32)                                                               
+                                                                                                  
+ conv3d_8 (Conv3D)              (None, 32, 32, 32,   27680       ['spatial_dropout3d_2[0][0]']    
+                                32)                                                               
+                                                                                                  
+ instance_normalization_8 (Inst  (None, 32, 32, 32,   64         ['conv3d_8[0][0]']               
+ anceNormalization)             32)                                                               
+                                                                                                  
+ leaky_re_lu_8 (LeakyReLU)      (None, 32, 32, 32,   0           ['instance_normalization_8[0][0]'
+                                32)                              ]                                
+                                                                                                  
+ add_2 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_8[0][0]',          
+                                32)                               'leaky_re_lu_6[0][0]']          
+                                                                                                  
+ conv3d_9 (Conv3D)              (None, 16, 16, 16,   55360       ['add_2[0][0]']                  
+                                64)                                                               
+                                                                                                  
+ instance_normalization_9 (Inst  (None, 16, 16, 16,   128        ['conv3d_9[0][0]']               
+ anceNormalization)             64)                                                               
+                                                                                                  
+ leaky_re_lu_9 (LeakyReLU)      (None, 16, 16, 16,   0           ['instance_normalization_9[0][0]'
+                                64)                              ]                                
+                                                                                                  
+ conv3d_10 (Conv3D)             (None, 16, 16, 16,   110656      ['leaky_re_lu_9[0][0]']          
+                                64)                                                               
+                                                                                                  
+ instance_normalization_10 (Ins  (None, 16, 16, 16,   128        ['conv3d_10[0][0]']              
+ tanceNormalization)            64)                                                               
+                                                                                                  
+ leaky_re_lu_10 (LeakyReLU)     (None, 16, 16, 16,   0           ['instance_normalization_10[0][0]
+                                64)                              ']                               
+                                                                                                  
+ spatial_dropout3d_3 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_10[0][0]']         
+ opout3D)                       64)                                                               
+                                                                                                  
+ conv3d_11 (Conv3D)             (None, 16, 16, 16,   110656      ['spatial_dropout3d_3[0][0]']    
+                                64)                                                               
+                                                                                                  
+ instance_normalization_11 (Ins  (None, 16, 16, 16,   128        ['conv3d_11[0][0]']              
+ tanceNormalization)            64)                                                               
+                                                                                                  
+ leaky_re_lu_11 (LeakyReLU)     (None, 16, 16, 16,   0           ['instance_normalization_11[0][0]
+                                64)                              ']                               
+                                                                                                  
+ add_3 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_11[0][0]',         
+                                64)                               'leaky_re_lu_9[0][0]']          
+                                                                                                  
+ conv3d_12 (Conv3D)             (None, 8, 8, 8, 128  221312      ['add_3[0][0]']                  
+                                )                                                                 
+                                                                                                  
+ instance_normalization_12 (Ins  (None, 8, 8, 8, 128  256        ['conv3d_12[0][0]']              
+ tanceNormalization)            )                                                                 
+                                                                                                  
+ leaky_re_lu_12 (LeakyReLU)     (None, 8, 8, 8, 128  0           ['instance_normalization_12[0][0]
+                                )                                ']                               
+                                                                                                  
+ conv3d_13 (Conv3D)             (None, 8, 8, 8, 128  442496      ['leaky_re_lu_12[0][0]']         
+                                )                                                                 
+                                                                                                  
+ instance_normalization_13 (Ins  (None, 8, 8, 8, 128  256        ['conv3d_13[0][0]']              
+ tanceNormalization)            )                                                                 
+                                                                                                  
+ leaky_re_lu_13 (LeakyReLU)     (None, 8, 8, 8, 128  0           ['instance_normalization_13[0][0]
+                                )                                ']                               
+                                                                                                  
+ spatial_dropout3d_4 (SpatialDr  (None, 8, 8, 8, 128  0          ['leaky_re_lu_13[0][0]']         
+ opout3D)                       )                                                                 
+                                                                                                  
+ conv3d_14 (Conv3D)             (None, 8, 8, 8, 128  442496      ['spatial_dropout3d_4[0][0]']    
+                                )                                                                 
+                                                                                                  
+ instance_normalization_14 (Ins  (None, 8, 8, 8, 128  256        ['conv3d_14[0][0]']              
+ tanceNormalization)            )                                                                 
+                                                                                                  
+ leaky_re_lu_14 (LeakyReLU)     (None, 8, 8, 8, 128  0           ['instance_normalization_14[0][0]
+                                )                                ']                               
+                                                                                                  
+ add_4 (Add)                    (None, 8, 8, 8, 128  0           ['leaky_re_lu_14[0][0]',         
+                                )                                 'leaky_re_lu_12[0][0]']         
+                                                                                                  
+ global_average_pooling3d (Glob  (None, 128)         0           ['add_4[0][0]']                  
+ alAveragePooling3D)                                                                              
+                                                                                                  
+ dropout (Dropout)              (None, 128)          0           ['global_average_pooling3d[0][0]'
+                                                                 ]                                
+                                                                                                  
+ dense (Dense)                  (None, 2)            258         ['dropout[0][0]']                
+                                                                                                  
+==================================================================================================
+Total params: 1,474,962
+Trainable params: 1,474,962
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Epoch 1/200
+Traceback (most recent call last):
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/deep_learning.py", line 275, in <module>
+    train_model(X, Y, class_weights)
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/deep_learning.py", line 152, in train_model
+    history = model.fit(X_train_augmented, Y_train,
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/utils/traceback_utils.py", line 67, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow/python/framework/func_graph.py", line 1147, in autograph_handler
+    raise e.ag_error_metadata.to_exception(e)
+TypeError: in user code:
+
+    File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/engine/training.py", line 1021, in train_function  *
+        return step_function(self, iterator)
+    File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/engine/training.py", line 1010, in step_function  **
+        outputs = model.distribute_strategy.run(run_step, args=(data,))
+    File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/engine/training.py", line 1000, in run_step  **
+        outputs = model.train_step(data)
+    File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/engine/training.py", line 860, in train_step
+        loss = self.compute_loss(x, y, y_pred, sample_weight)
+    File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/engine/training.py", line 918, in compute_loss
+        return self.compiled_loss(
+    File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/engine/compile_utils.py", line 201, in __call__
+        loss_value = loss_obj(y_t, y_p, sample_weight=sw)
+    File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/losses.py", line 142, in __call__
+        return losses_utils.compute_weighted_loss(
+    File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/utils/losses_utils.py", line 309, in compute_weighted_loss
+        losses = tf.convert_to_tensor(losses)
+
+    TypeError: Failed to convert elements of <keras.losses.CategoricalCrossentropy object at 0x152f80cf40a0> to Tensor. Consider casting elements to a supported type. See https://www.tensorflow.org/api_docs/python/tf/dtypes for supported TF dtypes.
+
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Sep  9 09:44:06 CDT 2024 1725893046
+Name                : cd-PET-8
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua401
+Cores               : 2
+State               : COMPLETED
+Submit              : 2024-09-09T09:37:55
+Start               : 2024-09-09T09:37:55
+End                 : 2024-09-09T09:44:03
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:06:08
+Used CPU Time       :   00:03:54
+% User (Computation): 95.14%
+% System (I/O)      :  4.86%
+Mem Reserved        : 500000M
+Max Mem Used        : 28.29G (30378835968.0)
+Max Disk Write      : 20.48K (20971.52)
+Max Disk Read       : 2.85G (3057532272.64)
+Max-Mem-Used Node   : gpua401
+Max-Disk-Write Node : gpua401
+Max-Disk-Read Node  : gpua401
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Mon Sep  9 09:44:06 CDT 2024 1725893046
+--------------------------------------------------------------
