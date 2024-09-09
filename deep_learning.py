@@ -140,7 +140,7 @@ def train_model(X, Y, class_weights):
         # Create and compile the model
         model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
         model.compile(optimizer=Adam(learning_rate=5e-4),
-                      loss=CategoricalCrossentropy,  
+                      loss='CategoricalCrossentropy',  
                       metrics=['accuracy', AUC(name='auc')])
 
 
