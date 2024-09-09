@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J dm-MRI-8
+#SBATCH -J dm-PET-8
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 500000M
