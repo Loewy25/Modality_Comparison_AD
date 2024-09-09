@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J cm-mri-OLD
+#SBATCH -J cd-MRI-OLD
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 100000M
