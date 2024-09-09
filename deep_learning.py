@@ -28,7 +28,6 @@ from tensorflow.keras.metrics import AUC
 from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
 
-# Convolution block with L2 regularization, InstanceNorm, and Leaky ReLU
 def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
     x = Conv3D(filters, kernel_size, strides=strides, padding='same', kernel_regularizer=l2(1e-4))(x)
     x = tfa.layers.InstanceNormalization()(x)
@@ -38,53 +37,53 @@ def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
 # Context module: two convolution blocks with optional dropout
 def context_module(x, filters):
     x = convolution_block(x, filters)
-    x = SpatialDropout3D(0.5)(x)
+    x = SpatialDropout3D(0.3)(x)
     x = convolution_block(x, filters)
     return x
 
-# Full 3D CNN classification architecture based on the encoder path
+# Full 3D CNN classification architecture based on the encoder path with reduced number of filters
 def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     # Input layer
     input_img = Input(shape=input_shape)
     
-    # Conv1 block (16 filters)
-    x = convolution_block(input_img, 16)
+    # Conv1 block (8 filters instead of 16)
+    x = convolution_block(input_img, 8)
     conv1_out = x
     
-    # Context 1 (16 filters)
-    x = context_module(x, 16)
+    # Context 1 (8 filters)
+    x = context_module(x, 8)
     x = Add()([x, conv1_out])
     
-    # Conv2 block (32 filters, stride 2)
-    x = convolution_block(x, 32, strides=(2, 2, 2))
+    # Conv2 block (16 filters instead of 32, stride 2)
+    x = convolution_block(x, 16, strides=(2, 2, 2))
     conv2_out = x
     
-    # Context 2 (32 filters)
-    x = context_module(x, 32)
+    # Context 2 (16 filters)
+    x = context_module(x, 16)
     x = Add()([x, conv2_out])
     
-    # Conv3 block (64 filters, stride 2)
-    x = convolution_block(x, 64, strides=(2, 2, 2))
+    # Conv3 block (32 filters instead of 64, stride 2)
+    x = convolution_block(x, 32, strides=(2, 2, 2))
     conv3_out = x
     
-    # Context 3 (64 filters)
-    x = context_module(x, 64)
+    # Context 3 (32 filters)
+    x = context_module(x, 32)
     x = Add()([x, conv3_out])
     
-    # Conv4 block (128 filters, stride 2)
-    x = convolution_block(x, 128, strides=(2, 2, 2))
+    # Conv4 block (64 filters instead of 128, stride 2)
+    x = convolution_block(x, 64, strides=(2, 2, 2))
     conv4_out = x
     
-    # Context 4 (128 filters)
-    x = context_module(x, 128)
+    # Context 4 (64 filters)
+    x = context_module(x, 64)
     x = Add()([x, conv4_out])
     
-    # Conv5 block (256 filters, stride 2)
-    x = convolution_block(x, 256, strides=(2, 2, 2))
+    # Conv5 block (128 filters instead of 256, stride 2)
+    x = convolution_block(x, 128, strides=(2, 2, 2))
     conv5_out = x
     
-    # Context 5 (256 filters)
-    x = context_module(x, 256)
+    # Context 5 (128 filters)
+    x = context_module(x, 128)
     x = Add()([x, conv5_out])
     
     # Global Average Pooling
@@ -141,7 +140,7 @@ def train_model(X, Y, class_weights):
         # Create and compile the model
         model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
         model.compile(optimizer=Adam(learning_rate=5e-4),
-                      loss=CategoricalCrossentropy(label_smoothing=0.1),  # Add label smoothing
+                      loss=CategoricalCrossentropy,  
                       metrics=['accuracy', AUC(name='auc')])
 
 
