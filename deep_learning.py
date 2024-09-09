@@ -30,7 +30,7 @@ import numpy as np
 
 # Convolution block with L2 regularization, InstanceNorm, and Leaky ReLU
 def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
-    x = Conv3D(filters, kernel_size, strides=strides, padding='same', kernel_regularizer=l2(1e-5))(x)
+    x = Conv3D(filters, kernel_size, strides=strides, padding='same', kernel_regularizer=l2(1e-4))(x)
     x = tfa.layers.InstanceNormalization()(x)
     x = LeakyReLU()(x)
     return x
@@ -38,7 +38,7 @@ def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
 # Context module: two convolution blocks with optional dropout
 def context_module(x, filters):
     x = convolution_block(x, filters)
-    x = SpatialDropout3D(0.4)(x)
+    x = SpatialDropout3D(0.5)(x)
     x = convolution_block(x, filters)
     return x
 
@@ -141,8 +141,9 @@ def train_model(X, Y, class_weights):
         # Create and compile the model
         model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
         model.compile(optimizer=Adam(learning_rate=5e-4),
-                      loss='categorical_crossentropy',  # Add label smoothing,
+                      loss=CategoricalCrossentropy(label_smoothing=0.1),  # Add label smoothing
                       metrics=['accuracy', AUC(name='auc')])
+
 
         # Callbacks for early stopping and learning rate reduction
         early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
