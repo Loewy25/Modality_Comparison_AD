@@ -110,7 +110,7 @@ def augment_data(image):
     return augmented_image
 
 # Training loop with added print statements to confirm shapes
-def train_model(X, Y, class_weights):
+def train_model(X, Y):
     stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
     all_y_val = []
     all_y_val_pred = []
@@ -153,8 +153,7 @@ def train_model(X, Y, class_weights):
                             batch_size=5,
                             epochs=200,
                             validation_data=(X_val, Y_val),
-                            callbacks=[early_stopping, reduce_lr],
-                            class_weight=class_weights)
+                            callbacks=[early_stopping, reduce_lr])
 
         # Make predictions on the validation set
         y_val_pred = model.predict(X_val)
@@ -170,13 +169,6 @@ def train_model(X, Y, class_weights):
     average_auc = sum(all_auc_scores) / len(all_auc_scores)
     print(f"Average AUC across all folds: {average_auc:.4f}")
 
-
-# Calculate class weights manually
-def calculate_class_weights(labels):
-    classes, class_counts = np.unique(labels, return_counts=True)
-    total_samples = len(labels)
-    class_weights = {int(c): total_samples / (len(classes) * count) for c, count in zip(classes, class_counts)}
-    return class_weights
 
 
 from nilearn.image import resample_img
@@ -275,12 +267,11 @@ X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
 
 # Calculate class weights manually
-class_weights = calculate_class_weights(train_label)
 import tensorflow as tf
 print("Built with CUDA:", tf.test.is_built_with_cuda())
 print("Available GPU Devices:", tf.config.list_physical_devices('GPU'))
 
 
 # Train the model
-train_model(X, Y, class_weights)
+train_model(X, Y)
 
