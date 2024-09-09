@@ -3,7 +3,7 @@
 #SBATCH -J cd-MRI-OLD
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH --mem 100000M
+#SBATCH --mem 500000M
 #SBATCH -t 130:50:00
 #SBATCH --gres=gpu:1
 
