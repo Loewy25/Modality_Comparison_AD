@@ -215,9 +215,15 @@ def pad_image_to_shape(image, target_shape=(128, 128, 128)):
 
 
 
+from sklearn.preprocessing import StandardScaler
+from scipy.stats import zscore
+import nibabel as nib
+import numpy as np
+from nilearn.input_data import NiftiMasker
+
 def loading_mask_3d(task, modality):
     """
-    Load the data, apply NiftiMasker, and pad the images to the target shape (128, 128, 128).
+    Load the data, apply NiftiMasker, apply Z-score normalization, and pad the images to the target shape (128, 128, 128).
     """
     # Loading and generating data
     images_pet, images_mri, labels = generate_data_path()
@@ -243,6 +249,9 @@ def loading_mask_3d(task, modality):
         # Reshape the flattened data back into the original 3D shape
         reshaped_data = masker.inverse_transform(masked_data).get_fdata()
         
+        # Z-score normalization in 3D
+        reshaped_data = zscore(reshaped_data, axis=None)  # Normalize the whole 3D volume
+        
         # Resize or pad the image to the target shape using the updated function
         padded_data = pad_image_to_shape(reshaped_data, target_shape=target_shape)
         
@@ -256,6 +265,7 @@ def loading_mask_3d(task, modality):
     train_data = np.array(train_data)
     
     return train_data, train_label, masker
+
 
 task = 'pc'
 modality = 'PET'
