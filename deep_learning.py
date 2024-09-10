@@ -257,7 +257,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.utils import to_categorical
 
-# Function to compute Grad-CAM for a given layer
+
+
+# Function to compute Grad-CAM for a given layer and class index
 def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
     grad_model = tf.keras.models.Model(
         [model.inputs], [model.get_layer(last_conv_layer_name).output, model.output]
@@ -280,20 +282,25 @@ def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
     
     return heatmap.numpy()
 
-# Function to save Grad-CAM heatmaps
-def save_gradcam(heatmap, img, task, modality, layer_name, save_dir='./grad-cam'):
+# Function to overlay the heatmap on the original image and save it
+def save_gradcam(heatmap, img, task, modality, layer_name, class_idx, save_dir='./grad-cam'):
     # Ensure the save directory exists
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
     
-    # Generate the filename with task and modality
-    file_name = f"gradcam_{task}_{modality}_{layer_name}.png"
+    # Generate the filename with task, modality, and class index
+    file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.png"
     save_path = os.path.join(save_dir, file_name)
     
-    # Plot and save the heatmap
+    # Plot and save the heatmap overlaid on the original image
     plt.figure(figsize=(10, 10))
-    plt.title(f"Grad-CAM for {layer_name}")
-    plt.imshow(img[..., 0], cmap='gray')  # Assuming grayscale input, adjust for RGB if needed
+    plt.title(f"Grad-CAM for {layer_name}, Class {class_idx}")
+    
+    # Normalize and display the original image as grayscale
+    img_display = img[0, ..., 0]  # Assuming grayscale input, adjust for RGB if needed
+    img_display = (img_display - img_display.min()) / (img_display.max() - img_display.min())  # Normalize to [0,1]
+    
+    plt.imshow(img_display, cmap='gray')  # Show original image in grayscale
     plt.imshow(heatmap, cmap='jet', alpha=0.5)  # Overlay Grad-CAM heatmap
     plt.axis('off')
     
@@ -301,33 +308,33 @@ def save_gradcam(heatmap, img, task, modality, layer_name, save_dir='./grad-cam'
     plt.savefig(save_path)
     plt.close()  # Close the plot to avoid displaying it
 
-# Function to apply Grad-CAM for all convolutional layers and save them
-def apply_gradcam_all_layers(model, img, task, modality, class_idx=None):
+# Function to apply Grad-CAM for all convolutional layers and save heatmaps for both classes
+def apply_gradcam_all_layers(model, img, task, modality):
     # Get all convolutional layers in the model
     conv_layers = [layer.name for layer in model.layers if 'conv' in layer.name]
     
-    for conv_layer_name in conv_layers:
-        # Generate the Grad-CAM heatmap for each conv layer
-        heatmap = make_gradcam_heatmap(model, img, conv_layer_name, pred_index=class_idx)
-        
-        # Save the heatmap
-        save_gradcam(heatmap, img, task, modality, conv_layer_name)
+    # Loop through both class indices (class 0 and class 1)
+    for class_idx in range(2):
+        for conv_layer_name in conv_layers:
+            # Generate the Grad-CAM heatmap for each conv layer and each class
+            heatmap = make_gradcam_heatmap(model, img, conv_layer_name, pred_index=class_idx)
+            
+            # Save the heatmap
+            save_gradcam(heatmap, img, task, modality, conv_layer_name, class_idx)
 
-
-
-task = 'pc'
+# Example usage:
+task = 'cd'
 modality = 'PET'
-# Example usage
 train_data, train_label, masker = loading_mask_3d(task, modality)  # Assume function is available
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
 
-
 # Train the model
-train_model(X, Y)
-    # Example: Pass a single input image to Grad-CAM (assuming train_data[0] is the image)
+train_model(X, Y)  # Assume the model is already trained
+
+# Pass a single input image to Grad-CAM (assuming train_data[0] is the image)
 img = np.expand_dims(X[0], axis=0)  # Add batch dimension
 
-    # Apply Grad-CAM and save heatmaps for each conv layer
+# Apply Grad-CAM and save heatmaps for both classes and each convolutional layer
 apply_gradcam_all_layers(model, img, task, modality)
 
