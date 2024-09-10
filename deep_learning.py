@@ -295,30 +295,47 @@ def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
     return heatmap.numpy()
 
 # Function to overlay the heatmap on the original image and save it
+import nibabel as nib
+import os
+from nilearn import plotting
+
+# Ensure directory exists for saving the result
+def ensure_directory_exists(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+# Function to overlay the heatmap on a 2D slice of the original 3D image and save it, along with saving the 3D image
 def save_gradcam(heatmap, img, task, modality, layer_name, class_idx, save_dir='./grad-cam'):
     # Ensure the save directory exists
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
+    ensure_directory_exists(save_dir)
     
-    # Generate the filename with task, modality, and class index
-    file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.png"
-    save_path = os.path.join(save_dir, file_name)
+    # Generate the filename with task, modality, and class index for 3D NIfTI file
+    nifti_file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.nii.gz"
+    nifti_save_path = os.path.join(save_dir, nifti_file_name)
     
-    # Plot and save the heatmap overlaid on the original image
-    plt.figure(figsize=(10, 10))
-    plt.title(f"Grad-CAM for {layer_name}, Class {class_idx}")
+    # Save the 3D heatmap as a NIfTI file
+    affine = np.eye(4)  # Identity matrix for affine; adjust if necessary
+    nifti_img = nib.Nifti1Image(heatmap, affine)  # Create the NIfTI object
+    nib.save(nifti_img, nifti_save_path)  # Save the NIfTI image
+    print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
     
-    # Normalize and display the original image as grayscale
-    img_display = img[0, ..., 0]  # Assuming grayscale input, adjust for RGB if needed
-    img_display = (img_display - img_display.min()) / (img_display.max() - img_display.min())  # Normalize to [0,1]
+    # Now save the 2D slices using nilearn's plot_stat_map
+    output_slice_path = os.path.join(save_dir, f'stat_map_{task}_{modality}_{layer_name}_class{class_idx}.png')
     
-    plt.imshow(img_display, cmap='gray')  # Show original image in grayscale
-    plt.imshow(heatmap, cmap='jet', alpha=0.5)  # Overlay Grad-CAM heatmap
-    plt.axis('off')
+    # Plot slices from the heatmap (example: axial slices from 0 to 50 in steps of 5)
+    cmap = 'jet'
+    plotting.plot_stat_map(
+        nifti_img,  # Use the saved NIfTI file for visualization
+        display_mode='x',  # Choose the axis for slicing ('x' = sagittal, 'y' = coronal, 'z' = axial)
+        cut_coords=range(0, 51, 5),  # Customize slice positions; example: [0, 5, 10, ..., 50]
+        title=f'Grad-CAM Slices for {layer_name}, Class {class_idx}',
+        cmap=cmap,
+        output_file=output_slice_path,
+        threshold=0.2,  # You can adjust the threshold based on your heatmap values
+        vmax=1  # Adjust vmax to control color intensity
+    )
     
-    # Save the plot as an image
-    plt.savefig(save_path)
-    plt.close()  # Close the plot to avoid displaying it
+    print(f'Grad-CAM stat map saved at {output_slice_path}')
 
 # Function to apply Grad-CAM for all convolutional layers and save heatmaps for both classes
 def apply_gradcam_all_layers(model, img, task, modality):
