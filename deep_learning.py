@@ -251,6 +251,70 @@ def loading_mask_3d(task, modality):
     return train_data, train_label, masker
 
 
+import os
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+from tensorflow.keras.utils import to_categorical
+
+# Function to compute Grad-CAM for a given layer
+def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
+    grad_model = tf.keras.models.Model(
+        [model.inputs], [model.get_layer(last_conv_layer_name).output, model.output]
+    )
+
+    with tf.GradientTape() as tape:
+        conv_outputs, predictions = grad_model(img)
+        if pred_index is None:
+            pred_index = tf.argmax(predictions[0])
+        loss = predictions[:, pred_index]
+
+    grads = tape.gradient(loss, conv_outputs)
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2, 3))  # Adjust this for 3D
+
+    conv_outputs = conv_outputs[0]
+    conv_outputs = tf.reduce_mean(conv_outputs * pooled_grads, axis=-1)
+
+    heatmap = tf.maximum(conv_outputs, 0)
+    heatmap = heatmap / tf.math.reduce_max(heatmap)
+    
+    return heatmap.numpy()
+
+# Function to save Grad-CAM heatmaps
+def save_gradcam(heatmap, img, task, modality, layer_name, save_dir='./grad-cam'):
+    # Ensure the save directory exists
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+    
+    # Generate the filename with task and modality
+    file_name = f"gradcam_{task}_{modality}_{layer_name}.png"
+    save_path = os.path.join(save_dir, file_name)
+    
+    # Plot and save the heatmap
+    plt.figure(figsize=(10, 10))
+    plt.title(f"Grad-CAM for {layer_name}")
+    plt.imshow(img[..., 0], cmap='gray')  # Assuming grayscale input, adjust for RGB if needed
+    plt.imshow(heatmap, cmap='jet', alpha=0.5)  # Overlay Grad-CAM heatmap
+    plt.axis('off')
+    
+    # Save the plot as an image
+    plt.savefig(save_path)
+    plt.close()  # Close the plot to avoid displaying it
+
+# Function to apply Grad-CAM for all convolutional layers and save them
+def apply_gradcam_all_layers(model, img, task, modality, class_idx=None):
+    # Get all convolutional layers in the model
+    conv_layers = [layer.name for layer in model.layers if 'conv' in layer.name]
+    
+    for conv_layer_name in conv_layers:
+        # Generate the Grad-CAM heatmap for each conv layer
+        heatmap = make_gradcam_heatmap(model, img, conv_layer_name, pred_index=class_idx)
+        
+        # Save the heatmap
+        save_gradcam(heatmap, img, task, modality, conv_layer_name)
+
+
+
 task = 'pc'
 modality = 'PET'
 # Example usage
@@ -258,12 +322,12 @@ train_data, train_label, masker = loading_mask_3d(task, modality)  # Assume func
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
 
-# Calculate class weights manually
-import tensorflow as tf
-print("Built with CUDA:", tf.test.is_built_with_cuda())
-print("Available GPU Devices:", tf.config.list_physical_devices('GPU'))
-
 
 # Train the model
 train_model(X, Y)
+    # Example: Pass a single input image to Grad-CAM (assuming train_data[0] is the image)
+img = np.expand_dims(X[0], axis=0)  # Add batch dimension
+
+    # Apply Grad-CAM and save heatmaps for each conv layer
+apply_gradcam_all_layers(model, img, task, modality)
 
