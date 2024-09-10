@@ -324,7 +324,7 @@ def apply_gradcam_all_layers(model, img, task, modality):
 
 # Example usage:
 task = 'cd'
-modality = 'PET'
+modality = 'MRI'
 train_data, train_label, masker = loading_mask_3d(task, modality)  # Assume function is available
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
