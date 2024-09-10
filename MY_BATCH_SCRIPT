@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J cd-MRI-8
+#SBATCH -J cd-PET-8
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 500000M
