@@ -252,7 +252,7 @@ def loading_mask_3d(task, modality):
 
 
 task = 'dm'
-modality = 'PET'
+modality = 'MRI'
 # Example usage
 train_data, train_label, masker = loading_mask_3d(task, modality)  # Assume function is available
 X = np.array(train_data)
