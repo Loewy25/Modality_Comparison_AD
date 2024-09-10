@@ -81,13 +81,13 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     x = context_module(x, 128)
     x = Add()([x, conv4_out])
     
-    # **Conv5 block (128 filters, stride 2)** - New block
-    x = convolution_block(x, 256, strides=(2, 2, 2))
-    conv5_out = x
+    # # **Conv5 block (128 filters, stride 2)** - New block
+    # x = convolution_block(x, 256, strides=(2, 2, 2))
+    # conv5_out = x
     
-    # **Context 5 (128 filters)** - New block
-    x = context_module(x, 256)
-    x = Add()([x, conv5_out])
+    # # **Context 5 (128 filters)** - New block
+    # x = context_module(x, 256)
+    # x = Add()([x, conv5_out])
     
     # Global Average Pooling
     x = GlobalAveragePooling3D()(x)
