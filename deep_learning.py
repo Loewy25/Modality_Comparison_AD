@@ -354,7 +354,7 @@ def apply_gradcam_all_layers(model, img, task, modality):
 
 # Define your task and modality
 task = 'cd'
-modality = 'PET'
+modality = 'MRI'
 
 # Load your data
 train_data, train_label, masker = loading_mask_3d(task, modality)  # Assume function is available
