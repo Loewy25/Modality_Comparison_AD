@@ -1,0 +1,1372 @@
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow_addons/utils/tfa_eol_msg.py:23: UserWarning: 
+
+TensorFlow Addons (TFA) has ended development and introduction of new features.
+TFA has entered a minimal maintenance and release mode until a planned end of life in May 2024.
+Please modify downstream libraries to take dependencies from other repositories in our TensorFlow community (e.g. Keras, Keras-CV, and Keras-NLP). 
+
+For more information see: https://github.com/tensorflow/addons/issues/2807 
+
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow_addons/utils/ensure_tf_install.py:53: UserWarning: Tensorflow Addons supports using Python ops for all Tensorflow versions above or equal to 2.11.0 and strictly below 2.14.0 (nightly versions are not supported). 
+ The versions of TensorFlow you are currently using is 2.8.4 and is not supported. 
+Some things might work, some things might not.
+If you were to encounter a bug, do not file an issue.
+If you want to make sure you're using a tested and supported configuration, either change the TensorFlow version or the TensorFlow Addons's version. 
+You can find the compatibility matrix in TensorFlow Addon's readme:
+https://github.com/tensorflow/addons
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+2024-09-10 17:46:15.323598: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-09-10 17:46:18.065833: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 38212 MB memory:  -> device: 0, name: NVIDIA A100-SXM4-40GB, pci bus id: 0000:17:00.0, compute capability: 8.0
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Current spatial shape: (91, 109, 91)
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_1 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d (Conv3D)                (None, 128, 128, 12  448         ['input_1[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization (BatchNorm  (None, 128, 128, 12  64         ['conv3d[0][0]']                 
+ alization)                     8, 16)                                                            
+                                                                                                  
+ leaky_re_lu (LeakyReLU)        (None, 128, 128, 12  0           ['batch_normalization[0][0]']    
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_1 (Conv3D)              (None, 128, 128, 12  6928        ['leaky_re_lu[0][0]']            
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_1 (BatchNo  (None, 128, 128, 12  64         ['conv3d_1[0][0]']               
+ rmalization)                   8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_1 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_1[0][0]']  
+                                8, 16)                                                            
+                                                                                                  
+ spatial_dropout3d (SpatialDrop  (None, 128, 128, 12  0          ['leaky_re_lu_1[0][0]']          
+ out3D)                         8, 16)                                                            
+                                                                                                  
+ conv3d_2 (Conv3D)              (None, 128, 128, 12  6928        ['spatial_dropout3d[0][0]']      
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_2 (BatchNo  (None, 128, 128, 12  64         ['conv3d_2[0][0]']               
+ rmalization)                   8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_2 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_2[0][0]']  
+                                8, 16)                                                            
+                                                                                                  
+ add (Add)                      (None, 128, 128, 12  0           ['leaky_re_lu_2[0][0]',          
+                                8, 16)                            'leaky_re_lu[0][0]']            
+                                                                                                  
+ conv3d_3 (Conv3D)              (None, 64, 64, 64,   13856       ['add[0][0]']                    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_3 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_3[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_3 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_3[0][0]']  
+                                32)                                                               
+                                                                                                  
+ conv3d_4 (Conv3D)              (None, 64, 64, 64,   27680       ['leaky_re_lu_3[0][0]']          
+                                32)                                                               
+                                                                                                  
+ batch_normalization_4 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_4[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_4 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_4[0][0]']  
+                                32)                                                               
+                                                                                                  
+ spatial_dropout3d_1 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_4[0][0]']          
+ opout3D)                       32)                                                               
+                                                                                                  
+ conv3d_5 (Conv3D)              (None, 64, 64, 64,   27680       ['spatial_dropout3d_1[0][0]']    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_5 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_5[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_5 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_5[0][0]']  
+                                32)                                                               
+                                                                                                  
+ add_1 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_5[0][0]',          
+                                32)                               'leaky_re_lu_3[0][0]']          
+                                                                                                  
+ conv3d_6 (Conv3D)              (None, 32, 32, 32,   55360       ['add_1[0][0]']                  
+                                64)                                                               
+                                                                                                  
+ batch_normalization_6 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_6[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_6 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_6[0][0]']  
+                                64)                                                               
+                                                                                                  
+ conv3d_7 (Conv3D)              (None, 32, 32, 32,   110656      ['leaky_re_lu_6[0][0]']          
+                                64)                                                               
+                                                                                                  
+ batch_normalization_7 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_7[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_7 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_7[0][0]']  
+                                64)                                                               
+                                                                                                  
+ spatial_dropout3d_2 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_7[0][0]']          
+ opout3D)                       64)                                                               
+                                                                                                  
+ conv3d_8 (Conv3D)              (None, 32, 32, 32,   110656      ['spatial_dropout3d_2[0][0]']    
+                                64)                                                               
+                                                                                                  
+ batch_normalization_8 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_8[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_8 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_8[0][0]']  
+                                64)                                                               
+                                                                                                  
+ add_2 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_8[0][0]',          
+                                64)                               'leaky_re_lu_6[0][0]']          
+                                                                                                  
+ conv3d_9 (Conv3D)              (None, 16, 16, 16,   221312      ['add_2[0][0]']                  
+                                128)                                                              
+                                                                                                  
+ batch_normalization_9 (BatchNo  (None, 16, 16, 16,   512        ['conv3d_9[0][0]']               
+ rmalization)                   128)                                                              
+                                                                                                  
+ leaky_re_lu_9 (LeakyReLU)      (None, 16, 16, 16,   0           ['batch_normalization_9[0][0]']  
+                                128)                                                              
+                                                                                                  
+ conv3d_10 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_9[0][0]']          
+                                128)                                                              
+                                                                                                  
+ batch_normalization_10 (BatchN  (None, 16, 16, 16,   512        ['conv3d_10[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_10 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_10[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ spatial_dropout3d_3 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_10[0][0]']         
+ opout3D)                       128)                                                              
+                                                                                                  
+ conv3d_11 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_3[0][0]']    
+                                128)                                                              
+                                                                                                  
+ batch_normalization_11 (BatchN  (None, 16, 16, 16,   512        ['conv3d_11[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_11 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_11[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ add_3 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_11[0][0]',         
+                                128)                              'leaky_re_lu_9[0][0]']          
+                                                                                                  
+ conv3d_12 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_3[0][0]']                  
+                                )                                                                 
+                                                                                                  
+ batch_normalization_12 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_12[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_12 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_12[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ conv3d_13 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_12[0][0]']         
+                                )                                                                 
+                                                                                                  
+ batch_normalization_13 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_13[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_13 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_13[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ spatial_dropout3d_4 (SpatialDr  (None, 8, 8, 8, 256  0          ['leaky_re_lu_13[0][0]']         
+ opout3D)                       )                                                                 
+                                                                                                  
+ conv3d_14 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_4[0][0]']    
+                                )                                                                 
+                                                                                                  
+ batch_normalization_14 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_14[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_14 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_14[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ add_4 (Add)                    (None, 8, 8, 8, 256  0           ['leaky_re_lu_14[0][0]',         
+                                )                                 'leaky_re_lu_12[0][0]']         
+                                                                                                  
+ global_average_pooling3d (Glob  (None, 256)         0           ['add_4[0][0]']                  
+ alAveragePooling3D)                                                                              
+                                                                                                  
+ dropout (Dropout)              (None, 256)          0           ['global_average_pooling3d[0][0]'
+                                                                 ]                                
+                                                                                                  
+ dense (Dense)                  (None, 2)            514         ['dropout[0][0]']                
+                                                                                                  
+==================================================================================================
+Total params: 5,897,410
+Trainable params: 5,894,434
+Non-trainable params: 2,976
+__________________________________________________________________________________________________
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Shape of image before augmentation: (128, 128, 128, 1)
+Shape of image after augmentation: (128, 128, 128, 1)
+Model: "model_1"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_2 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d_15 (Conv3D)             (None, 128, 128, 12  448         ['input_2[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_15 (BatchN  (None, 128, 128, 12  64         ['conv3d_15[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_15 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_15[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_16 (Conv3D)             (None, 128, 128, 12  6928        ['leaky_re_lu_15[0][0]']         
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_16 (BatchN  (None, 128, 128, 12  64         ['conv3d_16[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_16 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_16[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ spatial_dropout3d_5 (SpatialDr  (None, 128, 128, 12  0          ['leaky_re_lu_16[0][0]']         
+ opout3D)                       8, 16)                                                            
+                                                                                                  
+ conv3d_17 (Conv3D)             (None, 128, 128, 12  6928        ['spatial_dropout3d_5[0][0]']    
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_17 (BatchN  (None, 128, 128, 12  64         ['conv3d_17[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_17 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_17[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ add_5 (Add)                    (None, 128, 128, 12  0           ['leaky_re_lu_17[0][0]',         
+                                8, 16)                            'leaky_re_lu_15[0][0]']         
+                                                                                                  
+ conv3d_18 (Conv3D)             (None, 64, 64, 64,   13856       ['add_5[0][0]']                  
+                                32)                                                               
+                                                                                                  
+ batch_normalization_18 (BatchN  (None, 64, 64, 64,   128        ['conv3d_18[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_18 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_18[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ conv3d_19 (Conv3D)             (None, 64, 64, 64,   27680       ['leaky_re_lu_18[0][0]']         
+                                32)                                                               
+                                                                                                  
+ batch_normalization_19 (BatchN  (None, 64, 64, 64,   128        ['conv3d_19[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_19 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_19[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ spatial_dropout3d_6 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_19[0][0]']         
+ opout3D)                       32)                                                               
+                                                                                                  
+ conv3d_20 (Conv3D)             (None, 64, 64, 64,   27680       ['spatial_dropout3d_6[0][0]']    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_20 (BatchN  (None, 64, 64, 64,   128        ['conv3d_20[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_20 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_20[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ add_6 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_20[0][0]',         
+                                32)                               'leaky_re_lu_18[0][0]']         
+                                                                                                  
+ conv3d_21 (Conv3D)             (None, 32, 32, 32,   55360       ['add_6[0][0]']                  
+                                64)                                                               
+                                                                                                  
+ batch_normalization_21 (BatchN  (None, 32, 32, 32,   256        ['conv3d_21[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_21 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_21[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ conv3d_22 (Conv3D)             (None, 32, 32, 32,   110656      ['leaky_re_lu_21[0][0]']         
+                                64)                                                               
+                                                                                                  
+ batch_normalization_22 (BatchN  (None, 32, 32, 32,   256        ['conv3d_22[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_22 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_22[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ spatial_dropout3d_7 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_22[0][0]']         
+ opout3D)                       64)                                                               
+                                                                                                  
+ conv3d_23 (Conv3D)             (None, 32, 32, 32,   110656      ['spatial_dropout3d_7[0][0]']    
+                                64)                                                               
+                                                                                                  
+ batch_normalization_23 (BatchN  (None, 32, 32, 32,   256        ['conv3d_23[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_23 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_23[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ add_7 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_23[0][0]',         
+                                64)                               'leaky_re_lu_21[0][0]']         
+                                                                                                  
+ conv3d_24 (Conv3D)             (None, 16, 16, 16,   221312      ['add_7[0][0]']                  
+                                128)                                                              
+                                                                                                  
+ batch_normalization_24 (BatchN  (None, 16, 16, 16,   512        ['conv3d_24[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_24 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_24[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ conv3d_25 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_24[0][0]']         
+                                128)                                                              
+                                                                                                  
+ batch_normalization_25 (BatchN  (None, 16, 16, 16,   512        ['conv3d_25[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_25 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_25[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ spatial_dropout3d_8 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_25[0][0]']         
+ opout3D)                       128)                                                              
+                                                                                                  
+ conv3d_26 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_8[0][0]']    
+                                128)                                                              
+                                                                                                  
+ batch_normalization_26 (BatchN  (None, 16, 16, 16,   512        ['conv3d_26[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_26 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_26[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ add_8 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_26[0][0]',         
+                                128)                              'leaky_re_lu_24[0][0]']         
+                                                                                                  
+ conv3d_27 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_8[0][0]']                  
+                                )                                                                 
+                                                                                                  
+ batch_normalization_27 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_27[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_27 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_27[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ conv3d_28 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_27[0][0]']         
+                                )                                                                 
+                                                                                                  
+ batch_normalization_28 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_28[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_28 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_28[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ spatial_dropout3d_9 (SpatialDr  (None, 8, 8, 8, 256  0          ['leaky_re_lu_28[0][0]']         
+ opout3D)                       )                                                                 
+                                                                                                  
+ conv3d_29 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_9[0][0]']    
+                                )                                                                 
+                                                                                                  
+ batch_normalization_29 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_29[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_29 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_29[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ add_9 (Add)                    (None, 8, 8, 8, 256  0           ['leaky_re_lu_29[0][0]',         
+                                )                                 'leaky_re_lu_27[0][0]']         
+                                                                                                  
+ global_average_pooling3d_1 (Gl  (None, 256)         0           ['add_9[0][0]']                  
+ obalAveragePooling3D)                                                                            
+                                                                                                  
+ dropout_1 (Dropout)            (None, 256)          0           ['global_average_pooling3d_1[0][0
+                                                                 ]']                              
+                                                                                                  
+ dense_1 (Dense)                (None, 2)            514         ['dropout_1[0][0]']              
+                                                                                                  
+==================================================================================================
+Total params: 5,897,410
+Trainable params: 5,894,434
+Non-trainable params: 2,976
+__________________________________________________________________________________________________
+Epoch 1/200
+2024-09-10 17:46:30.808098: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8101
+2024-09-10 17:46:37.608523: I tensorflow/stream_executor/cuda/cuda_blas.cc:1786] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+ 1/56 [..............................] - ETA: 14:17 - loss: 1.6804 - accuracy: 0.8000 - auc: 0.9600 2/56 [>.............................] - ETA: 16s - loss: 1.9427 - accuracy: 0.8000 - auc: 0.8000   3/56 [>.............................] - ETA: 16s - loss: 1.9764 - accuracy: 0.7333 - auc: 0.7600 4/56 [=>............................] - ETA: 16s - loss: 2.4793 - accuracy: 0.6000 - auc: 0.5550 5/56 [=>............................] - ETA: 16s - loss: 2.4707 - accuracy: 0.5200 - auc: 0.5184 6/56 [==>...........................] - ETA: 15s - loss: 2.3716 - accuracy: 0.5333 - auc: 0.5656 7/56 [==>...........................] - ETA: 15s - loss: 2.5087 - accuracy: 0.5143 - auc: 0.5363 8/56 [===>..........................] - ETA: 15s - loss: 2.3992 - accuracy: 0.5500 - auc: 0.5900 9/56 [===>..........................] - ETA: 14s - loss: 2.3743 - accuracy: 0.5556 - auc: 0.600010/56 [====>.........................] - ETA: 14s - loss: 2.4652 - accuracy: 0.5600 - auc: 0.593211/56 [====>.........................] - ETA: 14s - loss: 2.5597 - accuracy: 0.5273 - auc: 0.553412/56 [=====>........................] - ETA: 13s - loss: 2.6134 - accuracy: 0.5333 - auc: 0.558313/56 [=====>........................] - ETA: 13s - loss: 2.5284 - accuracy: 0.5692 - auc: 0.595714/56 [======>.......................] - ETA: 13s - loss: 2.5288 - accuracy: 0.5571 - auc: 0.585915/56 [=======>......................] - ETA: 12s - loss: 2.5093 - accuracy: 0.5467 - auc: 0.587016/56 [=======>......................] - ETA: 12s - loss: 2.6872 - accuracy: 0.5250 - auc: 0.546417/56 [========>.....................] - ETA: 12s - loss: 2.6575 - accuracy: 0.5412 - auc: 0.556518/56 [========>.....................] - ETA: 11s - loss: 2.7481 - accuracy: 0.5333 - auc: 0.550919/56 [=========>....................] - ETA: 11s - loss: 2.6857 - accuracy: 0.5579 - auc: 0.571020/56 [=========>....................] - ETA: 11s - loss: 2.6854 - accuracy: 0.5600 - auc: 0.563921/56 [==========>...................] - ETA: 10s - loss: 2.6572 - accuracy: 0.5714 - auc: 0.568022/56 [==========>...................] - ETA: 10s - loss: 2.6345 - accuracy: 0.5818 - auc: 0.572423/56 [===========>..................] - ETA: 10s - loss: 2.5969 - accuracy: 0.6000 - auc: 0.581224/56 [===========>..................] - ETA: 10s - loss: 2.5734 - accuracy: 0.6083 - auc: 0.586125/56 [============>.................] - ETA: 9s - loss: 2.5651 - accuracy: 0.6000 - auc: 0.5834 26/56 [============>.................] - ETA: 9s - loss: 2.5988 - accuracy: 0.5923 - auc: 0.567827/56 [=============>................] - ETA: 9s - loss: 2.5725 - accuracy: 0.6000 - auc: 0.574328/56 [==============>...............] - ETA: 8s - loss: 2.5706 - accuracy: 0.6000 - auc: 0.572029/56 [==============>...............] - ETA: 8s - loss: 2.5348 - accuracy: 0.6069 - auc: 0.590330/56 [===============>..............] - ETA: 8s - loss: 2.5081 - accuracy: 0.6067 - auc: 0.600931/56 [===============>..............] - ETA: 7s - loss: 2.5296 - accuracy: 0.6000 - auc: 0.590932/56 [================>.............] - ETA: 7s - loss: 2.4964 - accuracy: 0.6125 - auc: 0.606033/56 [================>.............] - ETA: 7s - loss: 2.4785 - accuracy: 0.6061 - auc: 0.611434/56 [=================>............] - ETA: 6s - loss: 2.4880 - accuracy: 0.6000 - auc: 0.605335/56 [=================>............] - ETA: 6s - loss: 2.4862 - accuracy: 0.5943 - auc: 0.603736/56 [==================>...........] - ETA: 6s - loss: 2.4959 - accuracy: 0.5889 - auc: 0.599237/56 [==================>...........] - ETA: 5s - loss: 2.5068 - accuracy: 0.5838 - auc: 0.594138/56 [===================>..........] - ETA: 5s - loss: 2.4931 - accuracy: 0.5842 - auc: 0.597839/56 [===================>..........] - ETA: 5s - loss: 2.4849 - accuracy: 0.5795 - auc: 0.598140/56 [====================>.........] - ETA: 5s - loss: 2.4943 - accuracy: 0.5700 - auc: 0.588741/56 [====================>.........] - ETA: 4s - loss: 2.4827 - accuracy: 0.5707 - auc: 0.589442/56 [=====================>........] - ETA: 4s - loss: 2.4749 - accuracy: 0.5667 - auc: 0.587343/56 [======================>.......] - ETA: 4s - loss: 2.4594 - accuracy: 0.5721 - auc: 0.593044/56 [======================>.......] - ETA: 3s - loss: 2.4433 - accuracy: 0.5773 - auc: 0.5989
