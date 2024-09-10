@@ -28,20 +28,23 @@ from tensorflow.keras.metrics import AUC
 from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
 
+from tensorflow.keras.layers import BatchNormalization
+
+# Function for a single convolution block with Batch Normalization
 def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
     x = Conv3D(filters, kernel_size, strides=strides, padding='same', kernel_regularizer=l2(1e-4))(x)
-    x = tfa.layers.InstanceNormalization()(x)
+    x = BatchNormalization()(x)  # Replace instance normalization with batch normalization
     x = LeakyReLU()(x)
     return x
 
 # Context module: two convolution blocks with optional dropout
 def context_module(x, filters):
     x = convolution_block(x, filters)
-    x = SpatialDropout3D(0.3)(x)
+    x = SpatialDropout3D(0.5)(x)
     x = convolution_block(x, filters)
     return x
 
-# Full 3D CNN classification architecture based on the encoder path with reduced number of filters
+# Full 3D CNN classification architecture with 5 context blocks
 def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     # Input layer
     input_img = Input(shape=input_shape)
@@ -78,20 +81,29 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     x = context_module(x, 64)
     x = Add()([x, conv4_out])
     
+    # **Conv5 block (128 filters, stride 2)** - New block
+    x = convolution_block(x, 128, strides=(2, 2, 2))
+    conv5_out = x
+    
+    # **Context 5 (128 filters)** - New block
+    x = context_module(x, 128)
+    x = Add()([x, conv5_out])
+    
     # Global Average Pooling
     x = GlobalAveragePooling3D()(x)
     
     # Dropout for regularization
-    x = Dropout(0.4)(x)
+    x = Dropout(0.6)(x)
     
     # Dense layer with softmax for classification
     output = Dense(num_classes, activation='softmax')(x)
     
-    # Create model
+    # Create the model
     model = Model(inputs=input_img, outputs=output)
     model.summary()
     
     return model
+
 
 # Data augmentation (mirroring along each axis with a 50% probability)
 def augment_data(image):
@@ -322,19 +334,26 @@ def apply_gradcam_all_layers(model, img, task, modality):
             # Save the heatmap
             save_gradcam(heatmap, img, task, modality, conv_layer_name, class_idx)
 
-# Example usage:
+
+# Define your task and modality
 task = 'cd'
 modality = 'MRI'
+
+# Load your data
 train_data, train_label, masker = loading_mask_3d(task, modality)  # Assume function is available
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
 
-# Train the model
-train_model(X, Y)  # Assume the model is already trained
+# Create and compile the model
+model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
 
-# Pass a single input image to Grad-CAM (assuming train_data[0] is the image)
+# Train the model (if you haven't already trained it)
+train_model(X, Y)  # Assume train_model trains the model using Keras' .fit() method
+
+# Select an image from your dataset (e.g., the first one)
 img = np.expand_dims(X[0], axis=0)  # Add batch dimension
 
 # Apply Grad-CAM and save heatmaps for both classes and each convolutional layer
 apply_gradcam_all_layers(model, img, task, modality)
+
 
