@@ -46,7 +46,7 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     # Input layer
     input_img = Input(shape=input_shape)
     
-    # Conv1 block (8 filters instead of 16)
+    # Conv1 block (8 filters)
     x = convolution_block(input_img, 8)
     conv1_out = x
     
@@ -54,7 +54,7 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     x = context_module(x, 8)
     x = Add()([x, conv1_out])
     
-    # Conv2 block (16 filters instead of 32, stride 2)
+    # Conv2 block (16 filters, stride 2)
     x = convolution_block(x, 16, strides=(2, 2, 2))
     conv2_out = x
     
@@ -62,7 +62,7 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     x = context_module(x, 16)
     x = Add()([x, conv2_out])
     
-    # Conv3 block (32 filters instead of 64, stride 2)
+    # Conv3 block (32 filters, stride 2)
     x = convolution_block(x, 32, strides=(2, 2, 2))
     conv3_out = x
     
@@ -70,7 +70,7 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     x = context_module(x, 32)
     x = Add()([x, conv3_out])
     
-    # Conv4 block (64 filters instead of 128, stride 2)
+    # Conv4 block (64 filters, stride 2)
     x = convolution_block(x, 64, strides=(2, 2, 2))
     conv4_out = x
     
@@ -78,18 +78,10 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     x = context_module(x, 64)
     x = Add()([x, conv4_out])
     
-    # Conv5 block (128 filters instead of 256, stride 2)
-    x = convolution_block(x, 128, strides=(2, 2, 2))
-    conv5_out = x
-    
-    # Context 5 (128 filters)
-    x = context_module(x, 128)
-    x = Add()([x, conv5_out])
-    
     # Global Average Pooling
     x = GlobalAveragePooling3D()(x)
     
-    # Dropout
+    # Dropout for regularization
     x = Dropout(0.4)(x)
     
     # Dense layer with softmax for classification
