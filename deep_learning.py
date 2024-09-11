@@ -190,7 +190,7 @@ def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, info
             save_gradcam(avg_heatmap, imgs[0], paddings[0], masker, task, modality, conv_layer_name, class_idx,info)
 
 def train_model(X, Y):
-    stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+    stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=2)
     all_y_val = []
     all_y_val_pred = []
     all_auc_scores = []
