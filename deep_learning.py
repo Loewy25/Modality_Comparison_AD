@@ -191,7 +191,7 @@ def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, info
 
 # Example usage:
 task = 'cd'
-modality = 'PET'
+modality = 'MRI'
 info='4_context_from_16_0.5_dropout_1e3
 
 # Load your data
