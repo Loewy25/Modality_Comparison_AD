@@ -189,6 +189,41 @@ def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, info
             avg_heatmap = accumulated_heatmap / len(imgs)
             save_gradcam(avg_heatmap, imgs[0], paddings[0], masker, task, modality, conv_layer_name, class_idx,info)
 
+def train_model(X, Y):
+    stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+    all_y_val = []
+    all_y_val_pred = []
+    all_auc_scores = []
+
+    for fold_num, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
+        X_train, X_val = X[train_idx], X[val_idx]
+        Y_train, Y_val = Y[train_idx], Y[val_idx]
+
+        model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
+        model.compile(optimizer=Adam(learning_rate=5e-4),
+                      loss='categorical_crossentropy',
+                      metrics=['accuracy', AUC(name='auc')])
+
+        early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
+        reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
+
+        history = model.fit(X_train, Y_train,
+                            batch_size=5,
+                            epochs=200,
+                            validation_data=(X_val, Y_val),
+                            callbacks=[early_stopping, reduce_lr])
+
+        y_val_pred = model.predict(X_val)
+        all_y_val.extend(Y_val[:, 1])
+        all_y_val_pred.extend(y_val_pred[:, 1])
+
+        auc_score = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
+        all_auc_scores.append(auc_score)
+        print(f'AUC for fold {fold_num + 1}: {auc_score:.4f}')
+
+    average_auc = sum(all_auc_scores) / len(all_auc_scores)
+    print(f'Average AUC across all folds: {average_auc:.4f}')
+
 # Example usage:
 task = 'cd'
 modality = 'PET'
