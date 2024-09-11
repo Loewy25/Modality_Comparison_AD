@@ -1,0 +1,174 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Sep 10 21:33:41 CDT 2024 1726022021
+Job ID:		1653552
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Tue Sep 10 21:33:41 CDT 2024 1726022021
+--------------------------------------------------------------
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/deep_learning.py", line 195
+    info='4_context_from_16_0.5_dropout_1e3
+         ^
+SyntaxError: unterminated string literal (detected at line 195)
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Sep 10 21:33:44 CDT 2024 1726022024
+Name                : cd-MRI
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua401
+Cores               : 2
+State               : COMPLETED
+Submit              : 2024-09-10T21:33:40
+Start               : 2024-09-10T21:33:41
+End                 : 2024-09-10T21:33:42
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 500000M
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : gpua401
+Max-Disk-Write Node : gpua401
+Max-Disk-Read Node  : gpua401
+NVIDIA A100-SXM4-40GB
+Successfully retrieved statistics for job: 1653552. 
++------------------------------------------------------------------------------+
+| GPU ID: 0                                                                    |
++====================================+=========================================+
+|-----  Execution Stats  ------------+-----------------------------------------|
+| Start Time                         | Tue Sep 10 21:33:41 2024                |
+| End Time                           | Tue Sep 10 21:33:44 2024                |
+| Total Execution Time (sec)         | 3.34                                    |
+| No. of Processes                   | 0                                       |
++-----  Performance Stats  ----------+-----------------------------------------+
+| Energy Consumed (Joules)           | Not Specified                           |
+| Power Usage (Watts)                | Avg: N/A, Max: N/A, Min: N/A            |
+| Max GPU Memory Used (bytes)        | 0                                       |
+| SM Clock (MHz)                     | Avg: 0, Max: 0, Min: 0                  |
+| Memory Clock (MHz)                 | Avg: 0, Max: 0, Min: 0                  |
+| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
+| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
+| PCIe Rx Bandwidth (megabytes)      | Avg: 0, Max: 0, Min: 0                  |
+| PCIe Tx Bandwidth (megabytes)      | Avg: 0, Max: 0, Min: 0                  |
++-----  Event Stats  ----------------+-----------------------------------------+
+| Single Bit ECC Errors              | 0                                       |
+| Double Bit ECC Errors              | Not Specified                           |
+| PCIe Replay Warnings               | Not Specified                           |
+| Critical XID Errors                | 0                                       |
++-----  Slowdown Stats  -------------+-----------------------------------------+
+| Due to - Power (%)                 | Not Supported                           |
+|        - Thermal (%)               | Not Supported                           |
+|        - Reliability (%)           | Not Supported                           |
+|        - Board Limit (%)           | Not Supported                           |
+|        - Low Utilization (%)       | Not Supported                           |
+|        - Sync Boost (%)            | Not Specified                           |
++-----  Overall Health  -------------+-----------------------------------------+
+| Overall Health                     | Healthy                                 |
++------------------------------------+-----------------------------------------+
+
++------------------------------------------------------------------------------+
+| GPU ID: 1                                                                    |
++====================================+=========================================+
+|-----  Execution Stats  ------------+-----------------------------------------|
+| Start Time                         | Tue Sep 10 21:33:41 2024                |
+| End Time                           | Tue Sep 10 21:33:44 2024                |
+| Total Execution Time (sec)         | 3.34                                    |
+| No. of Processes                   | 0                                       |
++-----  Performance Stats  ----------+-----------------------------------------+
+| Energy Consumed (Joules)           | Not Specified                           |
+| Power Usage (Watts)                | Avg: N/A, Max: N/A, Min: N/A            |
+| Max GPU Memory Used (bytes)        | 0                                       |
+| SM Clock (MHz)                     | Avg: 0, Max: 0, Min: 0                  |
+| Memory Clock (MHz)                 | Avg: 0, Max: 0, Min: 0                  |
+| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
+| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
+| PCIe Rx Bandwidth (megabytes)      | Avg: 0, Max: 0, Min: 0                  |
+| PCIe Tx Bandwidth (megabytes)      | Avg: 0, Max: 0, Min: 0                  |
++-----  Event Stats  ----------------+-----------------------------------------+
+| Single Bit ECC Errors              | 0                                       |
+| Double Bit ECC Errors              | Not Specified                           |
+| PCIe Replay Warnings               | Not Specified                           |
+| Critical XID Errors                | 0                                       |
++-----  Slowdown Stats  -------------+-----------------------------------------+
+| Due to - Power (%)                 | Not Supported                           |
+|        - Thermal (%)               | Not Supported                           |
+|        - Reliability (%)           | Not Supported                           |
+|        - Board Limit (%)           | Not Supported                           |
+|        - Low Utilization (%)       | Not Supported                           |
+|        - Sync Boost (%)            | Not Specified                           |
++-----  Overall Health  -------------+-----------------------------------------+
+| Overall Health                     | Healthy                                 |
++------------------------------------+-----------------------------------------+
+
++------------------------------------------------------------------------------+
+| GPU ID: 2                                                                    |
++====================================+=========================================+
+|-----  Execution Stats  ------------+-----------------------------------------|
+| Start Time                         | Tue Sep 10 21:33:41 2024                |
+| End Time                           | Tue Sep 10 21:33:44 2024                |
+| Total Execution Time (sec)         | 3.34                                    |
+| No. of Processes                   | 0                                       |
++-----  Performance Stats  ----------+-----------------------------------------+
+| Energy Consumed (Joules)           | Not Specified                           |
+| Power Usage (Watts)                | Avg: N/A, Max: N/A, Min: N/A            |
+| Max GPU Memory Used (bytes)        | 0                                       |
+| SM Clock (MHz)                     | Avg: 0, Max: 0, Min: 0                  |
+| Memory Clock (MHz)                 | Avg: 0, Max: 0, Min: 0                  |
+| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
+| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
+| PCIe Rx Bandwidth (megabytes)      | Avg: 0, Max: 0, Min: 0                  |
+| PCIe Tx Bandwidth (megabytes)      | Avg: 0, Max: 0, Min: 0                  |
++-----  Event Stats  ----------------+-----------------------------------------+
+| Single Bit ECC Errors              | 0                                       |
+| Double Bit ECC Errors              | Not Specified                           |
+| PCIe Replay Warnings               | Not Specified                           |
+| Critical XID Errors                | 0                                       |
++-----  Slowdown Stats  -------------+-----------------------------------------+
+| Due to - Power (%)                 | Not Supported                           |
+|        - Thermal (%)               | Not Supported                           |
+|        - Reliability (%)           | Not Supported                           |
+|        - Board Limit (%)           | Not Supported                           |
+|        - Low Utilization (%)       | Not Supported                           |
+|        - Sync Boost (%)            | Not Specified                           |
++-----  Overall Health  -------------+-----------------------------------------+
+| Overall Health                     | Healthy                                 |
++------------------------------------+-----------------------------------------+
+
++------------------------------------------------------------------------------+
+| GPU ID: 3                                                                    |
++====================================+=========================================+
+|-----  Execution Stats  ------------+-----------------------------------------|
+| Start Time                         | Tue Sep 10 21:33:41 2024                |
+| End Time                           | Tue Sep 10 21:33:44 2024                |
+| Total Execution Time (sec)         | 3.34                                    |
+| No. of Processes                   | 0                                       |
++-----  Performance Stats  ----------+-----------------------------------------+
+| Energy Consumed (Joules)           | Not Specified                           |
+| Power Usage (Watts)                | Avg: N/A, Max: N/A, Min: N/A            |
+| Max GPU Memory Used (bytes)        | 0                                       |
+| SM Clock (MHz)                     | Avg: 0, Max: 0, Min: 0                  |
+| Memory Clock (MHz)                 | Avg: 0, Max: 0, Min: 0                  |
+| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
+| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
+| PCIe Rx Bandwidth (megabytes)      | Avg: 0, Max: 0, Min: 0                  |
+| PCIe Tx Bandwidth (megabytes)      | Avg: 0, Max: 0, Min: 0                  |
++-----  Event Stats  ----------------+-----------------------------------------+
+| Single Bit ECC Errors              | 0                                       |
+| Double Bit ECC Errors              | Not Specified                           |
+| PCIe Replay Warnings               | Not Specified                           |
+| Critical XID Errors                | 0                                       |
++-----  Slowdown Stats  -------------+-----------------------------------------+
+| Due to - Power (%)                 | Not Supported                           |
+|        - Thermal (%)               | Not Supported                           |
+|        - Reliability (%)           | Not Supported                           |
+|        - Board Limit (%)           | Not Supported                           |
+|        - Low Utilization (%)       | Not Supported                           |
+|        - Sync Boost (%)            | Not Specified                           |
++-----  Overall Health  -------------+-----------------------------------------+
+| Overall Health                     | Healthy                                 |
++------------------------------------+-----------------------------------------+
+
+End Slurm Epilogue Tue Sep 10 21:33:44 CDT 2024 1726022024
+--------------------------------------------------------------
