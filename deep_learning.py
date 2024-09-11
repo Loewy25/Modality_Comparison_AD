@@ -10,6 +10,7 @@ from tensorflow.keras.utils import to_categorical
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import StratifiedKFold
 import matplotlib.pyplot as plt
+import tensorflow as tf
 from tensorflow.keras import backend as K
 from nilearn.image import reorder_img, new_img_like
 from tensorflow.keras.losses import CategoricalCrossentropy
@@ -233,7 +234,7 @@ def train_model(X, Y):
 # Example usage:
 task = 'cd'
 modality = 'MRI'
-info='4_context_from_16_0.5_dropout_1e3'
+info='5_context_from_16_0.5_dropout_1e3'
 
 # Load your data
 train_data, train_label, masker, paddings = loading_mask_3d(task, modality)
