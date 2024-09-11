@@ -192,7 +192,7 @@ def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, info
 # Example usage:
 task = 'cd'
 modality = 'MRI'
-info='4_context_from_16_0.5_dropout_1e3
+info='4_context_from_16_0.5_dropout_1e3'
 
 # Load your data
 train_data, train_label, masker, paddings = loading_mask_3d(task, modality)
@@ -207,4 +207,4 @@ train_model(X, Y)
 
 # Apply Grad-CAM to all images and compute the average
 imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
-apply_gradcam_all_layers_average(model, imgs, task, modality, paddings)
+apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, info)
