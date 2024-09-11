@@ -148,7 +148,10 @@ def remove_padding(heatmap, padding):
 
 
 # Modified save_gradcam to handle padding removal
-def save_gradcam(heatmap, img, padding, masker, task, modality, layer_name, class_idx, save_dir='./grad-cam'):
+# Function to overlay the heatmap on the original image and save it
+def save_gradcam(heatmap, img, padding, masker, task, modality, layer_name, class_idx, info='xx', save_dir='./grad-cam'):
+    # Create a directory path that includes info, task, and modality
+    save_dir = os.path.join(save_dir, info, task, modality)
     ensure_directory_exists(save_dir)
     
     # Remove padding from heatmap
@@ -157,26 +160,21 @@ def save_gradcam(heatmap, img, padding, masker, task, modality, layer_name, clas
     # Rescale the heatmap back to the original space using the masker
     heatmap_rescaled = masker.inverse_transform(heatmap_unpadded)
     
+    # Save the 3D NIfTI file
     nifti_file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.nii.gz"
     nifti_save_path = os.path.join(save_dir, nifti_file_name)
-    
     nifti_img = new_img_like(masker.mask_img_, heatmap_rescaled.get_fdata())
     nib.save(nifti_img, nifti_save_path)
+    print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
     
-    output_slice_path = os.path.join(save_dir, f'stat_map_{task}_{modality}_{layer_name}_class{class_idx}.png')
+    # Now, plot the glass brain using nilearn's plot_glass_brain
+    output_glass_brain_path = os.path.join(save_dir, f'glass_brain_{task}_{modality}_{layer_name}_class{class_idx}.png')
     
-    plotting.plot_stat_map(
-        nifti_img,
-        display_mode='x',
-        cut_coords=range(0, 51, 5),
-        title=f'Grad-CAM Slices for {layer_name}, Class {class_idx}',
-        cmap='jet',
-        output_file=output_slice_path,
-        threshold=0.2,
-        vmax=1
-    )
+    # Replace plotting logic to plot the glass brain instead of stat map
+    plotting.plot_glass_brain(nifti_img, colorbar=True, plot_abs=True, cmap='jet', output_file=output_glass_brain_path)
     
-    print(f'Grad-CAM stat map saved at {output_slice_path}')
+    print(f'Glass brain plot saved at {output_glass_brain_path}')
+
 
 
 # Function to apply Grad-CAM for all layers and save heatmaps
