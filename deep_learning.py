@@ -31,6 +31,10 @@ def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
     x = LeakyReLU()(x)
     return x
 
+def ensure_directory_exists(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
 # Context module: two convolution blocks with optional dropout
 def context_module(x, filters):
     x = convolution_block(x, filters)
@@ -216,7 +220,7 @@ def train_model(X, Y):
 
         history = model.fit(X_train, Y_train,
                             batch_size=5,
-                            epochs=200,
+                            epochs=800,
                             validation_data=(X_val, Y_val),
                             callbacks=[early_stopping, reduce_lr])
 
