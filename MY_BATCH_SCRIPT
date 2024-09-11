@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J cd-PET-0.5with_16_4block
+#SBATCH -J cd-PET
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 500000M
