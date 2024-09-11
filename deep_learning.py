@@ -15,11 +15,13 @@ from nilearn.image import reorder_img, new_img_like
 from tensorflow.keras.losses import CategoricalCrossentropy
 import nibabel as nib
 from nilearn.input_data import NiftiMasker
+from nilearn import plotting
+from scipy.stats import zscore
+import os
 
 # Additional Imports (as per your request)
 from data_loading import loading_mask, generate_data_path, generate, binarylabel
 from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
-
 
 # Function for a single convolution block with Batch Normalization
 def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
@@ -77,27 +79,12 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     
     return model
 
-
-# Data augmentation (mirroring along each axis with a 50% probability)
-def augment_data(image):
-    augmented_image = image.copy()
-    for axis in range(3):
-        if np.random.rand() > 0.5:
-            augmented_image = np.flip(augmented_image, axis=axis)
-    return augmented_image
-
 # Modified pad_image_to_shape function to return padding values
 def pad_image_to_shape(image, target_shape=(128, 128, 128)):
-    """
-    Pads or crops an image to the target shape (128, 128, 128).
-    Returns the padded image and the amount of padding applied.
-    """
     if image.shape[-1] == 1:
         spatial_shape = image.shape[:-1]
     else:
-        spatial_shape = image.shape  # Handle the case if no channel dimension is present
-
-    print("Current spatial shape:", spatial_shape)
+        spatial_shape = image.shape
 
     padding = [(max((target_shape[i] - spatial_shape[i]) // 2, 0),
                 max((target_shape[i] - spatial_shape[i]) - (target_shape[i] - spatial_shape[i]) // 2, 0))
@@ -107,8 +94,7 @@ def pad_image_to_shape(image, target_shape=(128, 128, 128)):
     
     return padded_image, padding  # Return padding information
 
-
-# Modified function to handle loading with padding and return padding values
+# Function to load the data, mask it, and return padding information
 def loading_mask_3d(task, modality):
     images_pet, images_mri, labels = generate_data_path()
     
@@ -120,7 +106,7 @@ def loading_mask_3d(task, modality):
     masker = NiftiMasker(mask_img='/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
     
     train_data = []
-    paddings = []  # Store padding info
+    paddings = []
     target_shape = (128, 128, 128)
     
     for i in range(len(data_train)):
@@ -139,57 +125,74 @@ def loading_mask_3d(task, modality):
     
     return train_data, train_label, masker, paddings
 
-
-# New function to remove padding based on stored padding values
+# Function to remove padding based on stored padding values
 def remove_padding(heatmap, padding):
     slices = tuple(slice(p[0], -p[1] if p[1] > 0 else None) for p in padding)
     heatmap_unpadded = heatmap[slices]
     return heatmap_unpadded
 
+# Function to compute Grad-CAM for a given layer and class index
+def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
+    grad_model = tf.keras.models.Model(
+        [model.inputs], [model.get_layer(last_conv_layer_name).output, model.output]
+    )
 
-# Modified save_gradcam to handle padding removal
-# Function to overlay the heatmap on the original image and save it
-def save_gradcam(heatmap, img, padding, masker, task, modality, layer_name, class_idx, info='xx', save_dir='./grad-cam'):
-    # Create a directory path that includes info, task, and modality
+    with tf.GradientTape() as tape:
+        conv_outputs, predictions = grad_model(img)
+        if pred_index is None:
+            pred_index = tf.argmax(predictions[0])
+        loss = predictions[:, pred_index]
+
+    grads = tape.gradient(loss, conv_outputs)
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2, 3))  # Adjust this for 3D
+
+    conv_outputs = conv_outputs[0]
+    conv_outputs = tf.reduce_mean(conv_outputs * pooled_grads, axis=-1)
+
+    heatmap = tf.maximum(conv_outputs, 0)
+    heatmap = heatmap / tf.math.reduce_max(heatmap)
+    
+    return heatmap.numpy()
+
+# Function to save Grad-CAM 3D heatmap and plot glass brain
+def save_gradcam(heatmap, img, padding, masker, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
     ensure_directory_exists(save_dir)
     
-    # Remove padding from heatmap
     heatmap_unpadded = remove_padding(heatmap, padding)
-    
-    # Rescale the heatmap back to the original space using the masker
     heatmap_rescaled = masker.inverse_transform(heatmap_unpadded)
     
-    # Save the 3D NIfTI file
     nifti_file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.nii.gz"
     nifti_save_path = os.path.join(save_dir, nifti_file_name)
     nifti_img = new_img_like(masker.mask_img_, heatmap_rescaled.get_fdata())
     nib.save(nifti_img, nifti_save_path)
     print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
     
-    # Now, plot the glass brain using nilearn's plot_glass_brain
     output_glass_brain_path = os.path.join(save_dir, f'glass_brain_{task}_{modality}_{layer_name}_class{class_idx}.png')
-    
-    # Replace plotting logic to plot the glass brain instead of stat map
     plotting.plot_glass_brain(nifti_img, colorbar=True, plot_abs=True, cmap='jet', output_file=output_glass_brain_path)
-    
     print(f'Glass brain plot saved at {output_glass_brain_path}')
 
-
-
-# Function to apply Grad-CAM for all layers and save heatmaps
-def apply_gradcam_all_layers(model, img, task, modality, paddings):
+# Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
+def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, info):
     conv_layers = [layer.name for layer in model.layers if 'conv' in layer.name]
     
-    for class_idx in range(2):
-        for conv_layer_name in conv_layers:
-            heatmap = make_gradcam_heatmap(model, img, conv_layer_name, pred_index=class_idx)
-            save_gradcam(heatmap, img, paddings[0], masker, task, modality, conv_layer_name, class_idx)
+    for conv_layer_name in conv_layers:
+        for class_idx in range(2):  # Loop through both class indices (class 0 and class 1)
+            accumulated_heatmap = None
+            for i, img in enumerate(imgs):
+                heatmap = make_gradcam_heatmap(model, img, conv_layer_name, pred_index=class_idx)
+                if accumulated_heatmap is None:
+                    accumulated_heatmap = heatmap
+                else:
+                    accumulated_heatmap += heatmap
+            
+            avg_heatmap = accumulated_heatmap / len(imgs)
+            save_gradcam(avg_heatmap, imgs[0], paddings[0], masker, task, modality, conv_layer_name, class_idx,info)
 
-
-# Define your task and modality
+# Example usage:
 task = 'cd'
 modality = 'PET'
+info='4_context_from_16_0.5_dropout_1e3
 
 # Load your data
 train_data, train_label, masker, paddings = loading_mask_3d(task, modality)
@@ -199,11 +202,9 @@ Y = to_categorical(train_label, num_classes=2)
 # Create and compile the model
 model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
 
-# Train the model
+# Train the model (if needed)
 train_model(X, Y)
 
-# Select an image from your dataset (e.g., the first one)
-img = np.expand_dims(X[0], axis=0)
-
-# Apply Grad-CAM
-apply_gradcam_all_layers(model, img, task, modality, paddings)
+# Apply Grad-CAM to all images and compute the average
+imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
+apply_gradcam_all_layers_average(model, imgs, task, modality, paddings)
