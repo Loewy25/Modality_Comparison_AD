@@ -13,27 +13,18 @@ import matplotlib.pyplot as plt
 from tensorflow.keras import backend as K
 from nilearn.image import reorder_img, new_img_like
 from tensorflow.keras.losses import CategoricalCrossentropy
-# Additional Imports (as per your request
+import nibabel as nib
+from nilearn.input_data import NiftiMasker
+
+# Additional Imports (as per your request)
 from data_loading import loading_mask, generate_data_path, generate, binarylabel
 from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
-import nibabel as nib
-from tensorflow.keras.layers import Conv3D, Input, LeakyReLU, Add, GlobalAveragePooling3D, Dense, Dropout, SpatialDropout3D
-from tensorflow.keras.models import Model
-from tensorflow.keras.regularizers import l2
-import tensorflow_addons as tfa
-from tensorflow.keras.optimizers import Adam
-from nilearn.input_data import NiftiMasker
-from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
-from tensorflow.keras.metrics import AUC
-from sklearn.utils.class_weight import compute_class_weight
-import numpy as np
 
-from tensorflow.keras.layers import BatchNormalization
 
 # Function for a single convolution block with Batch Normalization
 def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
     x = Conv3D(filters, kernel_size, strides=strides, padding='same', kernel_regularizer=l2(1e-3))(x)
-    x = BatchNormalization()(x)  # Replace instance normalization with batch normalization
+    x = BatchNormalization()(x)
     x = LeakyReLU()(x)
     return x
 
@@ -44,50 +35,33 @@ def context_module(x, filters):
     x = convolution_block(x, filters)
     return x
 
-# Full 3D CNN classification architecture with 5 context blocks
+# Full 3D CNN classification architecture with 4 context blocks
 def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
-    # Input layer
     input_img = Input(shape=input_shape)
     
-    # Conv1 block (8 filters)
+    # Conv1 block (16 filters)
     x = convolution_block(input_img, 16)
     conv1_out = x
-    
-    # Context 1 (8 filters)
     x = context_module(x, 16)
     x = Add()([x, conv1_out])
     
-    # Conv2 block (16 filters, stride 2)
+    # Conv2 block (32 filters, stride 2)
     x = convolution_block(x, 32, strides=(2, 2, 2))
     conv2_out = x
-    
-    # Context 2 (16 filters)
     x = context_module(x, 32)
     x = Add()([x, conv2_out])
     
-    # Conv3 block (32 filters, stride 2)
+    # Conv3 block (64 filters, stride 2)
     x = convolution_block(x, 64, strides=(2, 2, 2))
     conv3_out = x
-    
-    # Context 3 (32 filters)
     x = context_module(x, 64)
     x = Add()([x, conv3_out])
     
-    # Conv4 block (64 filters, stride 2)
+    # Conv4 block (128 filters, stride 2)
     x = convolution_block(x, 128, strides=(2, 2, 2))
     conv4_out = x
-    
-    # Context 4 (64 filters)
     x = context_module(x, 128)
     x = Add()([x, conv4_out])
-    
-    # # **Conv5 block (128 filters, stride 2)** - New block
-    # x = convolution_block(x, 256, strides=(2, 2, 2))
-    # conv5_out = x
-    
-    # # **Context 5 (128 filters)** - New block
-    # x = context_module(x, 256)
-    # x = Add()([x, conv5_out])
     
     # Global Average Pooling
     x = GlobalAveragePooling3D()(x)
@@ -98,7 +72,6 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     # Dense layer with softmax for classification
     output = Dense(num_classes, activation='softmax')(x)
     
-    # Create the model
     model = Model(inputs=input_img, outputs=output)
     model.summary()
     
@@ -113,77 +86,12 @@ def augment_data(image):
             augmented_image = np.flip(augmented_image, axis=axis)
     return augmented_image
 
-# Training loop with added print statements to confirm shapes
-def train_model(X, Y):
-    stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
-    all_y_val = []
-    all_y_val_pred = []
-    all_auc_scores = []
-
-    # Print shape of X after loading
-
-    for fold_num, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
-        # Print the shape of the input data X to confirm what it looks like
-        
-        X_train, X_val = X[train_idx], X[val_idx]
-        Y_train, Y_val = Y[train_idx], Y[val_idx]
-
-
-        # Debug inside the augment_data function: check X[i] shape before augmentation
-        def augment_data_debug(image):
-            print(f"Shape of image before augmentation: {image.shape}")
-            augmented_image = image.copy()
-            for axis in range(3):  # Assuming a 3D image
-                if np.random.rand() > 0.5:
-                    augmented_image = np.flip(augmented_image, axis=axis)
-            print(f"Shape of image after augmentation: {augmented_image.shape}")
-            return augmented_image
-
-        # Augment the training data
-        X_train_augmented = np.array([augment_data_debug(X[i]) for i in train_idx])
-        # Create and compile the model
-        model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
-        model.compile(optimizer=Adam(learning_rate=5e-4),
-                      loss='CategoricalCrossentropy',  
-                      metrics=['accuracy', AUC(name='auc')])
-
-
-        # Callbacks for early stopping and learning rate reduction
-        early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
-        reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
-
-        # Train the model
-        history = model.fit(X_train_augmented, Y_train,
-                            batch_size=5,
-                            epochs=200,
-                            validation_data=(X_val, Y_val),
-                            callbacks=[early_stopping, reduce_lr])
-
-        # Make predictions on the validation set
-        y_val_pred = model.predict(X_val)
-        all_y_val.extend(Y_val[:, 1])
-        all_y_val_pred.extend(y_val_pred[:, 1])
-
-        # Calculate AUC for the current fold
-        auc_score = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
-        all_auc_scores.append(auc_score)
-        print(f"AUC for fold {fold_num + 1}: {auc_score:.4f}")
-
-    # Calculate and print the average AUC across all folds
-    average_auc = sum(all_auc_scores) / len(all_auc_scores)
-    print(f"Average AUC across all folds: {average_auc:.4f}")
-
-
-
-from nilearn.image import resample_img
-import numpy as np
-
+# Modified pad_image_to_shape function to return padding values
 def pad_image_to_shape(image, target_shape=(128, 128, 128)):
     """
-    Pads or crops an image to the target shape of (128, 128, 128).
-    Assumes that the input may already include a channel dimension.
+    Pads or crops an image to the target shape (128, 128, 128).
+    Returns the padded image and the amount of padding applied.
     """
-    # Assume the last dimension is the channel if its size is 1
     if image.shape[-1] == 1:
         spatial_shape = image.shape[:-1]
     else:
@@ -191,37 +99,17 @@ def pad_image_to_shape(image, target_shape=(128, 128, 128)):
 
     print("Current spatial shape:", spatial_shape)
 
-    # Calculate the padding needed for each spatial dimension (height, width, depth)
     padding = [(max((target_shape[i] - spatial_shape[i]) // 2, 0),
                 max((target_shape[i] - spatial_shape[i]) - (target_shape[i] - spatial_shape[i]) // 2, 0))
                for i in range(3)]
 
-    # Apply padding to the spatial dimensions
-    padded_image = np.pad(image, [(p[0], p[1]) for p in padding] + [(0,0)], mode='constant', constant_values=0)
-
-    # If the image's spatial dimensions are larger than the target shape, crop it
-    start = [(spatial_shape[i] - target_shape[i]) // 2 if spatial_shape[i] > target_shape[i] else 0 for i in range(3)]
-    end = [start[i] + target_shape[i] if spatial_shape[i] > target_shape[i] else target_shape[i] for i in range(3)]
-    slices = tuple(slice(start[dim], end[dim]) for dim in range(3)) + (slice(None),)  # Preserve the channel dimension
-    cropped_image = padded_image[slices]
-
-    return cropped_image
+    padded_image = np.pad(image, [(p[0], p[1]) for p in padding] + [(0, 0)], mode='constant', constant_values=0)
+    
+    return padded_image, padding  # Return padding information
 
 
-
-
-
-from sklearn.preprocessing import StandardScaler
-from scipy.stats import zscore
-import nibabel as nib
-import numpy as np
-from nilearn.input_data import NiftiMasker
-
+# Modified function to handle loading with padding and return padding values
 def loading_mask_3d(task, modality):
-    """
-    Load the data, apply NiftiMasker, apply Z-score normalization, and pad the images to the target shape (128, 128, 128).
-    """
-    # Loading and generating data
     images_pet, images_mri, labels = generate_data_path()
     
     if modality == 'PET':
@@ -229,127 +117,76 @@ def loading_mask_3d(task, modality):
     elif modality == 'MRI':
         data_train, train_label = generate(images_mri, labels, task)
     
-    # Instantiate NiftiMasker
     masker = NiftiMasker(mask_img='/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
     
     train_data = []
-    target_shape = (128, 128, 128)  # Define your desired shape (128, 128, 128)
+    paddings = []  # Store padding info
+    target_shape = (128, 128, 128)
     
     for i in range(len(data_train)):
-        # Load the NIfTI image using nibabel (data_train[i] is a file path)
         nifti_img = nib.load(data_train[i])
-        
-        # Apply the mask, which flattens the image into 1D
         masked_data = masker.fit_transform(nifti_img)
-        
-        # Reshape the flattened data back into the original 3D shape
         reshaped_data = masker.inverse_transform(masked_data).get_fdata()
+        reshaped_data = zscore(reshaped_data, axis=None)
         
-        # Z-score normalization in 3D
-        reshaped_data = zscore(reshaped_data, axis=None)  # Normalize the whole 3D volume
+        padded_data, padding = pad_image_to_shape(reshaped_data, target_shape=target_shape)
         
-        # Resize or pad the image to the target shape using the updated function
-        padded_data = pad_image_to_shape(reshaped_data, target_shape=target_shape)
-        
-        # Add reshaped 3D data to the list
         train_data.append(padded_data)
+        paddings.append(padding)
     
-    # Convert the train_label to binary if necessary
     train_label = binarylabel(train_label, task)
-    
-    # Convert list to numpy array for consistency
     train_data = np.array(train_data)
     
-    return train_data, train_label, masker
+    return train_data, train_label, masker, paddings
 
 
-import os
-import tensorflow as tf
-import numpy as np
-import matplotlib.pyplot as plt
-from tensorflow.keras.utils import to_categorical
+# New function to remove padding based on stored padding values
+def remove_padding(heatmap, padding):
+    slices = tuple(slice(p[0], -p[1] if p[1] > 0 else None) for p in padding)
+    heatmap_unpadded = heatmap[slices]
+    return heatmap_unpadded
 
 
-
-# Function to compute Grad-CAM for a given layer and class index
-def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
-    grad_model = tf.keras.models.Model(
-        [model.inputs], [model.get_layer(last_conv_layer_name).output, model.output]
-    )
-
-    with tf.GradientTape() as tape:
-        conv_outputs, predictions = grad_model(img)
-        if pred_index is None:
-            pred_index = tf.argmax(predictions[0])
-        loss = predictions[:, pred_index]
-
-    grads = tape.gradient(loss, conv_outputs)
-    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2, 3))  # Adjust this for 3D
-
-    conv_outputs = conv_outputs[0]
-    conv_outputs = tf.reduce_mean(conv_outputs * pooled_grads, axis=-1)
-
-    heatmap = tf.maximum(conv_outputs, 0)
-    heatmap = heatmap / tf.math.reduce_max(heatmap)
-    
-    return heatmap.numpy()
-
-# Function to overlay the heatmap on the original image and save it
-import nibabel as nib
-import os
-from nilearn import plotting
-
-# Ensure directory exists for saving the result
-def ensure_directory_exists(directory):
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-
-# Function to overlay the heatmap on a 2D slice of the original 3D image and save it, along with saving the 3D image
-def save_gradcam(heatmap, img, task, modality, layer_name, class_idx, save_dir='./grad-cam'):
-    # Ensure the save directory exists
+# Modified save_gradcam to handle padding removal
+def save_gradcam(heatmap, img, padding, masker, task, modality, layer_name, class_idx, save_dir='./grad-cam'):
     ensure_directory_exists(save_dir)
     
-    # Generate the filename with task, modality, and class index for 3D NIfTI file
+    # Remove padding from heatmap
+    heatmap_unpadded = remove_padding(heatmap, padding)
+    
+    # Rescale the heatmap back to the original space using the masker
+    heatmap_rescaled = masker.inverse_transform(heatmap_unpadded)
+    
     nifti_file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.nii.gz"
     nifti_save_path = os.path.join(save_dir, nifti_file_name)
     
-    # Save the 3D heatmap as a NIfTI file
-    affine = np.eye(4)  # Identity matrix for affine; adjust if necessary
-    nifti_img = nib.Nifti1Image(heatmap, affine)  # Create the NIfTI object
-    nib.save(nifti_img, nifti_save_path)  # Save the NIfTI image
-    print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
+    nifti_img = new_img_like(masker.mask_img_, heatmap_rescaled.get_fdata())
+    nib.save(nifti_img, nifti_save_path)
     
-    # Now save the 2D slices using nilearn's plot_stat_map
     output_slice_path = os.path.join(save_dir, f'stat_map_{task}_{modality}_{layer_name}_class{class_idx}.png')
     
-    # Plot slices from the heatmap (example: axial slices from 0 to 50 in steps of 5)
-    cmap = 'jet'
     plotting.plot_stat_map(
-        nifti_img,  # Use the saved NIfTI file for visualization
-        display_mode='x',  # Choose the axis for slicing ('x' = sagittal, 'y' = coronal, 'z' = axial)
-        cut_coords=range(0, 51, 5),  # Customize slice positions; example: [0, 5, 10, ..., 50]
+        nifti_img,
+        display_mode='x',
+        cut_coords=range(0, 51, 5),
         title=f'Grad-CAM Slices for {layer_name}, Class {class_idx}',
-        cmap=cmap,
+        cmap='jet',
         output_file=output_slice_path,
-        threshold=0.2,  # You can adjust the threshold based on your heatmap values
-        vmax=1  # Adjust vmax to control color intensity
+        threshold=0.2,
+        vmax=1
     )
     
     print(f'Grad-CAM stat map saved at {output_slice_path}')
 
-# Function to apply Grad-CAM for all convolutional layers and save heatmaps for both classes
-def apply_gradcam_all_layers(model, img, task, modality):
-    # Get all convolutional layers in the model
+
+# Function to apply Grad-CAM for all layers and save heatmaps
+def apply_gradcam_all_layers(model, img, task, modality, paddings):
     conv_layers = [layer.name for layer in model.layers if 'conv' in layer.name]
     
-    # Loop through both class indices (class 0 and class 1)
     for class_idx in range(2):
         for conv_layer_name in conv_layers:
-            # Generate the Grad-CAM heatmap for each conv layer and each class
             heatmap = make_gradcam_heatmap(model, img, conv_layer_name, pred_index=class_idx)
-            
-            # Save the heatmap
-            save_gradcam(heatmap, img, task, modality, conv_layer_name, class_idx)
+            save_gradcam(heatmap, img, paddings[0], masker, task, modality, conv_layer_name, class_idx)
 
 
 # Define your task and modality
@@ -357,20 +194,18 @@ task = 'cd'
 modality = 'PET'
 
 # Load your data
-train_data, train_label, masker = loading_mask_3d(task, modality)  # Assume function is available
+train_data, train_label, masker, paddings = loading_mask_3d(task, modality)
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
 
 # Create and compile the model
 model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
 
-# Train the model (if you haven't already trained it)
-train_model(X, Y)  # Assume train_model trains the model using Keras' .fit() method
+# Train the model
+train_model(X, Y)
 
 # Select an image from your dataset (e.g., the first one)
-img = np.expand_dims(X[0], axis=0)  # Add batch dimension
+img = np.expand_dims(X[0], axis=0)
 
-# Apply Grad-CAM and save heatmaps for both classes and each convolutional layer
-apply_gradcam_all_layers(model, img, task, modality)
-
-
+# Apply Grad-CAM
+apply_gradcam_all_layers(model, img, task, modality, paddings)
