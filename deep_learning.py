@@ -118,10 +118,12 @@ def loading_mask_3d(task, modality):
     
     train_data = []
     paddings = []
+    affines = []  # List to store the affine matrices
     target_shape = (128, 128, 128)
     
     for i in range(len(data_train)):
         nifti_img = nib.load(data_train[i])
+        affine = nifti_img.affine  # Store the affine matrix
         masked_data = masker.fit_transform(nifti_img)
         reshaped_data = masker.inverse_transform(masked_data).get_fdata()
         reshaped_data = zscore(reshaped_data, axis=None)
@@ -130,11 +132,12 @@ def loading_mask_3d(task, modality):
         
         train_data.append(padded_data)
         paddings.append(padding)
+        affines.append(affine)  # Store the affine matrix for later use
     
     train_label = binarylabel(train_label, task)
     train_data = np.array(train_data)
     
-    return train_data, train_label, masker, paddings
+    return train_data, train_label, masker, paddings, affines  
 
 # Function to remove padding based on stored padding values
 def remove_padding(heatmap, padding):
@@ -166,22 +169,28 @@ def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
     return heatmap.numpy()
 
 # Function to save Grad-CAM 3D heatmap and plot glass brain
-def save_gradcam(heatmap, img, padding, masker, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
+# Function to save Grad-CAM 3D heatmap and plot glass brain using the stored affine
+def save_gradcam(heatmap, img, padding, affine, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
     ensure_directory_exists(save_dir)
     
+    # Remove padding from the heatmap
     heatmap_unpadded = remove_padding(heatmap, padding)
-    heatmap_rescaled = masker.inverse_transform(heatmap_unpadded)
     
+    # Create a NIfTI image using the stored affine matrix
+    nifti_img = nib.Nifti1Image(heatmap_unpadded, affine)  # Use the stored affine matrix
+    
+    # Save the 3D NIfTI file
     nifti_file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.nii.gz"
     nifti_save_path = os.path.join(save_dir, nifti_file_name)
-    nifti_img = new_img_like(masker.mask_img_, heatmap_rescaled.get_fdata())
     nib.save(nifti_img, nifti_save_path)
     print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
     
+    # Now, plot the glass brain
     output_glass_brain_path = os.path.join(save_dir, f'glass_brain_{task}_{modality}_{layer_name}_class{class_idx}.png')
     plotting.plot_glass_brain(nifti_img, colorbar=True, plot_abs=True, cmap='jet', output_file=output_glass_brain_path)
     print(f'Glass brain plot saved at {output_glass_brain_path}')
+
 
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
 def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, info):
