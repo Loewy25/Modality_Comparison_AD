@@ -246,7 +246,7 @@ def train_model(X, Y):
 
 # Example usage:
 task = 'pc'
-modality = 'PET'
+modality = 'MRI'
 info='5_context_from_16_0.5_dropout_1e3'
 
 # Load your data
