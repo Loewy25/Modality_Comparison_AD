@@ -1,4 +1,4 @@
-from tensorflow.keras.layers import Conv3D, Input, LeakyReLU, Add, GlobalAveragePooling3D, Dense, Dropout, SpatialDropout3D, BatchNormalization  # Add BatchNormalization
+from tensorflow.keras.layers import Conv3D, Input, LeakyReLU, Add, GlobalAveragePooling3D, Dense, Dropout, SpatialDropout3D, BatchNormalization
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 import tensorflow_addons as tfa
@@ -70,7 +70,7 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     x = context_module(x, 128)
     x = Add()([x, conv4_out])
 
-    # Conv4 block (128 filters, stride 2)
+    # Conv5 block (256 filters, stride 2)
     x = convolution_block(x, 256, strides=(2, 2, 2))
     conv5_out = x
     x = context_module(x, 256)
@@ -118,7 +118,7 @@ def loading_mask_3d(task, modality):
     
     train_data = []
     paddings = []
-    affines = []  # List to store the affine matrices
+    affines = []  # Store the affine matrices for each image
     target_shape = (128, 128, 128)
     
     for i in range(len(data_train)):
@@ -132,12 +132,12 @@ def loading_mask_3d(task, modality):
         
         train_data.append(padded_data)
         paddings.append(padding)
-        affines.append(affine)  # Store the affine matrix for later use
+        affines.append(affine)  # Append the affine matrix
     
     train_label = binarylabel(train_label, task)
     train_data = np.array(train_data)
     
-    return train_data, train_label, masker, paddings, affines  
+    return train_data, train_label, masker, paddings, affines
 
 # Function to remove padding based on stored padding values
 def remove_padding(heatmap, padding):
@@ -168,7 +168,6 @@ def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
     
     return heatmap.numpy()
 
-# Function to save Grad-CAM 3D heatmap and plot glass brain
 # Function to save Grad-CAM 3D heatmap and plot glass brain using the stored affine
 def save_gradcam(heatmap, img, padding, affine, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
@@ -191,9 +190,8 @@ def save_gradcam(heatmap, img, padding, affine, task, modality, layer_name, clas
     plotting.plot_glass_brain(nifti_img, colorbar=True, plot_abs=True, cmap='jet', output_file=output_glass_brain_path)
     print(f'Glass brain plot saved at {output_glass_brain_path}')
 
-
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
-def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, info):
+def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, affines, info):
     conv_layers = [layer.name for layer in model.layers if 'conv' in layer.name]
     
     for conv_layer_name in conv_layers:
@@ -207,7 +205,7 @@ def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, info
                     accumulated_heatmap += heatmap
             
             avg_heatmap = accumulated_heatmap / len(imgs)
-            save_gradcam(avg_heatmap, imgs[0], paddings[0], masker, task, modality, conv_layer_name, class_idx,info)
+            save_gradcam(avg_heatmap, imgs[0], paddings[0], affines[0], task, modality, conv_layer_name, class_idx,info)
 
 def train_model(X, Y):
     stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=2)
@@ -250,7 +248,7 @@ modality = 'MRI'
 info='5_context_from_16_0.5_dropout_1e3'
 
 # Load your data
-train_data, train_label, masker, paddings = loading_mask_3d(task, modality)
+train_data, train_label, masker, paddings, affines = loading_mask_3d(task, modality)
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
 
@@ -262,4 +260,4 @@ train_model(X, Y)
 
 # Apply Grad-CAM to all images and compute the average
 imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
-apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, info)
+apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, affines, info)
