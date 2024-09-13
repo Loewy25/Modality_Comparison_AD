@@ -284,8 +284,8 @@ def train_model(X, Y, task, modality, info):
     print(f'Average AUC across all folds: {average_auc:.4f}')
 
 # Example usage:
-task = 'dm'
-modality = 'PET'
+task = 'pc'
+modality = 'MRI'
 info='5_context_from_16_0.5_dropout_1e3'
 
 # Load your data
