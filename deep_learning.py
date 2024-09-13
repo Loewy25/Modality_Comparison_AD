@@ -169,12 +169,24 @@ def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
     return heatmap.numpy()
 
 # Function to save Grad-CAM 3D heatmap and plot glass brain using the stored affine
-def save_gradcam(heatmap, img, padding, affine, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
+from scipy.ndimage import zoom
+
+# Function to upsample the heatmap to match the input shape
+def upsample_heatmap(heatmap, target_shape):
+    zoom_factors = [t / h for t, h in zip(target_shape, heatmap.shape)]
+    return zoom(heatmap, zoom_factors, order=1)  # Bilinear interpolation
+
+# Function to save Grad-CAM 3D heatmap and plot glass brain using the stored affine
+def save_gradcam(heatmap, img, padding, affine, target_shape, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
     ensure_directory_exists(save_dir)
-    
+
     # Remove padding from the heatmap
     heatmap_unpadded = remove_padding(heatmap, padding)
+    
+    # Upsample the heatmap to match the input shape if necessary
+    if heatmap_unpadded.shape != target_shape:
+        heatmap_unpadded = upsample_heatmap(heatmap_unpadded, target_shape)
     
     # Create a NIfTI image using the stored affine matrix
     nifti_img = nib.Nifti1Image(heatmap_unpadded, affine)  # Use the stored affine matrix
@@ -193,7 +205,8 @@ def save_gradcam(heatmap, img, padding, affine, task, modality, layer_name, clas
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
 def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, affines, info):
     conv_layers = [layer.name for layer in model.layers if 'conv' in layer.name]
-    
+    target_shape = (128, 128, 128)  # Target shape to upsample heatmap to match input
+
     for conv_layer_name in conv_layers:
         for class_idx in range(2):  # Loop through both class indices (class 0 and class 1)
             accumulated_heatmap = None
@@ -205,8 +218,9 @@ def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, affi
                     accumulated_heatmap += heatmap
             
             avg_heatmap = accumulated_heatmap / len(imgs)
-            save_gradcam(avg_heatmap, imgs[0], paddings[0], affines[0], task, modality, conv_layer_name, class_idx,info)
+            save_gradcam(avg_heatmap, imgs[0], paddings[0], affines[0], target_shape, task, modality, conv_layer_name, class_idx, info)
 
+# The rest of the code remains the same
 def train_model(X, Y):
     stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=2)
     all_y_val = []
@@ -261,3 +275,4 @@ train_model(X, Y)
 # Apply Grad-CAM to all images and compute the average
 imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
 apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, affines, info)
+
