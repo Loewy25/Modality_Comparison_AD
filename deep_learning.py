@@ -176,6 +176,26 @@ def upsample_heatmap(heatmap, target_shape):
     zoom_factors = [t / h for t, h in zip(target_shape, heatmap.shape)]
     return zoom(heatmap, zoom_factors, order=1)  # Bilinear interpolation
 
+import matplotlib.pyplot as plt
+
+# Function to plot training and validation loss and save the figure
+def plot_training_validation_loss(history, save_dir):
+    # Create the plot
+    plt.figure(figsize=(10, 6))
+    plt.plot(history.history['loss'], label='Training Loss')
+    plt.plot(history.history['val_loss'], label='Validation Loss')
+    plt.title('Training Loss vs Validation Loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend(loc='upper right')
+    
+    # Save the plot
+    loss_plot_path = os.path.join(save_dir, 'loss_vs_val_loss.png')
+    plt.savefig(loss_plot_path)
+    plt.close()  # Close the figure to avoid displaying it in notebooks
+    print(f'Loss vs Validation Loss plot saved at {loss_plot_path}')
+
+
 # Function to save Grad-CAM 3D heatmap and plot glass brain using the stored affine
 def save_gradcam(heatmap, img, padding, affine, target_shape, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
@@ -202,6 +222,7 @@ def save_gradcam(heatmap, img, padding, affine, target_shape, task, modality, la
     plotting.plot_glass_brain(nifti_img, colorbar=True, plot_abs=True, cmap='jet', output_file=output_glass_brain_path)
     print(f'Glass brain plot saved at {output_glass_brain_path}')
 
+
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
 def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, affines, info):
     conv_layers = [layer.name for layer in model.layers if 'conv' in layer.name]
@@ -220,12 +241,15 @@ def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, affi
             avg_heatmap = accumulated_heatmap / len(imgs)
             save_gradcam(avg_heatmap, imgs[0], paddings[0], affines[0], target_shape, task, modality, conv_layer_name, class_idx, info)
 
-# The rest of the code remains the same
-def train_model(X, Y):
+def train_model(X, Y, task, modality, info):
     stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=2)
     all_y_val = []
     all_y_val_pred = []
     all_auc_scores = []
+
+    # Directory to save loss vs val-loss plot
+    save_dir = os.path.join('./grad-cam', info, task, modality)
+    ensure_directory_exists(save_dir)
 
     for fold_num, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
         X_train, X_val = X[train_idx], X[val_idx]
@@ -252,6 +276,9 @@ def train_model(X, Y):
         auc_score = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
         all_auc_scores.append(auc_score)
         print(f'AUC for fold {fold_num + 1}: {auc_score:.4f}')
+    
+    # After training, plot and save the loss vs validation loss graph
+    plot_training_validation_loss(history, save_dir)
 
     average_auc = sum(all_auc_scores) / len(all_auc_scores)
     print(f'Average AUC across all folds: {average_auc:.4f}')
@@ -269,10 +296,9 @@ Y = to_categorical(train_label, num_classes=2)
 # Create and compile the model
 model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
 
-# Train the model (if needed)
-train_model(X, Y)
+# Train the model (with added loss plot generation)
+train_model(X, Y, task, modality, info)
 
 # Apply Grad-CAM to all images and compute the average
 imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
 apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, affines, info)
-
