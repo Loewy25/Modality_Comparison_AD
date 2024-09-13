@@ -182,18 +182,28 @@ import matplotlib.pyplot as plt
 def plot_training_validation_loss(history, save_dir):
     # Create the plot
     plt.figure(figsize=(10, 6))
+    
+    # Plot the training and validation loss
     plt.plot(history.history['loss'], label='Training Loss')
     plt.plot(history.history['val_loss'], label='Validation Loss')
-    plt.title('Training Loss vs Validation Loss')
+    
+    # Add title and labels
+    plt.title('Training Loss vs Validation Loss (Zoomed: 0-1)')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
+    
+    # Set y-axis limit to zoom into the range 0 to 1
+    plt.ylim(0, 1)
+    
+    # Add a legend
     plt.legend(loc='upper right')
     
     # Save the plot
-    loss_plot_path = os.path.join(save_dir, 'loss_vs_val_loss.png')
+    loss_plot_path = os.path.join(save_dir, 'loss_vs_val_loss_zoomed_0_to_1.png')
     plt.savefig(loss_plot_path)
     plt.close()  # Close the figure to avoid displaying it in notebooks
-    print(f'Loss vs Validation Loss plot saved at {loss_plot_path}')
+    print(f'Loss vs Validation Loss plot (0-1 range) saved at {loss_plot_path}')
+
 
 
 # Function to save Grad-CAM 3D heatmap and plot glass brain using the stored affine
@@ -269,19 +279,29 @@ def train_model(X, Y, task, modality, info):
                             validation_data=(X_val, Y_val),
                             callbacks=[early_stopping, reduce_lr])
 
+        # Get predictions after training
         y_val_pred = model.predict(X_val)
+        y_val_pred_auc = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
+
+        # Track the best validation AUC during training for comparison
+        best_val_auc = max(history.history['val_auc'])
+        print(f'Best val_auc during training for fold {fold_num + 1}: {best_val_auc:.4f}')
+        
+        # Calculate and print final AUC after restoring the best weights
+        final_auc = roc_auc_score(Y_val[:, 1], model.predict(X_val)[:, 1])
+        print(f'Final AUC for fold {fold_num + 1}: {final_auc:.4f}')
+
         all_y_val.extend(Y_val[:, 1])
         all_y_val_pred.extend(y_val_pred[:, 1])
+        all_auc_scores.append(final_auc)
 
-        auc_score = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
-        all_auc_scores.append(auc_score)
-        print(f'AUC for fold {fold_num + 1}: {auc_score:.4f}')
-    
-    # After training, plot and save the loss vs validation loss graph
+    # Plot and save loss vs validation loss graph
     plot_training_validation_loss(history, save_dir)
 
+    # Compute average AUC across all folds
     average_auc = sum(all_auc_scores) / len(all_auc_scores)
     print(f'Average AUC across all folds: {average_auc:.4f}')
+
 
 # Example usage:
 task = 'pc'
