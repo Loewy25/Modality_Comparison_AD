@@ -108,10 +108,21 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
 # Function to load the data, mask it, and return padding information
 # Function to resize an image to the target shape using interpolation (instead of padding)
 def resize_image(image, target_shape):
-    # Compute the zoom factors for each axis
-    zoom_factors = [target_shape[i] / image.shape[i] for i in range(3)]
-    # Use linear interpolation (order=1)
-    resized_image = zoom(image, zoom_factors, order=1)
+    # If the image has a channel dimension (4D), resize only the first three dimensions
+    if len(image.shape) == 4 and image.shape[-1] == 1:
+        # Compute the zoom factors for the first three axes (D, H, W)
+        zoom_factors = [target_shape[i] / image.shape[i] for i in range(3)]
+        # Apply zoom to the first three dimensions, keeping the channel dimension intact
+        resized_image = zoom(image[..., 0], zoom_factors, order=1)  # Squeeze the last dimension before zoom
+        resized_image = np.expand_dims(resized_image, axis=-1)  # Add the channel dimension back
+    elif len(image.shape) == 3:  # If the image is purely 3D
+        # Compute the zoom factors for the first three axes (D, H, W)
+        zoom_factors = [target_shape[i] / image.shape[i] for i in range(3)]
+        # Apply zoom to the 3D image
+        resized_image = zoom(image, zoom_factors, order=1)
+    else:
+        raise ValueError(f"Unexpected image shape: {image.shape}. Expected 3D or 4D with channel dimension.")
+    
     return resized_image
 
 # Update loading function to resize instead of padding
