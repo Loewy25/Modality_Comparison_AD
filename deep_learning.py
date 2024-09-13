@@ -90,22 +90,31 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     
     return model
 
-# Modified pad_image_to_shape function to return padding values
-def pad_image_to_shape(image, target_shape=(128, 128, 128)):
-    if image.shape[-1] == 1:
-        spatial_shape = image.shape[:-1]
-    else:
-        spatial_shape = image.shape
+# # Modified pad_image_to_shape function to return padding values
+# def pad_image_to_shape(image, target_shape=(128, 128, 128)):
+#     if image.shape[-1] == 1:
+#         spatial_shape = image.shape[:-1]
+#     else:
+#         spatial_shape = image.shape
 
-    padding = [(max((target_shape[i] - spatial_shape[i]) // 2, 0),
-                max((target_shape[i] - spatial_shape[i]) - (target_shape[i] - spatial_shape[i]) // 2, 0))
-               for i in range(3)]
+#     padding = [(max((target_shape[i] - spatial_shape[i]) // 2, 0),
+#                 max((target_shape[i] - spatial_shape[i]) - (target_shape[i] - spatial_shape[i]) // 2, 0))
+#                for i in range(3)]
 
-    padded_image = np.pad(image, [(p[0], p[1]) for p in padding] + [(0, 0)], mode='constant', constant_values=0)
+#     padded_image = np.pad(image, [(p[0], p[1]) for p in padding] + [(0, 0)], mode='constant', constant_values=0)
     
-    return padded_image, padding  # Return padding information
+#     return padded_image, padding  # Return padding information
 
 # Function to load the data, mask it, and return padding information
+# Function to resize an image to the target shape using interpolation (instead of padding)
+def resize_image(image, target_shape):
+    # Compute the zoom factors for each axis
+    zoom_factors = [target_shape[i] / image.shape[i] for i in range(3)]
+    # Use linear interpolation (order=1)
+    resized_image = zoom(image, zoom_factors, order=1)
+    return resized_image
+
+# Update loading function to resize instead of padding
 def loading_mask_3d(task, modality):
     images_pet, images_mri, labels = generate_data_path()
     
@@ -117,7 +126,6 @@ def loading_mask_3d(task, modality):
     masker = NiftiMasker(mask_img='/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
     
     train_data = []
-    paddings = []
     affines = []  # Store the affine matrices for each image
     target_shape = (128, 128, 128)
     
@@ -128,16 +136,16 @@ def loading_mask_3d(task, modality):
         reshaped_data = masker.inverse_transform(masked_data).get_fdata()
         reshaped_data = zscore(reshaped_data, axis=None)
         
-        padded_data, padding = pad_image_to_shape(reshaped_data, target_shape=target_shape)
+        # Instead of padding, resize the image to (128, 128, 128)
+        resized_data = resize_image(reshaped_data, target_shape)
         
-        train_data.append(padded_data)
-        paddings.append(padding)
-        affines.append(affine)  # Append the affine matrix
+        train_data.append(resized_data)
+        affines.append(affine)  # Store the original affine matrix
     
     train_label = binarylabel(train_label, task)
     train_data = np.array(train_data)
     
-    return train_data, train_label, masker, paddings, affines
+    return train_data, train_label, masker, affines
 
 # Function to remove padding based on stored padding values
 def remove_padding(heatmap, padding):
@@ -206,30 +214,25 @@ def plot_training_validation_loss(history, save_dir):
 
 
 
-# Function to save Grad-CAM 3D heatmap and plot glass brain using the stored affine
-def save_gradcam(heatmap, img, padding, affine, target_shape, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
+def save_gradcam(heatmap, img, original_shape, affine, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
     ensure_directory_exists(save_dir)
+    
+    # Resize the heatmap back to the original shape (91, 109, 91) using interpolation
+    heatmap_rescaled = resize_image(heatmap, original_shape)
 
-    # Remove padding from the heatmap
-    heatmap_unpadded = remove_padding(heatmap, padding)
-    
-    # Upsample the heatmap to match the input shape if necessary
-    if heatmap_unpadded.shape != target_shape:
-        heatmap_unpadded = upsample_heatmap(heatmap_unpadded, target_shape)
-    
-    # Create a NIfTI image using the stored affine matrix
-    nifti_img = nib.Nifti1Image(heatmap_unpadded, affine)  # Use the stored affine matrix
-    
+    # Create a NIfTI image using the resized heatmap and the original affine matrix
+    nifti_img_rescaled = nib.Nifti1Image(heatmap_rescaled, affine)
+
     # Save the 3D NIfTI file
     nifti_file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.nii.gz"
     nifti_save_path = os.path.join(save_dir, nifti_file_name)
-    nib.save(nifti_img, nifti_save_path)
+    nib.save(nifti_img_rescaled, nifti_save_path)
     print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
     
-    # Now, plot the glass brain
+    # Plot the glass brain
     output_glass_brain_path = os.path.join(save_dir, f'glass_brain_{task}_{modality}_{layer_name}_class{class_idx}.png')
-    plotting.plot_glass_brain(nifti_img, colorbar=True, plot_abs=True, cmap='jet', output_file=output_glass_brain_path)
+    plotting.plot_glass_brain(nifti_img_rescaled, colorbar=True, plot_abs=True, cmap='jet', output_file=output_glass_brain_path)
     print(f'Glass brain plot saved at {output_glass_brain_path}')
 
 
@@ -275,7 +278,7 @@ def train_model(X, Y, task, modality, info):
 
         history = model.fit(X_train, Y_train,
                             batch_size=5,
-                            epochs=800,
+                            epochs=200,
                             validation_data=(X_val, Y_val),
                             callbacks=[early_stopping, reduce_lr])
 
@@ -304,7 +307,7 @@ def train_model(X, Y, task, modality, info):
 
 
 # Example usage:
-task = 'pc'
+task = 'cd'
 modality = 'PET'
 info='5_context_from_16_0.5_dropout_1e3'
 
