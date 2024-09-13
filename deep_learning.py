@@ -236,7 +236,7 @@ def save_gradcam(heatmap, img, padding, affine, target_shape, task, modality, la
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
 def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, affines, info):
     conv_layers = [layer.name for layer in model.layers if 'conv' in layer.name]
-    target_shape = (128, 128, 128)  # Target shape to upsample heatmap to match input
+    target_shape = (91, 109, 91)  # Target shape to upsample heatmap to match input
 
     for conv_layer_name in conv_layers:
         for class_idx in range(2):  # Loop through both class indices (class 0 and class 1)
