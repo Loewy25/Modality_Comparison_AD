@@ -38,7 +38,7 @@ def ensure_directory_exists(directory):
 # Context module: two convolution blocks with optional dropout
 def context_module(x, filters):
     x = convolution_block(x, filters)
-    x = SpatialDropout3D(0.5)(x)
+    x = SpatialDropout3D(0.57)(x)
     x = convolution_block(x, filters)
     return x
 
@@ -80,7 +80,7 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     x = GlobalAveragePooling3D()(x)
     
     # Dropout for regularization
-    x = Dropout(0.5)(x)
+    x = Dropout(0.57)(x)
     
     # Dense layer with softmax for classification
     output = Dense(num_classes, activation='softmax')(x)
