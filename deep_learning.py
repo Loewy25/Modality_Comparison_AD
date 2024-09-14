@@ -263,7 +263,8 @@ def apply_gradcam_all_layers_average(model, imgs, task, modality, affines, info)
                     accumulated_heatmap += heatmap
             
             avg_heatmap = accumulated_heatmap / len(imgs)
-            save_gradcam(avg_heatmap, imgs[0], affines[0], target_shape, task, modality, conv_layer_name, class_idx, info)
+            save_gradcam(avg_heatmap, imgs[0], target_shape, affines[0], task, modality, conv_layer_name, class_idx, info)
+
 
 def train_model(X, Y, task, modality, info):
     stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=2)
