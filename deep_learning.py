@@ -235,12 +235,12 @@ def plot_training_validation_loss(history, save_dir):
 
 from nilearn.image import resample_to_img
 
-def save_gradcam(heatmap, img, original_img, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
+def save_gradcam(heatmap, img, adjusted_affine, original_img, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
     ensure_directory_exists(save_dir)
     
-    # Create a NIfTI image of the heatmap with an identity affine
-    heatmap_img = nib.Nifti1Image(heatmap, np.eye(4))
+    # Create a NIfTI image of the heatmap using the adjusted affine
+    heatmap_img = nib.Nifti1Image(heatmap, adjusted_affine)
 
     # Resample the heatmap to the space of the original image
     resampled_heatmap_img = resample_to_img(heatmap_img, original_img, interpolation='continuous')
@@ -258,8 +258,9 @@ def save_gradcam(heatmap, img, original_img, task, modality, layer_name, class_i
 
 
 
+
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
-def apply_gradcam_all_layers_average(model, imgs, original_imgs, task, modality, info):
+def apply_gradcam_all_layers_average(model, imgs, adjusted_affines, original_imgs, task, modality, info):
     conv_layers = [layer.name for layer in model.layers if 'conv' in layer.name]
 
     for conv_layer_name in conv_layers:
@@ -273,8 +274,8 @@ def apply_gradcam_all_layers_average(model, imgs, original_imgs, task, modality,
                     accumulated_heatmap += heatmap
             
             avg_heatmap = accumulated_heatmap / len(imgs)
-            # Use the first original image as reference
-            save_gradcam(avg_heatmap, imgs[0], original_imgs[0], task, modality, conv_layer_name, class_idx, info)
+            # Use the first adjusted affine and original image as reference
+            save_gradcam(avg_heatmap, imgs[0], adjusted_affines[0], original_imgs[0], task, modality, conv_layer_name, class_idx, info)
 
 
 
