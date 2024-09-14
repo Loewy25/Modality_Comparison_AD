@@ -290,7 +290,7 @@ def train_model(X, Y, task, modality, info):
 
         history = model.fit(X_train, Y_train,
                             batch_size=5,
-                            epochs=20,
+                            epochs=800,
                             validation_data=(X_val, Y_val),
                             callbacks=[early_stopping, reduce_lr])
 
