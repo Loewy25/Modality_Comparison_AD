@@ -248,7 +248,7 @@ def save_gradcam(heatmap, img, original_shape, affine, task, modality, layer_nam
 
 
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
-def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, affines, info):
+def apply_gradcam_all_layers_average(model, imgs, task, modality, affines, info):
     conv_layers = [layer.name for layer in model.layers if 'conv' in layer.name]
     target_shape = (91, 109, 91)  # Target shape to upsample heatmap to match input
 
@@ -263,7 +263,7 @@ def apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, affi
                     accumulated_heatmap += heatmap
             
             avg_heatmap = accumulated_heatmap / len(imgs)
-            save_gradcam(avg_heatmap, imgs[0], paddings[0], affines[0], target_shape, task, modality, conv_layer_name, class_idx, info)
+            save_gradcam(avg_heatmap, imgs[0], affines[0], target_shape, task, modality, conv_layer_name, class_idx, info)
 
 def train_model(X, Y, task, modality, info):
     stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=2)
@@ -335,4 +335,4 @@ train_model(X, Y, task, modality, info)
 
 # Apply Grad-CAM to all images and compute the average
 imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
-apply_gradcam_all_layers_average(model, imgs, task, modality, paddings, affines, info)
+apply_gradcam_all_layers_average(model, imgs, task, modality, affines, info)
