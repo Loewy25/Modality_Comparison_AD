@@ -129,6 +129,8 @@ def resize_image(image, target_shape):
 def loading_mask_3d(task, modality):
     images_pet, images_mri, labels = generate_data_path()
     adjusted_affines = []
+    original_imgs = []  # Initialize the list to store original images
+
     if modality == 'PET':
         data_train, train_label = generate(images_pet, labels, task)
     elif modality == 'MRI':
@@ -137,12 +139,13 @@ def loading_mask_3d(task, modality):
     masker = NiftiMasker(mask_img='/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
     
     train_data = []
-    affines = []  # Store the affine matrices for each image
     target_shape = (128, 128, 128)
     
     for i in range(len(data_train)):
         nifti_img = nib.load(data_train[i])
         affine = nifti_img.affine  # Store the affine matrix
+        original_imgs.append(nifti_img)  # Store the original NIfTI image
+
         masked_data = masker.fit_transform(nifti_img)
         reshaped_data = masker.inverse_transform(masked_data).get_fdata()
         reshaped_data = zscore(reshaped_data, axis=None)
@@ -158,6 +161,7 @@ def loading_mask_3d(task, modality):
     train_data = np.array(train_data)
     
     return train_data, train_label, masker, adjusted_affines, original_imgs
+
 
 # Function to remove padding based on stored padding values
 def remove_padding(heatmap, padding):
