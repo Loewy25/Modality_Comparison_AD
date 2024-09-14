@@ -128,7 +128,7 @@ def resize_image(image, target_shape):
 # Update loading function to resize instead of padding
 def loading_mask_3d(task, modality):
     images_pet, images_mri, labels = generate_data_path()
-    
+    adjusted_affines = []
     if modality == 'PET':
         data_train, train_label = generate(images_pet, labels, task)
     elif modality == 'MRI':
@@ -151,12 +151,13 @@ def loading_mask_3d(task, modality):
         resized_data = resize_image(reshaped_data, target_shape)
         
         train_data.append(resized_data)
-        affines.append(affine)  # Store the original affine matrix
+        new_affine = adjust_affine_for_resizing(affine, reshaped_data.shape, target_shape)
+        adjusted_affines.append(new_affine)
     
     train_label = binarylabel(train_label, task)
     train_data = np.array(train_data)
     
-    return train_data, train_label, masker, affines
+    return train_data, train_label, masker, adjusted_affines, original_imgs
 
 # Function to remove padding based on stored padding values
 def remove_padding(heatmap, padding):
@@ -187,6 +188,11 @@ def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
     heatmap = heatmap / tf.math.reduce_max(heatmap)
     
     return heatmap.numpy()
+def adjust_affine_for_resizing(original_affine, original_shape, new_shape):
+    scales = [original_shape[i] / new_shape[i] for i in range(3)]
+    new_affine = original_affine.copy()
+    new_affine[:3, :3] = original_affine[:3, :3] @ np.diag(scales)
+    return new_affine
 
 
 # Function to save Grad-CAM 3D heatmap and plot glass brain using the stored affine
@@ -227,32 +233,34 @@ def plot_training_validation_loss(history, save_dir):
 
 
 
-def save_gradcam(heatmap, img, original_shape, affine, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
+from nilearn.image import resample_to_img
+
+def save_gradcam(heatmap, img, original_img, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
     ensure_directory_exists(save_dir)
     
-    # Resize the heatmap back to the original shape (91, 109, 91) using interpolation
-    heatmap_rescaled = resize_image(heatmap, original_shape)
+    # Create a NIfTI image of the heatmap with an identity affine
+    heatmap_img = nib.Nifti1Image(heatmap, np.eye(4))
 
-    # Create a NIfTI image using the resized heatmap and the original affine matrix
-    nifti_img_rescaled = nib.Nifti1Image(heatmap_rescaled, affine)
+    # Resample the heatmap to the space of the original image
+    resampled_heatmap_img = resample_to_img(heatmap_img, original_img, interpolation='continuous')
 
     # Save the 3D NIfTI file
     nifti_file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.nii.gz"
     nifti_save_path = os.path.join(save_dir, nifti_file_name)
-    nib.save(nifti_img_rescaled, nifti_save_path)
+    nib.save(resampled_heatmap_img, nifti_save_path)
     print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
     
     # Plot the glass brain
     output_glass_brain_path = os.path.join(save_dir, f'glass_brain_{task}_{modality}_{layer_name}_class{class_idx}.png')
-    plotting.plot_glass_brain(nifti_img_rescaled, colorbar=True, plot_abs=True, cmap='jet', output_file=output_glass_brain_path)
+    plotting.plot_glass_brain(resampled_heatmap_img, colorbar=True, plot_abs=True, cmap='jet', output_file=output_glass_brain_path)
     print(f'Glass brain plot saved at {output_glass_brain_path}')
 
 
+
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
-def apply_gradcam_all_layers_average(model, imgs, task, modality, affines, info):
+def apply_gradcam_all_layers_average(model, imgs, original_imgs, task, modality, info):
     conv_layers = [layer.name for layer in model.layers if 'conv' in layer.name]
-    target_shape = (91, 109, 91)  # Target shape to upsample heatmap to match input
 
     for conv_layer_name in conv_layers:
         for class_idx in range(2):  # Loop through both class indices (class 0 and class 1)
@@ -265,7 +273,9 @@ def apply_gradcam_all_layers_average(model, imgs, task, modality, affines, info)
                     accumulated_heatmap += heatmap
             
             avg_heatmap = accumulated_heatmap / len(imgs)
-            save_gradcam(avg_heatmap, imgs[0], target_shape, affines[0], task, modality, conv_layer_name, class_idx, info)
+            # Use the first original image as reference
+            save_gradcam(avg_heatmap, imgs[0], original_imgs[0], task, modality, conv_layer_name, class_idx, info)
+
 
 
 def train_model(X, Y, task, modality, info):
@@ -326,16 +336,16 @@ modality = 'MRI'
 info='5_context_from_16_0.5_dropout_1e3'
 
 # Load your data
-train_data, train_label, masker, affines = loading_mask_3d(task, modality)
+train_data, train_label, masker, adjusted_affines, original_imgs = loading_mask_3d(task, modality)
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
 
 # Create and compile the model
 model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
 
-# Train the model (with added loss plot generation)
+# Train the model
 train_model(X, Y, task, modality, info)
 
-# Apply Grad-CAM to all images and compute the average
+# Apply Grad-CAM
 imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
-apply_gradcam_all_layers_average(model, imgs, task, modality, affines, info)
+apply_gradcam_all_layers_average(model, imgs, original_imgs, task, modality, info)
