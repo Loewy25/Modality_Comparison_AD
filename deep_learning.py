@@ -177,15 +177,17 @@ def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
         loss = predictions[:, pred_index]
 
     grads = tape.gradient(loss, conv_outputs)
-    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2, 3))  # Adjust this for 3D
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2, 3))
 
     conv_outputs = conv_outputs[0]
-    conv_outputs = tf.reduce_mean(conv_outputs * pooled_grads, axis=-1)
+    conv_outputs = conv_outputs * pooled_grads
+    heatmap = tf.reduce_sum(conv_outputs, axis=-1)
 
-    heatmap = tf.maximum(conv_outputs, 0)
+    heatmap = tf.maximum(heatmap, 0)
     heatmap = heatmap / tf.math.reduce_max(heatmap)
     
     return heatmap.numpy()
+
 
 # Function to save Grad-CAM 3D heatmap and plot glass brain using the stored affine
 from scipy.ndimage import zoom
