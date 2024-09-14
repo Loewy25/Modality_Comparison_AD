@@ -323,7 +323,7 @@ modality = 'PET'
 info='5_context_from_16_0.5_dropout_1e3'
 
 # Load your data
-train_data, train_label, masker, paddings, affines = loading_mask_3d(task, modality)
+train_data, train_label, masker, affines = loading_mask_3d(task, modality)
 X = np.array(train_data)
 Y = to_categorical(train_label, num_classes=2)
 
