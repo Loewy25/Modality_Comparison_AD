@@ -105,7 +105,6 @@ def resize_image(image, target_shape):
     print(f"Resized image shape: {resized_image.shape}")
     return resized_image
 
-
 # Update loading function to resize instead of padding
 def loading_mask_3d(task, modality):
     images_pet, images_mri, labels = generate_data_path()
@@ -132,6 +131,7 @@ def loading_mask_3d(task, modality):
         reshaped_data = zscore(reshaped_data, axis=None)
         
         # Resize the image to (128, 128, 128)
+        reshaped_data = np.squeeze(reshaped_data)  # Ensure data is 3D
         resized_data = resize_image(reshaped_data, target_shape)
         
         train_data.append(resized_data)
@@ -150,15 +150,14 @@ def adjust_affine_for_resizing(original_affine, original_shape, new_shape):
     new_affine[:3, :3] = original_affine[:3, :3] @ np.diag(scales)
     return new_affine
 
-# Function to adjust affine for the cumulative scaling of the layer
-def adjust_affine_for_layer(original_affine, cumulative_scale):
+# Function to adjust affine for the layer's scaling
+def adjust_affine_for_layer(original_affine, scaling_factors):
     new_affine = original_affine.copy()
-    scaling_factors = [1 / cumulative_scale] * 3
     new_affine[:3, :3] = original_affine[:3, :3] @ np.diag(scaling_factors)
     return new_affine
 
 # Function to compute Grad-CAM for a given layer and class index
-def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None, cumulative_scale=1):
+def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
     grad_model = tf.keras.models.Model(
         [model.inputs], [model.get_layer(last_conv_layer_name).output, model.output]
     )
@@ -181,8 +180,10 @@ def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None, cumu
     
     heatmap = heatmap.numpy()
 
-    # Upsample heatmap to match the input size
-    zoom_factors = [cumulative_scale] * 3  # Upsample back to input size
+    # Compute zoom factors to resize heatmap to input size
+    input_shape = img.shape[1:4]  # Skip batch dimension
+    heatmap_shape = heatmap.shape
+    zoom_factors = [i / h for i, h in zip(input_shape, heatmap_shape)]
     upsampled_heatmap = zoom(heatmap, zoom_factors, order=1)  # Bilinear interpolation
 
     return upsampled_heatmap
@@ -214,12 +215,18 @@ def plot_training_validation_loss(history, save_dir):
     print(f'Loss vs Validation Loss plot (0-1 range) saved at {loss_plot_path}')
 
 # Function to save Grad-CAM heatmap and plot glass brain using the stored affine
-def save_gradcam(heatmap, img, adjusted_affine, cumulative_scale, original_img, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
+def save_gradcam(heatmap, img, adjusted_affine, original_img, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
     ensure_directory_exists(save_dir)
     
+    # Compute scaling factors based on input image and heatmap shapes
+    input_shape = img.shape[1:4]  # Skip batch dimension
+    heatmap_shape = heatmap.shape
+    scaling_factors = [input_dim / heatmap_dim for input_dim, heatmap_dim in zip(input_shape, heatmap_shape)]
+    
     # Adjust the affine for the current layer's scaling
-    layer_affine = adjust_affine_for_layer(adjusted_affine, cumulative_scale)
+    layer_affine = adjust_affine_for_layer(adjusted_affine, scaling_factors)
+    
     heatmap_img = nib.Nifti1Image(heatmap, layer_affine)
 
     # Resample the heatmap to the space of the original image
@@ -239,24 +246,12 @@ def save_gradcam(heatmap, img, adjusted_affine, cumulative_scale, original_img, 
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
 def apply_gradcam_all_layers_average(model, imgs, adjusted_affines, original_imgs, task, modality, info):
     conv_layers = [layer.name for layer in model.layers if 'conv' in layer.name]
-    # Calculate cumulative scaling factors based on strides
-    cumulative_scales = []
-    scale = 1
-    for layer in model.layers:
-        if isinstance(layer, Conv3D) and 'conv' in layer.name:
-            strides = layer.strides
-            scale *= strides[0]  # Assuming strides are the same in all dimensions
-            cumulative_scales.append(scale)
-
-    # Ensure that cumulative_scales and conv_layers have the same length
-    assert len(cumulative_scales) == len(conv_layers), "Mismatch in cumulative scales and conv layers"
-
+    
     for idx, conv_layer_name in enumerate(conv_layers):
-        cumulative_scale = cumulative_scales[idx]
         for class_idx in range(2):  # Loop through both class indices (class 0 and class 1)
             accumulated_heatmap = None
             for i, img in enumerate(imgs):
-                heatmap = make_gradcam_heatmap(model, img, conv_layer_name, pred_index=class_idx, cumulative_scale=cumulative_scale)
+                heatmap = make_gradcam_heatmap(model, img, conv_layer_name, pred_index=class_idx)
                 if accumulated_heatmap is None:
                     accumulated_heatmap = heatmap
                 else:
@@ -264,7 +259,7 @@ def apply_gradcam_all_layers_average(model, imgs, adjusted_affines, original_img
             
             avg_heatmap = accumulated_heatmap / len(imgs)
             # Use the first adjusted affine and original image as reference
-            save_gradcam(avg_heatmap, imgs[0], adjusted_affines[0], cumulative_scale, original_imgs[0], task, modality, conv_layer_name, class_idx, info)
+            save_gradcam(avg_heatmap, imgs[0], adjusted_affines[0], original_imgs[0], task, modality, conv_layer_name, class_idx, info)
 
 def train_model(X, Y, task, modality, info):
     stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=2)
@@ -289,8 +284,8 @@ def train_model(X, Y, task, modality, info):
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
 
         history = model.fit(X_train, Y_train,
-                            batch_size=5,
-                            epochs=5,
+                            batch_size=2,
+                            epochs=2,
                             validation_data=(X_val, Y_val),
                             callbacks=[early_stopping, reduce_lr])
 
@@ -328,6 +323,10 @@ if __name__ == '__main__':
     X = np.array(train_data)
     Y = to_categorical(train_label, num_classes=2)
 
+    # Expand dimensions if necessary
+    if len(X.shape) == 4:
+        X = np.expand_dims(X, axis=-1)  # Add channel dimension
+
     # Create and compile the model
     model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
 
@@ -337,4 +336,3 @@ if __name__ == '__main__':
     # Apply Grad-CAM
     imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
     apply_gradcam_all_layers_average(model, imgs, adjusted_affines, original_imgs, task, modality, info)
-
