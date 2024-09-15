@@ -1,2 +1,2253 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Sep 15 12:49:41 CDT 2024 1726422581
+Job ID:		2044230
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Sun Sep 15 12:49:41 CDT 2024 1726422581
+--------------------------------------------------------------
 /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
   warnings.warn(message, FutureWarning)
+2024-09-15 12:55:12.613719: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-09-15 12:55:14.860501: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 78923 MB memory:  -> device: 0, name: NVIDIA A100-SXM4-80GB, pci bus id: 0000:17:00.0, compute capability: 8.0
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Original image shape: (91, 109, 91)
+Zoom factors: [1.4065934065934067, 1.1743119266055047, 1.4065934065934067]
+Resized image shape: (128, 128, 128)
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_1 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d (Conv3D)                (None, 128, 128, 12  448         ['input_1[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization (BatchNorm  (None, 128, 128, 12  64         ['conv3d[0][0]']                 
+ alization)                     8, 16)                                                            
+                                                                                                  
+ leaky_re_lu (LeakyReLU)        (None, 128, 128, 12  0           ['batch_normalization[0][0]']    
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_1 (Conv3D)              (None, 128, 128, 12  6928        ['leaky_re_lu[0][0]']            
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_1 (BatchNo  (None, 128, 128, 12  64         ['conv3d_1[0][0]']               
+ rmalization)                   8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_1 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_1[0][0]']  
+                                8, 16)                                                            
+                                                                                                  
+ spatial_dropout3d (SpatialDrop  (None, 128, 128, 12  0          ['leaky_re_lu_1[0][0]']          
+ out3D)                         8, 16)                                                            
+                                                                                                  
+ conv3d_2 (Conv3D)              (None, 128, 128, 12  6928        ['spatial_dropout3d[0][0]']      
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_2 (BatchNo  (None, 128, 128, 12  64         ['conv3d_2[0][0]']               
+ rmalization)                   8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_2 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_2[0][0]']  
+                                8, 16)                                                            
+                                                                                                  
+ add (Add)                      (None, 128, 128, 12  0           ['leaky_re_lu_2[0][0]',          
+                                8, 16)                            'leaky_re_lu[0][0]']            
+                                                                                                  
+ conv3d_3 (Conv3D)              (None, 64, 64, 64,   13856       ['add[0][0]']                    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_3 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_3[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_3 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_3[0][0]']  
+                                32)                                                               
+                                                                                                  
+ conv3d_4 (Conv3D)              (None, 64, 64, 64,   27680       ['leaky_re_lu_3[0][0]']          
+                                32)                                                               
+                                                                                                  
+ batch_normalization_4 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_4[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_4 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_4[0][0]']  
+                                32)                                                               
+                                                                                                  
+ spatial_dropout3d_1 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_4[0][0]']          
+ opout3D)                       32)                                                               
+                                                                                                  
+ conv3d_5 (Conv3D)              (None, 64, 64, 64,   27680       ['spatial_dropout3d_1[0][0]']    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_5 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_5[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_5 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_5[0][0]']  
+                                32)                                                               
+                                                                                                  
+ add_1 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_5[0][0]',          
+                                32)                               'leaky_re_lu_3[0][0]']          
+                                                                                                  
+ conv3d_6 (Conv3D)              (None, 32, 32, 32,   55360       ['add_1[0][0]']                  
+                                64)                                                               
+                                                                                                  
+ batch_normalization_6 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_6[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_6 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_6[0][0]']  
+                                64)                                                               
+                                                                                                  
+ conv3d_7 (Conv3D)              (None, 32, 32, 32,   110656      ['leaky_re_lu_6[0][0]']          
+                                64)                                                               
+                                                                                                  
+ batch_normalization_7 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_7[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_7 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_7[0][0]']  
+                                64)                                                               
+                                                                                                  
+ spatial_dropout3d_2 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_7[0][0]']          
+ opout3D)                       64)                                                               
+                                                                                                  
+ conv3d_8 (Conv3D)              (None, 32, 32, 32,   110656      ['spatial_dropout3d_2[0][0]']    
+                                64)                                                               
+                                                                                                  
+ batch_normalization_8 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_8[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_8 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_8[0][0]']  
+                                64)                                                               
+                                                                                                  
+ add_2 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_8[0][0]',          
+                                64)                               'leaky_re_lu_6[0][0]']          
+                                                                                                  
+ conv3d_9 (Conv3D)              (None, 16, 16, 16,   221312      ['add_2[0][0]']                  
+                                128)                                                              
+                                                                                                  
+ batch_normalization_9 (BatchNo  (None, 16, 16, 16,   512        ['conv3d_9[0][0]']               
+ rmalization)                   128)                                                              
+                                                                                                  
+ leaky_re_lu_9 (LeakyReLU)      (None, 16, 16, 16,   0           ['batch_normalization_9[0][0]']  
+                                128)                                                              
+                                                                                                  
+ conv3d_10 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_9[0][0]']          
+                                128)                                                              
+                                                                                                  
+ batch_normalization_10 (BatchN  (None, 16, 16, 16,   512        ['conv3d_10[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_10 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_10[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ spatial_dropout3d_3 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_10[0][0]']         
+ opout3D)                       128)                                                              
+                                                                                                  
+ conv3d_11 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_3[0][0]']    
+                                128)                                                              
+                                                                                                  
+ batch_normalization_11 (BatchN  (None, 16, 16, 16,   512        ['conv3d_11[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_11 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_11[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ add_3 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_11[0][0]',         
+                                128)                              'leaky_re_lu_9[0][0]']          
+                                                                                                  
+ conv3d_12 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_3[0][0]']                  
+                                )                                                                 
+                                                                                                  
+ batch_normalization_12 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_12[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_12 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_12[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ conv3d_13 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_12[0][0]']         
+                                )                                                                 
+                                                                                                  
+ batch_normalization_13 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_13[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_13 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_13[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ spatial_dropout3d_4 (SpatialDr  (None, 8, 8, 8, 256  0          ['leaky_re_lu_13[0][0]']         
+ opout3D)                       )                                                                 
+                                                                                                  
+ conv3d_14 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_4[0][0]']    
+                                )                                                                 
+                                                                                                  
+ batch_normalization_14 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_14[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_14 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_14[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ add_4 (Add)                    (None, 8, 8, 8, 256  0           ['leaky_re_lu_14[0][0]',         
+                                )                                 'leaky_re_lu_12[0][0]']         
+                                                                                                  
+ global_average_pooling3d (Glob  (None, 256)         0           ['add_4[0][0]']                  
+ alAveragePooling3D)                                                                              
+                                                                                                  
+ dropout (Dropout)              (None, 256)          0           ['global_average_pooling3d[0][0]'
+                                                                 ]                                
+                                                                                                  
+ dense (Dense)                  (None, 2)            514         ['dropout[0][0]']                
+                                                                                                  
+==================================================================================================
+Total params: 5,897,410
+Trainable params: 5,894,434
+Non-trainable params: 2,976
+__________________________________________________________________________________________________
+Model: "model_1"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_2 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d_15 (Conv3D)             (None, 128, 128, 12  448         ['input_2[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_15 (BatchN  (None, 128, 128, 12  64         ['conv3d_15[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_15 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_15[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_16 (Conv3D)             (None, 128, 128, 12  6928        ['leaky_re_lu_15[0][0]']         
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_16 (BatchN  (None, 128, 128, 12  64         ['conv3d_16[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_16 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_16[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ spatial_dropout3d_5 (SpatialDr  (None, 128, 128, 12  0          ['leaky_re_lu_16[0][0]']         
+ opout3D)                       8, 16)                                                            
+                                                                                                  
+ conv3d_17 (Conv3D)             (None, 128, 128, 12  6928        ['spatial_dropout3d_5[0][0]']    
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_17 (BatchN  (None, 128, 128, 12  64         ['conv3d_17[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_17 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_17[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ add_5 (Add)                    (None, 128, 128, 12  0           ['leaky_re_lu_17[0][0]',         
+                                8, 16)                            'leaky_re_lu_15[0][0]']         
+                                                                                                  
+ conv3d_18 (Conv3D)             (None, 64, 64, 64,   13856       ['add_5[0][0]']                  
+                                32)                                                               
+                                                                                                  
+ batch_normalization_18 (BatchN  (None, 64, 64, 64,   128        ['conv3d_18[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_18 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_18[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ conv3d_19 (Conv3D)             (None, 64, 64, 64,   27680       ['leaky_re_lu_18[0][0]']         
+                                32)                                                               
+                                                                                                  
+ batch_normalization_19 (BatchN  (None, 64, 64, 64,   128        ['conv3d_19[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_19 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_19[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ spatial_dropout3d_6 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_19[0][0]']         
+ opout3D)                       32)                                                               
+                                                                                                  
+ conv3d_20 (Conv3D)             (None, 64, 64, 64,   27680       ['spatial_dropout3d_6[0][0]']    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_20 (BatchN  (None, 64, 64, 64,   128        ['conv3d_20[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_20 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_20[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ add_6 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_20[0][0]',         
+                                32)                               'leaky_re_lu_18[0][0]']         
+                                                                                                  
+ conv3d_21 (Conv3D)             (None, 32, 32, 32,   55360       ['add_6[0][0]']                  
+                                64)                                                               
+                                                                                                  
+ batch_normalization_21 (BatchN  (None, 32, 32, 32,   256        ['conv3d_21[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_21 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_21[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ conv3d_22 (Conv3D)             (None, 32, 32, 32,   110656      ['leaky_re_lu_21[0][0]']         
+                                64)                                                               
+                                                                                                  
+ batch_normalization_22 (BatchN  (None, 32, 32, 32,   256        ['conv3d_22[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_22 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_22[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ spatial_dropout3d_7 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_22[0][0]']         
+ opout3D)                       64)                                                               
+                                                                                                  
+ conv3d_23 (Conv3D)             (None, 32, 32, 32,   110656      ['spatial_dropout3d_7[0][0]']    
+                                64)                                                               
+                                                                                                  
+ batch_normalization_23 (BatchN  (None, 32, 32, 32,   256        ['conv3d_23[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_23 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_23[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ add_7 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_23[0][0]',         
+                                64)                               'leaky_re_lu_21[0][0]']         
+                                                                                                  
+ conv3d_24 (Conv3D)             (None, 16, 16, 16,   221312      ['add_7[0][0]']                  
+                                128)                                                              
+                                                                                                  
+ batch_normalization_24 (BatchN  (None, 16, 16, 16,   512        ['conv3d_24[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_24 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_24[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ conv3d_25 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_24[0][0]']         
+                                128)                                                              
+                                                                                                  
+ batch_normalization_25 (BatchN  (None, 16, 16, 16,   512        ['conv3d_25[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_25 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_25[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ spatial_dropout3d_8 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_25[0][0]']         
+ opout3D)                       128)                                                              
+                                                                                                  
+ conv3d_26 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_8[0][0]']    
+                                128)                                                              
+                                                                                                  
+ batch_normalization_26 (BatchN  (None, 16, 16, 16,   512        ['conv3d_26[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_26 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_26[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ add_8 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_26[0][0]',         
+                                128)                              'leaky_re_lu_24[0][0]']         
+                                                                                                  
+ conv3d_27 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_8[0][0]']                  
+                                )                                                                 
+                                                                                                  
+ batch_normalization_27 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_27[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_27 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_27[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ conv3d_28 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_27[0][0]']         
+                                )                                                                 
+                                                                                                  
+ batch_normalization_28 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_28[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_28 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_28[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ spatial_dropout3d_9 (SpatialDr  (None, 8, 8, 8, 256  0          ['leaky_re_lu_28[0][0]']         
+ opout3D)                       )                                                                 
+                                                                                                  
+ conv3d_29 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_9[0][0]']    
+                                )                                                                 
+                                                                                                  
+ batch_normalization_29 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_29[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_29 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_29[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ add_9 (Add)                    (None, 8, 8, 8, 256  0           ['leaky_re_lu_29[0][0]',         
+                                )                                 'leaky_re_lu_27[0][0]']         
+                                                                                                  
+ global_average_pooling3d_1 (Gl  (None, 256)         0           ['add_9[0][0]']                  
+ obalAveragePooling3D)                                                                            
+                                                                                                  
+ dropout_1 (Dropout)            (None, 256)          0           ['global_average_pooling3d_1[0][0
+                                                                 ]']                              
+                                                                                                  
+ dense_1 (Dense)                (None, 2)            514         ['dropout_1[0][0]']              
+                                                                                                  
+==================================================================================================
+Total params: 5,897,410
+Trainable params: 5,894,434
+Non-trainable params: 2,976
+__________________________________________________________________________________________________
+Epoch 1/2
+2024-09-15 12:55:24.555399: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8101
+2024-09-15 12:55:30.729032: I tensorflow/stream_executor/cuda/cuda_blas.cc:1786] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+ 1/28 [>.............................] - ETA: 7:12 - loss: 2.1763 - accuracy: 0.6000 - auc: 0.5200 2/28 [=>............................] - ETA: 15s - loss: 2.2868 - accuracy: 0.6000 - auc: 0.5475  3/28 [==>...........................] - ETA: 14s - loss: 2.3539 - accuracy: 0.6333 - auc: 0.5922 4/28 [===>..........................] - ETA: 14s - loss: 2.2620 - accuracy: 0.6250 - auc: 0.6137 5/28 [====>.........................] - ETA: 13s - loss: 2.3662 - accuracy: 0.5800 - auc: 0.5624 6/28 [=====>........................] - ETA: 13s - loss: 2.3115 - accuracy: 0.5667 - auc: 0.5950 7/28 [======>.......................] - ETA: 12s - loss: 2.3703 - accuracy: 0.5714 - auc: 0.6186 8/28 [=======>......................] - ETA: 11s - loss: 2.3684 - accuracy: 0.5750 - auc: 0.6291 9/28 [========>.....................] - ETA: 11s - loss: 2.3931 - accuracy: 0.5667 - auc: 0.622710/28 [=========>....................] - ETA: 10s - loss: 2.4899 - accuracy: 0.5600 - auc: 0.612211/28 [==========>...................] - ETA: 10s - loss: 2.4745 - accuracy: 0.5727 - auc: 0.619812/28 [===========>..................] - ETA: 9s - loss: 2.5953 - accuracy: 0.5583 - auc: 0.6024 13/28 [============>.................] - ETA: 8s - loss: 2.5931 - accuracy: 0.5692 - auc: 0.606414/28 [==============>...............] - ETA: 8s - loss: 2.5498 - accuracy: 0.5857 - auc: 0.622315/28 [===============>..............] - ETA: 7s - loss: 2.5839 - accuracy: 0.5800 - auc: 0.611516/28 [================>.............] - ETA: 7s - loss: 2.5935 - accuracy: 0.5688 - auc: 0.606117/28 [=================>............] - ETA: 6s - loss: 2.5885 - accuracy: 0.5765 - auc: 0.609018/28 [==================>...........] - ETA: 5s - loss: 2.5920 - accuracy: 0.5722 - auc: 0.606019/28 [===================>..........] - ETA: 5s - loss: 2.5592 - accuracy: 0.5789 - auc: 0.610120/28 [====================>.........] - ETA: 4s - loss: 2.5616 - accuracy: 0.5700 - auc: 0.602121/28 [=====================>........] - ETA: 4s - loss: 2.5714 - accuracy: 0.5762 - auc: 0.606022/28 [======================>.......] - ETA: 3s - loss: 2.5893 - accuracy: 0.5727 - auc: 0.600023/28 [=======================>......] - ETA: 2s - loss: 2.5815 - accuracy: 0.5652 - auc: 0.596324/28 [========================>.....] - ETA: 2s - loss: 2.5841 - accuracy: 0.5667 - auc: 0.591425/28 [=========================>....] - ETA: 1s - loss: 2.5761 - accuracy: 0.5640 - auc: 0.589726/28 [==========================>...] - ETA: 1s - loss: 2.5554 - accuracy: 0.5615 - auc: 0.590727/28 [===========================>..] - ETA: 0s - loss: 2.5515 - accuracy: 0.5593 - auc: 0.586228/28 [==============================] - ETA: 0s - loss: 2.5354 - accuracy: 0.5652 - auc: 0.590928/28 [==============================] - 39s 867ms/step - loss: 2.5354 - accuracy: 0.5652 - auc: 0.5909 - val_loss: 110.4668 - val_accuracy: 0.3623 - val_auc: 0.3623 - lr: 5.0000e-04
+Epoch 2/2
+ 1/28 [>.............................] - ETA: 16s - loss: 2.1838 - accuracy: 0.6000 - auc: 0.7000 2/28 [=>............................] - ETA: 15s - loss: 2.9646 - accuracy: 0.4000 - auc: 0.3800 3/28 [==>...........................] - ETA: 14s - loss: 3.1433 - accuracy: 0.4000 - auc: 0.3556 4/28 [===>..........................] - ETA: 14s - loss: 2.9168 - accuracy: 0.4250 - auc: 0.4325 5/28 [====>.........................] - ETA: 13s - loss: 2.7722 - accuracy: 0.4800 - auc: 0.4988 6/28 [=====>........................] - ETA: 13s - loss: 2.7691 - accuracy: 0.5000 - auc: 0.4992 7/28 [======>.......................] - ETA: 12s - loss: 2.7111 - accuracy: 0.5000 - auc: 0.5137 8/28 [=======>......................] - ETA: 11s - loss: 2.7345 - accuracy: 0.4875 - auc: 0.5014 9/28 [========>.....................] - ETA: 11s - loss: 2.6522 - accuracy: 0.5111 - auc: 0.529610/28 [=========>....................] - ETA: 10s - loss: 2.6228 - accuracy: 0.5200 - auc: 0.537811/28 [==========>...................] - ETA: 10s - loss: 2.6001 - accuracy: 0.5273 - auc: 0.545612/28 [===========>..................] - ETA: 9s - loss: 2.5962 - accuracy: 0.5167 - auc: 0.5381 13/28 [============>.................] - ETA: 8s - loss: 2.6177 - accuracy: 0.5077 - auc: 0.525614/28 [==============>...............] - ETA: 8s - loss: 2.5674 - accuracy: 0.5214 - auc: 0.538115/28 [===============>..............] - ETA: 7s - loss: 2.5677 - accuracy: 0.5000 - auc: 0.523616/28 [================>.............] - ETA: 7s - loss: 2.5787 - accuracy: 0.5063 - auc: 0.527617/28 [=================>............] - ETA: 6s - loss: 2.5674 - accuracy: 0.5059 - auc: 0.528818/28 [==================>...........] - ETA: 5s - loss: 2.5516 - accuracy: 0.5222 - auc: 0.532719/28 [===================>..........] - ETA: 5s - loss: 2.5415 - accuracy: 0.5158 - auc: 0.534220/28 [====================>.........] - ETA: 4s - loss: 2.5385 - accuracy: 0.5150 - auc: 0.531221/28 [=====================>........] - ETA: 4s - loss: 2.5223 - accuracy: 0.5238 - auc: 0.538522/28 [======================>.......] - ETA: 3s - loss: 2.5354 - accuracy: 0.5273 - auc: 0.540423/28 [=======================>......] - ETA: 2s - loss: 2.5120 - accuracy: 0.5304 - auc: 0.547024/28 [========================>.....] - ETA: 2s - loss: 2.5022 - accuracy: 0.5333 - auc: 0.547225/28 [=========================>....] - ETA: 1s - loss: 2.4811 - accuracy: 0.5360 - auc: 0.553726/28 [==========================>...] - ETA: 1s - loss: 2.4549 - accuracy: 0.5462 - auc: 0.565027/28 [===========================>..] - ETA: 0s - loss: 2.4567 - accuracy: 0.5370 - auc: 0.558128/28 [==============================] - ETA: 0s - loss: 2.4558 - accuracy: 0.5326 - auc: 0.556328/28 [==============================] - 18s 649ms/step - loss: 2.4558 - accuracy: 0.5326 - auc: 0.5563 - val_loss: 27.6244 - val_accuracy: 0.6377 - val_auc: 0.6377 - lr: 5.0000e-04
+Best val_auc during training for fold 1: 0.6377
+Final AUC for fold 1: 0.7684
+Model: "model_2"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_3 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d_30 (Conv3D)             (None, 128, 128, 12  448         ['input_3[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_30 (BatchN  (None, 128, 128, 12  64         ['conv3d_30[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_30 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_30[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_31 (Conv3D)             (None, 128, 128, 12  6928        ['leaky_re_lu_30[0][0]']         
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_31 (BatchN  (None, 128, 128, 12  64         ['conv3d_31[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_31 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_31[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ spatial_dropout3d_10 (SpatialD  (None, 128, 128, 12  0          ['leaky_re_lu_31[0][0]']         
+ ropout3D)                      8, 16)                                                            
+                                                                                                  
+ conv3d_32 (Conv3D)             (None, 128, 128, 12  6928        ['spatial_dropout3d_10[0][0]']   
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_32 (BatchN  (None, 128, 128, 12  64         ['conv3d_32[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_32 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_32[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ add_10 (Add)                   (None, 128, 128, 12  0           ['leaky_re_lu_32[0][0]',         
+                                8, 16)                            'leaky_re_lu_30[0][0]']         
+                                                                                                  
+ conv3d_33 (Conv3D)             (None, 64, 64, 64,   13856       ['add_10[0][0]']                 
+                                32)                                                               
+                                                                                                  
+ batch_normalization_33 (BatchN  (None, 64, 64, 64,   128        ['conv3d_33[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_33 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_33[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ conv3d_34 (Conv3D)             (None, 64, 64, 64,   27680       ['leaky_re_lu_33[0][0]']         
+                                32)                                                               
+                                                                                                  
+ batch_normalization_34 (BatchN  (None, 64, 64, 64,   128        ['conv3d_34[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_34 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_34[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ spatial_dropout3d_11 (SpatialD  (None, 64, 64, 64,   0          ['leaky_re_lu_34[0][0]']         
+ ropout3D)                      32)                                                               
+                                                                                                  
+ conv3d_35 (Conv3D)             (None, 64, 64, 64,   27680       ['spatial_dropout3d_11[0][0]']   
+                                32)                                                               
+                                                                                                  
+ batch_normalization_35 (BatchN  (None, 64, 64, 64,   128        ['conv3d_35[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_35 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_35[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ add_11 (Add)                   (None, 64, 64, 64,   0           ['leaky_re_lu_35[0][0]',         
+                                32)                               'leaky_re_lu_33[0][0]']         
+                                                                                                  
+ conv3d_36 (Conv3D)             (None, 32, 32, 32,   55360       ['add_11[0][0]']                 
+                                64)                                                               
+                                                                                                  
+ batch_normalization_36 (BatchN  (None, 32, 32, 32,   256        ['conv3d_36[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_36 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_36[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ conv3d_37 (Conv3D)             (None, 32, 32, 32,   110656      ['leaky_re_lu_36[0][0]']         
+                                64)                                                               
+                                                                                                  
+ batch_normalization_37 (BatchN  (None, 32, 32, 32,   256        ['conv3d_37[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_37 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_37[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ spatial_dropout3d_12 (SpatialD  (None, 32, 32, 32,   0          ['leaky_re_lu_37[0][0]']         
+ ropout3D)                      64)                                                               
+                                                                                                  
+ conv3d_38 (Conv3D)             (None, 32, 32, 32,   110656      ['spatial_dropout3d_12[0][0]']   
+                                64)                                                               
+                                                                                                  
+ batch_normalization_38 (BatchN  (None, 32, 32, 32,   256        ['conv3d_38[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_38 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_38[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ add_12 (Add)                   (None, 32, 32, 32,   0           ['leaky_re_lu_38[0][0]',         
+                                64)                               'leaky_re_lu_36[0][0]']         
+                                                                                                  
+ conv3d_39 (Conv3D)             (None, 16, 16, 16,   221312      ['add_12[0][0]']                 
+                                128)                                                              
+                                                                                                  
+ batch_normalization_39 (BatchN  (None, 16, 16, 16,   512        ['conv3d_39[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_39 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_39[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ conv3d_40 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_39[0][0]']         
+                                128)                                                              
+                                                                                                  
+ batch_normalization_40 (BatchN  (None, 16, 16, 16,   512        ['conv3d_40[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_40 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_40[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ spatial_dropout3d_13 (SpatialD  (None, 16, 16, 16,   0          ['leaky_re_lu_40[0][0]']         
+ ropout3D)                      128)                                                              
+                                                                                                  
+ conv3d_41 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_13[0][0]']   
+                                128)                                                              
+                                                                                                  
+ batch_normalization_41 (BatchN  (None, 16, 16, 16,   512        ['conv3d_41[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_41 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_41[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ add_13 (Add)                   (None, 16, 16, 16,   0           ['leaky_re_lu_41[0][0]',         
+                                128)                              'leaky_re_lu_39[0][0]']         
+                                                                                                  
+ conv3d_42 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_13[0][0]']                 
+                                )                                                                 
+                                                                                                  
+ batch_normalization_42 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_42[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_42 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_42[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ conv3d_43 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_42[0][0]']         
+                                )                                                                 
+                                                                                                  
+ batch_normalization_43 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_43[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_43 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_43[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ spatial_dropout3d_14 (SpatialD  (None, 8, 8, 8, 256  0          ['leaky_re_lu_43[0][0]']         
+ ropout3D)                      )                                                                 
+                                                                                                  
+ conv3d_44 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_14[0][0]']   
+                                )                                                                 
+                                                                                                  
+ batch_normalization_44 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_44[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_44 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_44[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ add_14 (Add)                   (None, 8, 8, 8, 256  0           ['leaky_re_lu_44[0][0]',         
+                                )                                 'leaky_re_lu_42[0][0]']         
+                                                                                                  
+ global_average_pooling3d_2 (Gl  (None, 256)         0           ['add_14[0][0]']                 
+ obalAveragePooling3D)                                                                            
+                                                                                                  
+ dropout_2 (Dropout)            (None, 256)          0           ['global_average_pooling3d_2[0][0
+                                                                 ]']                              
+                                                                                                  
+ dense_2 (Dense)                (None, 2)            514         ['dropout_2[0][0]']              
+                                                                                                  
+==================================================================================================
+Total params: 5,897,410
+Trainable params: 5,894,434
+Non-trainable params: 2,976
+__________________________________________________________________________________________________
+Epoch 1/2
+ 1/28 [>.............................] - ETA: 1:05 - loss: 2.4197 - accuracy: 0.4000 - auc: 0.3600 2/28 [=>............................] - ETA: 15s - loss: 2.2884 - accuracy: 0.5500 - auc: 0.5475  3/28 [==>...........................] - ETA: 14s - loss: 3.0032 - accuracy: 0.5333 - auc: 0.5033 4/28 [===>..........................] - ETA: 14s - loss: 3.0128 - accuracy: 0.5000 - auc: 0.4519 5/28 [====>.........................] - ETA: 13s - loss: 2.9696 - accuracy: 0.5000 - auc: 0.4616 6/28 [=====>........................] - ETA: 13s - loss: 2.8834 - accuracy: 0.5000 - auc: 0.4811 7/28 [======>.......................] - ETA: 12s - loss: 2.9688 - accuracy: 0.5000 - auc: 0.4808 8/28 [=======>......................] - ETA: 11s - loss: 3.0473 - accuracy: 0.4750 - auc: 0.4519 9/28 [========>.....................] - ETA: 11s - loss: 3.0878 - accuracy: 0.4556 - auc: 0.444310/28 [=========>....................] - ETA: 10s - loss: 3.0112 - accuracy: 0.4700 - auc: 0.463111/28 [==========>...................] - ETA: 10s - loss: 2.9551 - accuracy: 0.4545 - auc: 0.463812/28 [===========>..................] - ETA: 9s - loss: 2.9327 - accuracy: 0.4583 - auc: 0.4597 13/28 [============>.................] - ETA: 8s - loss: 2.8744 - accuracy: 0.4692 - auc: 0.466614/28 [==============>...............] - ETA: 8s - loss: 2.8185 - accuracy: 0.4857 - auc: 0.475115/28 [===============>..............] - ETA: 7s - loss: 2.7828 - accuracy: 0.4933 - auc: 0.482516/28 [================>.............] - ETA: 7s - loss: 2.7643 - accuracy: 0.4812 - auc: 0.481517/28 [=================>............] - ETA: 6s - loss: 2.7176 - accuracy: 0.4941 - auc: 0.496018/28 [==================>...........] - ETA: 5s - loss: 2.7103 - accuracy: 0.4889 - auc: 0.490419/28 [===================>..........] - ETA: 5s - loss: 2.6783 - accuracy: 0.4947 - auc: 0.500220/28 [====================>.........] - ETA: 4s - loss: 2.6494 - accuracy: 0.4900 - auc: 0.502821/28 [=====================>........] - ETA: 4s - loss: 2.6621 - accuracy: 0.4905 - auc: 0.501622/28 [======================>.......] - ETA: 3s - loss: 2.6692 - accuracy: 0.4864 - auc: 0.492523/28 [=======================>......] - ETA: 2s - loss: 2.6353 - accuracy: 0.4913 - auc: 0.503024/28 [========================>.....] - ETA: 2s - loss: 2.5989 - accuracy: 0.5042 - auc: 0.520925/28 [=========================>....] - ETA: 1s - loss: 2.5905 - accuracy: 0.5080 - auc: 0.525326/28 [==========================>...] - ETA: 1s - loss: 2.5947 - accuracy: 0.5000 - auc: 0.522427/28 [===========================>..] - ETA: 0s - loss: 2.5726 - accuracy: 0.5000 - auc: 0.529528/28 [==============================] - ETA: 0s - loss: 2.5612 - accuracy: 0.5000 - auc: 0.532228/28 [==============================] - 22s 707ms/step - loss: 2.5612 - accuracy: 0.5000 - auc: 0.5322 - val_loss: 21.8760 - val_accuracy: 0.3623 - val_auc: 0.3623 - lr: 5.0000e-04
+Epoch 2/2
+ 1/28 [>.............................] - ETA: 16s - loss: 3.1075 - accuracy: 0.3000 - auc: 0.3900 2/28 [=>............................] - ETA: 15s - loss: 2.8418 - accuracy: 0.4500 - auc: 0.4750 3/28 [==>...........................] - ETA: 15s - loss: 2.5632 - accuracy: 0.5333 - auc: 0.5756 4/28 [===>..........................] - ETA: 14s - loss: 2.5111 - accuracy: 0.5500 - auc: 0.5581 5/28 [====>.........................] - ETA: 13s - loss: 2.5082 - accuracy: 0.5400 - auc: 0.5444 6/28 [=====>........................] - ETA: 13s - loss: 2.5030 - accuracy: 0.5167 - auc: 0.5225 7/28 [======>.......................] - ETA: 12s - loss: 2.4658 - accuracy: 0.5000 - auc: 0.5229 8/28 [=======>......................] - ETA: 11s - loss: 2.4485 - accuracy: 0.5125 - auc: 0.5266 9/28 [========>.....................] - ETA: 11s - loss: 2.4207 - accuracy: 0.5111 - auc: 0.534410/28 [=========>....................] - ETA: 10s - loss: 2.4226 - accuracy: 0.5200 - auc: 0.533011/28 [==========>...................] - ETA: 10s - loss: 2.4027 - accuracy: 0.5364 - auc: 0.543312/28 [===========>..................] - ETA: 9s - loss: 2.4301 - accuracy: 0.5333 - auc: 0.5365 13/28 [============>.................] - ETA: 8s - loss: 2.4267 - accuracy: 0.5385 - auc: 0.537014/28 [==============>...............] - ETA: 8s - loss: 2.3788 - accuracy: 0.5429 - auc: 0.561415/28 [===============>..............] - ETA: 7s - loss: 2.3823 - accuracy: 0.5400 - auc: 0.561916/28 [================>.............] - ETA: 7s - loss: 2.3732 - accuracy: 0.5437 - auc: 0.564317/28 [=================>............] - ETA: 6s - loss: 2.3763 - accuracy: 0.5471 - auc: 0.561218/28 [==================>...........] - ETA: 5s - loss: 2.3720 - accuracy: 0.5444 - auc: 0.557419/28 [===================>..........] - ETA: 5s - loss: 2.3591 - accuracy: 0.5579 - auc: 0.566820/28 [====================>.........] - ETA: 4s - loss: 2.3425 - accuracy: 0.5650 - auc: 0.571321/28 [=====================>........] - ETA: 4s - loss: 2.3372 - accuracy: 0.5619 - auc: 0.570422/28 [======================>.......] - ETA: 3s - loss: 2.3333 - accuracy: 0.5591 - auc: 0.568923/28 [=======================>......] - ETA: 2s - loss: 2.3086 - accuracy: 0.5652 - auc: 0.581024/28 [========================>.....] - ETA: 2s - loss: 2.2982 - accuracy: 0.5708 - auc: 0.584225/28 [=========================>....] - ETA: 1s - loss: 2.3004 - accuracy: 0.5640 - auc: 0.578626/28 [==========================>...] - ETA: 1s - loss: 2.2924 - accuracy: 0.5615 - auc: 0.581227/28 [===========================>..] - ETA: 0s - loss: 2.2713 - accuracy: 0.5704 - auc: 0.592528/28 [==============================] - ETA: 0s - loss: 2.2761 - accuracy: 0.5652 - auc: 0.586928/28 [==============================] - 18s 650ms/step - loss: 2.2761 - accuracy: 0.5652 - auc: 0.5869 - val_loss: 2.3506 - val_accuracy: 0.6377 - val_auc: 0.5158 - lr: 5.0000e-04
+Best val_auc during training for fold 2: 0.5158
+Final AUC for fold 2: 0.2332
+Model: "model_3"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_4 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d_45 (Conv3D)             (None, 128, 128, 12  448         ['input_4[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_45 (BatchN  (None, 128, 128, 12  64         ['conv3d_45[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_45 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_45[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_46 (Conv3D)             (None, 128, 128, 12  6928        ['leaky_re_lu_45[0][0]']         
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_46 (BatchN  (None, 128, 128, 12  64         ['conv3d_46[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_46 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_46[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ spatial_dropout3d_15 (SpatialD  (None, 128, 128, 12  0          ['leaky_re_lu_46[0][0]']         
+ ropout3D)                      8, 16)                                                            
+                                                                                                  
+ conv3d_47 (Conv3D)             (None, 128, 128, 12  6928        ['spatial_dropout3d_15[0][0]']   
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_47 (BatchN  (None, 128, 128, 12  64         ['conv3d_47[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_47 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_47[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ add_15 (Add)                   (None, 128, 128, 12  0           ['leaky_re_lu_47[0][0]',         
+                                8, 16)                            'leaky_re_lu_45[0][0]']         
+                                                                                                  
+ conv3d_48 (Conv3D)             (None, 64, 64, 64,   13856       ['add_15[0][0]']                 
+                                32)                                                               
+                                                                                                  
+ batch_normalization_48 (BatchN  (None, 64, 64, 64,   128        ['conv3d_48[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_48 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_48[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ conv3d_49 (Conv3D)             (None, 64, 64, 64,   27680       ['leaky_re_lu_48[0][0]']         
+                                32)                                                               
+                                                                                                  
+ batch_normalization_49 (BatchN  (None, 64, 64, 64,   128        ['conv3d_49[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_49 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_49[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ spatial_dropout3d_16 (SpatialD  (None, 64, 64, 64,   0          ['leaky_re_lu_49[0][0]']         
+ ropout3D)                      32)                                                               
+                                                                                                  
+ conv3d_50 (Conv3D)             (None, 64, 64, 64,   27680       ['spatial_dropout3d_16[0][0]']   
+                                32)                                                               
+                                                                                                  
+ batch_normalization_50 (BatchN  (None, 64, 64, 64,   128        ['conv3d_50[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_50 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_50[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ add_16 (Add)                   (None, 64, 64, 64,   0           ['leaky_re_lu_50[0][0]',         
+                                32)                               'leaky_re_lu_48[0][0]']         
+                                                                                                  
+ conv3d_51 (Conv3D)             (None, 32, 32, 32,   55360       ['add_16[0][0]']                 
+                                64)                                                               
+                                                                                                  
+ batch_normalization_51 (BatchN  (None, 32, 32, 32,   256        ['conv3d_51[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_51 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_51[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ conv3d_52 (Conv3D)             (None, 32, 32, 32,   110656      ['leaky_re_lu_51[0][0]']         
+                                64)                                                               
+                                                                                                  
+ batch_normalization_52 (BatchN  (None, 32, 32, 32,   256        ['conv3d_52[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_52 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_52[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ spatial_dropout3d_17 (SpatialD  (None, 32, 32, 32,   0          ['leaky_re_lu_52[0][0]']         
+ ropout3D)                      64)                                                               
+                                                                                                  
+ conv3d_53 (Conv3D)             (None, 32, 32, 32,   110656      ['spatial_dropout3d_17[0][0]']   
+                                64)                                                               
+                                                                                                  
+ batch_normalization_53 (BatchN  (None, 32, 32, 32,   256        ['conv3d_53[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_53 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_53[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ add_17 (Add)                   (None, 32, 32, 32,   0           ['leaky_re_lu_53[0][0]',         
+                                64)                               'leaky_re_lu_51[0][0]']         
+                                                                                                  
+ conv3d_54 (Conv3D)             (None, 16, 16, 16,   221312      ['add_17[0][0]']                 
+                                128)                                                              
+                                                                                                  
+ batch_normalization_54 (BatchN  (None, 16, 16, 16,   512        ['conv3d_54[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_54 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_54[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ conv3d_55 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_54[0][0]']         
+                                128)                                                              
+                                                                                                  
+ batch_normalization_55 (BatchN  (None, 16, 16, 16,   512        ['conv3d_55[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_55 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_55[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ spatial_dropout3d_18 (SpatialD  (None, 16, 16, 16,   0          ['leaky_re_lu_55[0][0]']         
+ ropout3D)                      128)                                                              
+                                                                                                  
+ conv3d_56 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_18[0][0]']   
+                                128)                                                              
+                                                                                                  
+ batch_normalization_56 (BatchN  (None, 16, 16, 16,   512        ['conv3d_56[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_56 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_56[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ add_18 (Add)                   (None, 16, 16, 16,   0           ['leaky_re_lu_56[0][0]',         
+                                128)                              'leaky_re_lu_54[0][0]']         
+                                                                                                  
+ conv3d_57 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_18[0][0]']                 
+                                )                                                                 
+                                                                                                  
+ batch_normalization_57 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_57[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_57 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_57[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ conv3d_58 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_57[0][0]']         
+                                )                                                                 
+                                                                                                  
+ batch_normalization_58 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_58[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_58 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_58[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ spatial_dropout3d_19 (SpatialD  (None, 8, 8, 8, 256  0          ['leaky_re_lu_58[0][0]']         
+ ropout3D)                      )                                                                 
+                                                                                                  
+ conv3d_59 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_19[0][0]']   
+                                )                                                                 
+                                                                                                  
+ batch_normalization_59 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_59[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_59 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_59[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ add_19 (Add)                   (None, 8, 8, 8, 256  0           ['leaky_re_lu_59[0][0]',         
+                                )                                 'leaky_re_lu_57[0][0]']         
+                                                                                                  
+ global_average_pooling3d_3 (Gl  (None, 256)         0           ['add_19[0][0]']                 
+ obalAveragePooling3D)                                                                            
+                                                                                                  
+ dropout_3 (Dropout)            (None, 256)          0           ['global_average_pooling3d_3[0][0
+                                                                 ]']                              
+                                                                                                  
+ dense_3 (Dense)                (None, 2)            514         ['dropout_3[0][0]']              
+                                                                                                  
+==================================================================================================
+Total params: 5,897,410
+Trainable params: 5,894,434
+Non-trainable params: 2,976
+__________________________________________________________________________________________________
+Epoch 1/2
+ 1/28 [>.............................] - ETA: 1:05 - loss: 2.3569 - accuracy: 0.2000 - auc: 0.1000 2/28 [=>............................] - ETA: 15s - loss: 2.1507 - accuracy: 0.4000 - auc: 0.4600  3/28 [==>...........................] - ETA: 14s - loss: 2.1201 - accuracy: 0.4667 - auc: 0.5411 4/28 [===>..........................] - ETA: 14s - loss: 2.3302 - accuracy: 0.4500 - auc: 0.5016 5/28 [====>.........................] - ETA: 13s - loss: 2.3274 - accuracy: 0.4800 - auc: 0.5430 6/28 [=====>........................] - ETA: 13s - loss: 2.4442 - accuracy: 0.4667 - auc: 0.4957 7/28 [======>.......................] - ETA: 12s - loss: 2.3685 - accuracy: 0.5143 - auc: 0.5436 8/28 [=======>......................] - ETA: 11s - loss: 2.5059 - accuracy: 0.4875 - auc: 0.5013 9/28 [========>.....................] - ETA: 11s - loss: 2.5578 - accuracy: 0.5000 - auc: 0.517310/28 [=========>....................] - ETA: 10s - loss: 2.6009 - accuracy: 0.5000 - auc: 0.521711/28 [==========>...................] - ETA: 10s - loss: 2.5753 - accuracy: 0.5091 - auc: 0.535012/28 [===========>..................] - ETA: 9s - loss: 2.5780 - accuracy: 0.5000 - auc: 0.5302 13/28 [============>.................] - ETA: 8s - loss: 2.5785 - accuracy: 0.5000 - auc: 0.524614/28 [==============>...............] - ETA: 8s - loss: 2.6022 - accuracy: 0.4929 - auc: 0.520315/28 [===============>..............] - ETA: 7s - loss: 2.5662 - accuracy: 0.4933 - auc: 0.526116/28 [================>.............] - ETA: 7s - loss: 2.5697 - accuracy: 0.4875 - auc: 0.524117/28 [=================>............] - ETA: 6s - loss: 2.5403 - accuracy: 0.4824 - auc: 0.528018/28 [==================>...........] - ETA: 5s - loss: 2.5154 - accuracy: 0.4944 - auc: 0.536719/28 [===================>..........] - ETA: 5s - loss: 2.5395 - accuracy: 0.4842 - auc: 0.522920/28 [====================>.........] - ETA: 4s - loss: 2.5407 - accuracy: 0.4850 - auc: 0.519821/28 [=====================>........] - ETA: 4s - loss: 2.5602 - accuracy: 0.4905 - auc: 0.522522/28 [======================>.......] - ETA: 3s - loss: 2.5582 - accuracy: 0.4909 - auc: 0.520923/28 [=======================>......] - ETA: 2s - loss: 2.5519 - accuracy: 0.4913 - auc: 0.521624/28 [========================>.....] - ETA: 2s - loss: 2.5340 - accuracy: 0.4875 - auc: 0.522525/28 [=========================>....] - ETA: 1s - loss: 2.5204 - accuracy: 0.4880 - auc: 0.522526/28 [==========================>...] - ETA: 1s - loss: 2.5195 - accuracy: 0.4846 - auc: 0.518827/28 [===========================>..] - ETA: 0s - loss: 2.5108 - accuracy: 0.4852 - auc: 0.517828/28 [==============================] - ETA: 0s - loss: 2.5198 - accuracy: 0.4855 - auc: 0.515028/28 [==============================] - 22s 707ms/step - loss: 2.5198 - accuracy: 0.4855 - auc: 0.5150 - val_loss: 2.2296 - val_accuracy: 0.5217 - val_auc: 0.5384 - lr: 5.0000e-04
+Epoch 2/2
+ 1/28 [>.............................] - ETA: 16s - loss: 2.0773 - accuracy: 0.5000 - auc: 0.5500 2/28 [=>............................] - ETA: 15s - loss: 2.1197 - accuracy: 0.4500 - auc: 0.5200 3/28 [==>...........................] - ETA: 14s - loss: 2.0795 - accuracy: 0.4667 - auc: 0.5411 4/28 [===>..........................] - ETA: 14s - loss: 1.9965 - accuracy: 0.5500 - auc: 0.6525 5/28 [====>.........................] - ETA: 13s - loss: 2.1039 - accuracy: 0.5000 - auc: 0.5888 6/28 [=====>........................] - ETA: 13s - loss: 2.1296 - accuracy: 0.4833 - auc: 0.5647 7/28 [======>.......................] - ETA: 12s - loss: 2.1523 - accuracy: 0.4857 - auc: 0.5582 8/28 [=======>......................] - ETA: 11s - loss: 2.2391 - accuracy: 0.4750 - auc: 0.5328 9/28 [========>.....................] - ETA: 11s - loss: 2.2805 - accuracy: 0.4444 - auc: 0.502510/28 [=========>....................] - ETA: 10s - loss: 2.2999 - accuracy: 0.4600 - auc: 0.500511/28 [==========>...................] - ETA: 10s - loss: 2.2869 - accuracy: 0.4727 - auc: 0.515612/28 [===========>..................] - ETA: 9s - loss: 2.2746 - accuracy: 0.4917 - auc: 0.5386 13/28 [============>.................] - ETA: 8s - loss: 2.2508 - accuracy: 0.4923 - auc: 0.547414/28 [==============>...............] - ETA: 8s - loss: 2.2536 - accuracy: 0.5000 - auc: 0.550315/28 [===============>..............] - ETA: 7s - loss: 2.2602 - accuracy: 0.5000 - auc: 0.541016/28 [================>.............] - ETA: 7s - loss: 2.2337 - accuracy: 0.5125 - auc: 0.561517/28 [=================>............] - ETA: 6s - loss: 2.2135 - accuracy: 0.5176 - auc: 0.575218/28 [==================>...........] - ETA: 5s - loss: 2.2243 - accuracy: 0.5111 - auc: 0.563619/28 [===================>..........] - ETA: 5s - loss: 2.2381 - accuracy: 0.5000 - auc: 0.549920/28 [====================>.........] - ETA: 4s - loss: 2.2260 - accuracy: 0.5050 - auc: 0.560321/28 [=====================>........] - ETA: 4s - loss: 2.2119 - accuracy: 0.5190 - auc: 0.568922/28 [======================>.......] - ETA: 3s - loss: 2.2043 - accuracy: 0.5136 - auc: 0.570023/28 [=======================>......] - ETA: 2s - loss: 2.1985 - accuracy: 0.5217 - auc: 0.576224/28 [========================>.....] - ETA: 2s - loss: 2.1944 - accuracy: 0.5208 - auc: 0.576725/28 [=========================>....] - ETA: 1s - loss: 2.2103 - accuracy: 0.5200 - auc: 0.569326/28 [==========================>...] - ETA: 1s - loss: 2.2060 - accuracy: 0.5231 - auc: 0.574527/28 [===========================>..] - ETA: 0s - loss: 2.1903 - accuracy: 0.5296 - auc: 0.585228/28 [==============================] - ETA: 0s - loss: 2.1999 - accuracy: 0.5217 - auc: 0.575628/28 [==============================] - 18s 649ms/step - loss: 2.1999 - accuracy: 0.5217 - auc: 0.5756 - val_loss: 12.1947 - val_accuracy: 0.3696 - val_auc: 0.3696 - lr: 5.0000e-04
+Best val_auc during training for fold 3: 0.5384
+Final AUC for fold 3: 0.2350
+Loss vs Validation Loss plot (0-1 range) saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/loss_vs_val_loss_zoomed_0_to_1.png
+Average AUC across all folds: 0.4122
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_1.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_1_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_1.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_1_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_2.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_2_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_2.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_2_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_3.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_3_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_3.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_3_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_4.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_4_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_4.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_4_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_5.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_5_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_5.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_5_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_6.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_6_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_6.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_6_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_7.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_7_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_7.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_7_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_8.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_8_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_8.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_8_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_9.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_9_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_9.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_9_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_10.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_10_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_10.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_10_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_11.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_11_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_11.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_11_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_12.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_12_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_12.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_12_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_13.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_13_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_13.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_13_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_14.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_14_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_14.nii.gz
+Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_14_class1.png
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Sep 15 13:39:11 CDT 2024 1726425551
+Name                : cd-MRI-train
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua802
+Cores               : 2
+State               : COMPLETED
+Submit              : 2024-09-15T12:49:36
+Start               : 2024-09-15T12:49:41
+End                 : 2024-09-15T13:39:08
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:49:27
+Used CPU Time       :   00:47:07
+% User (Computation): 98.93%
+% System (I/O)      :  1.07%
+Mem Reserved        : 500000M
+Max Mem Used        : 38.46G (41296982016.0)
+Max Disk Write      : 82.22M (86213918.72)
+Max Disk Read       : 5.63G (6042513571.84)
+Max-Mem-Used Node   : gpua802
+Max-Disk-Write Node : gpua802
+Max-Disk-Read Node  : gpua802
+NVIDIA A100-SXM4-80GB
+Successfully retrieved statistics for job: 2044230. 
++------------------------------------------------------------------------------+
+| GPU ID: 0                                                                    |
++====================================+=========================================+
+|-----  Execution Stats  ------------+-----------------------------------------|
+| Start Time                         | Sun Sep 15 12:49:41 2024                |
+| End Time                           | Sun Sep 15 13:39:11 2024                |
+| Total Execution Time (sec)         | 2969.58                                 |
+| No. of Processes                   | 1                                       |
++-----  Performance Stats  ----------+-----------------------------------------+
+| Energy Consumed (Joules)           | 330034                                  |
+| Power Usage (Watts)                | Avg: 135.694, Max: 318.465, Min: 63.479 |
+| Max GPU Memory Used (bytes)        | 84120961024                             |
+| SM Clock (MHz)                     | Avg: 1327, Max: 1410, Min: 210          |
+| Memory Clock (MHz)                 | Avg: 1593, Max: 1593, Min: 1593         |
+| SM Utilization (%)                 | Avg: 26, Max: 100, Min: 0               |
+| Memory Utilization (%)             | Avg: 7, Max: 46, Min: 0                 |
+| PCIe Rx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
+| PCIe Tx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
++-----  Event Stats  ----------------+-----------------------------------------+
+| Single Bit ECC Errors              | 0                                       |
+| Double Bit ECC Errors              | 0                                       |
+| PCIe Replay Warnings               | 0                                       |
+| Critical XID Errors                | 0                                       |
++-----  Slowdown Stats  -------------+-----------------------------------------+
+| Due to - Power (%)                 | 0                                       |
+|        - Thermal (%)               | 0                                       |
+|        - Reliability (%)           | Not Supported                           |
+|        - Board Limit (%)           | Not Supported                           |
+|        - Low Utilization (%)       | Not Supported                           |
+|        - Sync Boost (%)            | 0                                       |
++--  Compute Process Utilization  ---+-----------------------------------------+
+| PID                                | 1448706                                 |
+|     Avg SM Utilization (%)         | 33                                      |
+|     Avg Memory Utilization (%)     | 7                                       |
++-----  Overall Health  -------------+-----------------------------------------+
+| Overall Health                     | Healthy                                 |
++------------------------------------+-----------------------------------------+
+
++------------------------------------------------------------------------------+
+| GPU ID: 1                                                                    |
++====================================+=========================================+
+|-----  Execution Stats  ------------+-----------------------------------------|
+| Start Time                         | Sun Sep 15 12:49:41 2024                |
+| End Time                           | Sun Sep 15 13:39:11 2024                |
+| Total Execution Time (sec)         | 2969.58                                 |
+| No. of Processes                   | 0                                       |
++-----  Performance Stats  ----------+-----------------------------------------+
+| Energy Consumed (Joules)           | 179561                                  |
+| Power Usage (Watts)                | Avg: 60.2165, Max: 60.489, Min: 59.885  |
+| Max GPU Memory Used (bytes)        | 0                                       |
+| SM Clock (MHz)                     | Avg: 223, Max: 270, Min: 210            |
+| Memory Clock (MHz)                 | Avg: 1593, Max: 1593, Min: 1593         |
+| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
+| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
+| PCIe Rx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
+| PCIe Tx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
++-----  Event Stats  ----------------+-----------------------------------------+
+| Single Bit ECC Errors              | 0                                       |
+| Double Bit ECC Errors              | 0                                       |
+| PCIe Replay Warnings               | 0                                       |
+| Critical XID Errors                | 0                                       |
++-----  Slowdown Stats  -------------+-----------------------------------------+
+| Due to - Power (%)                 | 0                                       |
+|        - Thermal (%)               | 0                                       |
+|        - Reliability (%)           | Not Supported                           |
+|        - Board Limit (%)           | Not Supported                           |
+|        - Low Utilization (%)       | Not Supported                           |
+|        - Sync Boost (%)            | 0                                       |
++-----  Overall Health  -------------+-----------------------------------------+
+| Overall Health                     | Healthy                                 |
++------------------------------------+-----------------------------------------+
+
++------------------------------------------------------------------------------+
+| GPU ID: 2                                                                    |
++====================================+=========================================+
+|-----  Execution Stats  ------------+-----------------------------------------|
+| Start Time                         | Sun Sep 15 12:49:41 2024                |
+| End Time                           | Sun Sep 15 13:39:11 2024                |
+| Total Execution Time (sec)         | 2969.58                                 |
+| No. of Processes                   | 0                                       |
++-----  Performance Stats  ----------+-----------------------------------------+
+| Energy Consumed (Joules)           | 175005                                  |
+| Power Usage (Watts)                | Avg: 58.7209, Max: 58.828, Min: 58.382  |
+| Max GPU Memory Used (bytes)        | 0                                       |
+| SM Clock (MHz)                     | Avg: 210, Max: 210, Min: 210            |
+| Memory Clock (MHz)                 | Avg: 1593, Max: 1593, Min: 1593         |
+| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
+| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
+| PCIe Rx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
+| PCIe Tx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
++-----  Event Stats  ----------------+-----------------------------------------+
+| Single Bit ECC Errors              | 0                                       |
+| Double Bit ECC Errors              | 0                                       |
+| PCIe Replay Warnings               | 0                                       |
+| Critical XID Errors                | 0                                       |
++-----  Slowdown Stats  -------------+-----------------------------------------+
+| Due to - Power (%)                 | 0                                       |
+|        - Thermal (%)               | 0                                       |
+|        - Reliability (%)           | Not Supported                           |
+|        - Board Limit (%)           | Not Supported                           |
+|        - Low Utilization (%)       | Not Supported                           |
+|        - Sync Boost (%)            | 0                                       |
++-----  Overall Health  -------------+-----------------------------------------+
+| Overall Health                     | Healthy                                 |
++------------------------------------+-----------------------------------------+
+
++------------------------------------------------------------------------------+
+| GPU ID: 3                                                                    |
++====================================+=========================================+
+|-----  Execution Stats  ------------+-----------------------------------------|
+| Start Time                         | Sun Sep 15 12:49:41 2024                |
+| End Time                           | Sun Sep 15 13:39:11 2024                |
+| Total Execution Time (sec)         | 2969.58                                 |
+| No. of Processes                   | 0                                       |
++-----  Performance Stats  ----------+-----------------------------------------+
+| Energy Consumed (Joules)           | 182040                                  |
+| Power Usage (Watts)                | Avg: 60.9629, Max: 61.567, Min: 60.489  |
+| Max GPU Memory Used (bytes)        | 0                                       |
+| SM Clock (MHz)                     | Avg: 210, Max: 210, Min: 210            |
+| Memory Clock (MHz)                 | Avg: 1593, Max: 1593, Min: 1593         |
+| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
+| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
+| PCIe Rx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
+| PCIe Tx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
++-----  Event Stats  ----------------+-----------------------------------------+
+| Single Bit ECC Errors              | 0                                       |
+| Double Bit ECC Errors              | 0                                       |
+| PCIe Replay Warnings               | 0                                       |
+| Critical XID Errors                | 0                                       |
++-----  Slowdown Stats  -------------+-----------------------------------------+
+| Due to - Power (%)                 | 0                                       |
+|        - Thermal (%)               | 0                                       |
+|        - Reliability (%)           | Not Supported                           |
+|        - Board Limit (%)           | Not Supported                           |
+|        - Low Utilization (%)       | Not Supported                           |
+|        - Sync Boost (%)            | 0                                       |
++-----  Overall Health  -------------+-----------------------------------------+
+| Overall Health                     | Healthy                                 |
++------------------------------------+-----------------------------------------+
+
+End Slurm Epilogue Sun Sep 15 13:39:11 CDT 2024 1726425551
+--------------------------------------------------------------
