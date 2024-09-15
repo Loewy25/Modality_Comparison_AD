@@ -220,17 +220,16 @@ def save_gradcam(heatmap, img, adjusted_affine, original_img, task, modality, la
     print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
 
     # Plot the heatmap overlaid on the anatomical image
-    output_stat_map_path = os.path.join(save_dir, f'stat_map_{task}_{modality}_{layer_name}_class{class_idx}.png')
-    plotting.plot_stat_map(
+    output_glass_brain_path = os.path.join(save_dir, f'glass_brain_{task}_{modality}_{layer_name}_class{class_idx}.png')
+    plotting.plot_glass_brain(
         resampled_heatmap_img,
-        bg_img=original_img,
-        threshold=0.1,
+        colorbar=True,
+        plot_abs=True,
         cmap='hot',
-        display_mode='ortho',
-        draw_cross=False,
-        output_file=output_stat_map_path
+        output_file=output_glass_brain_path
     )
-    print(f'Stat map plot saved at {output_stat_map_path}')
+    print(f'Glass brain plot saved at {output_glass_brain_path}')
+
 
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
 def apply_gradcam_all_layers_average(model, imgs, adjusted_affines, original_imgs, task, modality, info):
