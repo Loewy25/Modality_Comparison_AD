@@ -10,12 +10,11 @@ from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import StratifiedKFold
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from nilearn.image import resample_to_img
+from nilearn.image import resample_to_img, resample_img
 import nibabel as nib
 from nilearn.input_data import NiftiMasker
 from nilearn import plotting
 from scipy.stats import zscore
-from scipy.ndimage import zoom
 import os
 
 # Additional Imports
@@ -87,25 +86,7 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     
     return model
 
-# Function to resize an image to the target shape using interpolation
-def resize_image(image, target_shape):
-    print(f"Original image shape: {image.shape}")
-    if len(image.shape) == 4:
-        # Assuming the last dimension is the channel dimension
-        spatial_dims = image.shape[:3]
-        zoom_factors = [target_shape[i] / spatial_dims[i] for i in range(3)] + [1]
-    elif len(image.shape) == 3:
-        zoom_factors = [target_shape[i] / image.shape[i] for i in range(3)]
-    else:
-        raise ValueError(f"Unexpected image shape: {image.shape}. Expected 3D or 4D image.")
-    
-    print(f"Zoom factors: {zoom_factors}")
-    # Apply zoom to the image
-    resized_image = zoom(image, zoom_factors, order=1)
-    print(f"Resized image shape: {resized_image.shape}")
-    return resized_image
-
-# Update loading function to resize instead of padding
+# Update loading function to use resample_img for resizing
 def loading_mask_3d(task, modality):
     images_pet, images_mri, labels = generate_data_path()
     adjusted_affines = []
@@ -123,38 +104,33 @@ def loading_mask_3d(task, modality):
     
     for i in range(len(data_train)):
         nifti_img = nib.load(data_train[i])
-        affine = nifti_img.affine  # Store the affine matrix
         original_imgs.append(nifti_img)  # Store the original NIfTI image
 
+        # Masking and z-scoring
         masked_data = masker.fit_transform(nifti_img)
-        reshaped_data = masker.inverse_transform(masked_data).get_fdata()
-        reshaped_data = zscore(reshaped_data, axis=None)
-        
-        # Resize the image to (128, 128, 128)
-        reshaped_data = np.squeeze(reshaped_data)  # Ensure data is 3D
-        resized_data = resize_image(reshaped_data, target_shape)
-        
+        reshaped_img = masker.inverse_transform(masked_data)
+        data = reshaped_img.get_fdata()
+        data = zscore(data, axis=None)
+        reshaped_img = nib.Nifti1Image(data, reshaped_img.affine)
+
+        # Resample image to target shape
+        resampled_img = resample_img(
+            reshaped_img,
+            target_shape=target_shape,
+            interpolation='continuous'
+        )
+
+        # Get data and affine
+        resized_data = resampled_img.get_fdata()
+        adjusted_affine = resampled_img.affine
+
         train_data.append(resized_data)
-        new_affine = adjust_affine_for_resizing(affine, reshaped_data.shape, target_shape)
-        adjusted_affines.append(new_affine)
+        adjusted_affines.append(adjusted_affine)
     
     train_label = binarylabel(train_label, task)
     train_data = np.array(train_data)
     
     return train_data, train_label, masker, adjusted_affines, original_imgs
-
-# Function to adjust affine for resizing
-def adjust_affine_for_resizing(original_affine, original_shape, new_shape):
-    scales = [original_shape[i] / new_shape[i] for i in range(3)]
-    new_affine = original_affine.copy()
-    new_affine[:3, :3] = original_affine[:3, :3] @ np.diag(scales)
-    return new_affine
-
-# Function to adjust affine for the layer's scaling
-def adjust_affine_for_layer(original_affine, scaling_factors):
-    new_affine = original_affine.copy()
-    new_affine[:3, :3] = original_affine[:3, :3] @ np.diag(scaling_factors)
-    return new_affine
 
 # Function to compute Grad-CAM for a given layer and class index
 def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
@@ -176,17 +152,11 @@ def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
     heatmap = tf.reduce_sum(conv_outputs, axis=-1)
 
     heatmap = tf.maximum(heatmap, 0)
-    heatmap = heatmap / tf.math.reduce_max(heatmap)
+    if tf.math.reduce_max(heatmap) != 0:
+        heatmap = heatmap / tf.math.reduce_max(heatmap)
     
     heatmap = heatmap.numpy()
-
-    # Compute zoom factors to resize heatmap to input size
-    input_shape = img.shape[1:4]  # Skip batch dimension
-    heatmap_shape = heatmap.shape
-    zoom_factors = [i / h for i, h in zip(input_shape, heatmap_shape)]
-    upsampled_heatmap = zoom(heatmap, zoom_factors, order=1)  # Bilinear interpolation
-
-    return upsampled_heatmap
+    return heatmap
 
 # Function to plot training and validation loss and save the figure
 def plot_training_validation_loss(history, save_dir):
@@ -214,34 +184,37 @@ def plot_training_validation_loss(history, save_dir):
     plt.close()  # Close the figure to avoid displaying it in notebooks
     print(f'Loss vs Validation Loss plot (0-1 range) saved at {loss_plot_path}')
 
-# Function to save Grad-CAM heatmap and plot glass brain using the stored affine
+# Function to save Grad-CAM heatmap and plot stat map using the stored affine
 def save_gradcam(heatmap, img, adjusted_affine, original_img, task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
     ensure_directory_exists(save_dir)
     
-    # Compute scaling factors based on input image and heatmap shapes
-    input_shape = img.shape[1:4]  # Skip batch dimension
-    heatmap_shape = heatmap.shape
-    scaling_factors = [input_dim / heatmap_dim for input_dim, heatmap_dim in zip(input_shape, heatmap_shape)]
+    # Create a NIfTI image of the heatmap using the adjusted affine
+    heatmap_img = nib.Nifti1Image(heatmap, adjusted_affine)
     
-    # Adjust the affine for the current layer's scaling
-    layer_affine = adjust_affine_for_layer(adjusted_affine, scaling_factors)
-    
-    heatmap_img = nib.Nifti1Image(heatmap, layer_affine)
-
     # Resample the heatmap to the space of the original image
-    resampled_heatmap_img = resample_to_img(heatmap_img, original_img, interpolation='continuous')
+    resampled_heatmap_img = resample_to_img(
+        heatmap_img, original_img, interpolation='continuous'
+    )
 
     # Save the 3D NIfTI file
     nifti_file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.nii.gz"
     nifti_save_path = os.path.join(save_dir, nifti_file_name)
     nib.save(resampled_heatmap_img, nifti_save_path)
     print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
-    
-    # Plot the glass brain
-    output_glass_brain_path = os.path.join(save_dir, f'glass_brain_{task}_{modality}_{layer_name}_class{class_idx}.png')
-    plotting.plot_glass_brain(resampled_heatmap_img, colorbar=True, plot_abs=True, cmap='jet', output_file=output_glass_brain_path)
-    print(f'Glass brain plot saved at {output_glass_brain_path}')
+
+    # Plot the heatmap overlaid on the anatomical image
+    output_stat_map_path = os.path.join(save_dir, f'stat_map_{task}_{modality}_{layer_name}_class{class_idx}.png')
+    display = plotting.plot_stat_map(
+        resampled_heatmap_img,
+        bg_img=original_img,
+        threshold=0.1,
+        cmap='hot',
+        display_mode='ortho',
+        draw_cross=False,
+        output_file=output_stat_map_path
+    )
+    print(f'Stat map plot saved at {output_stat_map_path}')
 
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
 def apply_gradcam_all_layers_average(model, imgs, adjusted_affines, original_imgs, task, modality, info):
