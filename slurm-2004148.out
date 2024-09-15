@@ -1,0 +1,38 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sat Sep 14 22:37:14 CDT 2024 1726371434
+Job ID:		2004148
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Sat Sep 14 22:37:14 CDT 2024 1726371434
+--------------------------------------------------------------
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/deep_learning.py", line 356
+    apply_gradcam_all_layers_average(model, imgs, adjusted_affines， original_imgs, task, modality, info)
+                                                                  ^
+SyntaxError: invalid character '，' (U+FF0C)
+--------------------------------------------------------------
+Begin Slurm Epilogue Sat Sep 14 22:37:19 CDT 2024 1726371439
+Name                : cd-PET-train
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua406
+Cores               : 2
+State               : COMPLETED
+Submit              : 2024-09-14T22:36:35
+Start               : 2024-09-14T22:37:14
+End                 : 2024-09-14T22:37:17
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:00:03
+Used CPU Time       : --
+% User (Computation):  0.00%
+% System (I/O)      : 22.94%
+Mem Reserved        : 500000M
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : gpua406
+Max-Disk-Write Node : gpua406
+Max-Disk-Read Node  : gpua406
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Sat Sep 14 22:37:19 CDT 2024 1726371439
+--------------------------------------------------------------
