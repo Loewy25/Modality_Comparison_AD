@@ -353,4 +353,4 @@ train_model(X, Y, task, modality, info)
 
 # Apply Grad-CAM
 imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
-apply_gradcam_all_layers_average(model, imgs, original_imgs, adjusted_affines, task, modality, info)
+apply_gradcam_all_layers_average(model, imgs, adjusted_affines， original_imgs, task, modality, info)
