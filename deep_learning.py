@@ -289,8 +289,8 @@ def train_model(X, Y, task, modality, info):
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
 
         history = model.fit(X_train, Y_train,
-                            batch_size=20,
-                            epochs=1,
+                            batch_size=5,
+                            epochs=5,
                             validation_data=(X_val, Y_val),
                             callbacks=[early_stopping, reduce_lr])
 
