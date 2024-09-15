@@ -101,7 +101,8 @@ def loading_mask_3d(task, modality):
     
     train_data = []
     target_shape = (128, 128, 128)
-    
+    # We will compute target_affine dynamically
+
     for i in range(len(data_train)):
         nifti_img = nib.load(data_train[i])
         original_imgs.append(nifti_img)  # Store the original NIfTI image
@@ -113,9 +114,24 @@ def loading_mask_3d(task, modality):
         data = zscore(data, axis=None)
         reshaped_img = nib.Nifti1Image(data, reshaped_img.affine)
 
-        # Resample image to target shape
+        # Compute new voxel sizes to cover the same field of view with target_shape
+        orig_shape = reshaped_img.shape
+        orig_affine = reshaped_img.affine
+        orig_voxel_sizes = np.sqrt((orig_affine[:3, :3] ** 2).sum(axis=0))
+
+        # Compute scaling factors
+        scale_factors = [orig_shape[i] / target_shape[i] for i in range(3)]
+        new_voxel_sizes = orig_voxel_sizes * scale_factors
+
+        # Create new target_affine
+        target_affine = orig_affine.copy()
+        target_affine[:3, :3] = np.diag(new_voxel_sizes)
+        target_affine[:3, 3] = orig_affine[:3, 3]  # Keep the same translation
+
+        # Resample image to target shape and affine
         resampled_img = resample_img(
             reshaped_img,
+            target_affine=target_affine,
             target_shape=target_shape,
             interpolation='continuous'
         )
@@ -205,7 +221,7 @@ def save_gradcam(heatmap, img, adjusted_affine, original_img, task, modality, la
 
     # Plot the heatmap overlaid on the anatomical image
     output_stat_map_path = os.path.join(save_dir, f'stat_map_{task}_{modality}_{layer_name}_class{class_idx}.png')
-    display = plotting.plot_stat_map(
+    plotting.plot_stat_map(
         resampled_heatmap_img,
         bg_img=original_img,
         threshold=0.1,
