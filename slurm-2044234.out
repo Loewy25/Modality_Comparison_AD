@@ -1,0 +1,901 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Sep 15 14:54:22 CDT 2024 1726430062
+Job ID:		2044234
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Sun Sep 15 14:54:22 CDT 2024 1726430062
+--------------------------------------------------------------
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+2024-09-15 14:59:40.445621: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-09-15 14:59:42.858072: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 38212 MB memory:  -> device: 0, name: NVIDIA A100-SXM4-40GB, pci bus id: 0000:b1:00.0, compute capability: 8.0
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_1 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d (Conv3D)                (None, 128, 128, 12  448         ['input_1[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization (BatchNorm  (None, 128, 128, 12  64         ['conv3d[0][0]']                 
+ alization)                     8, 16)                                                            
+                                                                                                  
+ leaky_re_lu (LeakyReLU)        (None, 128, 128, 12  0           ['batch_normalization[0][0]']    
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_1 (Conv3D)              (None, 128, 128, 12  6928        ['leaky_re_lu[0][0]']            
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_1 (BatchNo  (None, 128, 128, 12  64         ['conv3d_1[0][0]']               
+ rmalization)                   8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_1 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_1[0][0]']  
+                                8, 16)                                                            
+                                                                                                  
+ spatial_dropout3d (SpatialDrop  (None, 128, 128, 12  0          ['leaky_re_lu_1[0][0]']          
+ out3D)                         8, 16)                                                            
+                                                                                                  
+ conv3d_2 (Conv3D)              (None, 128, 128, 12  6928        ['spatial_dropout3d[0][0]']      
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_2 (BatchNo  (None, 128, 128, 12  64         ['conv3d_2[0][0]']               
+ rmalization)                   8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_2 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_2[0][0]']  
+                                8, 16)                                                            
+                                                                                                  
+ add (Add)                      (None, 128, 128, 12  0           ['leaky_re_lu_2[0][0]',          
+                                8, 16)                            'leaky_re_lu[0][0]']            
+                                                                                                  
+ conv3d_3 (Conv3D)              (None, 64, 64, 64,   13856       ['add[0][0]']                    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_3 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_3[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_3 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_3[0][0]']  
+                                32)                                                               
+                                                                                                  
+ conv3d_4 (Conv3D)              (None, 64, 64, 64,   27680       ['leaky_re_lu_3[0][0]']          
+                                32)                                                               
+                                                                                                  
+ batch_normalization_4 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_4[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_4 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_4[0][0]']  
+                                32)                                                               
+                                                                                                  
+ spatial_dropout3d_1 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_4[0][0]']          
+ opout3D)                       32)                                                               
+                                                                                                  
+ conv3d_5 (Conv3D)              (None, 64, 64, 64,   27680       ['spatial_dropout3d_1[0][0]']    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_5 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_5[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_5 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_5[0][0]']  
+                                32)                                                               
+                                                                                                  
+ add_1 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_5[0][0]',          
+                                32)                               'leaky_re_lu_3[0][0]']          
+                                                                                                  
+ conv3d_6 (Conv3D)              (None, 32, 32, 32,   55360       ['add_1[0][0]']                  
+                                64)                                                               
+                                                                                                  
+ batch_normalization_6 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_6[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_6 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_6[0][0]']  
+                                64)                                                               
+                                                                                                  
+ conv3d_7 (Conv3D)              (None, 32, 32, 32,   110656      ['leaky_re_lu_6[0][0]']          
+                                64)                                                               
+                                                                                                  
+ batch_normalization_7 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_7[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_7 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_7[0][0]']  
+                                64)                                                               
+                                                                                                  
+ spatial_dropout3d_2 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_7[0][0]']          
+ opout3D)                       64)                                                               
+                                                                                                  
+ conv3d_8 (Conv3D)              (None, 32, 32, 32,   110656      ['spatial_dropout3d_2[0][0]']    
+                                64)                                                               
+                                                                                                  
+ batch_normalization_8 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_8[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_8 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_8[0][0]']  
+                                64)                                                               
+                                                                                                  
+ add_2 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_8[0][0]',          
+                                64)                               'leaky_re_lu_6[0][0]']          
+                                                                                                  
+ conv3d_9 (Conv3D)              (None, 16, 16, 16,   221312      ['add_2[0][0]']                  
+                                128)                                                              
+                                                                                                  
+ batch_normalization_9 (BatchNo  (None, 16, 16, 16,   512        ['conv3d_9[0][0]']               
+ rmalization)                   128)                                                              
+                                                                                                  
+ leaky_re_lu_9 (LeakyReLU)      (None, 16, 16, 16,   0           ['batch_normalization_9[0][0]']  
+                                128)                                                              
+                                                                                                  
+ conv3d_10 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_9[0][0]']          
+                                128)                                                              
+                                                                                                  
+ batch_normalization_10 (BatchN  (None, 16, 16, 16,   512        ['conv3d_10[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_10 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_10[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ spatial_dropout3d_3 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_10[0][0]']         
+ opout3D)                       128)                                                              
+                                                                                                  
+ conv3d_11 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_3[0][0]']    
+                                128)                                                              
+                                                                                                  
+ batch_normalization_11 (BatchN  (None, 16, 16, 16,   512        ['conv3d_11[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_11 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_11[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ add_3 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_11[0][0]',         
+                                128)                              'leaky_re_lu_9[0][0]']          
+                                                                                                  
+ conv3d_12 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_3[0][0]']                  
+                                )                                                                 
+                                                                                                  
+ batch_normalization_12 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_12[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_12 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_12[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ conv3d_13 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_12[0][0]']         
+                                )                                                                 
+                                                                                                  
+ batch_normalization_13 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_13[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_13 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_13[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ spatial_dropout3d_4 (SpatialDr  (None, 8, 8, 8, 256  0          ['leaky_re_lu_13[0][0]']         
+ opout3D)                       )                                                                 
+                                                                                                  
+ conv3d_14 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_4[0][0]']    
+                                )                                                                 
+                                                                                                  
+ batch_normalization_14 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_14[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_14 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_14[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ add_4 (Add)                    (None, 8, 8, 8, 256  0           ['leaky_re_lu_14[0][0]',         
+                                )                                 'leaky_re_lu_12[0][0]']         
+                                                                                                  
+ global_average_pooling3d (Glob  (None, 256)         0           ['add_4[0][0]']                  
+ alAveragePooling3D)                                                                              
+                                                                                                  
+ dropout (Dropout)              (None, 256)          0           ['global_average_pooling3d[0][0]'
+                                                                 ]                                
+                                                                                                  
+ dense (Dense)                  (None, 2)            514         ['dropout[0][0]']                
+                                                                                                  
+==================================================================================================
+Total params: 5,897,410
+Trainable params: 5,894,434
+Non-trainable params: 2,976
+__________________________________________________________________________________________________
+Model: "model_1"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_2 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d_15 (Conv3D)             (None, 128, 128, 12  448         ['input_2[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_15 (BatchN  (None, 128, 128, 12  64         ['conv3d_15[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_15 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_15[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_16 (Conv3D)             (None, 128, 128, 12  6928        ['leaky_re_lu_15[0][0]']         
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_16 (BatchN  (None, 128, 128, 12  64         ['conv3d_16[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_16 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_16[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ spatial_dropout3d_5 (SpatialDr  (None, 128, 128, 12  0          ['leaky_re_lu_16[0][0]']         
+ opout3D)                       8, 16)                                                            
+                                                                                                  
+ conv3d_17 (Conv3D)             (None, 128, 128, 12  6928        ['spatial_dropout3d_5[0][0]']    
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_17 (BatchN  (None, 128, 128, 12  64         ['conv3d_17[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_17 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_17[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ add_5 (Add)                    (None, 128, 128, 12  0           ['leaky_re_lu_17[0][0]',         
+                                8, 16)                            'leaky_re_lu_15[0][0]']         
+                                                                                                  
+ conv3d_18 (Conv3D)             (None, 64, 64, 64,   13856       ['add_5[0][0]']                  
+                                32)                                                               
+                                                                                                  
+ batch_normalization_18 (BatchN  (None, 64, 64, 64,   128        ['conv3d_18[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_18 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_18[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ conv3d_19 (Conv3D)             (None, 64, 64, 64,   27680       ['leaky_re_lu_18[0][0]']         
+                                32)                                                               
+                                                                                                  
+ batch_normalization_19 (BatchN  (None, 64, 64, 64,   128        ['conv3d_19[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_19 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_19[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ spatial_dropout3d_6 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_19[0][0]']         
+ opout3D)                       32)                                                               
+                                                                                                  
+ conv3d_20 (Conv3D)             (None, 64, 64, 64,   27680       ['spatial_dropout3d_6[0][0]']    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_20 (BatchN  (None, 64, 64, 64,   128        ['conv3d_20[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_20 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_20[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ add_6 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_20[0][0]',         
+                                32)                               'leaky_re_lu_18[0][0]']         
+                                                                                                  
+ conv3d_21 (Conv3D)             (None, 32, 32, 32,   55360       ['add_6[0][0]']                  
+                                64)                                                               
+                                                                                                  
+ batch_normalization_21 (BatchN  (None, 32, 32, 32,   256        ['conv3d_21[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_21 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_21[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ conv3d_22 (Conv3D)             (None, 32, 32, 32,   110656      ['leaky_re_lu_21[0][0]']         
+                                64)                                                               
+                                                                                                  
+ batch_normalization_22 (BatchN  (None, 32, 32, 32,   256        ['conv3d_22[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_22 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_22[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ spatial_dropout3d_7 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_22[0][0]']         
+ opout3D)                       64)                                                               
+                                                                                                  
+ conv3d_23 (Conv3D)             (None, 32, 32, 32,   110656      ['spatial_dropout3d_7[0][0]']    
+                                64)                                                               
+                                                                                                  
+ batch_normalization_23 (BatchN  (None, 32, 32, 32,   256        ['conv3d_23[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_23 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_23[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ add_7 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_23[0][0]',         
+                                64)                               'leaky_re_lu_21[0][0]']         
+                                                                                                  
+ conv3d_24 (Conv3D)             (None, 16, 16, 16,   221312      ['add_7[0][0]']                  
+                                128)                                                              
+                                                                                                  
+ batch_normalization_24 (BatchN  (None, 16, 16, 16,   512        ['conv3d_24[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_24 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_24[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ conv3d_25 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_24[0][0]']         
+                                128)                                                              
+                                                                                                  
+ batch_normalization_25 (BatchN  (None, 16, 16, 16,   512        ['conv3d_25[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_25 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_25[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ spatial_dropout3d_8 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_25[0][0]']         
+ opout3D)                       128)                                                              
+                                                                                                  
+ conv3d_26 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_8[0][0]']    
+                                128)                                                              
+                                                                                                  
+ batch_normalization_26 (BatchN  (None, 16, 16, 16,   512        ['conv3d_26[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_26 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_26[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ add_8 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_26[0][0]',         
+                                128)                              'leaky_re_lu_24[0][0]']         
+                                                                                                  
+ conv3d_27 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_8[0][0]']                  
+                                )                                                                 
+                                                                                                  
+ batch_normalization_27 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_27[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_27 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_27[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ conv3d_28 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_27[0][0]']         
+                                )                                                                 
+                                                                                                  
+ batch_normalization_28 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_28[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_28 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_28[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ spatial_dropout3d_9 (SpatialDr  (None, 8, 8, 8, 256  0          ['leaky_re_lu_28[0][0]']         
+ opout3D)                       )                                                                 
+                                                                                                  
+ conv3d_29 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_9[0][0]']    
+                                )                                                                 
+                                                                                                  
+ batch_normalization_29 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_29[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_29 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_29[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ add_9 (Add)                    (None, 8, 8, 8, 256  0           ['leaky_re_lu_29[0][0]',         
+                                )                                 'leaky_re_lu_27[0][0]']         
+                                                                                                  
+ global_average_pooling3d_1 (Gl  (None, 256)         0           ['add_9[0][0]']                  
+ obalAveragePooling3D)                                                                            
+                                                                                                  
+ dropout_1 (Dropout)            (None, 256)          0           ['global_average_pooling3d_1[0][0
+                                                                 ]']                              
+                                                                                                  
+ dense_1 (Dense)                (None, 2)            514         ['dropout_1[0][0]']              
+                                                                                                  
+==================================================================================================
+Total params: 5,897,410
+Trainable params: 5,894,434
+Non-trainable params: 2,976
+__________________________________________________________________________________________________
+Epoch 1/2
+2024-09-15 14:59:51.342063: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8101
+2024-09-15 14:59:53.870905: I tensorflow/stream_executor/cuda/cuda_blas.cc:1786] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+ 1/28 [>.............................] - ETA: 4:37 - loss: 2.4334 - accuracy: 0.4000 - auc: 0.3300 2/28 [=>............................] - ETA: 15s - loss: 2.4515 - accuracy: 0.4500 - auc: 0.3450  3/28 [==>...........................] - ETA: 15s - loss: 2.2810 - accuracy: 0.6000 - auc: 0.5344 4/28 [===>..........................] - ETA: 14s - loss: 2.2573 - accuracy: 0.6000 - auc: 0.5506 5/28 [====>.........................] - ETA: 13s - loss: 2.2599 - accuracy: 0.5600 - auc: 0.5352 6/28 [=====>........................] - ETA: 13s - loss: 2.3463 - accuracy: 0.5167 - auc: 0.4919 7/28 [======>.......................] - ETA: 12s - loss: 2.3515 - accuracy: 0.5000 - auc: 0.4776 8/28 [=======>......................] - ETA: 12s - loss: 2.3826 - accuracy: 0.4750 - auc: 0.4515 9/28 [========>.....................] - ETA: 11s - loss: 2.3860 - accuracy: 0.4889 - auc: 0.474410/28 [=========>....................] - ETA: 10s - loss: 2.3839 - accuracy: 0.5100 - auc: 0.489211/28 [==========>...................] - ETA: 10s - loss: 2.4238 - accuracy: 0.4909 - auc: 0.463012/28 [===========>..................] - ETA: 9s - loss: 2.3739 - accuracy: 0.5167 - auc: 0.4926 13/28 [============>.................] - ETA: 9s - loss: 2.3660 - accuracy: 0.5154 - auc: 0.499514/28 [==============>...............] - ETA: 8s - loss: 2.3615 - accuracy: 0.5286 - auc: 0.504015/28 [===============>..............] - ETA: 7s - loss: 2.3221 - accuracy: 0.5467 - auc: 0.526916/28 [================>.............] - ETA: 7s - loss: 2.2933 - accuracy: 0.5562 - auc: 0.541717/28 [=================>............] - ETA: 6s - loss: 2.2833 - accuracy: 0.5647 - auc: 0.549518/28 [==================>...........] - ETA: 6s - loss: 2.2704 - accuracy: 0.5667 - auc: 0.558419/28 [===================>..........] - ETA: 5s - loss: 2.2760 - accuracy: 0.5632 - auc: 0.553420/28 [====================>.........] - ETA: 4s - loss: 2.2816 - accuracy: 0.5550 - auc: 0.549721/28 [=====================>........] - ETA: 4s - loss: 2.2709 - accuracy: 0.5619 - auc: 0.553722/28 [======================>.......] - ETA: 3s - loss: 2.2625 - accuracy: 0.5591 - auc: 0.555123/28 [=======================>......] - ETA: 3s - loss: 2.2557 - accuracy: 0.5609 - auc: 0.557124/28 [========================>.....] - ETA: 2s - loss: 2.2681 - accuracy: 0.5542 - auc: 0.549925/28 [=========================>....] - ETA: 1s - loss: 2.2669 - accuracy: 0.5560 - auc: 0.551726/28 [==========================>...] - ETA: 1s - loss: 2.2537 - accuracy: 0.5692 - auc: 0.563827/28 [===========================>..] - ETA: 0s - loss: 2.2475 - accuracy: 0.5704 - auc: 0.568028/28 [==============================] - ETA: 0s - loss: 2.2409 - accuracy: 0.5688 - auc: 0.570928/28 [==============================] - 34s 892ms/step - loss: 2.2409 - accuracy: 0.5688 - auc: 0.5709 - val_loss: 2.1768 - val_accuracy: 0.3623 - val_auc: 0.3623 - lr: 5.0000e-04
+Epoch 2/2
+ 1/28 [>.............................] - ETA: 16s - loss: 2.0296 - accuracy: 0.6000 - auc: 0.6800 2/28 [=>............................] - ETA: 15s - loss: 2.1140 - accuracy: 0.7000 - auc: 0.6600 3/28 [==>...........................] - ETA: 15s - loss: 2.1725 - accuracy: 0.6000 - auc: 0.6067 4/28 [===>..........................] - ETA: 14s - loss: 2.2091 - accuracy: 0.6500 - auc: 0.6244 5/28 [====>.........................] - ETA: 13s - loss: 2.2023 - accuracy: 0.6400 - auc: 0.6212 6/28 [=====>........................] - ETA: 13s - loss: 2.1938 - accuracy: 0.6333 - auc: 0.6203 7/28 [======>.......................] - ETA: 12s - loss: 2.1489 - accuracy: 0.6429 - auc: 0.6400 8/28 [=======>......................] - ETA: 12s - loss: 2.1340 - accuracy: 0.6625 - auc: 0.6461 9/28 [========>.....................] - ETA: 11s - loss: 2.0988 - accuracy: 0.6667 - auc: 0.670410/28 [=========>....................] - ETA: 10s - loss: 2.0917 - accuracy: 0.6800 - auc: 0.675011/28 [==========>...................] - ETA: 10s - loss: 2.1066 - accuracy: 0.6727 - auc: 0.663812/28 [===========>..................] - ETA: 9s - loss: 2.1020 - accuracy: 0.6667 - auc: 0.6658 13/28 [============>.................] - ETA: 9s - loss: 2.0898 - accuracy: 0.6615 - auc: 0.672114/28 [==============>...............] - ETA: 8s - loss: 2.0800 - accuracy: 0.6643 - auc: 0.675115/28 [===============>..............] - ETA: 7s - loss: 2.0968 - accuracy: 0.6467 - auc: 0.659716/28 [================>.............] - ETA: 7s - loss: 2.0869 - accuracy: 0.6438 - auc: 0.663817/28 [=================>............] - ETA: 6s - loss: 2.0812 - accuracy: 0.6353 - auc: 0.664018/28 [==================>...........] - ETA: 6s - loss: 2.0663 - accuracy: 0.6444 - auc: 0.675619/28 [===================>..........] - ETA: 5s - loss: 2.0701 - accuracy: 0.6368 - auc: 0.670220/28 [====================>.........] - ETA: 4s - loss: 2.0713 - accuracy: 0.6300 - auc: 0.667021/28 [=====================>........] - ETA: 4s - loss: 2.0737 - accuracy: 0.6286 - auc: 0.665322/28 [======================>.......] - ETA: 3s - loss: 2.0778 - accuracy: 0.6273 - auc: 0.664223/28 [=======================>......] - ETA: 3s - loss: 2.0864 - accuracy: 0.6261 - auc: 0.658924/28 [========================>.....] - ETA: 2s - loss: 2.0676 - accuracy: 0.6375 - auc: 0.672625/28 [=========================>....] - ETA: 1s - loss: 2.0840 - accuracy: 0.6360 - auc: 0.664426/28 [==========================>...] - ETA: 1s - loss: 2.0825 - accuracy: 0.6423 - auc: 0.664027/28 [===========================>..] - ETA: 0s - loss: 2.0809 - accuracy: 0.6370 - auc: 0.662728/28 [==============================] - ETA: 0s - loss: 2.0743 - accuracy: 0.6377 - auc: 0.666728/28 [==============================] - 19s 665ms/step - loss: 2.0743 - accuracy: 0.6377 - auc: 0.6667 - val_loss: 2.1166 - val_accuracy: 0.3623 - val_auc: 0.3623 - lr: 5.0000e-04
+Best val_auc during training for fold 1: 0.3623
+Final AUC for fold 1: 0.1993
+Model: "model_2"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_3 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d_30 (Conv3D)             (None, 128, 128, 12  448         ['input_3[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_30 (BatchN  (None, 128, 128, 12  64         ['conv3d_30[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_30 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_30[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_31 (Conv3D)             (None, 128, 128, 12  6928        ['leaky_re_lu_30[0][0]']         
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_31 (BatchN  (None, 128, 128, 12  64         ['conv3d_31[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_31 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_31[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ spatial_dropout3d_10 (SpatialD  (None, 128, 128, 12  0          ['leaky_re_lu_31[0][0]']         
+ ropout3D)                      8, 16)                                                            
+                                                                                                  
+ conv3d_32 (Conv3D)             (None, 128, 128, 12  6928        ['spatial_dropout3d_10[0][0]']   
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_32 (BatchN  (None, 128, 128, 12  64         ['conv3d_32[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_32 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_32[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ add_10 (Add)                   (None, 128, 128, 12  0           ['leaky_re_lu_32[0][0]',         
+                                8, 16)                            'leaky_re_lu_30[0][0]']         
+                                                                                                  
+ conv3d_33 (Conv3D)             (None, 64, 64, 64,   13856       ['add_10[0][0]']                 
+                                32)                                                               
+                                                                                                  
+ batch_normalization_33 (BatchN  (None, 64, 64, 64,   128        ['conv3d_33[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_33 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_33[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ conv3d_34 (Conv3D)             (None, 64, 64, 64,   27680       ['leaky_re_lu_33[0][0]']         
+                                32)                                                               
+                                                                                                  
+ batch_normalization_34 (BatchN  (None, 64, 64, 64,   128        ['conv3d_34[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_34 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_34[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ spatial_dropout3d_11 (SpatialD  (None, 64, 64, 64,   0          ['leaky_re_lu_34[0][0]']         
+ ropout3D)                      32)                                                               
+                                                                                                  
+ conv3d_35 (Conv3D)             (None, 64, 64, 64,   27680       ['spatial_dropout3d_11[0][0]']   
+                                32)                                                               
+                                                                                                  
+ batch_normalization_35 (BatchN  (None, 64, 64, 64,   128        ['conv3d_35[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_35 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_35[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ add_11 (Add)                   (None, 64, 64, 64,   0           ['leaky_re_lu_35[0][0]',         
+                                32)                               'leaky_re_lu_33[0][0]']         
+                                                                                                  
+ conv3d_36 (Conv3D)             (None, 32, 32, 32,   55360       ['add_11[0][0]']                 
+                                64)                                                               
+                                                                                                  
+ batch_normalization_36 (BatchN  (None, 32, 32, 32,   256        ['conv3d_36[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_36 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_36[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ conv3d_37 (Conv3D)             (None, 32, 32, 32,   110656      ['leaky_re_lu_36[0][0]']         
+                                64)                                                               
+                                                                                                  
+ batch_normalization_37 (BatchN  (None, 32, 32, 32,   256        ['conv3d_37[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_37 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_37[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ spatial_dropout3d_12 (SpatialD  (None, 32, 32, 32,   0          ['leaky_re_lu_37[0][0]']         
+ ropout3D)                      64)                                                               
+                                                                                                  
+ conv3d_38 (Conv3D)             (None, 32, 32, 32,   110656      ['spatial_dropout3d_12[0][0]']   
+                                64)                                                               
+                                                                                                  
+ batch_normalization_38 (BatchN  (None, 32, 32, 32,   256        ['conv3d_38[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_38 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_38[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ add_12 (Add)                   (None, 32, 32, 32,   0           ['leaky_re_lu_38[0][0]',         
+                                64)                               'leaky_re_lu_36[0][0]']         
+                                                                                                  
+ conv3d_39 (Conv3D)             (None, 16, 16, 16,   221312      ['add_12[0][0]']                 
+                                128)                                                              
+                                                                                                  
+ batch_normalization_39 (BatchN  (None, 16, 16, 16,   512        ['conv3d_39[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_39 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_39[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ conv3d_40 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_39[0][0]']         
+                                128)                                                              
+                                                                                                  
+ batch_normalization_40 (BatchN  (None, 16, 16, 16,   512        ['conv3d_40[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_40 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_40[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ spatial_dropout3d_13 (SpatialD  (None, 16, 16, 16,   0          ['leaky_re_lu_40[0][0]']         
+ ropout3D)                      128)                                                              
+                                                                                                  
+ conv3d_41 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_13[0][0]']   
+                                128)                                                              
+                                                                                                  
+ batch_normalization_41 (BatchN  (None, 16, 16, 16,   512        ['conv3d_41[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_41 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_41[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ add_13 (Add)                   (None, 16, 16, 16,   0           ['leaky_re_lu_41[0][0]',         
+                                128)                              'leaky_re_lu_39[0][0]']         
+                                                                                                  
+ conv3d_42 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_13[0][0]']                 
+                                )                                                                 
+                                                                                                  
+ batch_normalization_42 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_42[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_42 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_42[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ conv3d_43 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_42[0][0]']         
+                                )                                                                 
+                                                                                                  
+ batch_normalization_43 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_43[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_43 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_43[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ spatial_dropout3d_14 (SpatialD  (None, 8, 8, 8, 256  0          ['leaky_re_lu_43[0][0]']         
+ ropout3D)                      )                                                                 
+                                                                                                  
+ conv3d_44 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_14[0][0]']   
+                                )                                                                 
+                                                                                                  
+ batch_normalization_44 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_44[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_44 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_44[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ add_14 (Add)                   (None, 8, 8, 8, 256  0           ['leaky_re_lu_44[0][0]',         
+                                )                                 'leaky_re_lu_42[0][0]']         
+                                                                                                  
+ global_average_pooling3d_2 (Gl  (None, 256)         0           ['add_14[0][0]']                 
+ obalAveragePooling3D)                                                                            
+                                                                                                  
+ dropout_2 (Dropout)            (None, 256)          0           ['global_average_pooling3d_2[0][0
+                                                                 ]']                              
+                                                                                                  
+ dense_2 (Dense)                (None, 2)            514         ['dropout_2[0][0]']              
+                                                                                                  
+==================================================================================================
+Total params: 5,897,410
+Trainable params: 5,894,434
+Non-trainable params: 2,976
+__________________________________________________________________________________________________
+Epoch 1/2
+ 1/28 [>.............................] - ETA: 1:08 - loss: 2.8366 - accuracy: 0.3000 - auc: 0.2200 2/28 [=>............................] - ETA: 15s - loss: 2.4530 - accuracy: 0.4000 - auc: 0.4300  3/28 [==>...........................] - ETA: 15s - loss: 2.6408 - accuracy: 0.3667 - auc: 0.3611 4/28 [===>..........................] - ETA: 14s - loss: 2.6126 - accuracy: 0.4250 - auc: 0.4169 5/28 [====>.........................] - ETA: 13s - loss: 2.5381 - accuracy: 0.4800 - auc: 0.5032 6/28 [=====>........................] - ETA: 13s - loss: 2.4453 - accuracy: 0.5167 - auc: 0.5550 7/28 [======>.......................] - ETA: 12s - loss: 2.5340 - accuracy: 0.5143 - auc: 0.5439 8/28 [=======>......................] - ETA: 12s - loss: 2.6231 - accuracy: 0.5125 - auc: 0.5167 9/28 [========>.....................] - ETA: 11s - loss: 2.7178 - accuracy: 0.4889 - auc: 0.485410/28 [=========>....................] - ETA: 10s - loss: 2.6459 - accuracy: 0.4900 - auc: 0.503311/28 [==========>...................] - ETA: 10s - loss: 2.6512 - accuracy: 0.4818 - auc: 0.499312/28 [===========>..................] - ETA: 9s - loss: 2.5845 - accuracy: 0.5000 - auc: 0.5226 13/28 [============>.................] - ETA: 9s - loss: 2.5356 - accuracy: 0.5154 - auc: 0.540414/28 [==============>...............] - ETA: 8s - loss: 2.5761 - accuracy: 0.5071 - auc: 0.526715/28 [===============>..............] - ETA: 7s - loss: 2.5980 - accuracy: 0.4800 - auc: 0.504416/28 [================>.............] - ETA: 7s - loss: 2.5673 - accuracy: 0.4875 - auc: 0.513217/28 [=================>............] - ETA: 6s - loss: 2.5613 - accuracy: 0.4824 - auc: 0.512418/28 [==================>...........] - ETA: 6s - loss: 2.5634 - accuracy: 0.4833 - auc: 0.512619/28 [===================>..........] - ETA: 5s - loss: 2.5422 - accuracy: 0.4842 - auc: 0.511420/28 [====================>.........] - ETA: 4s - loss: 2.5573 - accuracy: 0.4850 - auc: 0.511021/28 [=====================>........] - ETA: 4s - loss: 2.5368 - accuracy: 0.4952 - auc: 0.519822/28 [======================>.......] - ETA: 3s - loss: 2.5145 - accuracy: 0.5000 - auc: 0.525823/28 [=======================>......] - ETA: 3s - loss: 2.4856 - accuracy: 0.5087 - auc: 0.535424/28 [========================>.....] - ETA: 2s - loss: 2.4891 - accuracy: 0.5083 - auc: 0.532225/28 [=========================>....] - ETA: 1s - loss: 2.4559 - accuracy: 0.5240 - auc: 0.548126/28 [==========================>...] - ETA: 1s - loss: 2.4457 - accuracy: 0.5269 - auc: 0.549427/28 [===========================>..] - ETA: 0s - loss: 2.4572 - accuracy: 0.5222 - auc: 0.542028/28 [==============================] - ETA: 0s - loss: 2.4585 - accuracy: 0.5217 - auc: 0.540528/28 [==============================] - 22s 725ms/step - loss: 2.4585 - accuracy: 0.5217 - auc: 0.5405 - val_loss: 2.7900 - val_accuracy: 0.3623 - val_auc: 0.3623 - lr: 5.0000e-04
+Epoch 2/2
+ 1/28 [>.............................] - ETA: 16s - loss: 2.8562 - accuracy: 0.5000 - auc: 0.3700 2/28 [=>............................] - ETA: 15s - loss: 2.4811 - accuracy: 0.5500 - auc: 0.4600 3/28 [==>...........................] - ETA: 15s - loss: 2.4320 - accuracy: 0.5333 - auc: 0.4933 4/28 [===>..........................] - ETA: 14s - loss: 2.4651 - accuracy: 0.4750 - auc: 0.4775 5/28 [====>.........................] - ETA: 13s - loss: 2.5334 - accuracy: 0.4200 - auc: 0.4132 6/28 [=====>........................] - ETA: 13s - loss: 2.4987 - accuracy: 0.4667 - auc: 0.4478 7/28 [======>.......................] - ETA: 12s - loss: 2.4102 - accuracy: 0.5143 - auc: 0.4831 8/28 [=======>......................] - ETA: 12s - loss: 2.4049 - accuracy: 0.5250 - auc: 0.5064 9/28 [========>.....................] - ETA: 11s - loss: 2.3555 - accuracy: 0.5556 - auc: 0.542810/28 [=========>....................] - ETA: 10s - loss: 2.3318 - accuracy: 0.5700 - auc: 0.551811/28 [==========>...................] - ETA: 10s - loss: 2.3501 - accuracy: 0.5636 - auc: 0.536612/28 [===========>..................] - ETA: 9s - loss: 2.3206 - accuracy: 0.5500 - auc: 0.5457 13/28 [============>.................] - ETA: 9s - loss: 2.3161 - accuracy: 0.5462 - auc: 0.547614/28 [==============>...............] - ETA: 8s - loss: 2.2910 - accuracy: 0.5500 - auc: 0.558415/28 [===============>..............] - ETA: 7s - loss: 2.2838 - accuracy: 0.5400 - auc: 0.554516/28 [================>.............] - ETA: 7s - loss: 2.3034 - accuracy: 0.5312 - auc: 0.538917/28 [=================>............] - ETA: 6s - loss: 2.2929 - accuracy: 0.5412 - auc: 0.545318/28 [==================>...........] - ETA: 6s - loss: 2.2780 - accuracy: 0.5500 - auc: 0.551819/28 [===================>..........] - ETA: 5s - loss: 2.2767 - accuracy: 0.5474 - auc: 0.547420/28 [====================>.........] - ETA: 4s - loss: 2.2681 - accuracy: 0.5500 - auc: 0.549421/28 [=====================>........] - ETA: 4s - loss: 2.2535 - accuracy: 0.5571 - auc: 0.557222/28 [======================>.......] - ETA: 3s - loss: 2.2418 - accuracy: 0.5682 - auc: 0.563123/28 [=======================>......] - ETA: 3s - loss: 2.2483 - accuracy: 0.5565 - auc: 0.554224/28 [========================>.....] - ETA: 2s - loss: 2.2559 - accuracy: 0.5500 - auc: 0.547525/28 [=========================>....] - ETA: 1s - loss: 2.2389 - accuracy: 0.5520 - auc: 0.558026/28 [==========================>...] - ETA: 1s - loss: 2.2304 - accuracy: 0.5500 - auc: 0.559827/28 [===========================>..] - ETA: 0s - loss: 2.2317 - accuracy: 0.5556 - auc: 0.559428/28 [==============================] - ETA: 0s - loss: 2.2265 - accuracy: 0.5580 - auc: 0.561328/28 [==============================] - 19s 664ms/step - loss: 2.2265 - accuracy: 0.5580 - auc: 0.5613 - val_loss: 2.1755 - val_accuracy: 0.3623 - val_auc: 0.3623 - lr: 5.0000e-04
+Best val_auc during training for fold 2: 0.3623
+Final AUC for fold 2: 0.7013
+Model: "model_3"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_4 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d_45 (Conv3D)             (None, 128, 128, 12  448         ['input_4[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_45 (BatchN  (None, 128, 128, 12  64         ['conv3d_45[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_45 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_45[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_46 (Conv3D)             (None, 128, 128, 12  6928        ['leaky_re_lu_45[0][0]']         
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_46 (BatchN  (None, 128, 128, 12  64         ['conv3d_46[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_46 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_46[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ spatial_dropout3d_15 (SpatialD  (None, 128, 128, 12  0          ['leaky_re_lu_46[0][0]']         
+ ropout3D)                      8, 16)                                                            
+                                                                                                  
+ conv3d_47 (Conv3D)             (None, 128, 128, 12  6928        ['spatial_dropout3d_15[0][0]']   
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_47 (BatchN  (None, 128, 128, 12  64         ['conv3d_47[0][0]']              
+ ormalization)                  8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_47 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_47[0][0]'] 
+                                8, 16)                                                            
+                                                                                                  
+ add_15 (Add)                   (None, 128, 128, 12  0           ['leaky_re_lu_47[0][0]',         
+                                8, 16)                            'leaky_re_lu_45[0][0]']         
+                                                                                                  
+ conv3d_48 (Conv3D)             (None, 64, 64, 64,   13856       ['add_15[0][0]']                 
+                                32)                                                               
+                                                                                                  
+ batch_normalization_48 (BatchN  (None, 64, 64, 64,   128        ['conv3d_48[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_48 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_48[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ conv3d_49 (Conv3D)             (None, 64, 64, 64,   27680       ['leaky_re_lu_48[0][0]']         
+                                32)                                                               
+                                                                                                  
+ batch_normalization_49 (BatchN  (None, 64, 64, 64,   128        ['conv3d_49[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_49 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_49[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ spatial_dropout3d_16 (SpatialD  (None, 64, 64, 64,   0          ['leaky_re_lu_49[0][0]']         
+ ropout3D)                      32)                                                               
+                                                                                                  
+ conv3d_50 (Conv3D)             (None, 64, 64, 64,   27680       ['spatial_dropout3d_16[0][0]']   
+                                32)                                                               
+                                                                                                  
+ batch_normalization_50 (BatchN  (None, 64, 64, 64,   128        ['conv3d_50[0][0]']              
+ ormalization)                  32)                                                               
+                                                                                                  
+ leaky_re_lu_50 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_50[0][0]'] 
+                                32)                                                               
+                                                                                                  
+ add_16 (Add)                   (None, 64, 64, 64,   0           ['leaky_re_lu_50[0][0]',         
+                                32)                               'leaky_re_lu_48[0][0]']         
+                                                                                                  
+ conv3d_51 (Conv3D)             (None, 32, 32, 32,   55360       ['add_16[0][0]']                 
+                                64)                                                               
+                                                                                                  
+ batch_normalization_51 (BatchN  (None, 32, 32, 32,   256        ['conv3d_51[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_51 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_51[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ conv3d_52 (Conv3D)             (None, 32, 32, 32,   110656      ['leaky_re_lu_51[0][0]']         
+                                64)                                                               
+                                                                                                  
+ batch_normalization_52 (BatchN  (None, 32, 32, 32,   256        ['conv3d_52[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_52 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_52[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ spatial_dropout3d_17 (SpatialD  (None, 32, 32, 32,   0          ['leaky_re_lu_52[0][0]']         
+ ropout3D)                      64)                                                               
+                                                                                                  
+ conv3d_53 (Conv3D)             (None, 32, 32, 32,   110656      ['spatial_dropout3d_17[0][0]']   
+                                64)                                                               
+                                                                                                  
+ batch_normalization_53 (BatchN  (None, 32, 32, 32,   256        ['conv3d_53[0][0]']              
+ ormalization)                  64)                                                               
+                                                                                                  
+ leaky_re_lu_53 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_53[0][0]'] 
+                                64)                                                               
+                                                                                                  
+ add_17 (Add)                   (None, 32, 32, 32,   0           ['leaky_re_lu_53[0][0]',         
+                                64)                               'leaky_re_lu_51[0][0]']         
+                                                                                                  
+ conv3d_54 (Conv3D)             (None, 16, 16, 16,   221312      ['add_17[0][0]']                 
+                                128)                                                              
+                                                                                                  
+ batch_normalization_54 (BatchN  (None, 16, 16, 16,   512        ['conv3d_54[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_54 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_54[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ conv3d_55 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_54[0][0]']         
+                                128)                                                              
+                                                                                                  
+ batch_normalization_55 (BatchN  (None, 16, 16, 16,   512        ['conv3d_55[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_55 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_55[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ spatial_dropout3d_18 (SpatialD  (None, 16, 16, 16,   0          ['leaky_re_lu_55[0][0]']         
+ ropout3D)                      128)                                                              
+                                                                                                  
+ conv3d_56 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_18[0][0]']   
+                                128)                                                              
+                                                                                                  
+ batch_normalization_56 (BatchN  (None, 16, 16, 16,   512        ['conv3d_56[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_56 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_56[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ add_18 (Add)                   (None, 16, 16, 16,   0           ['leaky_re_lu_56[0][0]',         
+                                128)                              'leaky_re_lu_54[0][0]']         
+                                                                                                  
+ conv3d_57 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_18[0][0]']                 
+                                )                                                                 
+                                                                                                  
+ batch_normalization_57 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_57[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_57 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_57[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ conv3d_58 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_57[0][0]']         
+                                )                                                                 
+                                                                                                  
+ batch_normalization_58 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_58[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_58 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_58[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ spatial_dropout3d_19 (SpatialD  (None, 8, 8, 8, 256  0          ['leaky_re_lu_58[0][0]']         
+ ropout3D)                      )                                                                 
+                                                                                                  
+ conv3d_59 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_19[0][0]']   
+                                )                                                                 
+                                                                                                  
+ batch_normalization_59 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_59[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_59 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_59[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ add_19 (Add)                   (None, 8, 8, 8, 256  0           ['leaky_re_lu_59[0][0]',         
+                                )                                 'leaky_re_lu_57[0][0]']         
+                                                                                                  
+ global_average_pooling3d_3 (Gl  (None, 256)         0           ['add_19[0][0]']                 
+ obalAveragePooling3D)                                                                            
+                                                                                                  
+ dropout_3 (Dropout)            (None, 256)          0           ['global_average_pooling3d_3[0][0
+                                                                 ]']                              
+                                                                                                  
+ dense_3 (Dense)                (None, 2)            514         ['dropout_3[0][0]']              
+                                                                                                  
+==================================================================================================
+Total params: 5,897,410
+Trainable params: 5,894,434
+Non-trainable params: 2,976
+__________________________________________________________________________________________________
+Epoch 1/2
+ 1/28 [>.............................] - ETA: 1:09 - loss: 2.2796 - accuracy: 0.3000 - auc: 0.4100 2/28 [=>............................] - ETA: 15s - loss: 2.3972 - accuracy: 0.4000 - auc: 0.4050  3/28 [==>...........................] - ETA: 15s - loss: 2.6428 - accuracy: 0.4000 - auc: 0.3367 4/28 [===>..........................] - ETA: 14s - loss: 2.5318 - accuracy: 0.4500 - auc: 0.4150 5/28 [====>.........................] - ETA: 13s - loss: 2.5909 - accuracy: 0.4600 - auc: 0.4344 6/28 [=====>........................] - ETA: 13s - loss: 2.5832 - accuracy: 0.4333 - auc: 0.4296 7/28 [======>.......................] - ETA: 12s - loss: 2.5229 - accuracy: 0.4714 - auc: 0.4752 8/28 [=======>......................] - ETA: 12s - loss: 2.4691 - accuracy: 0.4875 - auc: 0.4985 9/28 [========>.....................] - ETA: 11s - loss: 2.4333 - accuracy: 0.5222 - auc: 0.533810/28 [=========>....................] - ETA: 10s - loss: 2.4118 - accuracy: 0.5400 - auc: 0.549111/28 [==========>...................] - ETA: 10s - loss: 2.4525 - accuracy: 0.5182 - auc: 0.531112/28 [===========>..................] - ETA: 9s - loss: 2.4088 - accuracy: 0.5333 - auc: 0.5464 13/28 [============>.................] - ETA: 9s - loss: 2.3876 - accuracy: 0.5154 - auc: 0.546714/28 [==============>...............] - ETA: 8s - loss: 2.3554 - accuracy: 0.5214 - auc: 0.565615/28 [===============>..............] - ETA: 7s - loss: 2.3896 - accuracy: 0.5200 - auc: 0.565116/28 [================>.............] - ETA: 7s - loss: 2.3674 - accuracy: 0.5312 - auc: 0.574217/28 [=================>............] - ETA: 6s - loss: 2.4115 - accuracy: 0.5235 - auc: 0.559818/28 [==================>...........] - ETA: 6s - loss: 2.4082 - accuracy: 0.5222 - auc: 0.556419/28 [===================>..........] - ETA: 5s - loss: 2.4089 - accuracy: 0.5158 - auc: 0.551820/28 [====================>.........] - ETA: 4s - loss: 2.4060 - accuracy: 0.5150 - auc: 0.559621/28 [=====================>........] - ETA: 4s - loss: 2.4106 - accuracy: 0.5143 - auc: 0.555622/28 [======================>.......] - ETA: 3s - loss: 2.3729 - accuracy: 0.5364 - auc: 0.576023/28 [=======================>......] - ETA: 3s - loss: 2.3791 - accuracy: 0.5391 - auc: 0.572924/28 [========================>.....] - ETA: 2s - loss: 2.3755 - accuracy: 0.5333 - auc: 0.572425/28 [=========================>....] - ETA: 1s - loss: 2.3628 - accuracy: 0.5400 - auc: 0.578226/28 [==========================>...] - ETA: 1s - loss: 2.3668 - accuracy: 0.5423 - auc: 0.575227/28 [===========================>..] - ETA: 0s - loss: 2.3823 - accuracy: 0.5444 - auc: 0.568328/28 [==============================] - ETA: 0s - loss: 2.3811 - accuracy: 0.5435 - auc: 0.566028/28 [==============================] - 22s 724ms/step - loss: 2.3811 - accuracy: 0.5435 - auc: 0.5660 - val_loss: 2.0080 - val_accuracy: 0.6304 - val_auc: 0.6304 - lr: 5.0000e-04
+Epoch 2/2
+ 1/28 [>.............................] - ETA: 16s - loss: 2.0131 - accuracy: 0.6000 - auc: 0.7400 2/28 [=>............................] - ETA: 15s - loss: 2.1618 - accuracy: 0.6000 - auc: 0.6225 3/28 [==>...........................] - ETA: 15s - loss: 2.0943 - accuracy: 0.6333 - auc: 0.6789 4/28 [===>..........................] - ETA: 14s - loss: 2.1383 - accuracy: 0.6250 - auc: 0.6634 5/28 [====>.........................] - ETA: 13s - loss: 2.1347 - accuracy: 0.6400 - auc: 0.6682 6/28 [=====>........................] - ETA: 13s - loss: 2.1130 - accuracy: 0.6333 - auc: 0.6724 7/28 [======>.......................] - ETA: 12s - loss: 2.1328 - accuracy: 0.6286 - auc: 0.6558 8/28 [=======>......................] - ETA: 12s - loss: 2.1698 - accuracy: 0.6250 - auc: 0.6374 9/28 [========>.....................] - ETA: 11s - loss: 2.1908 - accuracy: 0.6111 - auc: 0.629210/28 [=========>....................] - ETA: 10s - loss: 2.1647 - accuracy: 0.6100 - auc: 0.642011/28 [==========>...................] - ETA: 10s - loss: 2.1548 - accuracy: 0.6091 - auc: 0.645112/28 [===========>..................] - ETA: 9s - loss: 2.1499 - accuracy: 0.6083 - auc: 0.6420 13/28 [============>.................] - ETA: 9s - loss: 2.1630 - accuracy: 0.5923 - auc: 0.631614/28 [==============>...............] - ETA: 8s - loss: 2.1525 - accuracy: 0.5857 - auc: 0.633315/28 [===============>..............] - ETA: 7s - loss: 2.1692 - accuracy: 0.5800 - auc: 0.621616/28 [================>.............] - ETA: 7s - loss: 2.1459 - accuracy: 0.6000 - auc: 0.633617/28 [=================>............] - ETA: 6s - loss: 2.1430 - accuracy: 0.5941 - auc: 0.628518/28 [==================>...........] - ETA: 6s - loss: 2.1539 - accuracy: 0.5833 - auc: 0.615519/28 [===================>..........] - ETA: 5s - loss: 2.1378 - accuracy: 0.5895 - auc: 0.626020/28 [====================>.........] - ETA: 4s - loss: 2.1373 - accuracy: 0.5850 - auc: 0.624721/28 [=====================>........] - ETA: 4s - loss: 2.1267 - accuracy: 0.5857 - auc: 0.629822/28 [======================>.......] - ETA: 3s - loss: 2.1401 - accuracy: 0.5818 - auc: 0.620623/28 [=======================>......] - ETA: 3s - loss: 2.1379 - accuracy: 0.5739 - auc: 0.618324/28 [========================>.....] - ETA: 2s - loss: 2.1466 - accuracy: 0.5708 - auc: 0.610525/28 [=========================>....] - ETA: 1s - loss: 2.1408 - accuracy: 0.5720 - auc: 0.613726/28 [==========================>...] - ETA: 1s - loss: 2.1328 - accuracy: 0.5769 - auc: 0.618527/28 [===========================>..] - ETA: 0s - loss: 2.1457 - accuracy: 0.5704 - auc: 0.607028/28 [==============================] - ETA: 0s - loss: 2.1417 - accuracy: 0.5688 - auc: 0.608728/28 [==============================] - 18s 662ms/step - loss: 2.1417 - accuracy: 0.5688 - auc: 0.6087 - val_loss: 2.0105 - val_accuracy: 0.6304 - val_auc: 0.6304 - lr: 5.0000e-04
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/find_cuts.py:143: UserWarning: Could not determine cut coords: All voxels were masked by the thresholding. Returning the center of mass instead.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/displays/_slicers.py:382: UserWarning: empty mask
+  get_mask_bounds(new_img_like(img, not_mask, affine))
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/find_cuts.py:69: UserWarning: Given img is empty. Returning default cut_coords=(0.0, 0.0, 0.0) instead.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/displays/_slicers.py:382: UserWarning: empty mask
+  get_mask_bounds(new_img_like(img, not_mask, affine))
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/find_cuts.py:143: UserWarning: Could not determine cut coords: All voxels were masked by the thresholding. Returning the center of mass instead.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/displays/_slicers.py:382: UserWarning: empty mask
+  get_mask_bounds(new_img_like(img, not_mask, affine))
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/image/resampling.py:294: UserWarning: Resampling binary images with continuous or linear interpolation. This might lead to unexpected results. You might consider using nearest interpolation instead.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/find_cuts.py:143: UserWarning: Could not determine cut coords: All voxels were masked by the thresholding. Returning the center of mass instead.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/displays/_slicers.py:382: UserWarning: empty mask
+  get_mask_bounds(new_img_like(img, not_mask, affine))
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/find_cuts.py:143: UserWarning: Could not determine cut coords: All voxels were masked by the thresholding. Returning the center of mass instead.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/displays/_slicers.py:382: UserWarning: empty mask
+  get_mask_bounds(new_img_like(img, not_mask, affine))
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/find_cuts.py:143: UserWarning: Could not determine cut coords: All voxels were masked by the thresholding. Returning the center of mass instead.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/displays/_slicers.py:382: UserWarning: empty mask
+  get_mask_bounds(new_img_like(img, not_mask, affine))
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/find_cuts.py:143: UserWarning: Could not determine cut coords: All voxels were masked by the thresholding. Returning the center of mass instead.
+  warnings.warn(
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/plotting/displays/_slicers.py:382: UserWarning: empty mask
+  get_mask_bounds(new_img_like(img, not_mask, affine))
+Best val_auc during training for fold 3: 0.6304
+Final AUC for fold 3: 0.5444
+Loss vs Validation Loss plot (0-1 range) saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/loss_vs_val_loss_zoomed_0_to_1.png
+Average AUC across all folds: 0.4817
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_1.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_1_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_1.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_1_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_2.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_2_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_2.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_2_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_3.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_3_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_3.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_3_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_4.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_4_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_4.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_4_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_5.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_5_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_5.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_5_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_6.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_6_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_6.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_6_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_7.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_7_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_7.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_7_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_8.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_8_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_8.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_8_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_9.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_9_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_9.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_9_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_10.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_10_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_10.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_10_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_11.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_11_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_11.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_11_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_12.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_12_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_12.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_12_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_13.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_13_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_13.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_13_class1.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_14.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_14_class0.png
+3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_14.nii.gz
+Stat map plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/stat_map_cd_MRI_conv3d_14_class1.png
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Sep 15 15:18:58 CDT 2024 1726431538
+Name                : cd-MRI-train
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua404
+Cores               : 2
+State               : COMPLETED
+Submit              : 2024-09-15T14:54:18
+Start               : 2024-09-15T14:54:22
+End                 : 2024-09-15T15:18:55
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:24:33
+Used CPU Time       :   00:25:09
+% User (Computation): 93.99%
+% System (I/O)      :  6.01%
+Mem Reserved        : 500000M
+Max Mem Used        : 37.22G (39960547328.0)
+Max Disk Write      : 1.12M (1174405.12)
+Max Disk Read       : 5.99G (6429616373.76)
+Max-Mem-Used Node   : gpua404
+Max-Disk-Write Node : gpua404
+Max-Disk-Read Node  : gpua404
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Sun Sep 15 15:18:58 CDT 2024 1726431538
+--------------------------------------------------------------
