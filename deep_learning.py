@@ -165,16 +165,19 @@ def plot_training_validation_loss(histories, save_dir):
     print(f'Loss vs Validation Loss plot saved at {loss_plot_path}')
 
 # Function to save Grad-CAM heatmap and plot glass brain
-def save_gradcam(heatmap, original_img, cumulative_scale,
+def save_gradcam(heatmap, original_img,
                  task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
     ensure_directory_exists(save_dir)
 
-    # Calculate the zoom factors to upsample the heatmap to the original image size
-    zoom_factors = [cumulative_scale] * 3
+    # Calculate the zoom factors based on the actual dimensions
+    zoom_factors = [original_dim / heatmap_dim for original_dim, heatmap_dim in zip(original_img.shape[:3], heatmap.shape)]
+    print(f"Zoom factors: {zoom_factors}")
 
     # Upsample the heatmap to the original image size
     upsampled_heatmap = zoom(heatmap, zoom=zoom_factors, order=1)
+    print(f"Upsampled heatmap shape: {upsampled_heatmap.shape}")
+    print(f"Original image shape: {original_img.shape}")
 
     # Create a NIfTI image with the same affine as the original image
     heatmap_img = nib.Nifti1Image(upsampled_heatmap, original_img.affine)
@@ -206,18 +209,16 @@ def save_gradcam(heatmap, original_img, cumulative_scale,
 def apply_gradcam_all_layers_average(model, imgs, original_imgs,
                                      task, modality, info):
     # Identify convolutional layers
-    conv_layers = [layer.name for layer in model.layers if isinstance(layer, Conv3D)]
-    # Calculate cumulative scaling factors based on strides
+    conv_layers = []
     cumulative_scales = []
-    scale = 1
+    cumulative_scale = 1
     for layer in model.layers:
         if isinstance(layer, Conv3D):
-            strides = layer.strides
-            scale *= strides[0]  # Assuming strides are the same in all dimensions
-            cumulative_scales.append(scale)
-
-    # Ensure that cumulative_scales and conv_layers have the same length
-    cumulative_scales = cumulative_scales[:len(conv_layers)]
+            conv_layers.append(layer.name)
+            # Update cumulative scaling factor if stride is not 1
+            if layer.strides[0] != 1:
+                cumulative_scale *= layer.strides[0]
+            cumulative_scales.append(cumulative_scale)
 
     print("Cumulative scaling factors for each convolutional layer:")
     for idx, (layer_name, scale_value) in enumerate(zip(conv_layers, cumulative_scales)):
@@ -238,7 +239,7 @@ def apply_gradcam_all_layers_average(model, imgs, original_imgs,
 
             avg_heatmap = accumulated_heatmap / len(imgs)
             # Use the first original image as reference
-            save_gradcam(avg_heatmap, original_imgs[0], cumulative_scale,
+            save_gradcam(avg_heatmap, original_imgs[0],
                          task, modality, conv_layer_name, class_idx, info)
 
 # Function to train the model and return the best trained model
@@ -271,7 +272,7 @@ def train_model(X, Y, task, modality, info):
 
         history = model.fit(X_train, Y_train,
                             batch_size=5,
-                            epochs=5,  # Adjust epochs as needed
+                            epochs=800,  # Adjust epochs as needed
                             validation_data=(X_val, Y_val),
                             callbacks=[early_stopping, reduce_lr])
         histories.append(history)
@@ -327,25 +328,14 @@ def loading_mask_3d(task, modality):
     target_shape = (128, 128, 128)
 
     for i in range(len(data_train)):
-        print(f"\nProcessing image {i + 1}/{len(data_train)}")
         nifti_img = nib.load(data_train[i])
         affine = nifti_img.affine
-        print(f"Original affine for image {i + 1}:\n{affine}")
         original_imgs.append(nifti_img)  # Store the original NIfTI image
 
-        # Check orientation
-        from nibabel.orientations import aff2axcodes
-        image_orientation = aff2axcodes(nifti_img.affine)
-        mask_orientation = aff2axcodes(mask_affine)
-        print(f"Original image orientation: {image_orientation}")
-        print(f"Mask image orientation: {mask_orientation}")
 
         if image_orientation != mask_orientation:
-            print(f"Reorienting image {i + 1} to match mask orientation...")
             nifti_img = nib.as_closest_canonical(nifti_img)
             affine = nifti_img.affine  # Update affine after reorientation
-            print(f"New affine for image {i + 1} after reorientation:\n{affine}")
-            print(f"New image orientation: {aff2axcodes(affine)}")
 
         # Apply the mask
         masked_data = masker.fit_transform(nifti_img)
@@ -382,3 +372,4 @@ if __name__ == '__main__':
 
     # Apply Grad-CAM to all images
     apply_gradcam_all_layers_average(best_model, imgs, original_imgs, task, modality, info)
+
