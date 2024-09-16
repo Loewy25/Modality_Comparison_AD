@@ -115,10 +115,11 @@ def adjust_affine_for_resizing(original_affine, original_shape, new_shape):
 
 # Function to adjust affine for the cumulative scaling of the layer
 def adjust_affine_for_layer(original_affine, cumulative_scale):
-    scaling_factors = [1 / cumulative_scale] * 3
+    scaling_factors = [cumulative_scale] * 3
     new_affine = original_affine.copy()
     new_affine[:3, :3] = original_affine[:3, :3] @ np.diag(scaling_factors)
     return new_affine
+
 
 # Function to compute Grad-CAM for a given layer and class index
 def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
