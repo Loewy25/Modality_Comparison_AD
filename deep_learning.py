@@ -1,4 +1,3 @@
-
 import os
 import numpy as np
 import nibabel as nib
@@ -116,7 +115,7 @@ def adjust_affine_for_resizing(original_affine, original_shape, new_shape):
 
 # Function to adjust affine for the cumulative scaling of the layer
 def adjust_affine_for_layer(original_affine, cumulative_scale):
-    scaling_factors = [cumulative_scale] * 3
+    scaling_factors = [1 / cumulative_scale] * 3
     new_affine = original_affine.copy()
     new_affine[:3, :3] = original_affine[:3, :3] @ np.diag(scaling_factors)
     return new_affine
@@ -187,10 +186,13 @@ def save_gradcam(heatmap, adjusted_affine, cumulative_scale, original_img,
     ensure_directory_exists(save_dir)
 
     # Adjust the affine for the downscaling due to convolutional strides
+    print(f"Adjusted affine before layer scaling for layer {layer_name}:\n{adjusted_affine}")
     layer_affine = adjust_affine_for_layer(adjusted_affine, cumulative_scale)
+    print(f"Layer affine after applying cumulative scale {cumulative_scale}:\n{layer_affine}")
     heatmap_img = nib.Nifti1Image(heatmap, layer_affine)
 
     # Resample the heatmap to the space of the original image
+    print("Resampling heatmap to original image space...")
     resampled_heatmap_img = resample_to_img(heatmap_img, original_img, interpolation='continuous')
 
     # Normalize the resampled heatmap
@@ -209,6 +211,12 @@ def save_gradcam(heatmap, adjusted_affine, cumulative_scale, original_img,
     nifti_save_path = os.path.join(save_dir, nifti_file_name)
     nib.save(resampled_heatmap_img, nifti_save_path)
     print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
+
+    # Print affines and shapes for debugging
+    print(f"Resampled heatmap affine:\n{resampled_heatmap_img.affine}")
+    print(f"Resampled heatmap shape: {resampled_heatmap_img.shape}")
+    print(f"Original image affine:\n{original_img.affine}")
+    print(f"Original image shape: {original_img.shape}")
 
     # Plot the glass brain
     output_glass_brain_path = os.path.join(save_dir, f'glass_brain_{task}_{modality}_{layer_name}_class{class_idx}.png')
@@ -233,6 +241,10 @@ def apply_gradcam_all_layers_average(model, imgs, adjusted_affines, original_img
     # Ensure that cumulative_scales and conv_layers have the same length
     cumulative_scales = cumulative_scales[:len(conv_layers)]
 
+    print("Cumulative scaling factors for each convolutional layer:")
+    for idx, (layer_name, scale_value) in enumerate(zip(conv_layers, cumulative_scales)):
+        print(f"Layer {layer_name}: cumulative_scale = {scale_value}")
+
     for idx, conv_layer_name in enumerate(conv_layers):
         cumulative_scale = cumulative_scales[idx]
         for class_idx in range(2):  # Loop through both class indices (class 0 and class 1)
@@ -240,6 +252,7 @@ def apply_gradcam_all_layers_average(model, imgs, adjusted_affines, original_img
             for i, img in enumerate(imgs):
                 heatmap = make_gradcam_heatmap(model, img, conv_layer_name,
                                                pred_index=class_idx)
+                print(f"Heatmap shape for layer {conv_layer_name} and class {class_idx}: {heatmap.shape}")
                 if accumulated_heatmap is None:
                     accumulated_heatmap = heatmap
                 else:
@@ -280,7 +293,7 @@ def train_model(X, Y, task, modality, info):
 
         history = model.fit(X_train, Y_train,
                             batch_size=5,
-                            epochs=3,  # Increased epochs
+                            epochs=3,  # Reduced epochs for testing
                             validation_data=(X_val, Y_val),
                             callbacks=[early_stopping, reduce_lr])
         histories.append(history)
@@ -328,17 +341,36 @@ def loading_mask_3d(task, modality):
         raise ValueError(f"Unsupported modality: {modality}")
 
     # Update the mask path to your actual mask image path
-    masker = NiftiMasker(mask_img='/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
+    mask_path = '/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii'
+    masker = NiftiMasker(mask_img=mask_path)
+    mask_affine = nib.load(mask_path).affine
+    print(f"Mask affine:\n{mask_affine}")
 
     train_data = []
     target_shape = (128, 128, 128)
 
     for i in range(len(data_train)):
-        print(f"Processing image {i + 1}/{len(data_train)}")
+        print(f"\nProcessing image {i + 1}/{len(data_train)}")
         nifti_img = nib.load(data_train[i])
-        affine = nifti_img.affine  # Store the affine matrix
+        affine = nifti_img.affine
+        print(f"Original affine for image {i + 1}:\n{affine}")
         original_imgs.append(nifti_img)  # Store the original NIfTI image
 
+        # Check orientation
+        from nibabel.orientations import aff2axcodes
+        image_orientation = aff2axcodes(nifti_img.affine)
+        mask_orientation = aff2axcodes(mask_affine)
+        print(f"Original image orientation: {image_orientation}")
+        print(f"Mask image orientation: {mask_orientation}")
+
+        if image_orientation != mask_orientation:
+            print(f"Reorienting image {i + 1} to match mask orientation...")
+            nifti_img = nib.as_closest_canonical(nifti_img)
+            affine = nifti_img.affine  # Update affine after reorientation
+            print(f"New affine for image {i + 1} after reorientation:\n{affine}")
+            print(f"New image orientation: {aff2axcodes(affine)}")
+
+        # Apply the mask
         masked_data = masker.fit_transform(nifti_img)
         reshaped_data = masker.inverse_transform(masked_data).get_fdata()
         reshaped_data = zscore(reshaped_data, axis=None)
@@ -348,6 +380,7 @@ def loading_mask_3d(task, modality):
 
         train_data.append(resized_data)
         new_affine = adjust_affine_for_resizing(affine, reshaped_data.shape, target_shape)
+        print(f"Adjusted affine after resizing for image {i + 1}:\n{new_affine}")
         adjusted_affines.append(new_affine)
 
     train_label = binarylabel(train_label, task)
@@ -372,4 +405,15 @@ if __name__ == '__main__':
 
     # Apply Grad-CAM using the trained model
     imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
+
+    # Test with a single image to simplify debugging (optional)
+    # Uncomment the following lines to test with one image
+    # test_img = imgs[0]
+    # test_adjusted_affine = adjusted_affines[0]
+    # test_original_img = original_imgs[0]
+    # apply_gradcam_all_layers_average(best_model, [test_img], [test_adjusted_affine], [test_original_img],
+    #                                  task, modality, info)
+
+    # Apply Grad-CAM to all images
     apply_gradcam_all_layers_average(best_model, imgs, adjusted_affines, original_imgs, task, modality, info)
+
