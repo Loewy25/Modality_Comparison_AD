@@ -1,3 +1,4 @@
+
 import os
 import numpy as np
 import nibabel as nib
@@ -115,13 +116,13 @@ def adjust_affine_for_resizing(original_affine, original_shape, new_shape):
 
 # Function to adjust affine for the cumulative scaling of the layer
 def adjust_affine_for_layer(original_affine, cumulative_scale):
-    scaling_factors = [1 / cumulative_scale] * 3
+    scaling_factors = [cumulative_scale] * 3
     new_affine = original_affine.copy()
     new_affine[:3, :3] = original_affine[:3, :3] @ np.diag(scaling_factors)
     return new_affine
 
 # Function to compute Grad-CAM for a given layer and class index
-def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None, cumulative_scale=1):
+def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
     grad_model = tf.keras.models.Model(
         [model.inputs], [model.get_layer(last_conv_layer_name).output, model.output]
     )
@@ -139,16 +140,14 @@ def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None, cumu
     conv_outputs = conv_outputs * pooled_grads
     heatmap = tf.reduce_sum(conv_outputs, axis=-1)
 
-    heatmap = tf.maximum(heatmap, 0)
-    heatmap = heatmap / tf.math.reduce_max(heatmap)
+    # Apply ReLU and normalize
+    heatmap = np.maximum(heatmap, 0)
+    if np.max(heatmap) != 0:
+        heatmap /= np.max(heatmap)
+    else:
+        heatmap = np.zeros_like(heatmap)
 
-    heatmap = heatmap.numpy()
-
-    # Upsample heatmap to match the input size
-    zoom_factors = [cumulative_scale] * 3  # Upsample back to input size
-    upsampled_heatmap = zoom(heatmap, zoom_factors, order=1)  # Bilinear interpolation
-
-    return upsampled_heatmap
+    return heatmap
 
 # Function to plot training and validation loss and save the figure
 def plot_training_validation_loss(histories, save_dir):
@@ -182,17 +181,28 @@ def plot_training_validation_loss(histories, save_dir):
     print(f'Loss vs Validation Loss plot saved at {loss_plot_path}')
 
 # Function to save Grad-CAM heatmap and plot glass brain using the stored affine
-def save_gradcam(heatmap, img, adjusted_affine, cumulative_scale, original_img,
+def save_gradcam(heatmap, adjusted_affine, cumulative_scale, original_img,
                  task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
     ensure_directory_exists(save_dir)
 
-    # Adjust the affine for the current layer's scaling
+    # Adjust the affine for the downscaling due to convolutional strides
     layer_affine = adjust_affine_for_layer(adjusted_affine, cumulative_scale)
     heatmap_img = nib.Nifti1Image(heatmap, layer_affine)
 
     # Resample the heatmap to the space of the original image
     resampled_heatmap_img = resample_to_img(heatmap_img, original_img, interpolation='continuous')
+
+    # Normalize the resampled heatmap
+    data = resampled_heatmap_img.get_fdata()
+    min_val = np.min(data)
+    max_val = np.max(data)
+    if max_val - min_val != 0:
+        normalized_data = (data - min_val) / (max_val - min_val)
+    else:
+        normalized_data = np.zeros_like(data)
+
+    resampled_heatmap_img = nib.Nifti1Image(normalized_data, resampled_heatmap_img.affine)
 
     # Save the 3D NIfTI file
     nifti_file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.nii.gz"
@@ -209,6 +219,7 @@ def save_gradcam(heatmap, img, adjusted_affine, cumulative_scale, original_img,
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
 def apply_gradcam_all_layers_average(model, imgs, adjusted_affines, original_imgs,
                                      task, modality, info):
+    # Identify convolutional layers
     conv_layers = [layer.name for layer in model.layers if isinstance(layer, Conv3D)]
     # Calculate cumulative scaling factors based on strides
     cumulative_scales = []
@@ -228,7 +239,7 @@ def apply_gradcam_all_layers_average(model, imgs, adjusted_affines, original_img
             accumulated_heatmap = None
             for i, img in enumerate(imgs):
                 heatmap = make_gradcam_heatmap(model, img, conv_layer_name,
-                                               pred_index=class_idx, cumulative_scale=cumulative_scale)
+                                               pred_index=class_idx)
                 if accumulated_heatmap is None:
                     accumulated_heatmap = heatmap
                 else:
@@ -236,7 +247,7 @@ def apply_gradcam_all_layers_average(model, imgs, adjusted_affines, original_img
 
             avg_heatmap = accumulated_heatmap / len(imgs)
             # Use the first adjusted affine and original image as reference
-            save_gradcam(avg_heatmap, imgs[0], adjusted_affines[0], cumulative_scale,
+            save_gradcam(avg_heatmap, adjusted_affines[0], cumulative_scale,
                          original_imgs[0], task, modality, conv_layer_name, class_idx, info)
 
 # Function to train the model and return the best trained model
@@ -255,6 +266,7 @@ def train_model(X, Y, task, modality, info):
     best_model = None
 
     for fold_num, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
+        print(f"Starting fold {fold_num + 1}")
         X_train, X_val = X[train_idx], X[val_idx]
         Y_train, Y_val = Y[train_idx], Y[val_idx]
 
@@ -268,7 +280,7 @@ def train_model(X, Y, task, modality, info):
 
         history = model.fit(X_train, Y_train,
                             batch_size=5,
-                            epochs=2,  # Increased epochs
+                            epochs=100,  # Increased epochs
                             validation_data=(X_val, Y_val),
                             callbacks=[early_stopping, reduce_lr])
         histories.append(history)
@@ -315,12 +327,14 @@ def loading_mask_3d(task, modality):
     else:
         raise ValueError(f"Unsupported modality: {modality}")
 
-    masker = NiftiMasker(mask_img='/path/to/your/mask.nii')
+    # Update the mask path to your actual mask image path
+    masker = NiftiMasker(mask_img='/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
 
     train_data = []
     target_shape = (128, 128, 128)
 
     for i in range(len(data_train)):
+        print(f"Processing image {i + 1}/{len(data_train)}")
         nifti_img = nib.load(data_train[i])
         affine = nifti_img.affine  # Store the affine matrix
         original_imgs.append(nifti_img)  # Store the original NIfTI image
@@ -343,9 +357,9 @@ def loading_mask_3d(task, modality):
 
 # Main execution
 if __name__ == '__main__':
-    task = 'cd'
-    modality = 'MRI'
-    info = '5_context_from_16_0.5_dropout_1e3'
+    task = 'cd'  # Update as per your task
+    modality = 'MRI'  # 'MRI' or 'PET'
+    info = '5_context_from_16_0.5_dropout_1e3'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, masker, adjusted_affines, original_imgs = loading_mask_3d(task, modality)
@@ -359,4 +373,3 @@ if __name__ == '__main__':
     # Apply Grad-CAM using the trained model
     imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
     apply_gradcam_all_layers_average(best_model, imgs, adjusted_affines, original_imgs, task, modality, info)
-
