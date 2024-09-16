@@ -1,0 +1,61 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Sep 16 12:39:44 CDT 2024 1726508384
+Job ID:		2076880
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Mon Sep 16 12:39:44 CDT 2024 1726508384
+--------------------------------------------------------------
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/nibabel/loadsave.py", line 100, in load
+    stat_result = os.stat(filename)
+FileNotFoundError: [Errno 2] No such file or directory: '/path/to/your/mask.nii'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/deep_learning.py", line 372, in <module>
+    train_data, train_label, masker, original_imgs = loading_mask_3d(task, modality)
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/deep_learning.py", line 323, in loading_mask_3d
+    mask_affine = nib.load(mask_path).affine
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/nibabel/loadsave.py", line 102, in load
+    raise FileNotFoundError(f"No such file or no access: '{filename}'")
+FileNotFoundError: No such file or no access: '/path/to/your/mask.nii'
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Sep 16 12:41:43 CDT 2024 1726508503
+Name                : cd-MRI-train
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua404
+Cores               : 2
+State               : COMPLETED
+Submit              : 2024-09-16T12:39:17
+Start               : 2024-09-16T12:39:44
+End                 : 2024-09-16T12:41:41
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:01:57
+Used CPU Time       :   00:00:05
+% User (Computation): 73.53%
+% System (I/O)      : 26.45%
+Mem Reserved        : 500000M
+Max Mem Used        : 215.49M (225955840.0)
+Max Disk Write      : 10.24K (10485.76)
+Max Disk Read       : 55.29M (57975767.04)
+Max-Mem-Used Node   : gpua404
+Max-Disk-Write Node : gpua404
+Max-Disk-Read Node  : gpua404
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Mon Sep 16 12:41:43 CDT 2024 1726508503
+--------------------------------------------------------------
