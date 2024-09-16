@@ -231,13 +231,15 @@ def apply_gradcam_all_layers_average(model, imgs, adjusted_affines, original_img
     # Identify convolutional layers
     conv_layers = [layer.name for layer in model.layers if isinstance(layer, Conv3D)]
     # Calculate cumulative scaling factors based on strides
-    cumulative_scales = []
     scale = 1
+    cumulative_scales = []
+    
     for layer in model.layers:
-        if isinstance(layer, Conv3D):
+        if isinstance(layer, Conv3D) and any(s > 1 for s in layer.strides):
             strides = layer.strides
             scale *= strides[0]  # Assuming strides are the same in all dimensions
             cumulative_scales.append(scale)
+
 
     # Ensure that cumulative_scales and conv_layers have the same length
     cumulative_scales = cumulative_scales[:len(conv_layers)]
