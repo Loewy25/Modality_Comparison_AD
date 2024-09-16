@@ -318,7 +318,7 @@ def loading_mask_3d(task, modality):
         raise ValueError(f"Unsupported modality: {modality}")
 
     # Update the mask path to your actual mask image path
-    mask_path = '/path/to/your/mask.nii'  # Replace with your actual mask path
+    mask_path = '/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii'  # Replace with your actual mask path
     masker = NiftiMasker(mask_img=mask_path)
     mask_affine = nib.load(mask_path).affine
     print(f"Mask affine:\n{mask_affine}")
