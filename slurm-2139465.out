@@ -1,0 +1,35 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Sep 16 23:24:16 CDT 2024 1726547056
+Job ID:		2139465
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Mon Sep 16 23:24:16 CDT 2024 1726547056
+--------------------------------------------------------------
+slurmstepd: error: *** JOB 2139465 ON gpua402 CANCELLED AT 2024-09-16T23:24:51 ***
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Sep 16 23:24:54 CDT 2024 1726547094
+Name                : cd-MRI-train
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua402
+Cores               : 2
+State               : CANCELLED,CANCELLED by 2035263
+Submit              : 2024-09-16T23:24:15
+Start               : 2024-09-16T23:24:16
+End                 : 2024-09-16T23:24:52
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:00:36
+Used CPU Time       :   00:00:01
+% User (Computation): 96.85%
+% System (I/O)      :  3.07%
+Mem Reserved        : 500000M
+Max Mem Used        : 136.22M (142839808.0)
+Max Disk Write      : 10.24K (10485.76)
+Max Disk Read       : 26.95M (28259123.2)
+Max-Mem-Used Node   : gpua402
+Max-Disk-Write Node : gpua402
+Max-Disk-Read Node  : gpua402
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Mon Sep 16 23:24:55 CDT 2024 1726547095
+--------------------------------------------------------------
