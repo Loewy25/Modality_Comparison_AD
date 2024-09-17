@@ -155,6 +155,9 @@ def plot_training_validation_loss(histories, save_dir):
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
 
+    # Set y-axis limits to focus on 0-1 range
+    plt.ylim(0, 1)
+
     # Add a legend
     plt.legend(loc='upper right')
 
@@ -164,6 +167,7 @@ def plot_training_validation_loss(histories, save_dir):
     plt.close()  # Close the figure to avoid displaying it in notebooks
     print(f'Loss vs Validation Loss plot saved at {loss_plot_path}')
 
+
 # Function to save Grad-CAM heatmap and plot glass brain
 def save_gradcam(heatmap, original_img,
                  task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
@@ -172,12 +176,9 @@ def save_gradcam(heatmap, original_img,
 
     # Calculate the zoom factors based on the actual dimensions
     zoom_factors = [original_dim / heatmap_dim for original_dim, heatmap_dim in zip(original_img.shape[:3], heatmap.shape)]
-    print(f"Zoom factors: {zoom_factors}")
 
     # Upsample the heatmap to the original image size
     upsampled_heatmap = zoom(heatmap, zoom=zoom_factors, order=1)
-    print(f"Upsampled heatmap shape: {upsampled_heatmap.shape}")
-    print(f"Original image shape: {original_img.shape}")
 
     # Create a NIfTI image with the same affine as the original image
     heatmap_img = nib.Nifti1Image(upsampled_heatmap, original_img.affine)
@@ -242,6 +243,21 @@ def apply_gradcam_all_layers_average(model, imgs, original_imgs,
             save_gradcam(avg_heatmap, original_imgs[0],
                          task, modality, conv_layer_name, class_idx, info)
 
+# Function to perform data augmentation by flipping images along axes
+def augment_data(X):
+    augmented_X = []
+    for img in X:
+        img_aug = img.copy()
+        # Randomly flip along each axis with 50% probability
+        if np.random.rand() < 0.5:
+            img_aug = np.flip(img_aug, axis=1)  # Flip along x-axis
+        if np.random.rand() < 0.5:
+            img_aug = np.flip(img_aug, axis=2)  # Flip along y-axis
+        if np.random.rand() < 0.5:
+            img_aug = np.flip(img_aug, axis=3)  # Flip along z-axis
+        augmented_X.append(img_aug)
+    return np.array(augmented_X)
+
 # Function to train the model and return the best trained model
 def train_model(X, Y, task, modality, info):
     stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=2)
@@ -262,6 +278,9 @@ def train_model(X, Y, task, modality, info):
         X_train, X_val = X[train_idx], X[val_idx]
         Y_train, Y_val = Y[train_idx], Y[val_idx]
 
+        # Apply data augmentation to X_train
+        X_train_augmented = augment_data(X_train)
+
         model = create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2)
         model.compile(optimizer=Adam(learning_rate=5e-4),
                       loss='categorical_crossentropy',
@@ -270,7 +289,7 @@ def train_model(X, Y, task, modality, info):
         early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
 
-        history = model.fit(X_train, Y_train,
+        history = model.fit(X_train_augmented, Y_train,
                             batch_size=5,
                             epochs=800,  # Adjust epochs as needed
                             validation_data=(X_val, Y_val),
@@ -305,8 +324,7 @@ def train_model(X, Y, task, modality, info):
     print(f'Average AUC across all folds: {average_auc:.4f}')
 
     return best_model
-        # Check orientation
-from nibabel.orientations import aff2axcodes
+
 # Function to load data
 def loading_mask_3d(task, modality):
     images_pet, images_mri, labels = generate_data_path()
@@ -327,6 +345,8 @@ def loading_mask_3d(task, modality):
 
     train_data = []
     target_shape = (128, 128, 128)
+
+    from nibabel.orientations import aff2axcodes
 
     for i in range(len(data_train)):
         nifti_img = nib.load(data_train[i])
@@ -360,8 +380,8 @@ def loading_mask_3d(task, modality):
 # Main execution
 if __name__ == '__main__':
     task = 'cd'  # Update as per your task
-    modality = 'MRI'  # 'MRI' or 'PET'
-    info = '5_context_from_16_0.5_dropout_1e3'  # Additional info for saving results
+    modality = 'PET'  # 'MRI' or 'PET'
+    info = '5_context_from_16_0.5_dropout_1e3_with_augmentation'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, masker, original_imgs = loading_mask_3d(task, modality)
@@ -377,4 +397,5 @@ if __name__ == '__main__':
 
     # Apply Grad-CAM to all images
     apply_gradcam_all_layers_average(best_model, imgs, original_imgs, task, modality, info)
+
 
