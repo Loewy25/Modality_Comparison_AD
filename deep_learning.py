@@ -305,7 +305,8 @@ def train_model(X, Y, task, modality, info):
     print(f'Average AUC across all folds: {average_auc:.4f}')
 
     return best_model
-
+        # Check orientation
+from nibabel.orientations import aff2axcodes
 # Function to load data
 def loading_mask_3d(task, modality):
     images_pet, images_mri, labels = generate_data_path()
@@ -331,7 +332,11 @@ def loading_mask_3d(task, modality):
         nifti_img = nib.load(data_train[i])
         affine = nifti_img.affine
         original_imgs.append(nifti_img)  # Store the original NIfTI image
-
+      
+        image_orientation = aff2axcodes(nifti_img.affine)
+        mask_orientation = aff2axcodes(mask_affine)
+        print(f"Original image orientation: {image_orientation}")
+        print(f"Mask image orientation: {mask_orientation}")
 
         if image_orientation != mask_orientation:
             nifti_img = nib.as_closest_canonical(nifti_img)
