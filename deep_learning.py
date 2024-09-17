@@ -165,25 +165,42 @@ def plot_training_validation_loss(histories, save_dir):
     print(f'Loss vs Validation Loss plot saved at {loss_plot_path}')
 
 # Function to save Grad-CAM heatmap and plot glass brain
-def save_gradcam(heatmap, original_img,
+import numpy as np
+import nibabel as nib
+from nilearn.image import resample_to_img
+from nilearn import plotting
+
+# Function to compute the adjusted affine matrix for the heatmap
+def compute_heatmap_affine(original_affine, cumulative_stride, total_padding):
+    # Adjust the scaling (voxel size)
+    scaling = np.diag([cumulative_stride]*3 + [1])
+    affine_scaled = original_affine @ scaling
+
+    # Adjust the translation (origin)
+    # Compute the offset introduced by padding
+    offset = -np.array(total_padding) * original_affine[:3, :3].diagonal()
+    affine_scaled[:3, 3] += offset
+
+    return affine_scaled
+
+# Function to save Grad-CAM heatmap and plot glass brain
+def save_gradcam(heatmap, original_img, cumulative_stride, total_padding,
                  task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
     save_dir = os.path.join(save_dir, info, task, modality)
     ensure_directory_exists(save_dir)
 
-    # Calculate the zoom factors based on the actual dimensions
-    zoom_factors = [original_dim / heatmap_dim for original_dim, heatmap_dim in zip(original_img.shape[:3], heatmap.shape)]
-    print(f"Zoom factors: {zoom_factors}")
+    # Compute the adjusted affine matrix for the heatmap
+    affine_heatmap = compute_heatmap_affine(original_img.affine, cumulative_stride, total_padding)
+    print(f"Adjusted affine for heatmap:\n{affine_heatmap}")
 
-    # Upsample the heatmap to the original image size
-    upsampled_heatmap = zoom(heatmap, zoom=zoom_factors, order=1)
-    print(f"Upsampled heatmap shape: {upsampled_heatmap.shape}")
-    print(f"Original image shape: {original_img.shape}")
+    # Create the heatmap NIfTI image
+    heatmap_img = nib.Nifti1Image(heatmap, affine_heatmap)
 
-    # Create a NIfTI image with the same affine as the original image
-    heatmap_img = nib.Nifti1Image(upsampled_heatmap, original_img.affine)
+    # Resample the heatmap to the original image space
+    resampled_heatmap_img = resample_to_img(heatmap_img, original_img, interpolation='continuous')
 
-    # Normalize the upsampled heatmap
-    data = heatmap_img.get_fdata()
+    # Normalize the resampled heatmap
+    data = resampled_heatmap_img.get_fdata()
     min_val = np.min(data)
     max_val = np.max(data)
     if max_val - min_val != 0:
@@ -191,47 +208,57 @@ def save_gradcam(heatmap, original_img,
     else:
         normalized_data = np.zeros_like(data)
 
-    heatmap_img = nib.Nifti1Image(normalized_data, heatmap_img.affine)
+    resampled_heatmap_img = nib.Nifti1Image(normalized_data, resampled_heatmap_img.affine)
 
     # Save the 3D NIfTI file
     nifti_file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.nii.gz"
     nifti_save_path = os.path.join(save_dir, nifti_file_name)
-    nib.save(heatmap_img, nifti_save_path)
+    nib.save(resampled_heatmap_img, nifti_save_path)
     print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
 
     # Plot the glass brain
     output_glass_brain_path = os.path.join(save_dir, f'glass_brain_{task}_{modality}_{layer_name}_class{class_idx}.png')
-    plotting.plot_glass_brain(heatmap_img, colorbar=True, plot_abs=True,
+    plotting.plot_glass_brain(resampled_heatmap_img, colorbar=True, plot_abs=True,
                               cmap='jet', output_file=output_glass_brain_path)
     print(f'Glass brain plot saved at {output_glass_brain_path}')
+
 
 # Function to apply Grad-CAM for all layers across all dataset images and save averaged heatmaps
 def apply_gradcam_all_layers_average(model, imgs, original_imgs,
                                      task, modality, info):
-    # Identify convolutional layers
     conv_layers = []
-    cumulative_scales = []
-    cumulative_scale = 1
+    cumulative_strides = []
+    total_paddings = []
+    cumulative_stride = 1
+    total_padding = [0, 0, 0]
+
     for layer in model.layers:
         if isinstance(layer, Conv3D):
             conv_layers.append(layer.name)
-            # Update cumulative scaling factor if stride is not 1
-            if layer.strides[0] != 1:
-                cumulative_scale *= layer.strides[0]
-            cumulative_scales.append(cumulative_scale)
+            strides = layer.strides
+            padding = layer.padding  # 'same' or 'valid'
 
-    print("Cumulative scaling factors for each convolutional layer:")
-    for idx, (layer_name, scale_value) in enumerate(zip(conv_layers, cumulative_scales)):
-        print(f"Layer {layer_name}: cumulative_scale = {scale_value}")
+            # Update cumulative stride
+            cumulative_stride *= strides[0]
+
+            # Update total padding
+            if padding == 'same':
+                kernel_size = layer.kernel_size[0]
+                pad = (kernel_size - 1) // 2
+                total_padding = [p + pad for p in total_padding]
+            # For 'valid' padding, no additional padding is added
+
+            cumulative_strides.append(cumulative_stride)
+            total_paddings.append(total_padding.copy())
 
     for idx, conv_layer_name in enumerate(conv_layers):
-        cumulative_scale = cumulative_scales[idx]
-        for class_idx in range(2):  # Loop through both class indices (class 0 and class 1)
+        cumulative_stride = cumulative_strides[idx]
+        total_padding = total_paddings[idx]
+        for class_idx in range(2):  # Loop through both class indices
             accumulated_heatmap = None
             for i, img in enumerate(imgs):
                 heatmap = make_gradcam_heatmap(model, img, conv_layer_name,
                                                pred_index=class_idx)
-                print(f"Heatmap shape for layer {conv_layer_name} and class {class_idx}: {heatmap.shape}")
                 if accumulated_heatmap is None:
                     accumulated_heatmap = heatmap
                 else:
@@ -239,8 +266,9 @@ def apply_gradcam_all_layers_average(model, imgs, original_imgs,
 
             avg_heatmap = accumulated_heatmap / len(imgs)
             # Use the first original image as reference
-            save_gradcam(avg_heatmap, original_imgs[0],
+            save_gradcam(avg_heatmap, original_imgs[0], cumulative_stride, total_padding,
                          task, modality, conv_layer_name, class_idx, info)
+
 
 # Function to train the model and return the best trained model
 def train_model(X, Y, task, modality, info):
