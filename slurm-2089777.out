@@ -1,0 +1,57 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Sep 16 17:59:07 CDT 2024 1726527547
+Job ID:		2089777
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Mon Sep 16 17:59:07 CDT 2024 1726527547
+--------------------------------------------------------------
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Mask affine:
+[[  -2.    0.    0.   90.]
+ [   0.    2.    0. -126.]
+ [   0.    0.    2.  -72.]
+ [   0.    0.    0.    1.]]
+Traceback (most recent call last):
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/deep_learning.py", line 362, in <module>
+    train_data, train_label, masker, original_imgs = loading_mask_3d(task, modality)
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/deep_learning.py", line 336, in loading_mask_3d
+    if image_orientation != mask_orientation:
+NameError: name 'image_orientation' is not defined
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Sep 16 18:01:00 CDT 2024 1726527660
+Name                : cd-MRI-train
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua402
+Cores               : 2
+State               : COMPLETED
+Submit              : 2024-09-16T17:59:02
+Start               : 2024-09-16T17:59:07
+End                 : 2024-09-16T18:00:57
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:01:50
+Used CPU Time       :   00:00:05
+% User (Computation): 72.65%
+% System (I/O)      : 27.33%
+Mem Reserved        : 500000M
+Max Mem Used        : 223.73M (234594304.0)
+Max Disk Write      : 10.24K (10485.76)
+Max Disk Read       : 57.60M (60397977.6)
+Max-Mem-Used Node   : gpua402
+Max-Disk-Write Node : gpua402
+Max-Disk-Read Node  : gpua402
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Mon Sep 16 18:01:00 CDT 2024 1726527660
+--------------------------------------------------------------
