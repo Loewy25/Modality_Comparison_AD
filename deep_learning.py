@@ -38,7 +38,7 @@ def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
 # Context module: two convolution blocks with optional dropout
 def context_module(x, filters):
     x = convolution_block(x, filters)
-    x = SpatialDropout3D(0.5)(x)
+    x = SpatialDropout3D(0.4)(x)
     x = convolution_block(x, filters)
     return x
 
@@ -80,7 +80,7 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     x = GlobalAveragePooling3D()(x)
 
     # Dropout for regularization
-    x = Dropout(0.5)(x)
+    x = Dropout(0.4)(x)
 
     # Dense layer with softmax for classification
     output = Dense(num_classes, activation='softmax')(x)
@@ -286,8 +286,21 @@ def train_model(X, Y, task, modality, info):
                       loss='categorical_crossentropy',
                       metrics=['accuracy', AUC(name='auc')])
 
-        early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
-        reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1)
+        early_stopping = EarlyStopping(
+            monitor='val_auc',
+            patience=50,
+            mode='max',
+            verbose=1,
+            restore_best_weights=True
+        )
+        
+        reduce_lr = ReduceLROnPlateau(
+            monitor='val_auc',
+            factor=0.5,
+            patience=10,
+            mode='max',
+            verbose=1
+        )
 
         history = model.fit(X_train_augmented, Y_train,
                             batch_size=5,
