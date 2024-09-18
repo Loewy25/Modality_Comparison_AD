@@ -288,14 +288,14 @@ def train_model(X, Y, task, modality, info):
 
         early_stopping = EarlyStopping(
             monitor='val_auc',
-            patience=50,
+            patience=100,
             mode='max',
             verbose=1,
             restore_best_weights=True
         )
         
         reduce_lr = ReduceLROnPlateau(
-            monitor='val_auc',
+            monitor='val_loss',
             factor=0.5,
             patience=10,
             mode='max',
