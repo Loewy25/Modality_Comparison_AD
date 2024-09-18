@@ -30,7 +30,7 @@ def ensure_directory_exists(directory):
 # Function for a single convolution block with Batch Normalization
 def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
     x = Conv3D(filters, kernel_size, strides=strides, padding='same',
-               kernel_regularizer=l2(1e-3))(x)
+               kernel_regularizer=l2(1e-4))(x)
     x = BatchNormalization()(x)
     x = LeakyReLU()(x)
     return x
@@ -38,7 +38,7 @@ def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
 # Context module: two convolution blocks with optional dropout
 def context_module(x, filters):
     x = convolution_block(x, filters)
-    x = SpatialDropout3D(0.4)(x)
+    x = SpatialDropout3D(0.3)(x)
     x = convolution_block(x, filters)
     return x
 
@@ -80,7 +80,7 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     x = GlobalAveragePooling3D()(x)
 
     # Dropout for regularization
-    x = Dropout(0.4)(x)
+    x = Dropout(0.3)(x)
 
     # Dense layer with softmax for classification
     output = Dense(num_classes, activation='softmax')(x)
