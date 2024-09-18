@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J pc-PET-train
+#SBATCH -J cm-PET-train
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 500000M
