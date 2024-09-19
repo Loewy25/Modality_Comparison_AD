@@ -1,0 +1,1040 @@
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+2024-09-19 11:37:48.566033: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-09-19 11:37:49.126404: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 38212 MB memory:  -> device: 0, name: NVIDIA A100-SXM4-40GB, pci bus id: 0000:31:00.0, compute capability: 8.0
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Mask affine:
+[[  -2.    0.    0.   90.]
+ [   0.    2.    0. -126.]
+ [   0.    0.    2.  -72.]
+ [   0.    0.    0.    1.]]
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Starting fold 1
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_1 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d (Conv3D)                (None, 128, 128, 12  448         ['input_1[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization (BatchNorm  (None, 128, 128, 12  64         ['conv3d[0][0]']                 
+ alization)                     8, 16)                                                            
+                                                                                                  
+ leaky_re_lu (LeakyReLU)        (None, 128, 128, 12  0           ['batch_normalization[0][0]']    
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_1 (Conv3D)              (None, 128, 128, 12  6928        ['leaky_re_lu[0][0]']            
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_1 (BatchNo  (None, 128, 128, 12  64         ['conv3d_1[0][0]']               
+ rmalization)                   8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_1 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_1[0][0]']  
+                                8, 16)                                                            
+                                                                                                  
+ spatial_dropout3d (SpatialDrop  (None, 128, 128, 12  0          ['leaky_re_lu_1[0][0]']          
+ out3D)                         8, 16)                                                            
+                                                                                                  
+ conv3d_2 (Conv3D)              (None, 128, 128, 12  6928        ['spatial_dropout3d[0][0]']      
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_2 (BatchNo  (None, 128, 128, 12  64         ['conv3d_2[0][0]']               
+ rmalization)                   8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_2 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_2[0][0]']  
+                                8, 16)                                                            
+                                                                                                  
+ add (Add)                      (None, 128, 128, 12  0           ['leaky_re_lu_2[0][0]',          
+                                8, 16)                            'leaky_re_lu[0][0]']            
+                                                                                                  
+ conv3d_3 (Conv3D)              (None, 64, 64, 64,   13856       ['add[0][0]']                    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_3 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_3[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_3 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_3[0][0]']  
+                                32)                                                               
+                                                                                                  
+ conv3d_4 (Conv3D)              (None, 64, 64, 64,   27680       ['leaky_re_lu_3[0][0]']          
+                                32)                                                               
+                                                                                                  
+ batch_normalization_4 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_4[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_4 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_4[0][0]']  
+                                32)                                                               
+                                                                                                  
+ spatial_dropout3d_1 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_4[0][0]']          
+ opout3D)                       32)                                                               
+                                                                                                  
+ conv3d_5 (Conv3D)              (None, 64, 64, 64,   27680       ['spatial_dropout3d_1[0][0]']    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_5 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_5[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_5 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_5[0][0]']  
+                                32)                                                               
+                                                                                                  
+ add_1 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_5[0][0]',          
+                                32)                               'leaky_re_lu_3[0][0]']          
+                                                                                                  
+ conv3d_6 (Conv3D)              (None, 32, 32, 32,   55360       ['add_1[0][0]']                  
+                                64)                                                               
+                                                                                                  
+ batch_normalization_6 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_6[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_6 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_6[0][0]']  
+                                64)                                                               
+                                                                                                  
+ conv3d_7 (Conv3D)              (None, 32, 32, 32,   110656      ['leaky_re_lu_6[0][0]']          
+                                64)                                                               
+                                                                                                  
+ batch_normalization_7 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_7[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_7 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_7[0][0]']  
+                                64)                                                               
+                                                                                                  
+ spatial_dropout3d_2 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_7[0][0]']          
+ opout3D)                       64)                                                               
+                                                                                                  
+ conv3d_8 (Conv3D)              (None, 32, 32, 32,   110656      ['spatial_dropout3d_2[0][0]']    
+                                64)                                                               
+                                                                                                  
+ batch_normalization_8 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_8[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_8 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_8[0][0]']  
+                                64)                                                               
+                                                                                                  
+ add_2 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_8[0][0]',          
+                                64)                               'leaky_re_lu_6[0][0]']          
+                                                                                                  
+ conv3d_9 (Conv3D)              (None, 16, 16, 16,   221312      ['add_2[0][0]']                  
+                                128)                                                              
+                                                                                                  
+ batch_normalization_9 (BatchNo  (None, 16, 16, 16,   512        ['conv3d_9[0][0]']               
+ rmalization)                   128)                                                              
+                                                                                                  
+ leaky_re_lu_9 (LeakyReLU)      (None, 16, 16, 16,   0           ['batch_normalization_9[0][0]']  
+                                128)                                                              
+                                                                                                  
+ conv3d_10 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_9[0][0]']          
+                                128)                                                              
+                                                                                                  
+ batch_normalization_10 (BatchN  (None, 16, 16, 16,   512        ['conv3d_10[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_10 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_10[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ spatial_dropout3d_3 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_10[0][0]']         
+ opout3D)                       128)                                                              
+                                                                                                  
+ conv3d_11 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_3[0][0]']    
+                                128)                                                              
+                                                                                                  
+ batch_normalization_11 (BatchN  (None, 16, 16, 16,   512        ['conv3d_11[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_11 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_11[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ add_3 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_11[0][0]',         
+                                128)                              'leaky_re_lu_9[0][0]']          
+                                                                                                  
+ conv3d_12 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_3[0][0]']                  
+                                )                                                                 
+                                                                                                  
+ batch_normalization_12 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_12[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_12 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_12[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ conv3d_13 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_12[0][0]']         
+                                )                                                                 
+                                                                                                  
+ batch_normalization_13 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_13[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_13 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_13[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ spatial_dropout3d_4 (SpatialDr  (None, 8, 8, 8, 256  0          ['leaky_re_lu_13[0][0]']         
+ opout3D)                       )                                                                 
+                                                                                                  
+ conv3d_14 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_4[0][0]']    
+                                )                                                                 
+                                                                                                  
+ batch_normalization_14 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_14[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_14 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_14[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ add_4 (Add)                    (None, 8, 8, 8, 256  0           ['leaky_re_lu_14[0][0]',         
+                                )                                 'leaky_re_lu_12[0][0]']         
+                                                                                                  
+ global_average_pooling3d (Glob  (None, 256)         0           ['add_4[0][0]']                  
+ alAveragePooling3D)                                                                              
+                                                                                                  
+ dropout (Dropout)              (None, 256)          0           ['global_average_pooling3d[0][0]'
+                                                                 ]                                
+                                                                                                  
+ dense (Dense)                  (None, 2)            514         ['dropout[0][0]']                
+                                                                                                  
+==================================================================================================
+Total params: 5,897,410
+Trainable params: 5,894,434
+Non-trainable params: 2,976
+__________________________________________________________________________________________________
+Epoch 1/800
+2024-09-19 11:37:54.284165: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8101
+2024-09-19 11:37:56.180910: I tensorflow/stream_executor/cuda/cuda_blas.cc:1786] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+ 1/56 [..............................] - ETA: 6:45 - loss: 0.5339 - accuracy: 0.8000 - auc: 0.8800 2/56 [>.............................] - ETA: 16s - loss: 0.9602 - accuracy: 0.5000 - auc: 0.5000  3/56 [>.............................] - ETA: 16s - loss: 1.1569 - accuracy: 0.6000 - auc: 0.6444 4/56 [=>............................] - ETA: 16s - loss: 1.6585 - accuracy: 0.5000 - auc: 0.4975 5/56 [=>............................] - ETA: 15s - loss: 1.4340 - accuracy: 0.5600 - auc: 0.5872 6/56 [==>...........................] - ETA: 15s - loss: 1.8765 - accuracy: 0.5000 - auc: 0.4989 7/56 [==>...........................] - ETA: 15s - loss: 1.7295 - accuracy: 0.5429 - auc: 0.5404 8/56 [===>..........................] - ETA: 14s - loss: 1.7109 - accuracy: 0.5250 - auc: 0.5175 9/56 [===>..........................] - ETA: 14s - loss: 1.5530 - accuracy: 0.5556 - auc: 0.566910/56 [====>.........................] - ETA: 14s - loss: 1.8328 - accuracy: 0.5400 - auc: 0.523611/56 [====>.........................] - ETA: 14s - loss: 1.9058 - accuracy: 0.5455 - auc: 0.526612/56 [=====>........................] - ETA: 13s - loss: 1.9094 - accuracy: 0.5500 - auc: 0.524713/56 [=====>........................] - ETA: 13s - loss: 1.8005 - accuracy: 0.5538 - auc: 0.546014/56 [======>.......................] - ETA: 13s - loss: 1.7784 - accuracy: 0.5429 - auc: 0.540015/56 [=======>......................] - ETA: 12s - loss: 1.8020 - accuracy: 0.5200 - auc: 0.522816/56 [=======>......................] - ETA: 12s - loss: 1.7460 - accuracy: 0.5250 - auc: 0.522517/56 [========>.....................] - ETA: 12s - loss: 1.7028 - accuracy: 0.5294 - auc: 0.521718/56 [========>.....................] - ETA: 11s - loss: 1.6367 - accuracy: 0.5333 - auc: 0.532519/56 [=========>....................] - ETA: 11s - loss: 1.6204 - accuracy: 0.5263 - auc: 0.522920/56 [=========>....................] - ETA: 11s - loss: 1.5817 - accuracy: 0.5200 - auc: 0.519521/56 [==========>...................] - ETA: 10s - loss: 1.5456 - accuracy: 0.5143 - auc: 0.519522/56 [==========>...................] - ETA: 10s - loss: 1.5241 - accuracy: 0.5273 - auc: 0.530123/56 [===========>..................] - ETA: 10s - loss: 1.4956 - accuracy: 0.5217 - auc: 0.533224/56 [===========>..................] - ETA: 9s - loss: 1.4753 - accuracy: 0.5167 - auc: 0.5283 25/56 [============>.................] - ETA: 9s - loss: 1.4546 - accuracy: 0.5120 - auc: 0.526126/56 [============>.................] - ETA: 9s - loss: 1.4210 - accuracy: 0.5231 - auc: 0.531527/56 [=============>................] - ETA: 9s - loss: 1.3890 - accuracy: 0.5259 - auc: 0.538828/56 [==============>...............] - ETA: 8s - loss: 1.3626 - accuracy: 0.5357 - auc: 0.545429/56 [==============>...............] - ETA: 8s - loss: 1.3430 - accuracy: 0.5379 - auc: 0.549730/56 [===============>..............] - ETA: 8s - loss: 1.3252 - accuracy: 0.5333 - auc: 0.549631/56 [===============>..............] - ETA: 7s - loss: 1.3335 - accuracy: 0.5226 - auc: 0.537632/56 [================>.............] - ETA: 7s - loss: 1.3140 - accuracy: 0.5250 - auc: 0.541433/56 [================>.............] - ETA: 7s - loss: 1.2858 - accuracy: 0.5394 - auc: 0.550134/56 [=================>............] - ETA: 6s - loss: 1.2763 - accuracy: 0.5412 - auc: 0.551935/56 [=================>............] - ETA: 6s - loss: 1.2645 - accuracy: 0.5486 - auc: 0.557836/56 [==================>...........] - ETA: 6s - loss: 1.2687 - accuracy: 0.5444 - auc: 0.549137/56 [==================>...........] - ETA: 5s - loss: 1.2576 - accuracy: 0.5459 - auc: 0.549438/56 [===================>..........] - ETA: 5s - loss: 1.2342 - accuracy: 0.5526 - auc: 0.557539/56 [===================>..........] - ETA: 5s - loss: 1.2237 - accuracy: 0.5538 - auc: 0.557740/56 [====================>.........] - ETA: 4s - loss: 1.2177 - accuracy: 0.5500 - auc: 0.555741/56 [====================>.........] - ETA: 4s - loss: 1.1983 - accuracy: 0.5561 - auc: 0.562242/56 [=====================>........] - ETA: 4s - loss: 1.1882 - accuracy: 0.5524 - auc: 0.563343/56 [======================>.......] - ETA: 4s - loss: 1.2033 - accuracy: 0.5442 - auc: 0.554944/56 [======================>.......] - ETA: 3s - loss: 1.1867 - accuracy: 0.5545 - auc: 0.559545/56 [=======================>......] - ETA: 3s - loss: 1.1748 - accuracy: 0.5600 - auc: 0.563146/56 [=======================>......] - ETA: 3s - loss: 1.1630 - accuracy: 0.5609 - auc: 0.567747/56 [========================>.....] - ETA: 2s - loss: 1.1747 - accuracy: 0.5532 - auc: 0.559548/56 [========================>.....] - ETA: 2s - loss: 1.1569 - accuracy: 0.5625 - auc: 0.567349/56 [=========================>....] - ETA: 2s - loss: 1.1545 - accuracy: 0.5592 - auc: 0.564750/56 [=========================>....] - ETA: 1s - loss: 1.1492 - accuracy: 0.5520 - auc: 0.562751/56 [==========================>...] - ETA: 1s - loss: 1.1359 - accuracy: 0.5569 - auc: 0.568452/56 [==========================>...] - ETA: 1s - loss: 1.1317 - accuracy: 0.5538 - auc: 0.566953/56 [===========================>..] - ETA: 0s - loss: 1.1218 - accuracy: 0.5547 - auc: 0.569954/56 [===========================>..] - ETA: 0s - loss: 1.1155 - accuracy: 0.5556 - auc: 0.568955/56 [============================>.] - ETA: 0s - loss: 1.1084 - accuracy: 0.5564 - auc: 0.569256/56 [==============================] - ETA: 0s - loss: 1.1053 - accuracy: 0.5580 - auc: 0.570956/56 [==============================] - 30s 414ms/step - loss: 1.1053 - accuracy: 0.5580 - auc: 0.5709 - val_loss: 13.2427 - val_accuracy: 0.6377 - val_auc: 0.6377 - lr: 5.0000e-04
+Epoch 2/800
+ 1/56 [..............................] - ETA: 17s - loss: 0.4873 - accuracy: 0.8000 - auc: 0.8000 2/56 [>.............................] - ETA: 16s - loss: 0.6306 - accuracy: 0.7000 - auc: 0.6900 3/56 [>.............................] - ETA: 16s - loss: 0.7826 - accuracy: 0.6000 - auc: 0.6000 4/56 [=>............................] - ETA: 16s - loss: 0.8699 - accuracy: 0.5000 - auc: 0.5350 5/56 [=>............................] - ETA: 15s - loss: 0.8114 - accuracy: 0.4800 - auc: 0.5584 6/56 [==>...........................] - ETA: 15s - loss: 0.7790 - accuracy: 0.5000 - auc: 0.5822 7/56 [==>...........................] - ETA: 15s - loss: 0.8147 - accuracy: 0.5143 - auc: 0.5731 8/56 [===>..........................] - ETA: 14s - loss: 0.7882 - accuracy: 0.5500 - auc: 0.5994 9/56 [===>..........................] - ETA: 14s - loss: 0.7759 - accuracy: 0.5778 - auc: 0.613810/56 [====>.........................] - ETA: 14s - loss: 0.7763 - accuracy: 0.5800 - auc: 0.605611/56 [====>.........................] - ETA: 14s - loss: 0.7541 - accuracy: 0.5818 - auc: 0.621212/56 [=====>........................] - ETA: 13s - loss: 0.7238 - accuracy: 0.6000 - auc: 0.6483

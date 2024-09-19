@@ -1,0 +1,1024 @@
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+2024-09-19 11:36:18.663337: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-09-19 11:36:22.871651: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 38212 MB memory:  -> device: 0, name: NVIDIA A100-SXM4-40GB, pci bus id: 0000:31:00.0, compute capability: 8.0
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+403
+Mask affine:
+[[  -2.    0.    0.   90.]
+ [   0.    2.    0. -126.]
+ [   0.    0.    2.  -72.]
+ [   0.    0.    0.    1.]]
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Original image orientation: ('L', 'A', 'S')
+Mask image orientation: ('L', 'A', 'S')
+Starting fold 1
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_1 (InputLayer)           [(None, 128, 128, 1  0           []                               
+                                28, 1)]                                                           
+                                                                                                  
+ conv3d (Conv3D)                (None, 128, 128, 12  448         ['input_1[0][0]']                
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization (BatchNorm  (None, 128, 128, 12  64         ['conv3d[0][0]']                 
+ alization)                     8, 16)                                                            
+                                                                                                  
+ leaky_re_lu (LeakyReLU)        (None, 128, 128, 12  0           ['batch_normalization[0][0]']    
+                                8, 16)                                                            
+                                                                                                  
+ conv3d_1 (Conv3D)              (None, 128, 128, 12  6928        ['leaky_re_lu[0][0]']            
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_1 (BatchNo  (None, 128, 128, 12  64         ['conv3d_1[0][0]']               
+ rmalization)                   8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_1 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_1[0][0]']  
+                                8, 16)                                                            
+                                                                                                  
+ spatial_dropout3d (SpatialDrop  (None, 128, 128, 12  0          ['leaky_re_lu_1[0][0]']          
+ out3D)                         8, 16)                                                            
+                                                                                                  
+ conv3d_2 (Conv3D)              (None, 128, 128, 12  6928        ['spatial_dropout3d[0][0]']      
+                                8, 16)                                                            
+                                                                                                  
+ batch_normalization_2 (BatchNo  (None, 128, 128, 12  64         ['conv3d_2[0][0]']               
+ rmalization)                   8, 16)                                                            
+                                                                                                  
+ leaky_re_lu_2 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_2[0][0]']  
+                                8, 16)                                                            
+                                                                                                  
+ add (Add)                      (None, 128, 128, 12  0           ['leaky_re_lu_2[0][0]',          
+                                8, 16)                            'leaky_re_lu[0][0]']            
+                                                                                                  
+ conv3d_3 (Conv3D)              (None, 64, 64, 64,   13856       ['add[0][0]']                    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_3 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_3[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_3 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_3[0][0]']  
+                                32)                                                               
+                                                                                                  
+ conv3d_4 (Conv3D)              (None, 64, 64, 64,   27680       ['leaky_re_lu_3[0][0]']          
+                                32)                                                               
+                                                                                                  
+ batch_normalization_4 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_4[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_4 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_4[0][0]']  
+                                32)                                                               
+                                                                                                  
+ spatial_dropout3d_1 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_4[0][0]']          
+ opout3D)                       32)                                                               
+                                                                                                  
+ conv3d_5 (Conv3D)              (None, 64, 64, 64,   27680       ['spatial_dropout3d_1[0][0]']    
+                                32)                                                               
+                                                                                                  
+ batch_normalization_5 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_5[0][0]']               
+ rmalization)                   32)                                                               
+                                                                                                  
+ leaky_re_lu_5 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_5[0][0]']  
+                                32)                                                               
+                                                                                                  
+ add_1 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_5[0][0]',          
+                                32)                               'leaky_re_lu_3[0][0]']          
+                                                                                                  
+ conv3d_6 (Conv3D)              (None, 32, 32, 32,   55360       ['add_1[0][0]']                  
+                                64)                                                               
+                                                                                                  
+ batch_normalization_6 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_6[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_6 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_6[0][0]']  
+                                64)                                                               
+                                                                                                  
+ conv3d_7 (Conv3D)              (None, 32, 32, 32,   110656      ['leaky_re_lu_6[0][0]']          
+                                64)                                                               
+                                                                                                  
+ batch_normalization_7 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_7[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_7 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_7[0][0]']  
+                                64)                                                               
+                                                                                                  
+ spatial_dropout3d_2 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_7[0][0]']          
+ opout3D)                       64)                                                               
+                                                                                                  
+ conv3d_8 (Conv3D)              (None, 32, 32, 32,   110656      ['spatial_dropout3d_2[0][0]']    
+                                64)                                                               
+                                                                                                  
+ batch_normalization_8 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_8[0][0]']               
+ rmalization)                   64)                                                               
+                                                                                                  
+ leaky_re_lu_8 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_8[0][0]']  
+                                64)                                                               
+                                                                                                  
+ add_2 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_8[0][0]',          
+                                64)                               'leaky_re_lu_6[0][0]']          
+                                                                                                  
+ conv3d_9 (Conv3D)              (None, 16, 16, 16,   221312      ['add_2[0][0]']                  
+                                128)                                                              
+                                                                                                  
+ batch_normalization_9 (BatchNo  (None, 16, 16, 16,   512        ['conv3d_9[0][0]']               
+ rmalization)                   128)                                                              
+                                                                                                  
+ leaky_re_lu_9 (LeakyReLU)      (None, 16, 16, 16,   0           ['batch_normalization_9[0][0]']  
+                                128)                                                              
+                                                                                                  
+ conv3d_10 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_9[0][0]']          
+                                128)                                                              
+                                                                                                  
+ batch_normalization_10 (BatchN  (None, 16, 16, 16,   512        ['conv3d_10[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_10 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_10[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ spatial_dropout3d_3 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_10[0][0]']         
+ opout3D)                       128)                                                              
+                                                                                                  
+ conv3d_11 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_3[0][0]']    
+                                128)                                                              
+                                                                                                  
+ batch_normalization_11 (BatchN  (None, 16, 16, 16,   512        ['conv3d_11[0][0]']              
+ ormalization)                  128)                                                              
+                                                                                                  
+ leaky_re_lu_11 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_11[0][0]'] 
+                                128)                                                              
+                                                                                                  
+ add_3 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_11[0][0]',         
+                                128)                              'leaky_re_lu_9[0][0]']          
+                                                                                                  
+ conv3d_12 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_3[0][0]']                  
+                                )                                                                 
+                                                                                                  
+ batch_normalization_12 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_12[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_12 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_12[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ conv3d_13 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_12[0][0]']         
+                                )                                                                 
+                                                                                                  
+ batch_normalization_13 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_13[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_13 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_13[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ spatial_dropout3d_4 (SpatialDr  (None, 8, 8, 8, 256  0          ['leaky_re_lu_13[0][0]']         
+ opout3D)                       )                                                                 
+                                                                                                  
+ conv3d_14 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_4[0][0]']    
+                                )                                                                 
+                                                                                                  
+ batch_normalization_14 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_14[0][0]']              
+ ormalization)                  )                                                                 
+                                                                                                  
+ leaky_re_lu_14 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_14[0][0]'] 
+                                )                                                                 
+                                                                                                  
+ add_4 (Add)                    (None, 8, 8, 8, 256  0           ['leaky_re_lu_14[0][0]',         
+                                )                                 'leaky_re_lu_12[0][0]']         
+                                                                                                  
+ global_average_pooling3d (Glob  (None, 256)         0           ['add_4[0][0]']                  
+ alAveragePooling3D)                                                                              
+                                                                                                  
+ dropout (Dropout)              (None, 256)          0           ['global_average_pooling3d[0][0]'
+                                                                 ]                                
+                                                                                                  
+ dense (Dense)                  (None, 2)            514         ['dropout[0][0]']                
+                                                                                                  
+==================================================================================================
+Total params: 5,897,410
+Trainable params: 5,894,434
+Non-trainable params: 2,976
+__________________________________________________________________________________________________
+Epoch 1/800
+2024-09-19 11:36:31.761306: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8101
+2024-09-19 11:36:39.454943: I tensorflow/stream_executor/cuda/cuda_blas.cc:1786] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+ 1/54 [..............................] - ETA: 15:24 - loss: 1.0350 - accuracy: 0.2000 - auc: 0.2000 2/54 [>.............................] - ETA: 16s - loss: 1.3439 - accuracy: 0.3000 - auc: 0.3400   3/54 [>.............................] - ETA: 16s - loss: 1.1620 - accuracy: 0.4000 - auc: 0.4667 4/54 [=>............................] - ETA: 15s - loss: 1.3293 - accuracy: 0.4500 - auc: 0.4675 5/54 [=>............................] - ETA: 15s - loss: 1.4147 - accuracy: 0.4800 - auc: 0.4656 6/54 [==>...........................] - ETA: 15s - loss: 1.3376 - accuracy: 0.5333 - auc: 0.5522 7/54 [==>...........................] - ETA: 14s - loss: 1.6868 - accuracy: 0.5429 - auc: 0.5322 8/54 [===>..........................] - ETA: 14s - loss: 1.7690 - accuracy: 0.5500 - auc: 0.5238 9/54 [====>.........................] - ETA: 14s - loss: 1.7297 - accuracy: 0.5778 - auc: 0.528910/54 [====>.........................] - ETA: 13s - loss: 1.6236 - accuracy: 0.5800 - auc: 0.543211/54 [=====>........................] - ETA: 13s - loss: 1.5633 - accuracy: 0.5818 - auc: 0.548112/54 [=====>........................] - ETA: 13s - loss: 1.5026 - accuracy: 0.5833 - auc: 0.563113/54 [======>.......................] - ETA: 12s - loss: 1.5033 - accuracy: 0.5846 - auc: 0.573314/54 [======>.......................] - ETA: 12s - loss: 1.5927 - accuracy: 0.5857 - auc: 0.567115/54 [=======>......................] - ETA: 12s - loss: 1.5248 - accuracy: 0.5867 - auc: 0.581516/54 [=======>......................] - ETA: 12s - loss: 1.4586 - accuracy: 0.5875 - auc: 0.599817/54 [========>.....................] - ETA: 11s - loss: 1.4868 - accuracy: 0.5882 - auc: 0.592918/54 [=========>....................] - ETA: 11s - loss: 1.5105 - accuracy: 0.5667 - auc: 0.577319/54 [=========>....................] - ETA: 11s - loss: 1.5256 - accuracy: 0.5579 - auc: 0.561220/54 [==========>...................] - ETA: 10s - loss: 1.5015 - accuracy: 0.5500 - auc: 0.559221/54 [==========>...................] - ETA: 10s - loss: 1.4824 - accuracy: 0.5429 - auc: 0.555222/54 [===========>..................] - ETA: 10s - loss: 1.4873 - accuracy: 0.5273 - auc: 0.542423/54 [===========>..................] - ETA: 9s - loss: 1.4495 - accuracy: 0.5304 - auc: 0.5495 24/54 [============>.................] - ETA: 9s - loss: 1.4208 - accuracy: 0.5417 - auc: 0.555525/54 [============>.................] - ETA: 9s - loss: 1.4365 - accuracy: 0.5280 - auc: 0.544226/54 [=============>................] - ETA: 8s - loss: 1.4340 - accuracy: 0.5154 - auc: 0.536727/54 [==============>...............] - ETA: 8s - loss: 1.4068 - accuracy: 0.5185 - auc: 0.540228/54 [==============>...............] - ETA: 8s - loss: 1.3725 - accuracy: 0.5286 - auc: 0.547529/54 [===============>..............] - ETA: 7s - loss: 1.3395 - accuracy: 0.5379 - auc: 0.555030/54 [===============>..............] - ETA: 7s - loss: 1.3112 - accuracy: 0.5467 - auc: 0.561531/54 [================>.............] - ETA: 7s - loss: 1.3008 - accuracy: 0.5484 - auc: 0.559932/54 [================>.............] - ETA: 6s - loss: 1.2690 - accuracy: 0.5625 - auc: 0.571233/54 [=================>............] - ETA: 6s - loss: 1.3064 - accuracy: 0.5576 - auc: 0.562734/54 [=================>............] - ETA: 6s - loss: 1.3178 - accuracy: 0.5588 - auc: 0.559335/54 [==================>...........] - ETA: 6s - loss: 1.3290 - accuracy: 0.5600 - auc: 0.554636/54 [===================>..........] - ETA: 5s - loss: 1.3124 - accuracy: 0.5611 - auc: 0.558937/54 [===================>..........] - ETA: 5s - loss: 1.3204 - accuracy: 0.5514 - auc: 0.550738/54 [====================>.........] - ETA: 5s - loss: 1.3112 - accuracy: 0.5474 - auc: 0.549439/54 [====================>.........] - ETA: 4s - loss: 1.3083 - accuracy: 0.5487 - auc: 0.546340/54 [=====================>........] - ETA: 4s - loss: 1.2948 - accuracy: 0.5450 - auc: 0.546241/54 [=====================>........] - ETA: 4s - loss: 1.2728 - accuracy: 0.5561 - auc: 0.552142/54 [======================>.......] - ETA: 3s - loss: 1.2626 - accuracy: 0.5571 - auc: 0.552543/54 [======================>.......] - ETA: 3s - loss: 1.2500 - accuracy: 0.5535 - auc: 0.554044/54 [=======================>......] - ETA: 3s - loss: 1.2302 - accuracy: 0.5591 - auc: 0.560845/54 [========================>.....] - ETA: 2s - loss: 1.2211 - accuracy: 0.5600 - auc: 0.562646/54 [========================>.....] - ETA: 2s - loss: 1.2240 - accuracy: 0.5609 - auc: 0.559447/54 [=========================>....] - ETA: 2s - loss: 1.2053 - accuracy: 0.5660 - auc: 0.566948/54 [=========================>....] - ETA: 1s - loss: 1.1854 - accuracy: 0.5750 - auc: 0.576249/54 [==========================>...] - ETA: 1s - loss: 1.2000 - accuracy: 0.5755 - auc: 0.572550/54 [==========================>...] - ETA: 1s - loss: 1.1901 - accuracy: 0.5760 - auc: 0.575151/54 [===========================>..] - ETA: 0s - loss: 1.1871 - accuracy: 0.5686 - auc: 0.572952/54 [===========================>..] - ETA: 0s - loss: 1.1834 - accuracy: 0.5654 - auc: 0.571153/54 [============================>.] - ETA: 0s - loss: 1.1851 - accuracy: 0.5660 - auc: 0.568454/54 [==============================] - ETA: 0s - loss: 1.1755 - accuracy: 0.5709 - auc: 0.572854/54 [==============================] - 40s 434ms/step - loss: 1.1755 - accuracy: 0.5709 - auc: 0.5728 - val_loss: 2.2536 - val_accuracy: 0.6519 - val_auc: 0.6467 - lr: 5.0000e-04
+Epoch 2/800
+ 1/54 [..............................] - ETA: 16s - loss: 1.6364 - accuracy: 0.4000 - auc: 0.3200 2/54 [>.............................] - ETA: 16s - loss: 1.4377 - accuracy: 0.5000 - auc: 0.4800 3/54 [>.............................] - ETA: 16s - loss: 1.0933 - accuracy: 0.6000 - auc: 0.6133 4/54 [=>............................] - ETA: 15s - loss: 1.0455 - accuracy: 0.6000 - auc: 0.6050 5/54 [=>............................] - ETA: 15s - loss: 0.9364 - accuracy: 0.6400 - auc: 0.6520 6/54 [==>...........................] - ETA: 15s - loss: 0.9481 - accuracy: 0.6000 - auc: 0.5983 7/54 [==>...........................] - ETA: 14s - loss: 0.8792 - accuracy: 0.6286 - auc: 0.6347 8/54 [===>..........................] - ETA: 14s - loss: 0.8399 - accuracy: 0.6500 - auc: 0.6572 9/54 [====>.........................] - ETA: 14s - loss: 0.8630 - accuracy: 0.6222 - auc: 0.635310/54 [====>.........................] - ETA: 13s - loss: 0.8876 - accuracy: 0.6000 - auc: 0.605811/54 [=====>........................] - ETA: 13s - loss: 0.8417 - accuracy: 0.6182 - auc: 0.637212/54 [=====>........................] - ETA: 13s - loss: 0.7956 - accuracy: 0.6333 - auc: 0.669913/54 [======>.......................] - ETA: 13s - loss: 0.8010 - accuracy: 0.6462 - auc: 0.665014/54 [======>.......................] - ETA: 12s - loss: 0.8628 - accuracy: 0.6143 - auc: 0.620315/54 [=======>......................] - ETA: 12s - loss: 0.9111 - accuracy: 0.5867 - auc: 0.584816/54 [=======>......................] - ETA: 12s - loss: 0.9099 - accuracy: 0.5875 - auc: 0.583817/54 [========>.....................] - ETA: 11s - loss: 0.9099 - accuracy: 0.5765 - auc: 0.578118/54 [=========>....................] - ETA: 11s - loss: 0.8953 - accuracy: 0.5889 - auc: 0.581919/54 [=========>....................] - ETA: 11s - loss: 0.9081 - accuracy: 0.5789 - auc: 0.567320/54 [==========>...................] - ETA: 10s - loss: 0.8939 - accuracy: 0.5900 - auc: 0.575021/54 [==========>...................] - ETA: 10s - loss: 0.8784 - accuracy: 0.5905 - auc: 0.582722/54 [===========>..................] - ETA: 10s - loss: 0.8768 - accuracy: 0.5909 - auc: 0.579123/54 [===========>..................] - ETA: 9s - loss: 0.8586 - accuracy: 0.6000 - auc: 0.5921 24/54 [============>.................] - ETA: 9s - loss: 0.8481 - accuracy: 0.6083 - auc: 0.595625/54 [============>.................] - ETA: 9s - loss: 0.8649 - accuracy: 0.6080 - auc: 0.590526/54 [=============>................] - ETA: 8s - loss: 0.8726 - accuracy: 0.6000 - auc: 0.582227/54 [==============>...............] - ETA: 8s - loss: 0.8556 - accuracy: 0.6074 - auc: 0.595528/54 [==============>...............] - ETA: 8s - loss: 0.8533 - accuracy: 0.6000 - auc: 0.592929/54 [===============>..............] - ETA: 7s - loss: 0.8497 - accuracy: 0.5931 - auc: 0.591730/54 [===============>..............] - ETA: 7s - loss: 0.8552 - accuracy: 0.5867 - auc: 0.586031/54 [================>.............] - ETA: 7s - loss: 0.8475 - accuracy: 0.5871 - auc: 0.590632/54 [================>.............] - ETA: 7s - loss: 0.8347 - accuracy: 0.5938 - auc: 0.600933/54 [=================>............] - ETA: 6s - loss: 0.8219 - accuracy: 0.6000 - auc: 0.610434/54 [=================>............] - ETA: 6s - loss: 0.8184 - accuracy: 0.6000 - auc: 0.610635/54 [==================>...........] - ETA: 6s - loss: 0.8245 - accuracy: 0.5943 - auc: 0.601936/54 [===================>..........] - ETA: 5s - loss: 0.8219 - accuracy: 0.5889 - auc: 0.601537/54 [===================>..........] - ETA: 5s - loss: 0.8232 - accuracy: 0.5892 - auc: 0.602738/54 [====================>.........] - ETA: 5s - loss: 0.8232 - accuracy: 0.5895 - auc: 0.602739/54 [====================>.........] - ETA: 4s - loss: 0.8185 - accuracy: 0.5897 - auc: 0.605240/54 [=====================>........] - ETA: 4s - loss: 0.8214 - accuracy: 0.5850 - auc: 0.600641/54 [=====================>........] - ETA: 4s - loss: 0.8191 - accuracy: 0.5805 - auc: 0.601542/54 [======================>.......] - ETA: 3s - loss: 0.8274 - accuracy: 0.5762 - auc: 0.594643/54 [======================>.......] - ETA: 3s - loss: 0.8285 - accuracy: 0.5767 - auc: 0.593244/54 [=======================>......] - ETA: 3s - loss: 0.8234 - accuracy: 0.5773 - auc: 0.595645/54 [========================>.....] - ETA: 2s - loss: 0.8179 - accuracy: 0.5778 - auc: 0.599146/54 [========================>.....] - ETA: 2s - loss: 0.8195 - accuracy: 0.5739 - auc: 0.596747/54 [=========================>....] - ETA: 2s - loss: 0.8197 - accuracy: 0.5745 - auc: 0.596148/54 [=========================>....] - ETA: 1s - loss: 0.8103 - accuracy: 0.5792 - auc: 0.604149/54 [==========================>...] - ETA: 1s - loss: 0.8074 - accuracy: 0.5837 - auc: 0.607350/54 [==========================>...] - ETA: 1s - loss: 0.8096 - accuracy: 0.5840 - auc: 0.606251/54 [===========================>..] - ETA: 0s - loss: 0.8038 - accuracy: 0.5882 - auc: 0.610652/54 [===========================>..] - ETA: 0s - loss: 0.7968 - accuracy: 0.5923 - auc: 0.616153/54 [============================>.] - ETA: 0s - loss: 0.8049 - accuracy: 0.5849 - auc: 0.608954/54 [==============================] - ETA: 0s - loss: 0.8083 - accuracy: 0.5784 - auc: 0.604454/54 [==============================] - 19s 356ms/step - loss: 0.8083 - accuracy: 0.5784 - auc: 0.6044 - val_loss: 0.7336 - val_accuracy: 0.6519 - val_auc: 0.6417 - lr: 5.0000e-04
+Epoch 3/800
+ 1/54 [..............................] - ETA: 17s - loss: 0.8497 - accuracy: 0.8000 - auc: 0.6400 2/54 [>.............................] - ETA: 16s - loss: 0.7726 - accuracy: 0.6000 - auc: 0.6600 3/54 [>.............................] - ETA: 16s - loss: 0.9031 - accuracy: 0.6000 - auc: 0.5778 4/54 [=>............................] - ETA: 15s - loss: 0.8695 - accuracy: 0.6500 - auc: 0.5850 5/54 [=>............................] - ETA: 15s - loss: 0.7711 - accuracy: 0.6800 - auc: 0.6608 6/54 [==>...........................] - ETA: 15s - loss: 0.7807 - accuracy: 0.6667 - auc: 0.6511 7/54 [==>...........................] - ETA: 14s - loss: 0.8065 - accuracy: 0.6000 - auc: 0.6008 8/54 [===>..........................] - ETA: 14s - loss: 0.8447 - accuracy: 0.6000 - auc: 0.5756 9/54 [====>.........................] - ETA: 14s - loss: 0.7797 - accuracy: 0.6444 - auc: 0.634110/54 [====>.........................] - ETA: 13s - loss: 0.7519 - accuracy: 0.6400 - auc: 0.652811/54 [=====>........................] - ETA: 13s - loss: 0.7227 - accuracy: 0.6545 - auc: 0.676512/54 [=====>........................] - ETA: 13s - loss: 0.6950 - accuracy: 0.6833 - auc: 0.701013/54 [======>.......................] - ETA: 13s - loss: 0.7459 - accuracy: 0.6615 - auc: 0.666214/54 [======>.......................] - ETA: 12s - loss: 0.7594 - accuracy: 0.6429 - auc: 0.649515/54 [=======>......................] - ETA: 12s - loss: 0.7773 - accuracy: 0.6400 - auc: 0.634016/54 [=======>......................] - ETA: 12s - loss: 0.7614 - accuracy: 0.6375 - auc: 0.645117/54 [========>.....................] - ETA: 11s - loss: 0.7697 - accuracy: 0.6235 - auc: 0.633318/54 [=========>....................] - ETA: 11s - loss: 0.7583 - accuracy: 0.6222 - auc: 0.642019/54 [=========>....................] - ETA: 11s - loss: 0.7523 - accuracy: 0.6211 - auc: 0.644320/54 [==========>...................] - ETA: 10s - loss: 0.7785 - accuracy: 0.6000 - auc: 0.621421/54 [==========>...................] - ETA: 10s - loss: 0.7847 - accuracy: 0.6000 - auc: 0.621022/54 [===========>..................] - ETA: 10s - loss: 0.7799 - accuracy: 0.5909 - auc: 0.621923/54 [===========>..................] - ETA: 9s - loss: 0.8192 - accuracy: 0.5826 - auc: 0.6037 24/54 [============>.................] - ETA: 9s - loss: 0.8461 - accuracy: 0.5750 - auc: 0.586425/54 [============>.................] - ETA: 9s - loss: 0.8362 - accuracy: 0.5840 - auc: 0.591326/54 [=============>................] - ETA: 8s - loss: 0.8384 - accuracy: 0.5769 - auc: 0.586827/54 [==============>...............] - ETA: 8s - loss: 0.8558 - accuracy: 0.5630 - auc: 0.572928/54 [==============>...............] - ETA: 8s - loss: 0.8743 - accuracy: 0.5571 - auc: 0.567429/54 [===============>..............] - ETA: 7s - loss: 0.8796 - accuracy: 0.5586 - auc: 0.565130/54 [===============>..............] - ETA: 7s - loss: 0.8685 - accuracy: 0.5667 - auc: 0.571531/54 [================>.............] - ETA: 7s - loss: 0.8644 - accuracy: 0.5613 - auc: 0.570032/54 [================>.............] - ETA: 7s - loss: 0.8627 - accuracy: 0.5562 - auc: 0.568733/54 [=================>............] - ETA: 6s - loss: 0.8646 - accuracy: 0.5515 - auc: 0.565134/54 [=================>............] - ETA: 6s - loss: 0.8611 - accuracy: 0.5529 - auc: 0.564935/54 [==================>...........] - ETA: 6s - loss: 0.8556 - accuracy: 0.5600 - auc: 0.566136/54 [===================>..........] - ETA: 5s - loss: 0.8662 - accuracy: 0.5500 - auc: 0.556737/54 [===================>..........] - ETA: 5s - loss: 0.8615 - accuracy: 0.5459 - auc: 0.556938/54 [====================>.........] - ETA: 5s - loss: 0.8639 - accuracy: 0.5474 - auc: 0.553139/54 [====================>.........] - ETA: 4s - loss: 0.8641 - accuracy: 0.5436 - auc: 0.551840/54 [=====================>........] - ETA: 4s - loss: 0.8537 - accuracy: 0.5500 - auc: 0.560641/54 [=====================>........] - ETA: 4s - loss: 0.8471 - accuracy: 0.5512 - auc: 0.565042/54 [======================>.......] - ETA: 3s - loss: 0.8554 - accuracy: 0.5524 - auc: 0.562143/54 [======================>.......] - ETA: 3s - loss: 0.8528 - accuracy: 0.5535 - auc: 0.562544/54 [=======================>......] - ETA: 3s - loss: 0.8429 - accuracy: 0.5591 - auc: 0.571345/54 [========================>.....] - ETA: 2s - loss: 0.8486 - accuracy: 0.5600 - auc: 0.568746/54 [========================>.....] - ETA: 2s - loss: 0.8453 - accuracy: 0.5609 - auc: 0.570847/54 [=========================>....] - ETA: 2s - loss: 0.8457 - accuracy: 0.5532 - auc: 0.567448/54 [=========================>....] - ETA: 1s - loss: 0.8394 - accuracy: 0.5583 - auc: 0.572649/54 [==========================>...] - ETA: 1s - loss: 0.8368 - accuracy: 0.5551 - auc: 0.573150/54 [==========================>...] - ETA: 1s - loss: 0.8285 - accuracy: 0.5600 - auc: 0.580251/54 [===========================>..] - ETA: 0s - loss: 0.8260 - accuracy: 0.5608 - auc: 0.581352/54 [===========================>..] - ETA: 0s - loss: 0.8239 - accuracy: 0.5577 - auc: 0.581853/54 [============================>.] - ETA: 0s - loss: 0.8224 - accuracy: 0.5547 - auc: 0.581654/54 [==============================] - ETA: 0s - loss: 0.8186 - accuracy: 0.5597 - auc: 0.584554/54 [==============================] - 19s 356ms/step - loss: 0.8186 - accuracy: 0.5597 - auc: 0.5845 - val_loss: 1.2422 - val_accuracy: 0.6519 - val_auc: 0.6646 - lr: 5.0000e-04
+Epoch 4/800
+ 1/54 [..............................] - ETA: 16s - loss: 0.4741 - accuracy: 0.8000 - auc: 0.9600 2/54 [>.............................] - ETA: 16s - loss: 0.5391 - accuracy: 0.7000 - auc: 0.8100 3/54 [>.............................] - ETA: 16s - loss: 0.6491 - accuracy: 0.6000 - auc: 0.6756 4/54 [=>............................] - ETA: 15s - loss: 0.6043 - accuracy: 0.6000 - auc: 0.7425 5/54 [=>............................] - ETA: 15s - loss: 0.6255 - accuracy: 0.6400 - auc: 0.7504 6/54 [==>...........................] - ETA: 15s - loss: 0.6543 - accuracy: 0.6333 - auc: 0.7211 7/54 [==>...........................] - ETA: 14s - loss: 0.6587 - accuracy: 0.6571 - auc: 0.7176 8/54 [===>..........................] - ETA: 14s - loss: 0.7104 - accuracy: 0.6500 - auc: 0.6906 9/54 [====>.........................] - ETA: 14s - loss: 0.8021 - accuracy: 0.6222 - auc: 0.648910/54 [====>.........................] - ETA: 13s - loss: 0.7679 - accuracy: 0.6400 - auc: 0.672011/54 [=====>........................] - ETA: 13s - loss: 0.7394 - accuracy: 0.6727 - auc: 0.691612/54 [=====>........................] - ETA: 13s - loss: 0.7116 - accuracy: 0.6833 - auc: 0.712813/54 [======>.......................] - ETA: 13s - loss: 0.6836 - accuracy: 0.7077 - auc: 0.735914/54 [======>.......................] - ETA: 12s - loss: 0.7257 - accuracy: 0.6714 - auc: 0.698215/54 [=======>......................] - ETA: 12s - loss: 0.7127 - accuracy: 0.6800 - auc: 0.705216/54 [=======>......................] - ETA: 12s - loss: 0.7080 - accuracy: 0.6750 - auc: 0.707217/54 [========>.....................] - ETA: 11s - loss: 0.7133 - accuracy: 0.6706 - auc: 0.699018/54 [=========>....................] - ETA: 11s - loss: 0.7275 - accuracy: 0.6556 - auc: 0.684319/54 [=========>....................] - ETA: 11s - loss: 0.7650 - accuracy: 0.6316 - auc: 0.646620/54 [==========>...................] - ETA: 10s - loss: 0.7710 - accuracy: 0.6400 - auc: 0.644321/54 [==========>...................] - ETA: 10s - loss: 0.7614 - accuracy: 0.6476 - auc: 0.649822/54 [===========>..................] - ETA: 10s - loss: 0.7753 - accuracy: 0.6364 - auc: 0.637723/54 [===========>..................] - ETA: 9s - loss: 0.7707 - accuracy: 0.6348 - auc: 0.6401 24/54 [============>.................] - ETA: 9s - loss: 0.7670 - accuracy: 0.6333 - auc: 0.641925/54 [============>.................] - ETA: 9s - loss: 0.7703 - accuracy: 0.6240 - auc: 0.637626/54 [=============>................] - ETA: 8s - loss: 0.7749 - accuracy: 0.6231 - auc: 0.632327/54 [==============>...............] - ETA: 8s - loss: 0.7742 - accuracy: 0.6222 - auc: 0.632028/54 [==============>...............] - ETA: 8s - loss: 0.7736 - accuracy: 0.6214 - auc: 0.630929/54 [===============>..............] - ETA: 7s - loss: 0.7739 - accuracy: 0.6138 - auc: 0.629530/54 [===============>..............] - ETA: 7s - loss: 0.7661 - accuracy: 0.6200 - auc: 0.633631/54 [================>.............] - ETA: 7s - loss: 0.7704 - accuracy: 0.6129 - auc: 0.627132/54 [================>.............] - ETA: 7s - loss: 0.7673 - accuracy: 0.6062 - auc: 0.627533/54 [=================>............] - ETA: 6s - loss: 0.7695 - accuracy: 0.6000 - auc: 0.623834/54 [=================>............] - ETA: 6s - loss: 0.7733 - accuracy: 0.5941 - auc: 0.617835/54 [==================>...........] - ETA: 6s - loss: 0.7707 - accuracy: 0.5886 - auc: 0.617336/54 [===================>..........] - ETA: 5s - loss: 0.7673 - accuracy: 0.5889 - auc: 0.618837/54 [===================>..........] - ETA: 5s - loss: 0.7634 - accuracy: 0.5892 - auc: 0.620338/54 [====================>.........] - ETA: 5s - loss: 0.7619 - accuracy: 0.5895 - auc: 0.619839/54 [====================>.........] - ETA: 4s - loss: 0.7584 - accuracy: 0.5897 - auc: 0.621240/54 [=====================>........] - ETA: 4s - loss: 0.7524 - accuracy: 0.5950 - auc: 0.626341/54 [=====================>........] - ETA: 4s - loss: 0.7576 - accuracy: 0.5951 - auc: 0.624042/54 [======================>.......] - ETA: 3s - loss: 0.7496 - accuracy: 0.6048 - auc: 0.631743/54 [======================>.......] - ETA: 3s - loss: 0.7452 - accuracy: 0.6093 - auc: 0.635244/54 [=======================>......] - ETA: 3s - loss: 0.7477 - accuracy: 0.6045 - auc: 0.630645/54 [========================>.....] - ETA: 2s - loss: 0.7517 - accuracy: 0.5956 - auc: 0.624446/54 [========================>.....] - ETA: 2s - loss: 0.7544 - accuracy: 0.5913 - auc: 0.619647/54 [=========================>....] - ETA: 2s - loss: 0.7614 - accuracy: 0.5872 - auc: 0.612048/54 [=========================>....] - ETA: 1s - loss: 0.7566 - accuracy: 0.5875 - auc: 0.616249/54 [==========================>...] - ETA: 1s - loss: 0.7541 - accuracy: 0.5878 - auc: 0.618350/54 [==========================>...] - ETA: 1s - loss: 0.7612 - accuracy: 0.5840 - auc: 0.612651/54 [===========================>..] - ETA: 0s - loss: 0.7717 - accuracy: 0.5765 - auc: 0.604352/54 [===========================>..] - ETA: 0s - loss: 0.7647 - accuracy: 0.5808 - auc: 0.611253/54 [============================>.] - ETA: 0s - loss: 0.7636 - accuracy: 0.5811 - auc: 0.610954/54 [==============================] - ETA: 0s - loss: 0.7590 - accuracy: 0.5858 - auc: 0.615554/54 [==============================] - 19s 356ms/step - loss: 0.7590 - accuracy: 0.5858 - auc: 0.6155 - val_loss: 1.1051 - val_accuracy: 0.6519 - val_auc: 0.6661 - lr: 5.0000e-04
+Epoch 5/800
+ 1/54 [..............................] - ETA: 16s - loss: 0.6773 - accuracy: 0.6000 - auc: 0.6000 2/54 [>.............................] - ETA: 16s - loss: 0.6054 - accuracy: 0.6000 - auc: 0.7200 3/54 [>.............................] - ETA: 16s - loss: 0.5731 - accuracy: 0.6000 - auc: 0.7444 4/54 [=>............................] - ETA: 15s - loss: 0.6858 - accuracy: 0.5500 - auc: 0.6337 5/54 [=>............................] - ETA: 15s - loss: 0.8607 - accuracy: 0.5200 - auc: 0.5368 6/54 [==>...........................] - ETA: 15s - loss: 0.7911 - accuracy: 0.5667 - auc: 0.6006 7/54 [==>...........................] - ETA: 14s - loss: 0.8888 - accuracy: 0.5143 - auc: 0.5245 8/54 [===>..........................] - ETA: 14s - loss: 0.9336 - accuracy: 0.4500 - auc: 0.4528 9/54 [====>.........................] - ETA: 14s - loss: 0.9532 - accuracy: 0.4222 - auc: 0.425910/54 [====>.........................] - ETA: 13s - loss: 0.9738 - accuracy: 0.4200 - auc: 0.414611/54 [=====>........................] - ETA: 13s - loss: 0.9454 - accuracy: 0.4364 - auc: 0.435912/54 [=====>........................] - ETA: 13s - loss: 0.9876 - accuracy: 0.4167 - auc: 0.404913/54 [======>.......................] - ETA: 13s - loss: 0.9404 - accuracy: 0.4462 - auc: 0.454614/54 [======>.......................] - ETA: 12s - loss: 0.9330 - accuracy: 0.4571 - auc: 0.461715/54 [=======>......................] - ETA: 12s - loss: 0.9124 - accuracy: 0.4800 - auc: 0.494316/54 [=======>......................] - ETA: 12s - loss: 0.9182 - accuracy: 0.4875 - auc: 0.490217/54 [========>.....................] - ETA: 11s - loss: 0.9273 - accuracy: 0.4941 - auc: 0.493518/54 [=========>....................] - ETA: 11s - loss: 0.9227 - accuracy: 0.4889 - auc: 0.496619/54 [=========>....................] - ETA: 11s - loss: 0.9180 - accuracy: 0.4947 - auc: 0.494320/54 [==========>...................] - ETA: 10s - loss: 0.9087 - accuracy: 0.5100 - auc: 0.503921/54 [==========>...................] - ETA: 10s - loss: 0.9055 - accuracy: 0.5048 - auc: 0.502422/54 [===========>..................] - ETA: 10s - loss: 0.9118 - accuracy: 0.5000 - auc: 0.493523/54 [===========>..................] - ETA: 9s - loss: 0.8962 - accuracy: 0.5130 - auc: 0.5036 24/54 [============>.................] - ETA: 9s - loss: 0.9067 - accuracy: 0.5000 - auc: 0.488625/54 [============>.................] - ETA: 9s - loss: 0.8924 - accuracy: 0.5120 - auc: 0.502426/54 [=============>................] - ETA: 8s - loss: 0.8757 - accuracy: 0.5231 - auc: 0.515827/54 [==============>...............] - ETA: 8s - loss: 0.8714 - accuracy: 0.5259 - auc: 0.515628/54 [==============>...............] - ETA: 8s - loss: 0.8673 - accuracy: 0.5214 - auc: 0.515329/54 [===============>..............] - ETA: 7s - loss: 0.8562 - accuracy: 0.5310 - auc: 0.525930/54 [===============>..............] - ETA: 7s - loss: 0.8677 - accuracy: 0.5200 - auc: 0.514131/54 [================>.............] - ETA: 7s - loss: 0.8575 - accuracy: 0.5290 - auc: 0.521832/54 [================>.............] - ETA: 7s - loss: 0.8522 - accuracy: 0.5250 - auc: 0.523433/54 [=================>............] - ETA: 6s - loss: 0.8450 - accuracy: 0.5273 - auc: 0.529234/54 [=================>............] - ETA: 6s - loss: 0.8345 - accuracy: 0.5412 - auc: 0.538935/54 [==================>...........] - ETA: 6s - loss: 0.8290 - accuracy: 0.5371 - auc: 0.542336/54 [===================>..........] - ETA: 5s - loss: 0.8278 - accuracy: 0.5278 - auc: 0.540137/54 [===================>..........] - ETA: 5s - loss: 0.8266 - accuracy: 0.5243 - auc: 0.537938/54 [====================>.........] - ETA: 5s - loss: 0.8162 - accuracy: 0.5316 - auc: 0.549039/54 [====================>.........] - ETA: 4s - loss: 0.8111 - accuracy: 0.5333 - auc: 0.553140/54 [=====================>........] - ETA: 4s - loss: 0.8058 - accuracy: 0.5400 - auc: 0.559241/54 [=====================>........] - ETA: 4s - loss: 0.8046 - accuracy: 0.5366 - auc: 0.558642/54 [======================>.......] - ETA: 3s - loss: 0.8010 - accuracy: 0.5381 - auc: 0.561643/54 [======================>.......] - ETA: 3s - loss: 0.8010 - accuracy: 0.5349 - auc: 0.560144/54 [=======================>......] - ETA: 3s - loss: 0.7942 - accuracy: 0.5409 - auc: 0.566645/54 [========================>.....] - ETA: 2s - loss: 0.7873 - accuracy: 0.5467 - auc: 0.573446/54 [========================>.....] - ETA: 2s - loss: 0.7863 - accuracy: 0.5478 - auc: 0.574147/54 [=========================>....] - ETA: 2s - loss: 0.7837 - accuracy: 0.5532 - auc: 0.578748/54 [=========================>....] - ETA: 1s - loss: 0.7828 - accuracy: 0.5542 - auc: 0.579649/54 [==========================>...] - ETA: 1s - loss: 0.7770 - accuracy: 0.5592 - auc: 0.584950/54 [==========================>...] - ETA: 1s - loss: 0.7718 - accuracy: 0.5640 - auc: 0.589851/54 [===========================>..] - ETA: 0s - loss: 0.7767 - accuracy: 0.5569 - auc: 0.583152/54 [===========================>..] - ETA: 0s - loss: 0.7819 - accuracy: 0.5538 - auc: 0.577753/54 [============================>.] - ETA: 0s - loss: 0.7753 - accuracy: 0.5585 - auc: 0.584954/54 [==============================] - ETA: 0s - loss: 0.7713 - accuracy: 0.5634 - auc: 0.5892
