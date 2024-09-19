@@ -30,7 +30,7 @@ def ensure_directory_exists(directory):
 # Function for a single convolution block with Batch Normalization
 def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
     x = Conv3D(filters, kernel_size, strides=strides, padding='same',
-               kernel_regularizer=l2(1e-4))(x)
+               kernel_regularizer=l2(1e-5))(x)
     x = BatchNormalization()(x)
     x = LeakyReLU()(x)
     return x
@@ -249,11 +249,11 @@ def augment_data(X):
     for img in X:
         img_aug = img.copy()
         # Randomly flip along each axis with 50% probability
-        if np.random.rand() < 0.5:
+        if np.random.rand() < 0.3:
             img_aug = np.flip(img_aug, axis=1)  # Flip along x-axis
-        if np.random.rand() < 0.5:
+        if np.random.rand() < 0.3:
             img_aug = np.flip(img_aug, axis=2)  # Flip along y-axis
-        if np.random.rand() < 0.5:
+        if np.random.rand() < 0.3:
             img_aug = np.flip(img_aug, axis=3)  # Flip along z-axis
         augmented_X.append(img_aug)
     return np.array(augmented_X)
