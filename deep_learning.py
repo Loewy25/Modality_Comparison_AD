@@ -249,11 +249,11 @@ def augment_data(X):
     for img in X:
         img_aug = img.copy()
         # Randomly flip along each axis with 50% probability
-        if np.random.rand() < 0.3:
+        if np.random.rand() < 0.1:
             img_aug = np.flip(img_aug, axis=1)  # Flip along x-axis
-        if np.random.rand() < 0.3:
+        if np.random.rand() < 0.1:
             img_aug = np.flip(img_aug, axis=2)  # Flip along y-axis
-        if np.random.rand() < 0.3:
+        if np.random.rand() < 0.1:
             img_aug = np.flip(img_aug, axis=3)  # Flip along z-axis
         augmented_X.append(img_aug)
     return np.array(augmented_X)
