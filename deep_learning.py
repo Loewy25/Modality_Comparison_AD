@@ -394,7 +394,7 @@ def loading_mask_3d(task, modality):
 if __name__ == '__main__':
     task = 'pc'  # Update as per your task
     modality = 'PET'  # 'MRI' or 'PET'
-    info = '5_context_from_16_0.3_dropout_1e5_with_0.3_augmentation'  # Additional info for saving results
+    info = '5_context_from_16_0.3_dropout_1e5_with_0.1_augmentation'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, masker, original_imgs = loading_mask_3d(task, modality)
