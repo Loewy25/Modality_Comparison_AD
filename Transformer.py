@@ -8,6 +8,10 @@ from tensorflow.keras.metrics import AUC
 from sklearn.model_selection import StratifiedKFold
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.utils import to_categorical
+import nibabel as nib
+from nilearn.input_data import NiftiMasker
+from scipy.stats import zscore
+from sklearn.metrics import roc_auc_score
 import matplotlib.pyplot as plt
 from data_loading import generate_data_path, generate, binarylabel
 
