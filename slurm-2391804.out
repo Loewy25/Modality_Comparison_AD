@@ -1,2 +1,76 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Fri Sep 20 09:21:43 CDT 2024 1726842103
+Job ID:		2391804
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Fri Sep 20 09:21:43 CDT 2024 1726842103
+--------------------------------------------------------------
 /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
   warnings.warn(message, FutureWarning)
+2024-09-20 14:19:28.799185: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-09-20 14:19:31.624845: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 38212 MB memory:  -> device: 0, name: NVIDIA A100-SXM4-40GB, pci bus id: 0000:17:00.0, compute capability: 8.0
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+721
+Starting fold 1
+Traceback (most recent call last):
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/Transformer.py", line 232, in <module>
+    best_model = train_model(X, Y, task, modality, info)
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/Transformer.py", line 139, in train_model
+    model = create_transformer_model(input_shape=(91, 109, 91), num_classes=2)
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/Transformer.py", line 63, in create_transformer_model
+    patch_embedding_model = patch_embedding_layer(input_shape, patch_size, d_model)
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/Transformer.py", line 44, in patch_embedding_layer
+    patches = tf.image.extract_patches(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/layers/core/tf_op_layer.py", line 107, in handle
+    return TFOpLambda(op)(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/utils/traceback_utils.py", line 67, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+ValueError: Exception encountered when calling layer "tf.image.extract_patches" (type TFOpLambda).
+
+Shape must be rank 4 but is rank 5 for '{{node tf.image.extract_patches/ExtractImagePatches}} = ExtractImagePatches[T=DT_FLOAT, ksizes=[1, 16, 16, 16, 1], padding="VALID", rates=[1, 1, 1, 1, 1], strides=[1, 16, 16, 16, 1]](Placeholder)' with input shapes: [1,?,91,109,91].
+
+Call arguments received:
+  • images=tf.Tensor(shape=(1, None, 91, 109, 91), dtype=float32)
+  • sizes=['1', '16', '16', '16', '1']
+  • strides=['1', '16', '16', '16', '1']
+  • rates=['1', '1', '1', '1', '1']
+  • padding='VALID'
+  • name=None
+--------------------------------------------------------------
+Begin Slurm Epilogue Fri Sep 20 14:19:36 CDT 2024 1726859976
+Name                : cm-MRI-trans
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua411
+Cores               : 2
+State               : COMPLETED
+Submit              : 2024-09-20T09:21:41
+Start               : 2024-09-20T09:21:43
+End                 : 2024-09-20T14:19:34
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   04:57:51
+Used CPU Time       :   00:05:39
+% User (Computation): 96.56%
+% System (I/O)      :  3.44%
+Mem Reserved        : 500000M
+Max Mem Used        : 14.78G (15870418944.0)
+Max Disk Write      : 10.24K (10485.76)
+Max Disk Read       : 7.88G (8459030364.16)
+Max-Mem-Used Node   : gpua411
+Max-Disk-Write Node : gpua411
+Max-Disk-Read Node  : gpua411
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Fri Sep 20 14:19:36 CDT 2024 1726859976
+--------------------------------------------------------------
