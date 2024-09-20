@@ -1,0 +1,40 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Sep 19 22:40:10 CDT 2024 1726803610
+Job ID:		2391759
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Thu Sep 19 22:40:10 CDT 2024 1726803610
+--------------------------------------------------------------
+Traceback (most recent call last):
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/Transformer.py", line 222, in <module>
+    train_data, train_label, masker, original_imgs = loading_mask_3d(task, modality)
+  File "/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/Transformer.py", line 184, in loading_mask_3d
+    images_pet, images_mri, labels = generate_data_path()
+NameError: name 'generate_data_path' is not defined
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Sep 19 22:40:16 CDT 2024 1726803616
+Name                : dm-MRI-trans
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua411
+Cores               : 2
+State               : COMPLETED
+Submit              : 2024-09-19T22:33:40
+Start               : 2024-09-19T22:40:10
+End                 : 2024-09-19T22:40:14
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:00:04
+Used CPU Time       :   00:00:03
+% User (Computation): 81.34%
+% System (I/O)      :  0.00%
+Mem Reserved        : 500000M
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : gpua411
+Max-Disk-Write Node : gpua411
+Max-Disk-Read Node  : gpua411
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Thu Sep 19 22:40:16 CDT 2024 1726803616
+--------------------------------------------------------------
