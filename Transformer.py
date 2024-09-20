@@ -9,6 +9,8 @@ from sklearn.model_selection import StratifiedKFold
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.utils import to_categorical
 import matplotlib.pyplot as plt
+from data_loading import generate_data_path, generate, binarylabel
+
 
 # Function to ensure a directory exists
 def ensure_directory_exists(directory):
