@@ -218,7 +218,7 @@ def loading_mask_3d(task, modality):
 # Main execution
 if __name__ == '__main__':
     task = 'cm'  # Update as per your task
-    modality = 'MRI'  # 'MRI' or 'PET'
+    modality = 'PET'  # 'MRI' or 'PET'
     info = 'transformer_model_v1'
 
     train_data, train_label, masker, original_imgs = loading_mask_3d(task, modality)
