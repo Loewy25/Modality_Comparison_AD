@@ -1,2 +1,37 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Fri Sep 20 08:43:49 CDT 2024 1726839829
+Job ID:		2391788
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Fri Sep 20 08:43:49 CDT 2024 1726839829
+--------------------------------------------------------------
 /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
   warnings.warn(message, FutureWarning)
+slurmstepd: error: *** JOB 2391788 ON gpua411 CANCELLED AT 2024-09-20T09:19:26 ***
+--------------------------------------------------------------
+Begin Slurm Epilogue Fri Sep 20 09:19:29 CDT 2024 1726841970
+Name                : cd-PET-trans
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua411
+Cores               : 2
+State               : CANCELLED,CANCELLED by 2035263
+Submit              : 2024-09-20T08:43:48
+Start               : 2024-09-20T08:43:49
+End                 : 2024-09-20T09:19:27
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:35:38
+Used CPU Time       :   00:00:03
+% User (Computation): 67.46%
+% System (I/O)      : 32.51%
+Mem Reserved        : 500000M
+Max Mem Used        : 251.94M (264175616.0)
+Max Disk Write      : 10.24K (10485.76)
+Max Disk Read       : 65.71M (68901928.96)
+Max-Mem-Used Node   : gpua411
+Max-Disk-Write Node : gpua411
+Max-Disk-Read Node  : gpua411
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Fri Sep 20 09:19:30 CDT 2024 1726841970
+--------------------------------------------------------------

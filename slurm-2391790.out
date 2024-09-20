@@ -1,2 +1,37 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Fri Sep 20 08:45:28 CDT 2024 1726839928
+Job ID:		2391790
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Fri Sep 20 08:45:28 CDT 2024 1726839928
+--------------------------------------------------------------
 /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
   warnings.warn(message, FutureWarning)
+slurmstepd: error: *** JOB 2391790 ON gpua403 CANCELLED AT 2024-09-20T09:19:26 ***
+--------------------------------------------------------------
+Begin Slurm Epilogue Fri Sep 20 09:19:30 CDT 2024 1726841970
+Name                : cm-MRI-trans
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua403
+Cores               : 2
+State               : CANCELLED,CANCELLED by 2035263
+Submit              : 2024-09-20T08:45:21
+Start               : 2024-09-20T08:45:28
+End                 : 2024-09-20T09:19:27
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:33:59
+Used CPU Time       :   00:00:03
+% User (Computation): 67.35%
+% System (I/O)      : 32.62%
+Mem Reserved        : 500000M
+Max Mem Used        : 259.46M (272068608.0)
+Max Disk Write      : 10.24K (10485.76)
+Max Disk Read       : 66.78M (70023905.28)
+Max-Mem-Used Node   : gpua403
+Max-Disk-Write Node : gpua403
+Max-Disk-Read Node  : gpua403
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Fri Sep 20 09:19:30 CDT 2024 1726841970
+--------------------------------------------------------------

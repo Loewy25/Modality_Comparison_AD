@@ -1,37 +1,37 @@
 --------------------------------------------------------------
-Begin Slurm Prologue Fri Sep 20 08:46:15 CDT 2024 1726839975
-Job ID:		2391792
+Begin Slurm Prologue Fri Sep 20 09:20:06 CDT 2024 1726842006
+Job ID:		2391798
 Username:	l.peiwang
 Partition:	tier2_gpu
-End Slurm Prologue Fri Sep 20 08:46:15 CDT 2024 1726839975
+End Slurm Prologue Fri Sep 20 09:20:06 CDT 2024 1726842006
 --------------------------------------------------------------
 /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
   warnings.warn(message, FutureWarning)
-slurmstepd: error: *** JOB 2391792 ON gpua405 CANCELLED AT 2024-09-20T09:19:26 ***
+slurmstepd: error: *** JOB 2391798 ON gpua403 CANCELLED AT 2024-09-20T09:20:09 ***
 --------------------------------------------------------------
-Begin Slurm Epilogue Fri Sep 20 09:19:35 CDT 2024 1726841975
-Name                : dm-PET-trans
+Begin Slurm Epilogue Fri Sep 20 09:20:12 CDT 2024 1726842012
+Name                : pc-PET-trans
 User                : l.peiwang
 Partition           : tier2_gpu
-Nodes               : gpua405
+Nodes               : gpua403
 Cores               : 2
 State               : CANCELLED,CANCELLED by 2035263
-Submit              : 2024-09-20T08:46:14
-Start               : 2024-09-20T08:46:15
-End                 : 2024-09-20T09:19:32
+Submit              : 2024-09-20T09:20:01
+Start               : 2024-09-20T09:20:06
+End                 : 2024-09-20T09:20:10
 Reserved Walltime   : 5-10:50:00
-Used Walltime       :   00:33:17
+Used Walltime       :   00:00:04
 Used CPU Time       :   00:00:02
-% User (Computation): 98.29%
-% System (I/O)      :  0.00%
+% User (Computation): 98.98%
+% System (I/O)      :  0.97%
 Mem Reserved        : 500000M
-Max Mem Used        : 252.53M (264798208.0)
-Max Disk Write      : 10.24K (10485.76)
-Max Disk Read       : 65.71M (68901928.96)
-Max-Mem-Used Node   : gpua405
-Max-Disk-Write Node : gpua405
-Max-Disk-Read Node  : gpua405
+Max Mem Used        : 247.37M (259383296.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : gpua403
+Max-Disk-Write Node : gpua403
+Max-Disk-Read Node  : gpua403
 NVIDIA A100-SXM4-40GB
 Error: Unable to retrieve job statistics. Return: No data is available.
-End Slurm Epilogue Fri Sep 20 09:19:35 CDT 2024 1726841975
+End Slurm Epilogue Fri Sep 20 09:20:13 CDT 2024 1726842013
 --------------------------------------------------------------
