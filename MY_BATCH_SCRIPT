@@ -1,95 +1,28 @@
 #!/bin/bash
 
-# SLURM directives must be placed immediately after the shebang line
-#SBATCH --job-name=debug_submission
-#SBATCH --output=debug_submission.out
-#SBATCH --error=debug_submission.err
-#SBATCH --time=00:10:00
-#SBATCH --partition=short
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=1G
+#SBATCH -J dm-MRI-sat
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH --mem 500000M
+#SBATCH -t 130:50:00
+#SBATCH --gres=gpu:1
+#SBATCH --nodelist=gpua401
 
-echo "Starting SLURM job submission debugging script..."
 
-# 1. Check Disk Space Usage
-echo -e "\n=== Disk Space Usage ==="
-df -h ~
+#SBATCH --partition=tier2_gpu
 
-# 2. Check Disk Quota
-echo -e "\n=== Disk Quota ==="
-quota -s
 
-# 3. Identify Large Files and Directories in Home Directory
-echo -e "\n=== Top 20 Largest Files/Directories in Home Directory ==="
-du -ah ~ | sort -rh | head -n 20
 
-# 4. Test Write Permissions in Home Directory
-echo -e "\n=== Testing Write Permissions in Home Directory ==="
-touch ~/test_write_permission_file 2>/dev/null
-if [ -f ~/test_write_permission_file ]; then
-    echo "Write permission test successful."
-    rm ~/test_write_permission_file
-else
-    echo "Write permission test failed."
-fi
+#SBATCH --account=aristeidis_sotiras
 
-# 5. Check for Read-Only Filesystem
-echo -e "\n=== Checking if Filesystem is Read-Only ==="
-mount_point=$(df ~ | tail -1 | awk '{print $6}')
-mount | grep "on $mount_point " | grep -q "ro,"
-if [ $? -eq 0 ]; then
-    echo "Filesystem is mounted as read-only."
-else
-    echo "Filesystem is writable."
-fi
+module load python
+module load cuda/11.3
+module load cudnn/8.1.1
 
-# 6. Submit a Simple Test SLURM Job
-echo -e "\n=== Attempting to Submit a Simple Test SLURM Job ==="
 
-# Create the test job script with correct placement of SLURM directives
-cat << 'EOF' > debug_test_job.sh
-#!/bin/bash
-#SBATCH --job-name=debug_test_job
-#SBATCH --output=debug_test_job.out
-#SBATCH --error=debug_test_job.err
-#SBATCH --time=00:05:00
-#SBATCH --partition=short
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=1G
 
-echo "Test job running on $(hostname)"
-sleep 30
-EOF
+source ~/liuenv/bin/activate
 
-# Set executable permissions on the test job script
-chmod +x debug_test_job.sh
 
-# Submit the test job and capture the output
-sbatch_output=$(sbatch debug_test_job.sh 2>&1)
-echo "$sbatch_output"
-job_id=$(echo "$sbatch_output" | grep -oE '[0-9]+')
-
-if [[ "$sbatch_output" == *"Submitted batch job"* ]]; then
-    echo "Test job submitted successfully with Job ID: $job_id"
-else
-    echo "Failed to submit test job."
-fi
-
-# 7. Check Module Availability
-echo -e "\n=== Checking Module Availability ==="
-module list 2>&1
-
-# 8. Check for Stale Processes
-echo -e "\n=== Checking for Stale Processes ==="
-ps -u $USER
-
-# 9. Check SLURM Environment Variables
-echo -e "\n=== SLURM Environment Variables ==="
-env | grep SLURM
-
-echo -e "\nIf any of the above steps indicate issues, please address them accordingly or contact your system administrator for assistance."
-
-echo "Debugging script completed."
-
+python deep_learning.py
+sleep 1
