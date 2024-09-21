@@ -9,7 +9,7 @@
 #SBATCH --exclude=gpua403,gpua412,gpua407
 
 
-#SBATCH --partition=tier1_gpu
+#SBATCH --partition=tier2_cpu
 
 
 
