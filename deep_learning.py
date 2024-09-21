@@ -392,7 +392,7 @@ def loading_mask_3d(task, modality):
 
 # Main execution
 if __name__ == '__main__':
-    task = 'cm'  # Update as per your task
+    task = 'cd'  # Update as per your task
     modality = 'PET'  # 'MRI' or 'PET'
     info = '5_context_from_16_0.1_dropout_1e5_with_0.1_augmentation'  # Additional info for saving results
 
