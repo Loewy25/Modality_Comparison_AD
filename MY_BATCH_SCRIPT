@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J dm-MRI-tra
+#SBATCH -J pc-MRI-tra
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 400000M
