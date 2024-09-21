@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J pc-PET-sat
+#SBATCH -J cd-PET-tra
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 400000M
