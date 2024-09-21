@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# SLURM directives must be placed immediately after the shebang line
+#SBATCH --job-name=debug_submission
+#SBATCH --output=debug_submission.out
+#SBATCH --error=debug_submission.err
+#SBATCH --time=00:10:00
+#SBATCH --partition=short
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=1G
+
 echo "Starting SLURM job submission debugging script..."
 
 # 1. Check Disk Space Usage
@@ -34,9 +44,10 @@ else
     echo "Filesystem is writable."
 fi
 
-# 6. Attempt to Submit a Simple Test SLURM Job
+# 6. Submit a Simple Test SLURM Job
 echo -e "\n=== Attempting to Submit a Simple Test SLURM Job ==="
 
+# Create the test job script with correct placement of SLURM directives
 cat << 'EOF' > debug_test_job.sh
 #!/bin/bash
 #SBATCH --job-name=debug_test_job
@@ -70,7 +81,7 @@ fi
 echo -e "\n=== Checking Module Availability ==="
 module list 2>&1
 
-# 8. Check for Stale Processes (Optional)
+# 8. Check for Stale Processes
 echo -e "\n=== Checking for Stale Processes ==="
 ps -u $USER
 
