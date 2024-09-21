@@ -47,7 +47,7 @@ def extract_3d_patches(input_tensor, patch_size, strides):
     Returns:
         A 5D tensor of 3D patches.
     """
-    patches = tf.image.extract_volume_patches(
+    patches = tf.nn.extract_volume_patches(
         input_tensor,
         ksizes=[1, patch_size[0], patch_size[1], patch_size[2], 1],
         strides=[1, strides[0], strides[1], strides[2], 1],
@@ -55,6 +55,7 @@ def extract_3d_patches(input_tensor, patch_size, strides):
     )
     
     return patches
+
 
 # Patch embedding layer for 3D volumes
 def patch_embedding_layer(input_shape, patch_size, d_model):
