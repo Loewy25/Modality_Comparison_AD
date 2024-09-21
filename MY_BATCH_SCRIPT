@@ -8,6 +8,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --exclude=gpua403
 #SBATCH --exclude=gpua412
+#SBATCH --exclude=gpua407
 
 
 
