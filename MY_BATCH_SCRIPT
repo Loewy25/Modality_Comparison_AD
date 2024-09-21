@@ -1,17 +1,18 @@
 #!/bin/bash
 
 #SBATCH -J pc-PET-tra
-#SBATCH -N 1
-#SBATCH -n 1
-#SBATCH --mem 400000M
-#SBATCH -t 130:50:00
-#SBATCH --gres=gpu:1
+
+
+module load python
+module load cuda/11.3
+module load cudnn/8.1.1
 
 
 
-#SBATCH --partition=tier2_gpu
+source ~/liuenv/bin/activate
 
 
 
-#SBATCH --account=aristeidis_sotiras
+python Transformer.py
+sleep 1
 
