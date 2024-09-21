@@ -6,7 +6,7 @@
 #SBATCH --mem 400000M
 #SBATCH -t 130:50:00
 #SBATCH --gres=gpu:1
-#SBATCH --exclude=gpua403,gpua412,gpua407,gpua408
+#SBATCH --exclude=gpua403,gpua412,gpua407,gpua408,gpua802
 
 
 #SBATCH --partition=tier2_gpu
