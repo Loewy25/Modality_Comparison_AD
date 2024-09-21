@@ -3,10 +3,10 @@
 #SBATCH -J dm-MRI-sat
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH --mem 500000M
+#SBATCH --mem 400000M
 #SBATCH -t 130:50:00
 #SBATCH --gres=gpu:1
-#SBATCH --exclude=gpua403,gpua412,gpua407
+#SBATCH --exclude=gpua403,gpua412,gpua407,gpua408
 
 
 #SBATCH --partition=tier2_gpu
