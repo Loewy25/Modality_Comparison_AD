@@ -25,5 +25,5 @@ module load cudnn/8.1.1
 source ~/liuenv/bin/activate
 
 
-python Transformer.py
+python deep_learning.py
 sleep 1
