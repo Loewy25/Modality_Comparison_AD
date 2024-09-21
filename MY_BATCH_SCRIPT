@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #SBATCH -J dm-MRI-sat
 #SBATCH -N 1
 #SBATCH -n 1
@@ -7,22 +6,7 @@
 #SBATCH -t 20:50:00
 #SBATCH --gres=gpu:1
 #SBATCH --exclude=gpua403,gpua412,gpua407
-
-
-#SBATCH --partition=tier2_cpu
-
-
-
+#SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
 
-module load python
-module load cuda/11.3
-module load cudnn/8.1.1
-
-
-
-source ~/liuenv/bin/activate
-
-
-python deep_learning.py
-sleep 1
+sleep
