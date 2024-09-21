@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.layers import Input, Dense, Dropout, LayerNormalization, Add, Flatten
+from tensorflow.keras.layers import Input, Dense, Dropout, LayerNormalization, Add, Flatten, MultiHeadAttention\
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.metrics import AUC
