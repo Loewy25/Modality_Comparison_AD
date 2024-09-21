@@ -1,7 +1,19 @@
 #!/bin/bash
 
 #SBATCH -J pc-PET-tra
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH --mem 400000M
+#SBATCH -t 130:50:00
+#SBATCH --gres=gpu:1
 
+
+
+#SBATCH --partition=tier2_gpu
+
+
+
+#SBATCH --account=aristeidis_sotiras
 
 module load python
 module load cuda/11.3
