@@ -36,17 +36,26 @@ fi
 
 # 6. Attempt to Submit a Simple Test SLURM Job
 echo -e "\n=== Attempting to Submit a Simple Test SLURM Job ==="
-echo "#!/bin/bash
+
+cat << 'EOF' > debug_test_job.sh
+#!/bin/bash
 #SBATCH --job-name=debug_test_job
 #SBATCH --output=debug_test_job.out
 #SBATCH --error=debug_test_job.err
 #SBATCH --time=00:05:00
 #SBATCH --partition=short
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=1G
 
-echo \"Test job running on \$(hostname)\"
+echo "Test job running on $(hostname)"
 sleep 30
-" > debug_test_job.sh
+EOF
 
+# Set executable permissions on the test job script
+chmod +x debug_test_job.sh
+
+# Submit the test job and capture the output
 sbatch_output=$(sbatch debug_test_job.sh 2>&1)
 echo "$sbatch_output"
 job_id=$(echo "$sbatch_output" | grep -oE '[0-9]+')
@@ -61,6 +70,15 @@ fi
 echo -e "\n=== Checking Module Availability ==="
 module list 2>&1
 
+# 8. Check for Stale Processes (Optional)
+echo -e "\n=== Checking for Stale Processes ==="
+ps -u $USER
+
+# 9. Check SLURM Environment Variables
+echo -e "\n=== SLURM Environment Variables ==="
+env | grep SLURM
+
 echo -e "\nIf any of the above steps indicate issues, please address them accordingly or contact your system administrator for assistance."
 
 echo "Debugging script completed."
+
