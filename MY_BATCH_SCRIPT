@@ -4,12 +4,12 @@
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 500000M
-#SBATCH -t 130:50:00
+#SBATCH -t 20:50:00
 #SBATCH --gres=gpu:1
 #SBATCH --exclude=gpua403,gpua412,gpua407
 
 
-#SBATCH --partition=tier2_gpu
+#SBATCH --partition=tier1_gpu
 
 
 
