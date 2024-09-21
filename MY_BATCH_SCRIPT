@@ -1,102 +1,28 @@
 #!/bin/bash
-#SBATCH -J enhanced_debug_job
+
+#SBATCH -J cd-PET-sat
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH --mem=1G
-#SBATCH -t 00:10:00
+#SBATCH --mem 4000M
+#SBATCH -t 10:50:00
 #SBATCH --gres=gpu:1
+#SBATCH --exclude=gpua403,gpua412,gpua407,gpua408,gpua802
+
+
 #SBATCH --partition=tier2_gpu
+
+
+
 #SBATCH --account=aristeidis_sotiras
-#SBATCH --output=enhanced_debug_job.out
-#SBATCH --error=enhanced_debug_job.err
 
-echo "----------------------------------------"
-echo "Job Submission Debugging Started at $(date)"
-echo "----------------------------------------"
+module load python
+module load cuda/11.3
+module load cudnn/8.1.1
 
-# 1. Display Job Information
-echo -e "\n=== Job Information ==="
-echo "Job ID: $SLURM_JOB_ID"
-echo "Job Name: $SLURM_JOB_NAME"
-echo "Partition: $SLURM_JOB_PARTITION"
-echo "Account: $SLURM_JOB_ACCOUNT"
-echo "Node List: $SLURM_JOB_NODELIST"
-echo "Number of Nodes: $SLURM_JOB_NUM_NODES"
-echo "Number of Tasks: $SLURM_NTASKS"
-echo "Memory Allocated: $SLURM_MEM_PER_NODE"
-echo "Time Limit: $SLURM_TIMELIMIT"
 
-# 2. Display Loaded Modules
-echo -e "\n=== Loaded Modules ==="
-module list 2>&1
 
-# 3. Verify Disk Space and Quota
-echo -e "\n=== Disk Space Usage ==="
-df -h ~ > disk_space.txt
-cat disk_space.txt
-
-echo -e "\n=== Disk Quota ==="
-quota -s > disk_quota.txt
-cat disk_quota.txt
-
-# 4. Check Filesystem Mount Status
-echo -e "\n=== Filesystem Mount Status ==="
-mount_point=$(df ~ | tail -1 | awk '{print $6}')
-mount | grep "on $mount_point " > mount_status.txt
-cat mount_status.txt
-
-# 5. Test Write Permissions
-echo -e "\n=== Testing Write Permissions ==="
-touch ~/debug_temp_file.txt 2>/dev/null
-if [ -f ~/debug_temp_file.txt ]; then
-    echo "Write permissions are functional."
-    rm ~/debug_temp_file.txt
-    echo "Temporary file deleted successfully."
-else
-    echo "Failed to write to the filesystem. Possible permissions or filesystem issues."
-fi
-
-# 6. Activate Virtual Environment
-echo -e "\n=== Activating Virtual Environment ==="
 source ~/liuenv/bin/activate
 
-# Confirm Activation
-echo -e "\n=== Python Environment ==="
-which python
-python --version
 
-# 7. Run a Simple Python Command
-echo -e "\n=== Running Test Python Command ==="
-python -c "print('Hello from the Python environment!')"
-
-# 8. Attempt to Run Your Python Script
-echo -e "\n=== Running deep_learning.py ==="
-if [ -f deep_learning.py ]; then
-    python deep_learning.py
-    if [ $? -eq 0 ]; then
-        echo "deep_learning.py executed successfully."
-    else
-        echo "deep_learning.py encountered an error. Check the error logs for details."
-    fi
-else
-    echo "deep_learning.py not found in the current directory."
-fi
-
-# 9. List Contents of Current Directory
-echo -e "\n=== Listing Current Directory Contents ==="
-ls -lh > dir_contents.txt
-cat dir_contents.txt
-
-# 10. Display SLURM Environment Variables
-echo -e "\n=== SLURM Environment Variables ==="
-env | grep SLURM > slurm_env.txt
-cat slurm_env.txt
-
-# 11. Check Python Dependencies (Optional)
-echo -e "\n=== Checking Python Dependencies ==="
-pip list > pip_packages.txt
-cat pip_packages.txt
-
-echo "----------------------------------------"
-echo "Job Submission Debugging Completed at $(date)"
-echo "----------------------------------------"
+python deep_learning.py
+sleep 1
