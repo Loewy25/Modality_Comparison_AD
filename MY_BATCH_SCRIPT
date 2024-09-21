@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J cd-PET-tra
+#SBATCH -J cd-MRI-tra
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 400000M
