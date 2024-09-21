@@ -15,14 +15,4 @@
 
 #SBATCH --account=aristeidis_sotiras
 
-module load python
-module load cuda/11.3
-module load cudnn/8.1.1
-
-
-
-source ~/liuenv/bin/activate
-
-
-python deep_learning.py
-sleep 1
+quota -s
