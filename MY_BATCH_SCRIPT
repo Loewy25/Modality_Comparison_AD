@@ -1,11 +1,12 @@
 #!/bin/bash
 
-#SBATCH -J cd-PET-sat
+#SBATCH -J cd-PET-tra
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH --mem 4000M
-#SBATCH -t 10:50:00
+#SBATCH --mem 400000M
+#SBATCH -t 130:50:00
 #SBATCH --gres=gpu:1
+#SBATCH --exclude=gpua403,gpua412,gpua407,gpua408,gpua802
 
 
 #SBATCH --partition=tier2_gpu
@@ -14,4 +15,14 @@
 
 #SBATCH --account=aristeidis_sotiras
 
-quota -s
+module load python
+module load cuda/11.3
+module load cudnn/8.1.1
+
+
+
+source ~/liuenv/bin/activate
+
+
+python Transformer.py
+sleep 1
