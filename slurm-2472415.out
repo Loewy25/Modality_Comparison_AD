@@ -1,0 +1,35 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Sep 23 15:46:17 CDT 2024 1727124377
+Job ID:		2472415
+Username:	l.peiwang
+Partition:	tier2_gpu
+End Slurm Prologue Mon Sep 23 15:46:17 CDT 2024 1727124377
+--------------------------------------------------------------
+slurmstepd: error: *** JOB 2472415 ON gpua406 CANCELLED AT 2024-09-23T15:46:22 ***
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Sep 23 15:46:26 CDT 2024 1727124386
+Name                : cd-PET-tra
+User                : l.peiwang
+Partition           : tier2_gpu
+Nodes               : gpua406
+Cores               : 2
+State               : CANCELLED,CANCELLED by 2035263
+Submit              : 2024-09-23T15:46:16
+Start               : 2024-09-23T15:46:16
+End                 : 2024-09-23T15:46:23
+Reserved Walltime   : 5-10:50:00
+Used Walltime       :   00:00:07
+Used CPU Time       :   00:00:01
+% User (Computation): 93.65%
+% System (I/O)      :  6.35%
+Mem Reserved        : 400000M
+Max Mem Used        : 37.40M (39215104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : gpua406
+Max-Disk-Write Node : gpua406
+Max-Disk-Read Node  : gpua406
+NVIDIA A100-SXM4-40GB
+Error: Unable to retrieve job statistics. Return: No data is available.
+End Slurm Epilogue Mon Sep 23 15:46:26 CDT 2024 1727124386
+--------------------------------------------------------------
