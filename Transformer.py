@@ -160,7 +160,7 @@ def train_model(X, Y, task, modality, info):
 
         history = model.fit(X_train, Y_train,
                             batch_size=5,
-                            epochs=3,
+                            epochs=800,
                             validation_data=(X_val, Y_val),
                             callbacks=[early_stopping, reduce_lr])
         histories.append(history)
@@ -220,7 +220,7 @@ def loading_mask_3d(task, modality):
 
 # Main execution
 if __name__ == '__main__':
-    task = 'pc'  # Update as per your task
+    task = 'cd'  # Update as per your task
     modality = 'PET'  # 'MRI' or 'PET'
     info = 'transformer_model_v1'
 
