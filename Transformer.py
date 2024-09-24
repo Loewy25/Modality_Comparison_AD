@@ -36,25 +36,23 @@ def transformer_block(inputs, num_heads, d_model, d_ff, dropout_rate=0.1):
     return out2
 
 # Custom function to extract 3D patches from the input tensor
-def extract_3d_patches(input_tensor, patch_size, strides):
-    """Extracts 3D patches from input_tensor.
-    
-    Args:
-        input_tensor: 5D tensor of shape [batch_size, depth, height, width, channels].
-        patch_size: List or tuple of 3 integers [patch_depth, patch_height, patch_width].
-        strides: List or tuple of 3 integers [stride_depth, stride_height, stride_width].
-    
-    Returns:
-        A 5D tensor of 3D patches.
-    """
-    patches = tf.nn.extract_volume_patches(
-        input_tensor,
-        ksizes=[1, patch_size[0], patch_size[1], patch_size[2], 1],
-        strides=[1, strides[0], strides[1], strides[2], 1],
+import tensorflow as tf
+
+def extract_3d_patches(inputs, patch_size, stride):
+    # inputs: [batch, depth, height, width, channels]
+    # We create a convolutional layer with kernel size equal to the patch size,
+    # strides equal to the desired stride, and no padding.
+    patches = tf.nn.conv3d(
+        input=inputs,
+        filters=tf.ones((patch_size, patch_size, patch_size, inputs.shape[-1], 1)),
+        strides=[1, stride, stride, stride, 1],
         padding='VALID'
     )
-    
+    # The output shape is [batch, new_depth, new_height, new_width, 1]
+    # We can reshape it to get the patches we want
+    patches = tf.reshape(patches, [tf.shape(inputs)[0], -1, patch_size * patch_size * patch_size * inputs.shape[-1]])
     return patches
+
 
 
 # Patch embedding layer for 3D volumes
