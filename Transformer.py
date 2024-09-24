@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.layers import Input, Dense, Dropout, LayerNormalization, Add, Flatten, MultiHeadAttention
+from tensorflow.keras.layers import Input, Dense, Dropout, LayerNormalization, Add, Flatten, MultiHeadAttention, Reshape, Conv3D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.metrics import AUC
@@ -23,7 +23,7 @@ def ensure_directory_exists(directory):
 # Transformer block
 def transformer_block(inputs, num_heads, d_model, d_ff, dropout_rate=0.1):
     # Multi-Head Self-Attention
-    attention_output = tf.keras.layers.MultiHeadAttention(num_heads=num_heads, key_dim=d_model)(inputs, inputs)
+    attention_output = MultiHeadAttention(num_heads=num_heads, key_dim=d_model)(inputs, inputs)
     attention_output = Dropout(dropout_rate)(attention_output)
     out1 = LayerNormalization(epsilon=1e-6)(Add()([inputs, attention_output]))  # Residual connection + Layer norm
 
@@ -35,53 +35,37 @@ def transformer_block(inputs, num_heads, d_model, d_ff, dropout_rate=0.1):
     
     return out2
 
-# Custom function to extract 3D patches from the input tensor
-import tensorflow as tf
-
-def extract_3d_patches(inputs, patch_size, stride):
-    # inputs: [batch, depth, height, width, channels]
-    # We create a convolutional layer with kernel size equal to the patch size,
-    # strides equal to the desired stride, and no padding.
-    patches = tf.nn.conv3d(
-        input=inputs,
-        filters=tf.ones((patch_size, patch_size, patch_size, inputs.shape[-1], 1)),
-        strides=[1, stride, stride, stride, 1],
-        padding='VALID'
-    )
-    # The output shape is [batch, new_depth, new_height, new_width, 1]
-    # We can reshape it to get the patches we want
-    patches = tf.reshape(patches, [tf.shape(inputs)[0], -1, patch_size * patch_size * patch_size * inputs.shape[-1]])
-    return patches
-
-
-
-# Patch embedding layer for 3D volumes
+# Patch embedding layer for 3D volumes using Conv3D
 def patch_embedding_layer(input_shape, patch_size, d_model):
     inputs = Input(shape=input_shape + (1,))  # Adding a channel dimension for 3D images
     
-    # Extract 3D patches from the input tensor
-    patches = extract_3d_patches(inputs, patch_size, patch_size)
+    # Use Conv3D to extract patches and project to the embedding dimension
+    x = Conv3D(
+        filters=d_model,
+        kernel_size=patch_size,
+        strides=patch_size,
+        padding='valid'
+    )(inputs)
     
     # Flatten the patches into a sequence
-    patches = tf.reshape(patches, [-1, tf.shape(patches)[1] * tf.shape(patches)[2] * tf.shape(patches)[3], patches.shape[-1]])
+    seq_len = (input_shape[0] // patch_size[0]) * (input_shape[1] // patch_size[1]) * (input_shape[2] // patch_size[2])
+    x = Reshape((seq_len, d_model))(x)
     
-    # Linear projection to d_model (patch embedding)
-    patch_embeddings = Dense(d_model)(patches)
-
-    return tf.keras.Model(inputs=inputs, outputs=patch_embeddings)
+    return Model(inputs=inputs, outputs=x)
 
 # Full Transformer-based classification model
-def create_transformer_model(input_shape=(91, 109, 91), patch_size=(16, 16, 16), d_model=128, num_heads=8, d_ff=256, num_layers=4, num_classes=2, dropout_rate=0.1):
+def create_transformer_model(input_shape=(91, 109, 91), patch_size=(7, 7, 7), d_model=128, num_heads=8, d_ff=256, num_layers=4, num_classes=2, dropout_rate=0.1):
     inputs = Input(shape=input_shape + (1,))  # Adding a channel dimension
     
     # Patch Embedding
     patch_embedding_model = patch_embedding_layer(input_shape, patch_size, d_model)
     x = patch_embedding_model(inputs)
-
+    
     # Add positional encoding
-    positions = tf.range(start=0, limit=tf.shape(x)[1], delta=1)
-    pos_encoding = Dense(d_model)(positions)
-    x += pos_encoding
+    num_patches = x.shape[1]
+    positions = tf.range(start=0, limit=num_patches, delta=1)
+    pos_encoding = Embedding(input_dim=num_patches, output_dim=d_model)(positions)
+    x = x + pos_encoding
 
     # Transformer layers
     for _ in range(num_layers):
@@ -151,7 +135,7 @@ def train_model(X, Y, task, modality, info):
         X_train, X_val = X[train_idx], X[val_idx]
         Y_train, Y_val = Y[train_idx], Y[val_idx]
 
-        model = create_transformer_model(input_shape=(91, 109, 91), num_classes=2)
+        model = create_transformer_model(input_shape=X.shape[1:4], num_classes=2)
         model.compile(optimizer=Adam(learning_rate=5e-4),
                       loss='categorical_crossentropy',
                       metrics=['accuracy', AUC(name='auc')])
@@ -168,7 +152,7 @@ def train_model(X, Y, task, modality, info):
             monitor='val_loss',
             factor=0.5,
             patience=10,
-            mode='max',
+            mode='min',
             verbose=1
         )
 
@@ -216,7 +200,6 @@ def loading_mask_3d(task, modality):
     masker = NiftiMasker(mask_img=mask_path, target_affine=nib.load(mask_path).affine)  # Avoid resampling warnings
 
     train_data = []
-    target_shape = (91, 109, 91)
 
     for i in range(len(data_train)):
         nifti_img = nib.load(data_train[i])
@@ -241,6 +224,8 @@ if __name__ == '__main__':
 
     train_data, train_label, masker, original_imgs = loading_mask_3d(task, modality)
     X = np.array(train_data)
+    X = np.expand_dims(X, axis=-1)  # Add channel dimension
     Y = to_categorical(train_label, num_classes=2)
 
     best_model = train_model(X, Y, task, modality, info)
+
