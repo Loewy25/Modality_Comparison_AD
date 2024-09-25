@@ -56,7 +56,7 @@ def patch_embedding_layer(input_shape, patch_size, d_model):
     return Model(inputs=inputs, outputs=x)
 
 # Full Transformer-based classification model
-def create_transformer_model(input_shape=(91, 109, 91), patch_size=(7, 7, 7), d_model=128, num_heads=8, d_ff=256, num_layers=4, num_classes=2, dropout_rate=0.1):
+def create_transformer_model(input_shape=(91, 109, 91), patch_size=(7, 7, 7), d_model=128, num_heads=6, d_ff=256, num_layers=4, num_classes=2, dropout_rate=0.4):
     inputs = Input(shape=input_shape + (1,))  # Adding a channel dimension
     
     # Patch Embedding
@@ -222,7 +222,7 @@ def loading_mask_3d(task, modality):
 if __name__ == '__main__':
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'transformer_model_v1'
+    info = 'transformer_model_head_6_drop_0.4'
 
     train_data, train_label, masker, original_imgs = loading_mask_3d(task, modality)
     X = np.array(train_data)
