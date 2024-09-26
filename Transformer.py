@@ -220,7 +220,7 @@ def loading_mask_3d(task, modality):
 
 # Main execution
 if __name__ == '__main__':
-    task = 'cd'  # Update as per your task
+    task = 'cm'  # Update as per your task
     modality = 'PET'  # 'MRI' or 'PET'
     info = 'transformer_model_head_8_drop_0.2_layer_6_patch7'
 
