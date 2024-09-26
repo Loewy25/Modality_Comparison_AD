@@ -222,7 +222,7 @@ def loading_mask_3d(task, modality):
 if __name__ == '__main__':
     task = 'pc'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'transformer_model_head_8_drop_0.2_layer_6_patch7'
+    info = 'transformer_model_head_8_drop_0.2_layer_3_patch7'
 
     train_data, train_label, masker, original_imgs = loading_mask_3d(task, modality)
     X = np.array(train_data)
