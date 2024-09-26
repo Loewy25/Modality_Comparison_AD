@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J cd-PET-tra
+#SBATCH -J sat
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem 400000M
@@ -24,5 +24,5 @@ module load cudnn/8.1.1
 source ~/liuenv/bin/activate
 
 
-python Transformer.py
+python deep_learning.py
 sleep 1
