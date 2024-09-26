@@ -56,7 +56,7 @@ def patch_embedding_layer(input_shape, patch_size, d_model):
     return Model(inputs=inputs, outputs=x)
 
 # Full Transformer-based classification model
-def create_transformer_model(input_shape=(91, 109, 91), patch_size=(7 , 7, 7), d_model=128, num_heads=8, d_ff=256, num_layers=6, num_classes=2, dropout_rate=0.2):
+def create_transformer_model(input_shape=(91, 109, 91), patch_size=(7 , 7, 7), d_model=128, num_heads=8, d_ff=256, num_layers=3, num_classes=2, dropout_rate=0.1):
     inputs = Input(shape=input_shape + (1,))  # Adding a channel dimension
     
     # Patch Embedding
