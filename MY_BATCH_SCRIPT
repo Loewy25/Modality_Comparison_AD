@@ -3,7 +3,7 @@
 #SBATCH -J tras
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH --mem 400000M
+#SBATCH --mem 40000M
 #SBATCH -t 130:50:00
 #SBATCH --gres=gpu:1
 #SBATCH --exclude=gpua403,gpua412,gpua407,gpua408,gpua802
@@ -18,11 +18,12 @@
 module load python
 module load cuda/11.3
 module load cudnn/8.1.1
+module load ants
 
 
 
 source ~/liuenv/bin/activate
 
 
-python Transformer.py
+python Processing_Affine.py
 sleep 1
