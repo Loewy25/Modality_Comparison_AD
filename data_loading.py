@@ -135,6 +135,34 @@ def generate_data_path():
     return pet_paths, mri_paths, class_labels_out
 
 
+def generate_data_path_less():
+    files=['/scratch/jjlee/Singularity/ADNI/bids/derivatives/table_preclinical_cross-sectional.csv','/scratch/jjlee/Singularity/ADNI/bids/derivatives/table_cn_cross-sectional.csv','/scratch/jjlee/Singularity/ADNI/bids/derivatives/table_cdr_0p5_apos_cross-sectional.csv','/scratch/jjlee/Singularity/ADNI/bids/derivatives/table_cdr_gt_0p5_apos_cross-sectional.csv']
+    class_labels=['PCN','CN','MCI','Dementia']
+    pet_paths = []
+    mri_paths = []
+    class_labels_out = []
+
+    for file, class_label in zip(files, class_labels):
+        df = pd.read_csv(file)
+
+        for _, row in df.iterrows():
+            # Extract sub-xxxx and ses-xxxx from original paths
+            sub_ses_info = "/".join(row['FdgFilename'].split("/")[8:10])
+
+            # Generate new directory
+            new_directory = os.path.join('/scratch/l.peiwang/derivatives_less', sub_ses_info, 'pet')
+
+            # Get all files that match the pattern but then exclude ones that contain 'icv'
+            pet_files = [f for f in glob.glob(new_directory + '/*FDG*') if 'icv' not in f]
+            mri_files = glob.glob(new_directory + '/*brain*')
+            if pet_files and mri_files:  # If both lists are not empty
+                pet_paths.append(pet_files[0])  # Append the first PET file found
+                mri_paths.append(mri_files[0])  # Append the first MRI file found
+                class_labels_out.append(class_label)  # Associate class label with the path
+
+    return pet_paths, mri_paths, class_labels_out
+
+
 def binarylabel(train_label,mode):
     if mode=="cd" or mode=="cdm":
         for i in range(len(train_label)):
@@ -172,7 +200,7 @@ def binarylabel(train_label,mode):
 
 def loading_mask(task,modality):
     #Loading and generating data
-    images_pet,images_mri,labels=generate_data_path()
+    images_pet,images_mri,labels=generate_data_path_less()
     if modality == 'PET':
         data_train,train_label=generate(images_pet,labels,task)
     if modality == 'MRI':
