@@ -1,14 +1,18 @@
 #!/bin/bash
 
-#SBATCH -N 1
-#SBATCH -n 1
-#SBATCH --mem 400000M
-#SBATCH -t 130:50:00
-#SBATCH --gres=gpu:1
+#SBATCH -N 1                     # Request 1 node
+#SBATCH -n 1                     # Request 1 CPU per task
+#SBATCH --mem 400000M            # Request 400GB memory per task
+#SBATCH -t 130:50:00             # Set maximum time
+#SBATCH --gres=gpu:1             # Request 1 GPU per task
 #SBATCH --exclude=gpua403,gpua412,gpua407,gpua408,gpua802
 #SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
-#SBATCH --array=0-7
+#SBATCH --array=0-7              # Array of 8 tasks (0 to 7)
+
+# Output and error filenames based on job ID and task ID
+#SBATCH --output=slurm-%A_%a.out 
+#SBATCH --error=slurm-%A_%a.err 
 
 module load python
 module load cuda/11.3
@@ -16,20 +20,11 @@ module load cudnn/8.1.1
 
 source ~/liuenv/bin/activate
 
-# List of Python scripts you want to run
+# List of Python scripts you want to run (internal array)
 scripts=("deep_learning_cd_MRI.py" "deep_learning_cd_PET.py" "deep_learning_cm_MRI.py" "deep_learning_cm_PET.py" "deep_learning_dm_MRI.py" "deep_learning_dm_PET.py" "deep_learning_pc_MRI.py" "deep_learning_pc_PET.py")
 
-# Assign a unique job name based on the Python script for this task
-job_name=${scripts[$SLURM_ARRAY_TASK_ID]}
-job_basename=${job_name%.*}  # Removes the .py extension from the job name
+# Select the Python script to run based on the SLURM_ARRAY_TASK_ID
+script=${scripts[$SLURM_ARRAY_TASK_ID]}
 
-#SBATCH -J ${job_basename}  # Set job name without .py
-
-# Custom output and error filenames
-#SBATCH --output=slurm-%x_%A_%a.out   # Where %x is the job name, %A is the job ID, and %a is the array task ID
-#SBATCH --error=slurm-%x_%A_%a.err    # Same for error files
-
-# Run the corresponding script for this task
-python ${scripts[$SLURM_ARRAY_TASK_ID]}
-
-sleep 1
+# Run the corresponding Python script for this task
+srun python $script
