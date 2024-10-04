@@ -369,7 +369,7 @@ def loading_mask_3d(task, modality):
     train_label = binarylabel(train_label, task)
     train_data = np.array(train_data)
 
-    return train_data, train_label, masker, original_imgs
+    return train_data, train_label, original_imgs
 
 # Main execution
 if __name__ == '__main__':
@@ -378,7 +378,7 @@ if __name__ == '__main__':
     info = '5_context_from_16_0.1_dropout_1e5_with_0.1_augmentation'  # Additional info for saving results
 
     # Load your data
-    train_data, train_label, masker, original_imgs = loading_mask_3d(task, modality)
+    train_data, train_label, original_imgs = loading_mask_3d(task, modality)
     X = np.array(train_data)
     X = np.expand_dims(X, axis=-1)  # Add channel dimension if not already present
     Y = to_categorical(train_label, num_classes=2)
