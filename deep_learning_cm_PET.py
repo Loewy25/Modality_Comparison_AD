@@ -348,12 +348,6 @@ def loading_mask_3d(task, modality):
     else:
         raise ValueError(f"Unsupported modality: {modality}")
 
-    # Update the mask path to your actual mask image path
-    mask_path = '/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii'  # Replace with your actual mask path
-    masker = NiftiMasker(mask_img=mask_path)
-    mask_affine = nib.load(mask_path).affine
-    print(f"Mask affine:\n{mask_affine}")
-
     train_data = []
     target_shape = (128, 128, 128)
 
@@ -363,19 +357,8 @@ def loading_mask_3d(task, modality):
         nifti_img = nib.load(data_train[i])
         affine = nifti_img.affine
         original_imgs.append(nifti_img)  # Store the original NIfTI image
-      
-        image_orientation = aff2axcodes(nifti_img.affine)
-        mask_orientation = aff2axcodes(mask_affine)
-        print(f"Original image orientation: {image_orientation}")
-        print(f"Mask image orientation: {mask_orientation}")
-
-        if image_orientation != mask_orientation:
-            nifti_img = nib.as_closest_canonical(nifti_img)
-            affine = nifti_img.affine  # Update affine after reorientation
-
-        # Apply the mask
-        masked_data = masker.fit_transform(nifti_img)
-        reshaped_data = masker.inverse_transform(masked_data).get_fdata()
+  
+        reshaped_data = nifti_img.get_fdata()
         reshaped_data = zscore(reshaped_data, axis=None)
 
         # Resize the image to (128, 128, 128)
@@ -386,7 +369,7 @@ def loading_mask_3d(task, modality):
     train_label = binarylabel(train_label, task)
     train_data = np.array(train_data)
 
-    return train_data, train_label, masker, original_imgs
+    return train_data, train_label, original_imgs
 
 # Main execution
 if __name__ == '__main__':
@@ -395,7 +378,7 @@ if __name__ == '__main__':
     info = '5_context_from_16_0.1_dropout_1e5_with_0.1_augmentation'  # Additional info for saving results
 
     # Load your data
-    train_data, train_label, masker, original_imgs = loading_mask_3d(task, modality)
+    train_data, train_label, original_imgs = loading_mask_3d(task, modality)
     X = np.array(train_data)
     X = np.expand_dims(X, axis=-1)  # Add channel dimension if not already present
     Y = to_categorical(train_label, num_classes=2)
