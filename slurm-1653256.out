@@ -1,1510 +1,0 @@
---------------------------------------------------------------
-Begin Slurm Prologue Tue Sep 10 17:46:43 CDT 2024 1726008403
-Job ID:		1653256
-Username:	l.peiwang
-Partition:	tier2_gpu
-End Slurm Prologue Tue Sep 10 17:46:43 CDT 2024 1726008403
---------------------------------------------------------------
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow_addons/utils/tfa_eol_msg.py:23: UserWarning: 
-
-TensorFlow Addons (TFA) has ended development and introduction of new features.
-TFA has entered a minimal maintenance and release mode until a planned end of life in May 2024.
-Please modify downstream libraries to take dependencies from other repositories in our TensorFlow community (e.g. Keras, Keras-CV, and Keras-NLP). 
-
-For more information see: https://github.com/tensorflow/addons/issues/2807 
-
-  warnings.warn(
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow_addons/utils/ensure_tf_install.py:53: UserWarning: Tensorflow Addons supports using Python ops for all Tensorflow versions above or equal to 2.11.0 and strictly below 2.14.0 (nightly versions are not supported). 
- The versions of TensorFlow you are currently using is 2.8.4 and is not supported. 
-Some things might work, some things might not.
-If you were to encounter a bug, do not file an issue.
-If you want to make sure you're using a tested and supported configuration, either change the TensorFlow version or the TensorFlow Addons's version. 
-You can find the compatibility matrix in TensorFlow Addon's readme:
-https://github.com/tensorflow/addons
-  warnings.warn(
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
-  warnings.warn(message, FutureWarning)
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
-  warnings.warn(
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
-  warnings.warn(
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
-  warnings.warn(
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
-  warnings.warn(
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
-  warnings.warn(
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
-  warnings.warn(
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
-  warnings.warn(
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
-  warnings.warn(
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
-  warnings.warn(
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/maskers/nifti_masker.py:98: UserWarning: imgs are being resampled to the mask_img resolution. This process is memory intensive. You might want to provide a target_affine that is equal to the affine of the imgs or resample the mask beforehand to save memory and computation time.
-  warnings.warn(
-2024-09-10 17:50:39.755036: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
-To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2024-09-10 17:50:40.794857: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 38212 MB memory:  -> device: 0, name: NVIDIA A100-SXM4-40GB, pci bus id: 0000:17:00.0, compute capability: 8.0
-Number of CN subjects:
-263
-Number of PCN subjects:
-140
-Number of MCI subjects:
-458
-Number of Dementia subjects:
-151
-lenth of dataset: 
-414
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Current spatial shape: (91, 109, 91)
-Model: "model"
-__________________________________________________________________________________________________
- Layer (type)                   Output Shape         Param #     Connected to                     
-==================================================================================================
- input_1 (InputLayer)           [(None, 128, 128, 1  0           []                               
-                                28, 1)]                                                           
-                                                                                                  
- conv3d (Conv3D)                (None, 128, 128, 12  448         ['input_1[0][0]']                
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization (BatchNorm  (None, 128, 128, 12  64         ['conv3d[0][0]']                 
- alization)                     8, 16)                                                            
-                                                                                                  
- leaky_re_lu (LeakyReLU)        (None, 128, 128, 12  0           ['batch_normalization[0][0]']    
-                                8, 16)                                                            
-                                                                                                  
- conv3d_1 (Conv3D)              (None, 128, 128, 12  6928        ['leaky_re_lu[0][0]']            
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_1 (BatchNo  (None, 128, 128, 12  64         ['conv3d_1[0][0]']               
- rmalization)                   8, 16)                                                            
-                                                                                                  
- leaky_re_lu_1 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_1[0][0]']  
-                                8, 16)                                                            
-                                                                                                  
- spatial_dropout3d (SpatialDrop  (None, 128, 128, 12  0          ['leaky_re_lu_1[0][0]']          
- out3D)                         8, 16)                                                            
-                                                                                                  
- conv3d_2 (Conv3D)              (None, 128, 128, 12  6928        ['spatial_dropout3d[0][0]']      
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_2 (BatchNo  (None, 128, 128, 12  64         ['conv3d_2[0][0]']               
- rmalization)                   8, 16)                                                            
-                                                                                                  
- leaky_re_lu_2 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_2[0][0]']  
-                                8, 16)                                                            
-                                                                                                  
- add (Add)                      (None, 128, 128, 12  0           ['leaky_re_lu_2[0][0]',          
-                                8, 16)                            'leaky_re_lu[0][0]']            
-                                                                                                  
- conv3d_3 (Conv3D)              (None, 64, 64, 64,   13856       ['add[0][0]']                    
-                                32)                                                               
-                                                                                                  
- batch_normalization_3 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_3[0][0]']               
- rmalization)                   32)                                                               
-                                                                                                  
- leaky_re_lu_3 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_3[0][0]']  
-                                32)                                                               
-                                                                                                  
- conv3d_4 (Conv3D)              (None, 64, 64, 64,   27680       ['leaky_re_lu_3[0][0]']          
-                                32)                                                               
-                                                                                                  
- batch_normalization_4 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_4[0][0]']               
- rmalization)                   32)                                                               
-                                                                                                  
- leaky_re_lu_4 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_4[0][0]']  
-                                32)                                                               
-                                                                                                  
- spatial_dropout3d_1 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_4[0][0]']          
- opout3D)                       32)                                                               
-                                                                                                  
- conv3d_5 (Conv3D)              (None, 64, 64, 64,   27680       ['spatial_dropout3d_1[0][0]']    
-                                32)                                                               
-                                                                                                  
- batch_normalization_5 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_5[0][0]']               
- rmalization)                   32)                                                               
-                                                                                                  
- leaky_re_lu_5 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_5[0][0]']  
-                                32)                                                               
-                                                                                                  
- add_1 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_5[0][0]',          
-                                32)                               'leaky_re_lu_3[0][0]']          
-                                                                                                  
- conv3d_6 (Conv3D)              (None, 32, 32, 32,   55360       ['add_1[0][0]']                  
-                                64)                                                               
-                                                                                                  
- batch_normalization_6 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_6[0][0]']               
- rmalization)                   64)                                                               
-                                                                                                  
- leaky_re_lu_6 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_6[0][0]']  
-                                64)                                                               
-                                                                                                  
- conv3d_7 (Conv3D)              (None, 32, 32, 32,   110656      ['leaky_re_lu_6[0][0]']          
-                                64)                                                               
-                                                                                                  
- batch_normalization_7 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_7[0][0]']               
- rmalization)                   64)                                                               
-                                                                                                  
- leaky_re_lu_7 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_7[0][0]']  
-                                64)                                                               
-                                                                                                  
- spatial_dropout3d_2 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_7[0][0]']          
- opout3D)                       64)                                                               
-                                                                                                  
- conv3d_8 (Conv3D)              (None, 32, 32, 32,   110656      ['spatial_dropout3d_2[0][0]']    
-                                64)                                                               
-                                                                                                  
- batch_normalization_8 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_8[0][0]']               
- rmalization)                   64)                                                               
-                                                                                                  
- leaky_re_lu_8 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_8[0][0]']  
-                                64)                                                               
-                                                                                                  
- add_2 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_8[0][0]',          
-                                64)                               'leaky_re_lu_6[0][0]']          
-                                                                                                  
- conv3d_9 (Conv3D)              (None, 16, 16, 16,   221312      ['add_2[0][0]']                  
-                                128)                                                              
-                                                                                                  
- batch_normalization_9 (BatchNo  (None, 16, 16, 16,   512        ['conv3d_9[0][0]']               
- rmalization)                   128)                                                              
-                                                                                                  
- leaky_re_lu_9 (LeakyReLU)      (None, 16, 16, 16,   0           ['batch_normalization_9[0][0]']  
-                                128)                                                              
-                                                                                                  
- conv3d_10 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_9[0][0]']          
-                                128)                                                              
-                                                                                                  
- batch_normalization_10 (BatchN  (None, 16, 16, 16,   512        ['conv3d_10[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_10 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_10[0][0]'] 
-                                128)                                                              
-                                                                                                  
- spatial_dropout3d_3 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_10[0][0]']         
- opout3D)                       128)                                                              
-                                                                                                  
- conv3d_11 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_3[0][0]']    
-                                128)                                                              
-                                                                                                  
- batch_normalization_11 (BatchN  (None, 16, 16, 16,   512        ['conv3d_11[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_11 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_11[0][0]'] 
-                                128)                                                              
-                                                                                                  
- add_3 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_11[0][0]',         
-                                128)                              'leaky_re_lu_9[0][0]']          
-                                                                                                  
- global_average_pooling3d (Glob  (None, 128)         0           ['add_3[0][0]']                  
- alAveragePooling3D)                                                                              
-                                                                                                  
- dropout (Dropout)              (None, 128)          0           ['global_average_pooling3d[0][0]'
-                                                                 ]                                
-                                                                                                  
- dense (Dense)                  (None, 2)            258         ['dropout[0][0]']                
-                                                                                                  
-==================================================================================================
-Total params: 1,469,634
-Trainable params: 1,468,194
-Non-trainable params: 1,440
-__________________________________________________________________________________________________
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Shape of image before augmentation: (128, 128, 128, 1)
-Shape of image after augmentation: (128, 128, 128, 1)
-Model: "model_1"
-__________________________________________________________________________________________________
- Layer (type)                   Output Shape         Param #     Connected to                     
-==================================================================================================
- input_2 (InputLayer)           [(None, 128, 128, 1  0           []                               
-                                28, 1)]                                                           
-                                                                                                  
- conv3d_12 (Conv3D)             (None, 128, 128, 12  448         ['input_2[0][0]']                
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_12 (BatchN  (None, 128, 128, 12  64         ['conv3d_12[0][0]']              
- ormalization)                  8, 16)                                                            
-                                                                                                  
- leaky_re_lu_12 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_12[0][0]'] 
-                                8, 16)                                                            
-                                                                                                  
- conv3d_13 (Conv3D)             (None, 128, 128, 12  6928        ['leaky_re_lu_12[0][0]']         
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_13 (BatchN  (None, 128, 128, 12  64         ['conv3d_13[0][0]']              
- ormalization)                  8, 16)                                                            
-                                                                                                  
- leaky_re_lu_13 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_13[0][0]'] 
-                                8, 16)                                                            
-                                                                                                  
- spatial_dropout3d_4 (SpatialDr  (None, 128, 128, 12  0          ['leaky_re_lu_13[0][0]']         
- opout3D)                       8, 16)                                                            
-                                                                                                  
- conv3d_14 (Conv3D)             (None, 128, 128, 12  6928        ['spatial_dropout3d_4[0][0]']    
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_14 (BatchN  (None, 128, 128, 12  64         ['conv3d_14[0][0]']              
- ormalization)                  8, 16)                                                            
-                                                                                                  
- leaky_re_lu_14 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_14[0][0]'] 
-                                8, 16)                                                            
-                                                                                                  
- add_4 (Add)                    (None, 128, 128, 12  0           ['leaky_re_lu_14[0][0]',         
-                                8, 16)                            'leaky_re_lu_12[0][0]']         
-                                                                                                  
- conv3d_15 (Conv3D)             (None, 64, 64, 64,   13856       ['add_4[0][0]']                  
-                                32)                                                               
-                                                                                                  
- batch_normalization_15 (BatchN  (None, 64, 64, 64,   128        ['conv3d_15[0][0]']              
- ormalization)                  32)                                                               
-                                                                                                  
- leaky_re_lu_15 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_15[0][0]'] 
-                                32)                                                               
-                                                                                                  
- conv3d_16 (Conv3D)             (None, 64, 64, 64,   27680       ['leaky_re_lu_15[0][0]']         
-                                32)                                                               
-                                                                                                  
- batch_normalization_16 (BatchN  (None, 64, 64, 64,   128        ['conv3d_16[0][0]']              
- ormalization)                  32)                                                               
-                                                                                                  
- leaky_re_lu_16 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_16[0][0]'] 
-                                32)                                                               
-                                                                                                  
- spatial_dropout3d_5 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_16[0][0]']         
- opout3D)                       32)                                                               
-                                                                                                  
- conv3d_17 (Conv3D)             (None, 64, 64, 64,   27680       ['spatial_dropout3d_5[0][0]']    
-                                32)                                                               
-                                                                                                  
- batch_normalization_17 (BatchN  (None, 64, 64, 64,   128        ['conv3d_17[0][0]']              
- ormalization)                  32)                                                               
-                                                                                                  
- leaky_re_lu_17 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_17[0][0]'] 
-                                32)                                                               
-                                                                                                  
- add_5 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_17[0][0]',         
-                                32)                               'leaky_re_lu_15[0][0]']         
-                                                                                                  
- conv3d_18 (Conv3D)             (None, 32, 32, 32,   55360       ['add_5[0][0]']                  
-                                64)                                                               
-                                                                                                  
- batch_normalization_18 (BatchN  (None, 32, 32, 32,   256        ['conv3d_18[0][0]']              
- ormalization)                  64)                                                               
-                                                                                                  
- leaky_re_lu_18 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_18[0][0]'] 
-                                64)                                                               
-                                                                                                  
- conv3d_19 (Conv3D)             (None, 32, 32, 32,   110656      ['leaky_re_lu_18[0][0]']         
-                                64)                                                               
-                                                                                                  
- batch_normalization_19 (BatchN  (None, 32, 32, 32,   256        ['conv3d_19[0][0]']              
- ormalization)                  64)                                                               
-                                                                                                  
- leaky_re_lu_19 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_19[0][0]'] 
-                                64)                                                               
-                                                                                                  
- spatial_dropout3d_6 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_19[0][0]']         
- opout3D)                       64)                                                               
-                                                                                                  
- conv3d_20 (Conv3D)             (None, 32, 32, 32,   110656      ['spatial_dropout3d_6[0][0]']    
-                                64)                                                               
-                                                                                                  
- batch_normalization_20 (BatchN  (None, 32, 32, 32,   256        ['conv3d_20[0][0]']              
- ormalization)                  64)                                                               
-                                                                                                  
- leaky_re_lu_20 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_20[0][0]'] 
-                                64)                                                               
-                                                                                                  
- add_6 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_20[0][0]',         
-                                64)                               'leaky_re_lu_18[0][0]']         
-                                                                                                  
- conv3d_21 (Conv3D)             (None, 16, 16, 16,   221312      ['add_6[0][0]']                  
-                                128)                                                              
-                                                                                                  
- batch_normalization_21 (BatchN  (None, 16, 16, 16,   512        ['conv3d_21[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_21 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_21[0][0]'] 
-                                128)                                                              
-                                                                                                  
- conv3d_22 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_21[0][0]']         
-                                128)                                                              
-                                                                                                  
- batch_normalization_22 (BatchN  (None, 16, 16, 16,   512        ['conv3d_22[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_22 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_22[0][0]'] 
-                                128)                                                              
-                                                                                                  
- spatial_dropout3d_7 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_22[0][0]']         
- opout3D)                       128)                                                              
-                                                                                                  
- conv3d_23 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_7[0][0]']    
-                                128)                                                              
-                                                                                                  
- batch_normalization_23 (BatchN  (None, 16, 16, 16,   512        ['conv3d_23[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_23 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_23[0][0]'] 
-                                128)                                                              
-                                                                                                  
- add_7 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_23[0][0]',         
-                                128)                              'leaky_re_lu_21[0][0]']         
-                                                                                                  
- global_average_pooling3d_1 (Gl  (None, 128)         0           ['add_7[0][0]']                  
- obalAveragePooling3D)                                                                            
-                                                                                                  
- dropout_1 (Dropout)            (None, 128)          0           ['global_average_pooling3d_1[0][0
-                                                                 ]']                              
-                                                                                                  
- dense_1 (Dense)                (None, 2)            258         ['dropout_1[0][0]']              
-                                                                                                  
-==================================================================================================
-Total params: 1,469,634
-Trainable params: 1,468,194
-Non-trainable params: 1,440
-__________________________________________________________________________________________________
-Epoch 1/200
-2024-09-10 17:50:50.796707: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8101
-2024-09-10 17:50:55.581844: I tensorflow/stream_executor/cuda/cuda_blas.cc:1786] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
- 1/56 [..............................] - ETA: 11:22 - loss: 1.7738 - accuracy: 0.4000 - auc: 0.3200 2/56 [>.............................] - ETA: 16s - loss: 1.6733 - accuracy: 0.5000 - auc: 0.3900   3/56 [>.............................] - ETA: 16s - loss: 1.6051 - accuracy: 0.4667 - auc: 0.4556 4/56 [=>............................] - ETA: 16s - loss: 1.5042 - accuracy: 0.5500 - auc: 0.5612 5/56 [=>............................] - ETA: 15s - loss: 1.5994 - accuracy: 0.5200 - auc: 0.5032 6/56 [==>...........................] - ETA: 15s - loss: 1.6823 - accuracy: 0.5000 - auc: 0.4539 7/56 [==>...........................] - ETA: 15s - loss: 1.6557 - accuracy: 0.5143 - auc: 0.4543 8/56 [===>..........................] - ETA: 14s - loss: 1.6014 - accuracy: 0.5500 - auc: 0.4991 9/56 [===>..........................] - ETA: 14s - loss: 1.6002 - accuracy: 0.5556 - auc: 0.517810/56 [====>.........................] - ETA: 14s - loss: 1.6001 - accuracy: 0.5600 - auc: 0.520211/56 [====>.........................] - ETA: 13s - loss: 1.5719 - accuracy: 0.5636 - auc: 0.534412/56 [=====>........................] - ETA: 13s - loss: 1.5910 - accuracy: 0.5500 - auc: 0.520713/56 [=====>........................] - ETA: 13s - loss: 1.6348 - accuracy: 0.5231 - auc: 0.495514/56 [======>.......................] - ETA: 12s - loss: 1.6101 - accuracy: 0.5429 - auc: 0.515015/56 [=======>......................] - ETA: 12s - loss: 1.6008 - accuracy: 0.5600 - auc: 0.518316/56 [=======>......................] - ETA: 12s - loss: 1.6178 - accuracy: 0.5500 - auc: 0.513017/56 [========>.....................] - ETA: 12s - loss: 1.6464 - accuracy: 0.5412 - auc: 0.502618/56 [========>.....................] - ETA: 11s - loss: 1.6186 - accuracy: 0.5556 - auc: 0.520219/56 [=========>....................] - ETA: 11s - loss: 1.5919 - accuracy: 0.5684 - auc: 0.534820/56 [=========>....................] - ETA: 11s - loss: 1.5804 - accuracy: 0.5700 - auc: 0.535321/56 [==========>...................] - ETA: 10s - loss: 1.5605 - accuracy: 0.5810 - auc: 0.546322/56 [==========>...................] - ETA: 10s - loss: 1.5349 - accuracy: 0.6000 - auc: 0.562023/56 [===========>..................] - ETA: 10s - loss: 1.5239 - accuracy: 0.6000 - auc: 0.569524/56 [===========>..................] - ETA: 9s - loss: 1.5164 - accuracy: 0.5917 - auc: 0.5714 25/56 [============>.................] - ETA: 9s - loss: 1.5105 - accuracy: 0.5920 - auc: 0.573026/56 [============>.................] - ETA: 9s - loss: 1.4965 - accuracy: 0.6000 - auc: 0.579027/56 [=============>................] - ETA: 8s - loss: 1.4805 - accuracy: 0.6074 - auc: 0.588228/56 [==============>...............] - ETA: 8s - loss: 1.4826 - accuracy: 0.6000 - auc: 0.586429/56 [==============>...............] - ETA: 8s - loss: 1.4737 - accuracy: 0.6069 - auc: 0.592630/56 [===============>..............] - ETA: 8s - loss: 1.4565 - accuracy: 0.6200 - auc: 0.606231/56 [===============>..............] - ETA: 7s - loss: 1.4439 - accuracy: 0.6323 - auc: 0.614832/56 [================>.............] - ETA: 7s - loss: 1.4398 - accuracy: 0.6313 - auc: 0.616233/56 [================>.............] - ETA: 7s - loss: 1.4389 - accuracy: 0.6303 - auc: 0.614734/56 [=================>............] - ETA: 6s - loss: 1.4256 - accuracy: 0.6353 - auc: 0.624935/56 [=================>............] - ETA: 6s - loss: 1.4327 - accuracy: 0.6286 - auc: 0.621136/56 [==================>...........] - ETA: 6s - loss: 1.4347 - accuracy: 0.6278 - auc: 0.619337/56 [==================>...........] - ETA: 5s - loss: 1.4455 - accuracy: 0.6162 - auc: 0.611238/56 [===================>..........] - ETA: 5s - loss: 1.4476 - accuracy: 0.6053 - auc: 0.606939/56 [===================>..........] - ETA: 5s - loss: 1.4665 - accuracy: 0.5897 - auc: 0.593240/56 [====================>.........] - ETA: 4s - loss: 1.4583 - accuracy: 0.5950 - auc: 0.598441/56 [====================>.........] - ETA: 4s - loss: 1.4531 - accuracy: 0.5951 - auc: 0.600542/56 [=====================>........] - ETA: 4s - loss: 1.4669 - accuracy: 0.5857 - auc: 0.588743/56 [======================>.......] - ETA: 4s - loss: 1.4620 - accuracy: 0.5860 - auc: 0.590644/56 [======================>.......] - ETA: 3s - loss: 1.4745 - accuracy: 0.5773 - auc: 0.580945/56 [=======================>......] - ETA: 3s - loss: 1.4743 - accuracy: 0.5822 - auc: 0.583746/56 [=======================>......] - ETA: 3s - loss: 1.4744 - accuracy: 0.5826 - auc: 0.583747/56 [========================>.....] - ETA: 2s - loss: 1.4638 - accuracy: 0.5915 - auc: 0.592448/56 [========================>.....] - ETA: 2s - loss: 1.4677 - accuracy: 0.5833 - auc: 0.585549/56 [=========================>....] - ETA: 2s - loss: 1.4717 - accuracy: 0.5837 - auc: 0.586650/56 [=========================>....] - ETA: 1s - loss: 1.4702 - accuracy: 0.5800 - auc: 0.584951/56 [==========================>...] - ETA: 1s - loss: 1.4648 - accuracy: 0.5804 - auc: 0.587752/56 [==========================>...] - ETA: 1s - loss: 1.4658 - accuracy: 0.5808 - auc: 0.584853/56 [===========================>..] - ETA: 0s - loss: 1.4631 - accuracy: 0.5774 - auc: 0.584654/56 [===========================>..] - ETA: 0s - loss: 1.4672 - accuracy: 0.5741 - auc: 0.579755/56 [============================>.] - ETA: 0s - loss: 1.4634 - accuracy: 0.5745 - auc: 0.581156/56 [==============================] - ETA: 0s - loss: 1.4646 - accuracy: 0.5725 - auc: 0.579256/56 [==============================] - 34s 397ms/step - loss: 1.4646 - accuracy: 0.5725 - auc: 0.5792 - val_loss: 2.0873 - val_accuracy: 0.3623 - val_auc: 0.3426 - lr: 5.0000e-04
-Epoch 2/200
- 1/56 [..............................] - ETA: 17s - loss: 1.2805 - accuracy: 0.4000 - auc: 0.6400 2/56 [>.............................] - ETA: 16s - loss: 1.3881 - accuracy: 0.5000 - auc: 0.6400 3/56 [>.............................] - ETA: 16s - loss: 1.3902 - accuracy: 0.4667 - auc: 0.5867 4/56 [=>............................] - ETA: 16s - loss: 1.3798 - accuracy: 0.5000 - auc: 0.5750 5/56 [=>............................] - ETA: 15s - loss: 1.3708 - accuracy: 0.5200 - auc: 0.6048 6/56 [==>...........................] - ETA: 15s - loss: 1.3417 - accuracy: 0.5667 - auc: 0.6267 7/56 [==>...........................] - ETA: 15s - loss: 1.3220 - accuracy: 0.5429 - auc: 0.6384 8/56 [===>..........................] - ETA: 14s - loss: 1.3104 - accuracy: 0.5500 - auc: 0.6463 9/56 [===>..........................] - ETA: 14s - loss: 1.3467 - accuracy: 0.5556 - auc: 0.637010/56 [====>.........................] - ETA: 14s - loss: 1.3205 - accuracy: 0.5800 - auc: 0.664411/56 [====>.........................] - ETA: 13s - loss: 1.3289 - accuracy: 0.5636 - auc: 0.654212/56 [=====>........................] - ETA: 13s - loss: 1.3338 - accuracy: 0.5667 - auc: 0.649213/56 [=====>........................] - ETA: 13s - loss: 1.3358 - accuracy: 0.5846 - auc: 0.647114/56 [======>.......................] - ETA: 12s - loss: 1.3897 - accuracy: 0.5571 - auc: 0.607615/56 [=======>......................] - ETA: 12s - loss: 1.4046 - accuracy: 0.5467 - auc: 0.588416/56 [=======>......................] - ETA: 12s - loss: 1.3717 - accuracy: 0.5750 - auc: 0.623417/56 [========>.....................] - ETA: 12s - loss: 1.3691 - accuracy: 0.5765 - auc: 0.623118/56 [========>.....................] - ETA: 11s - loss: 1.3587 - accuracy: 0.5889 - auc: 0.630719/56 [=========>....................] - ETA: 11s - loss: 1.3385 - accuracy: 0.6105 - auc: 0.650020/56 [=========>....................] - ETA: 11s - loss: 1.3236 - accuracy: 0.6200 - auc: 0.664121/56 [==========>...................] - ETA: 10s - loss: 1.3094 - accuracy: 0.6286 - auc: 0.677822/56 [==========>...................] - ETA: 10s - loss: 1.3191 - accuracy: 0.6273 - auc: 0.667123/56 [===========>..................] - ETA: 10s - loss: 1.3131 - accuracy: 0.6348 - auc: 0.671724/56 [===========>..................] - ETA: 9s - loss: 1.3095 - accuracy: 0.6333 - auc: 0.6744 25/56 [============>.................] - ETA: 9s - loss: 1.3142 - accuracy: 0.6320 - auc: 0.667526/56 [============>.................] - ETA: 9s - loss: 1.3212 - accuracy: 0.6308 - auc: 0.661227/56 [=============>................] - ETA: 8s - loss: 1.3286 - accuracy: 0.6222 - auc: 0.651928/56 [==============>...............] - ETA: 8s - loss: 1.3323 - accuracy: 0.6143 - auc: 0.646129/56 [==============>...............] - ETA: 8s - loss: 1.3285 - accuracy: 0.6138 - auc: 0.648030/56 [===============>..............] - ETA: 8s - loss: 1.3263 - accuracy: 0.6133 - auc: 0.648931/56 [===============>..............] - ETA: 7s - loss: 1.3251 - accuracy: 0.6129 - auc: 0.649932/56 [================>.............] - ETA: 7s - loss: 1.3394 - accuracy: 0.6062 - auc: 0.640633/56 [================>.............] - ETA: 7s - loss: 1.3358 - accuracy: 0.6061 - auc: 0.643234/56 [=================>............] - ETA: 6s - loss: 1.3264 - accuracy: 0.6176 - auc: 0.652635/56 [=================>............] - ETA: 6s - loss: 1.3182 - accuracy: 0.6229 - auc: 0.660536/56 [==================>...........] - ETA: 6s - loss: 1.3188 - accuracy: 0.6167 - auc: 0.658137/56 [==================>...........] - ETA: 5s - loss: 1.3255 - accuracy: 0.6108 - auc: 0.651238/56 [===================>..........] - ETA: 5s - loss: 1.3261 - accuracy: 0.6053 - auc: 0.649739/56 [===================>..........] - ETA: 5s - loss: 1.3335 - accuracy: 0.6051 - auc: 0.645840/56 [====================>.........] - ETA: 4s - loss: 1.3307 - accuracy: 0.6050 - auc: 0.648541/56 [====================>.........] - ETA: 4s - loss: 1.3335 - accuracy: 0.6049 - auc: 0.644742/56 [=====================>........] - ETA: 4s - loss: 1.3364 - accuracy: 0.5952 - auc: 0.640243/56 [======================>.......] - ETA: 4s - loss: 1.3361 - accuracy: 0.5953 - auc: 0.640144/56 [======================>.......] - ETA: 3s - loss: 1.3366 - accuracy: 0.5909 - auc: 0.638545/56 [=======================>......] - ETA: 3s - loss: 1.3557 - accuracy: 0.5778 - auc: 0.620746/56 [=======================>......] - ETA: 3s - loss: 1.3715 - accuracy: 0.5696 - auc: 0.610447/56 [========================>.....] - ETA: 2s - loss: 1.3647 - accuracy: 0.5745 - auc: 0.616448/56 [========================>.....] - ETA: 2s - loss: 1.3731 - accuracy: 0.5667 - auc: 0.609049/56 [=========================>....] - ETA: 2s - loss: 1.3769 - accuracy: 0.5673 - auc: 0.606550/56 [=========================>....] - ETA: 1s - loss: 1.3763 - accuracy: 0.5680 - auc: 0.608051/56 [==========================>...] - ETA: 1s - loss: 1.3711 - accuracy: 0.5686 - auc: 0.612552/56 [==========================>...] - ETA: 1s - loss: 1.3777 - accuracy: 0.5692 - auc: 0.610453/56 [===========================>..] - ETA: 0s - loss: 1.3728 - accuracy: 0.5698 - auc: 0.615054/56 [===========================>..] - ETA: 0s - loss: 1.3689 - accuracy: 0.5741 - auc: 0.618355/56 [============================>.] - ETA: 0s - loss: 1.3652 - accuracy: 0.5745 - auc: 0.621856/56 [==============================] - ETA: 0s - loss: 1.3668 - accuracy: 0.5725 - auc: 0.619956/56 [==============================] - 19s 339ms/step - loss: 1.3668 - accuracy: 0.5725 - auc: 0.6199 - val_loss: 1.3017 - val_accuracy: 0.6377 - val_auc: 0.6464 - lr: 5.0000e-04
-Epoch 3/200
- 1/56 [..............................] - ETA: 17s - loss: 1.5175 - accuracy: 0.8000 - auc: 0.6400 2/56 [>.............................] - ETA: 16s - loss: 1.3815 - accuracy: 0.6000 - auc: 0.6000 3/56 [>.............................] - ETA: 16s - loss: 1.4475 - accuracy: 0.5333 - auc: 0.5156 4/56 [=>............................] - ETA: 16s - loss: 1.3254 - accuracy: 0.6500 - auc: 0.6525 5/56 [=>............................] - ETA: 15s - loss: 1.3372 - accuracy: 0.6000 - auc: 0.6160 6/56 [==>...........................] - ETA: 15s - loss: 1.3237 - accuracy: 0.6000 - auc: 0.6167 7/56 [==>...........................] - ETA: 15s - loss: 1.3616 - accuracy: 0.5714 - auc: 0.5788 8/56 [===>..........................] - ETA: 14s - loss: 1.3110 - accuracy: 0.6250 - auc: 0.6400 9/56 [===>..........................] - ETA: 14s - loss: 1.3086 - accuracy: 0.6444 - auc: 0.639010/56 [====>.........................] - ETA: 14s - loss: 1.2931 - accuracy: 0.6400 - auc: 0.650011/56 [====>.........................] - ETA: 13s - loss: 1.3075 - accuracy: 0.6182 - auc: 0.619812/56 [=====>........................] - ETA: 13s - loss: 1.3045 - accuracy: 0.6167 - auc: 0.618313/56 [=====>........................] - ETA: 13s - loss: 1.3213 - accuracy: 0.6000 - auc: 0.613514/56 [======>.......................] - ETA: 12s - loss: 1.3344 - accuracy: 0.5857 - auc: 0.596915/56 [=======>......................] - ETA: 12s - loss: 1.3191 - accuracy: 0.6000 - auc: 0.615316/56 [=======>......................] - ETA: 12s - loss: 1.3068 - accuracy: 0.6125 - auc: 0.631917/56 [========>.....................] - ETA: 12s - loss: 1.2971 - accuracy: 0.6235 - auc: 0.641518/56 [========>.....................] - ETA: 11s - loss: 1.3173 - accuracy: 0.6111 - auc: 0.623519/56 [=========>....................] - ETA: 11s - loss: 1.3325 - accuracy: 0.6000 - auc: 0.605220/56 [=========>....................] - ETA: 11s - loss: 1.3461 - accuracy: 0.5800 - auc: 0.586021/56 [==========>...................] - ETA: 10s - loss: 1.3431 - accuracy: 0.5810 - auc: 0.589822/56 [==========>...................] - ETA: 10s - loss: 1.3395 - accuracy: 0.5818 - auc: 0.591323/56 [===========>..................] - ETA: 10s - loss: 1.3538 - accuracy: 0.5652 - auc: 0.575724/56 [===========>..................] - ETA: 9s - loss: 1.3449 - accuracy: 0.5667 - auc: 0.5850 25/56 [============>.................] - ETA: 9s - loss: 1.3585 - accuracy: 0.5600 - auc: 0.574826/56 [============>.................] - ETA: 9s - loss: 1.3811 - accuracy: 0.5462 - auc: 0.551227/56 [=============>................] - ETA: 8s - loss: 1.3741 - accuracy: 0.5481 - auc: 0.557628/56 [==============>...............] - ETA: 8s - loss: 1.3676 - accuracy: 0.5500 - auc: 0.563629/56 [==============>...............] - ETA: 8s - loss: 1.3499 - accuracy: 0.5655 - auc: 0.587130/56 [===============>..............] - ETA: 8s - loss: 1.3634 - accuracy: 0.5467 - auc: 0.566831/56 [===============>..............] - ETA: 7s - loss: 1.3551 - accuracy: 0.5613 - auc: 0.576432/56 [================>.............] - ETA: 7s - loss: 1.3477 - accuracy: 0.5688 - auc: 0.585033/56 [================>.............] - ETA: 7s - loss: 1.3442 - accuracy: 0.5697 - auc: 0.587034/56 [=================>............] - ETA: 6s - loss: 1.3402 - accuracy: 0.5765 - auc: 0.592135/56 [=================>............] - ETA: 6s - loss: 1.3435 - accuracy: 0.5657 - auc: 0.585636/56 [==================>...........] - ETA: 6s - loss: 1.3451 - accuracy: 0.5611 - auc: 0.582637/56 [==================>...........] - ETA: 5s - loss: 1.3426 - accuracy: 0.5622 - auc: 0.584738/56 [===================>..........] - ETA: 5s - loss: 1.3461 - accuracy: 0.5579 - auc: 0.582739/56 [===================>..........] - ETA: 5s - loss: 1.3470 - accuracy: 0.5590 - auc: 0.582040/56 [====================>.........] - ETA: 4s - loss: 1.3494 - accuracy: 0.5550 - auc: 0.577941/56 [====================>.........] - ETA: 4s - loss: 1.3590 - accuracy: 0.5512 - auc: 0.566242/56 [=====================>........] - ETA: 4s - loss: 1.3712 - accuracy: 0.5381 - auc: 0.551243/56 [======================>.......] - ETA: 4s - loss: 1.3692 - accuracy: 0.5395 - auc: 0.551144/56 [======================>.......] - ETA: 3s - loss: 1.3743 - accuracy: 0.5364 - auc: 0.547445/56 [=======================>......] - ETA: 3s - loss: 1.3752 - accuracy: 0.5378 - auc: 0.547946/56 [=======================>......] - ETA: 3s - loss: 1.3803 - accuracy: 0.5304 - auc: 0.539447/56 [========================>.....] - ETA: 2s - loss: 1.3799 - accuracy: 0.5277 - auc: 0.538048/56 [========================>.....] - ETA: 2s - loss: 1.3758 - accuracy: 0.5292 - auc: 0.541749/56 [=========================>....] - ETA: 2s - loss: 1.3730 - accuracy: 0.5306 - auc: 0.544850/56 [=========================>....] - ETA: 1s - loss: 1.3665 - accuracy: 0.5400 - auc: 0.553051/56 [==========================>...] - ETA: 1s - loss: 1.3651 - accuracy: 0.5451 - auc: 0.556452/56 [==========================>...] - ETA: 1s - loss: 1.3623 - accuracy: 0.5500 - auc: 0.560553/56 [===========================>..] - ETA: 0s - loss: 1.3587 - accuracy: 0.5509 - auc: 0.563654/56 [===========================>..] - ETA: 0s - loss: 1.3570 - accuracy: 0.5519 - auc: 0.564755/56 [============================>.] - ETA: 0s - loss: 1.3549 - accuracy: 0.5527 - auc: 0.566156/56 [==============================] - ETA: 0s - loss: 1.3533 - accuracy: 0.5543 - auc: 0.568256/56 [==============================] - 19s 339ms/step - loss: 1.3533 - accuracy: 0.5543 - auc: 0.5682 - val_loss: 1.3871 - val_accuracy: 0.3623 - val_auc: 0.3687 - lr: 5.0000e-04
-Epoch 4/200
- 1/56 [..............................] - ETA: 16s - loss: 1.3426 - accuracy: 0.8000 - auc: 0.6400 2/56 [>.............................] - ETA: 16s - loss: 1.3062 - accuracy: 0.8000 - auc: 0.6400 3/56 [>.............................] - ETA: 16s - loss: 1.3115 - accuracy: 0.6667 - auc: 0.6044 4/56 [=>............................] - ETA: 16s - loss: 1.2908 - accuracy: 0.6500 - auc: 0.6200 5/56 [=>............................] - ETA: 15s - loss: 1.2528 - accuracy: 0.6800 - auc: 0.6608 6/56 [==>...........................] - ETA: 15s - loss: 1.2231 - accuracy: 0.7000 - auc: 0.7078 7/56 [==>...........................] - ETA: 15s - loss: 1.2480 - accuracy: 0.6571 - auc: 0.6686 8/56 [===>..........................] - ETA: 14s - loss: 1.2428 - accuracy: 0.6750 - auc: 0.6831 9/56 [===>..........................] - ETA: 14s - loss: 1.2526 - accuracy: 0.6444 - auc: 0.663210/56 [====>.........................] - ETA: 14s - loss: 1.3016 - accuracy: 0.6200 - auc: 0.627211/56 [====>.........................] - ETA: 13s - loss: 1.2801 - accuracy: 0.6182 - auc: 0.652212/56 [=====>........................] - ETA: 13s - loss: 1.2775 - accuracy: 0.6333 - auc: 0.661113/56 [=====>........................] - ETA: 13s - loss: 1.2786 - accuracy: 0.6308 - auc: 0.655114/56 [======>.......................] - ETA: 12s - loss: 1.2669 - accuracy: 0.6286 - auc: 0.666515/56 [=======>......................] - ETA: 12s - loss: 1.2718 - accuracy: 0.6133 - auc: 0.652316/56 [=======>......................] - ETA: 12s - loss: 1.2814 - accuracy: 0.6000 - auc: 0.636417/56 [========>.....................] - ETA: 12s - loss: 1.3213 - accuracy: 0.5765 - auc: 0.612918/56 [========>.....................] - ETA: 11s - loss: 1.3123 - accuracy: 0.5889 - auc: 0.623519/56 [=========>....................] - ETA: 11s - loss: 1.3045 - accuracy: 0.6000 - auc: 0.630920/56 [=========>....................] - ETA: 11s - loss: 1.3021 - accuracy: 0.6000 - auc: 0.632521/56 [==========>...................] - ETA: 10s - loss: 1.2920 - accuracy: 0.6095 - auc: 0.643222/56 [==========>...................] - ETA: 10s - loss: 1.3199 - accuracy: 0.6000 - auc: 0.633423/56 [===========>..................] - ETA: 10s - loss: 1.3127 - accuracy: 0.6087 - auc: 0.640324/56 [===========>..................] - ETA: 9s - loss: 1.3225 - accuracy: 0.5917 - auc: 0.6212 25/56 [============>.................] - ETA: 9s - loss: 1.3137 - accuracy: 0.5920 - auc: 0.628226/56 [============>.................] - ETA: 9s - loss: 1.3105 - accuracy: 0.6000 - auc: 0.633327/56 [=============>................] - ETA: 8s - loss: 1.3015 - accuracy: 0.6000 - auc: 0.641228/56 [==============>...............] - ETA: 8s - loss: 1.2993 - accuracy: 0.5929 - auc: 0.639029/56 [==============>...............] - ETA: 8s - loss: 1.2941 - accuracy: 0.6000 - auc: 0.643630/56 [===============>..............] - ETA: 8s - loss: 1.2911 - accuracy: 0.5933 - auc: 0.643431/56 [===============>..............] - ETA: 7s - loss: 1.3117 - accuracy: 0.5806 - auc: 0.620432/56 [================>.............] - ETA: 7s - loss: 1.3217 - accuracy: 0.5750 - auc: 0.614233/56 [================>.............] - ETA: 7s - loss: 1.3175 - accuracy: 0.5758 - auc: 0.616434/56 [=================>............] - ETA: 6s - loss: 1.3238 - accuracy: 0.5706 - auc: 0.610535/56 [=================>............] - ETA: 6s - loss: 1.3376 - accuracy: 0.5657 - auc: 0.600436/56 [==================>...........] - ETA: 6s - loss: 1.3333 - accuracy: 0.5611 - auc: 0.603437/56 [==================>...........] - ETA: 5s - loss: 1.3411 - accuracy: 0.5568 - auc: 0.593438/56 [===================>..........] - ETA: 5s - loss: 1.3393 - accuracy: 0.5579 - auc: 0.593839/56 [===================>..........] - ETA: 5s - loss: 1.3321 - accuracy: 0.5641 - auc: 0.602140/56 [====================>.........] - ETA: 4s - loss: 1.3378 - accuracy: 0.5600 - auc: 0.594541/56 [====================>.........] - ETA: 4s - loss: 1.3317 - accuracy: 0.5610 - auc: 0.599942/56 [=====================>........] - ETA: 4s - loss: 1.3264 - accuracy: 0.5667 - auc: 0.604943/56 [======================>.......] - ETA: 4s - loss: 1.3234 - accuracy: 0.5674 - auc: 0.606344/56 [======================>.......] - ETA: 3s - loss: 1.3190 - accuracy: 0.5682 - auc: 0.610045/56 [=======================>......] - ETA: 3s - loss: 1.3125 - accuracy: 0.5689 - auc: 0.616746/56 [=======================>......] - ETA: 3s - loss: 1.3098 - accuracy: 0.5696 - auc: 0.618447/56 [========================>.....] - ETA: 2s - loss: 1.3090 - accuracy: 0.5702 - auc: 0.618148/56 [========================>.....] - ETA: 2s - loss: 1.3020 - accuracy: 0.5792 - auc: 0.627649/56 [=========================>....] - ETA: 2s - loss: 1.3067 - accuracy: 0.5796 - auc: 0.623950/56 [=========================>....] - ETA: 1s - loss: 1.3090 - accuracy: 0.5720 - auc: 0.618951/56 [==========================>...] - ETA: 1s - loss: 1.3071 - accuracy: 0.5725 - auc: 0.619452/56 [==========================>...] - ETA: 1s - loss: 1.3091 - accuracy: 0.5692 - auc: 0.616153/56 [===========================>..] - ETA: 0s - loss: 1.3092 - accuracy: 0.5698 - auc: 0.616554/56 [===========================>..] - ETA: 0s - loss: 1.3128 - accuracy: 0.5667 - auc: 0.613055/56 [============================>.] - ETA: 0s - loss: 1.3114 - accuracy: 0.5673 - auc: 0.613556/56 [==============================] - ETA: 0s - loss: 1.3095 - accuracy: 0.5688 - auc: 0.615956/56 [==============================] - 19s 339ms/step - loss: 1.3095 - accuracy: 0.5688 - auc: 0.6159 - val_loss: 1.2734 - val_accuracy: 0.3623 - val_auc: 0.3708 - lr: 5.0000e-04
-Epoch 5/200
- 1/56 [..............................] - ETA: 17s - loss: 1.2196 - accuracy: 0.8000 - auc: 0.8000 2/56 [>.............................] - ETA: 16s - loss: 1.3369 - accuracy: 0.7000 - auc: 0.5900 3/56 [>.............................] - ETA: 16s - loss: 1.3657 - accuracy: 0.6667 - auc: 0.5511 4/56 [=>............................] - ETA: 16s - loss: 1.2816 - accuracy: 0.7000 - auc: 0.6550 5/56 [=>............................] - ETA: 15s - loss: 1.2839 - accuracy: 0.6800 - auc: 0.6352 6/56 [==>...........................] - ETA: 15s - loss: 1.3303 - accuracy: 0.6000 - auc: 0.5522 7/56 [==>...........................] - ETA: 15s - loss: 1.3400 - accuracy: 0.5714 - auc: 0.5355 8/56 [===>..........................] - ETA: 14s - loss: 1.3368 - accuracy: 0.5500 - auc: 0.5269 9/56 [===>..........................] - ETA: 14s - loss: 1.3111 - accuracy: 0.5778 - auc: 0.562010/56 [====>.........................] - ETA: 14s - loss: 1.3126 - accuracy: 0.5800 - auc: 0.556411/56 [====>.........................] - ETA: 13s - loss: 1.3366 - accuracy: 0.5455 - auc: 0.521712/56 [=====>........................] - ETA: 13s - loss: 1.3296 - accuracy: 0.5333 - auc: 0.526913/56 [=====>........................] - ETA: 13s - loss: 1.3432 - accuracy: 0.5077 - auc: 0.502514/56 [======>.......................] - ETA: 13s - loss: 1.3515 - accuracy: 0.5000 - auc: 0.487815/56 [=======>......................] - ETA: 12s - loss: 1.3368 - accuracy: 0.5067 - auc: 0.506916/56 [=======>......................] - ETA: 12s - loss: 1.3214 - accuracy: 0.5250 - auc: 0.529817/56 [========>.....................] - ETA: 12s - loss: 1.3249 - accuracy: 0.5294 - auc: 0.535218/56 [========>.....................] - ETA: 11s - loss: 1.3035 - accuracy: 0.5556 - auc: 0.566419/56 [=========>....................] - ETA: 11s - loss: 1.3138 - accuracy: 0.5579 - auc: 0.561820/56 [=========>....................] - ETA: 11s - loss: 1.3094 - accuracy: 0.5600 - auc: 0.565221/56 [==========>...................] - ETA: 10s - loss: 1.3098 - accuracy: 0.5619 - auc: 0.565722/56 [==========>...................] - ETA: 10s - loss: 1.3439 - accuracy: 0.5364 - auc: 0.529623/56 [===========>..................] - ETA: 10s - loss: 1.3416 - accuracy: 0.5391 - auc: 0.531724/56 [===========>..................] - ETA: 9s - loss: 1.3326 - accuracy: 0.5417 - auc: 0.5434 25/56 [============>.................] - ETA: 9s - loss: 1.3411 - accuracy: 0.5280 - auc: 0.530026/56 [============>.................] - ETA: 9s - loss: 1.3632 - accuracy: 0.5154 - auc: 0.513127/56 [=============>................] - ETA: 8s - loss: 1.3536 - accuracy: 0.5185 - auc: 0.523828/56 [==============>...............] - ETA: 8s - loss: 1.3394 - accuracy: 0.5286 - auc: 0.542629/56 [==============>...............] - ETA: 8s - loss: 1.3526 - accuracy: 0.5241 - auc: 0.532130/56 [===============>..............] - ETA: 8s - loss: 1.3568 - accuracy: 0.5267 - auc: 0.524631/56 [===============>..............] - ETA: 7s - loss: 1.3562 - accuracy: 0.5226 - auc: 0.521832/56 [================>.............] - ETA: 7s - loss: 1.3495 - accuracy: 0.5312 - auc: 0.530333/56 [================>.............] - ETA: 7s - loss: 1.3359 - accuracy: 0.5455 - auc: 0.546434/56 [=================>............] - ETA: 6s - loss: 1.3417 - accuracy: 0.5471 - auc: 0.549135/56 [=================>............] - ETA: 6s - loss: 1.3456 - accuracy: 0.5429 - auc: 0.547636/56 [==================>...........] - ETA: 6s - loss: 1.3483 - accuracy: 0.5389 - auc: 0.541737/56 [==================>...........] - ETA: 5s - loss: 1.3492 - accuracy: 0.5405 - auc: 0.543938/56 [===================>..........] - ETA: 5s - loss: 1.3471 - accuracy: 0.5368 - auc: 0.543539/56 [===================>..........] - ETA: 5s - loss: 1.3483 - accuracy: 0.5333 - auc: 0.541340/56 [====================>.........] - ETA: 4s - loss: 1.3539 - accuracy: 0.5350 - auc: 0.538241/56 [====================>.........] - ETA: 4s - loss: 1.3582 - accuracy: 0.5268 - auc: 0.530542/56 [=====================>........] - ETA: 4s - loss: 1.3558 - accuracy: 0.5238 - auc: 0.532043/56 [======================>.......] - ETA: 4s - loss: 1.3537 - accuracy: 0.5209 - auc: 0.532944/56 [======================>.......] - ETA: 3s - loss: 1.3556 - accuracy: 0.5227 - auc: 0.528245/56 [=======================>......] - ETA: 3s - loss: 1.3620 - accuracy: 0.5244 - auc: 0.525746/56 [=======================>......] - ETA: 3s - loss: 1.3578 - accuracy: 0.5261 - auc: 0.528747/56 [========================>.....] - ETA: 2s - loss: 1.3601 - accuracy: 0.5234 - auc: 0.526548/56 [========================>.....] - ETA: 2s - loss: 1.3684 - accuracy: 0.5250 - auc: 0.526149/56 [=========================>....] - ETA: 2s - loss: 1.3627 - accuracy: 0.5265 - auc: 0.531650/56 [=========================>....] - ETA: 1s - loss: 1.3681 - accuracy: 0.5200 - auc: 0.522951/56 [==========================>...] - ETA: 1s - loss: 1.3661 - accuracy: 0.5176 - auc: 0.523552/56 [==========================>...] - ETA: 1s - loss: 1.3562 - accuracy: 0.5269 - auc: 0.536253/56 [===========================>..] - ETA: 0s - loss: 1.3551 - accuracy: 0.5283 - auc: 0.537754/56 [===========================>..] - ETA: 0s - loss: 1.3462 - accuracy: 0.5370 - auc: 0.548855/56 [============================>.] - ETA: 0s - loss: 1.3414 - accuracy: 0.5418 - auc: 0.553456/56 [==============================] - ETA: 0s - loss: 1.3391 - accuracy: 0.5435 - auc: 0.556356/56 [==============================] - 19s 339ms/step - loss: 1.3391 - accuracy: 0.5435 - auc: 0.5563 - val_loss: 1.2514 - val_accuracy: 0.3623 - val_auc: 0.4015 - lr: 5.0000e-04
-Epoch 6/200
- 1/56 [..............................] - ETA: 17s - loss: 1.1740 - accuracy: 0.6000 - auc: 0.6800 2/56 [>.............................] - ETA: 16s - loss: 1.1620 - accuracy: 0.6000 - auc: 0.7050 3/56 [>.............................] - ETA: 16s - loss: 1.2932 - accuracy: 0.4667 - auc: 0.5444 4/56 [=>............................] - ETA: 16s - loss: 1.2702 - accuracy: 0.4500 - auc: 0.5537 5/56 [=>............................] - ETA: 15s - loss: 1.2547 - accuracy: 0.4800 - auc: 0.5672 6/56 [==>...........................] - ETA: 15s - loss: 1.2918 - accuracy: 0.4333 - auc: 0.5250 7/56 [==>...........................] - ETA: 15s - loss: 1.2765 - accuracy: 0.4286 - auc: 0.5441slurmstepd: error: *** JOB 1653256 ON gpua412 CANCELLED AT 2024-09-10T17:52:39 ***
---------------------------------------------------------------
-Begin Slurm Epilogue Tue Sep 10 17:52:43 CDT 2024 1726008763
-Name                : cd-PET-0.5with_16_4block
-User                : l.peiwang
-Partition           : tier2_gpu
-Nodes               : gpua412
-Cores               : 2
-State               : CANCELLED,CANCELLED by 2035263
-Submit              : 2024-09-10T17:46:39
-Start               : 2024-09-10T17:46:42
-End                 : 2024-09-10T17:52:40
-Reserved Walltime   : 5-10:50:00
-Used Walltime       :   00:05:58
-Used CPU Time       :   00:04:41
-% User (Computation): 94.65%
-% System (I/O)      :  5.35%
-Mem Reserved        : 500000M
-Max Mem Used        : 34.00G (36502134784.0)
-Max Disk Write      : 143.36K (146800.64)
-Max Disk Read       : 5.27G (5662855659.52)
-Max-Mem-Used Node   : gpua412
-Max-Disk-Write Node : gpua412
-Max-Disk-Read Node  : gpua412
-NVIDIA A100-SXM4-40GB
-Successfully retrieved statistics for job: 1653256. 
-+------------------------------------------------------------------------------+
-| GPU ID: 0                                                                    |
-+====================================+=========================================+
-|-----  Execution Stats  ------------+-----------------------------------------|
-| Start Time                         | Tue Sep 10 17:46:43 2024                |
-| End Time                           | Tue Sep 10 17:52:43 2024                |
-| Total Execution Time (sec)         | 359.47                                  |
-| No. of Processes                   | 1                                       |
-+-----  Performance Stats  ----------+-----------------------------------------+
-| Energy Consumed (Joules)           | 29390                                   |
-| Power Usage (Watts)                | Avg: 110.038, Max: 279.072, Min: 58.498 |
-| Max GPU Memory Used (bytes)        | 41433432064                             |
-| SM Clock (MHz)                     | Avg: 782, Max: 1410, Min: 210           |
-| Memory Clock (MHz)                 | Avg: 1215, Max: 1215, Min: 1215         |
-| SM Utilization (%)                 | Avg: 26, Max: 98, Min: 0                |
-| Memory Utilization (%)             | Avg: 5, Max: 30, Min: 0                 |
-| PCIe Rx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-| PCIe Tx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-+-----  Event Stats  ----------------+-----------------------------------------+
-| Single Bit ECC Errors              | 0                                       |
-| Double Bit ECC Errors              | 0                                       |
-| PCIe Replay Warnings               | 0                                       |
-| Critical XID Errors                | 0                                       |
-+-----  Slowdown Stats  -------------+-----------------------------------------+
-| Due to - Power (%)                 | 0                                       |
-|        - Thermal (%)               | 0                                       |
-|        - Reliability (%)           | Not Supported                           |
-|        - Board Limit (%)           | Not Supported                           |
-|        - Low Utilization (%)       | Not Supported                           |
-|        - Sync Boost (%)            | 0                                       |
-+--  Compute Process Utilization  ---+-----------------------------------------+
-| PID                                | 16556                                   |
-|     Avg SM Utilization (%)         | 73                                      |
-|     Avg Memory Utilization (%)     | 20                                      |
-+-----  Overall Health  -------------+-----------------------------------------+
-| Overall Health                     | Healthy                                 |
-+------------------------------------+-----------------------------------------+
-
-+------------------------------------------------------------------------------+
-| GPU ID: 1                                                                    |
-+====================================+=========================================+
-|-----  Execution Stats  ------------+-----------------------------------------|
-| Start Time                         | Tue Sep 10 17:46:43 2024                |
-| End Time                           | Tue Sep 10 17:52:43 2024                |
-| Total Execution Time (sec)         | 359.47                                  |
-| No. of Processes                   | 0                                       |
-+-----  Performance Stats  ----------+-----------------------------------------+
-| Energy Consumed (Joules)           | 16178                                   |
-| Power Usage (Watts)                | Avg: 52.9258, Max: 53.153, Min: 52.552  |
-| Max GPU Memory Used (bytes)        | 0                                       |
-| SM Clock (MHz)                     | Avg: 684, Max: 1410, Min: 210           |
-| Memory Clock (MHz)                 | Avg: 1215, Max: 1215, Min: 1215         |
-| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
-| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
-| PCIe Rx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-| PCIe Tx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-+-----  Event Stats  ----------------+-----------------------------------------+
-| Single Bit ECC Errors              | 0                                       |
-| Double Bit ECC Errors              | 0                                       |
-| PCIe Replay Warnings               | 0                                       |
-| Critical XID Errors                | 0                                       |
-+-----  Slowdown Stats  -------------+-----------------------------------------+
-| Due to - Power (%)                 | 0                                       |
-|        - Thermal (%)               | 0                                       |
-|        - Reliability (%)           | Not Supported                           |
-|        - Board Limit (%)           | Not Supported                           |
-|        - Low Utilization (%)       | Not Supported                           |
-|        - Sync Boost (%)            | 0                                       |
-+-----  Overall Health  -------------+-----------------------------------------+
-| Overall Health                     | Healthy                                 |
-+------------------------------------+-----------------------------------------+
-
-+------------------------------------------------------------------------------+
-| GPU ID: 2                                                                    |
-+====================================+=========================================+
-|-----  Execution Stats  ------------+-----------------------------------------|
-| Start Time                         | Tue Sep 10 17:46:43 2024                |
-| End Time                           | Tue Sep 10 17:52:43 2024                |
-| Total Execution Time (sec)         | 359.47                                  |
-| No. of Processes                   | 0                                       |
-+-----  Performance Stats  ----------+-----------------------------------------+
-| Energy Consumed (Joules)           | 15779                                   |
-| Power Usage (Watts)                | Avg: 51.5531, Max: 51.719, Min: 51.174  |
-| Max GPU Memory Used (bytes)        | 0                                       |
-| SM Clock (MHz)                     | Avg: 210, Max: 210, Min: 210            |
-| Memory Clock (MHz)                 | Avg: 1215, Max: 1215, Min: 1215         |
-| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
-| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
-| PCIe Rx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-| PCIe Tx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-+-----  Event Stats  ----------------+-----------------------------------------+
-| Single Bit ECC Errors              | 0                                       |
-| Double Bit ECC Errors              | 0                                       |
-| PCIe Replay Warnings               | 0                                       |
-| Critical XID Errors                | 0                                       |
-+-----  Slowdown Stats  -------------+-----------------------------------------+
-| Due to - Power (%)                 | 0                                       |
-|        - Thermal (%)               | 0                                       |
-|        - Reliability (%)           | Not Supported                           |
-|        - Board Limit (%)           | Not Supported                           |
-|        - Low Utilization (%)       | Not Supported                           |
-|        - Sync Boost (%)            | 0                                       |
-+-----  Overall Health  -------------+-----------------------------------------+
-| Overall Health                     | Healthy                                 |
-+------------------------------------+-----------------------------------------+
-
-+------------------------------------------------------------------------------+
-| GPU ID: 3                                                                    |
-+====================================+=========================================+
-|-----  Execution Stats  ------------+-----------------------------------------|
-| Start Time                         | Tue Sep 10 17:46:43 2024                |
-| End Time                           | Tue Sep 10 17:52:43 2024                |
-| Total Execution Time (sec)         | 359.47                                  |
-| No. of Processes                   | 0                                       |
-+-----  Performance Stats  ----------+-----------------------------------------+
-| Energy Consumed (Joules)           | 15753                                   |
-| Power Usage (Watts)                | Avg: 51.4727, Max: 51.838, Min: 51.357  |
-| Max GPU Memory Used (bytes)        | 0                                       |
-| SM Clock (MHz)                     | Avg: 210, Max: 210, Min: 210            |
-| Memory Clock (MHz)                 | Avg: 1215, Max: 1215, Min: 1215         |
-| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
-| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
-| PCIe Rx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-| PCIe Tx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-+-----  Event Stats  ----------------+-----------------------------------------+
-| Single Bit ECC Errors              | 0                                       |
-| Double Bit ECC Errors              | 0                                       |
-| PCIe Replay Warnings               | 0                                       |
-| Critical XID Errors                | 0                                       |
-+-----  Slowdown Stats  -------------+-----------------------------------------+
-| Due to - Power (%)                 | 0                                       |
-|        - Thermal (%)               | 0                                       |
-|        - Reliability (%)           | Not Supported                           |
-|        - Board Limit (%)           | Not Supported                           |
-|        - Low Utilization (%)       | Not Supported                           |
-|        - Sync Boost (%)            | 0                                       |
-+-----  Overall Health  -------------+-----------------------------------------+
-| Overall Health                     | Healthy                                 |
-+------------------------------------+-----------------------------------------+
-
-End Slurm Epilogue Tue Sep 10 17:52:43 CDT 2024 1726008763
---------------------------------------------------------------

@@ -1,1249 +1,0 @@
---------------------------------------------------------------
-Begin Slurm Prologue Sun Sep 15 19:53:10 CDT 2024 1726447990
-Job ID:		2044287
-Username:	l.peiwang
-Partition:	tier2_gpu
-End Slurm Prologue Sun Sep 15 19:53:10 CDT 2024 1726447990
---------------------------------------------------------------
-/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
-  warnings.warn(message, FutureWarning)
-2024-09-15 20:00:46.879814: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
-To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2024-09-15 20:00:49.414705: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 78923 MB memory:  -> device: 0, name: NVIDIA A100-SXM4-80GB, pci bus id: 0000:17:00.0, compute capability: 8.0
-Number of CN subjects:
-263
-Number of PCN subjects:
-140
-Number of MCI subjects:
-458
-Number of Dementia subjects:
-151
-lenth of dataset: 
-414
-Processing image 1/414
-Processing image 2/414
-Processing image 3/414
-Processing image 4/414
-Processing image 5/414
-Processing image 6/414
-Processing image 7/414
-Processing image 8/414
-Processing image 9/414
-Processing image 10/414
-Processing image 11/414
-Processing image 12/414
-Processing image 13/414
-Processing image 14/414
-Processing image 15/414
-Processing image 16/414
-Processing image 17/414
-Processing image 18/414
-Processing image 19/414
-Processing image 20/414
-Processing image 21/414
-Processing image 22/414
-Processing image 23/414
-Processing image 24/414
-Processing image 25/414
-Processing image 26/414
-Processing image 27/414
-Processing image 28/414
-Processing image 29/414
-Processing image 30/414
-Processing image 31/414
-Processing image 32/414
-Processing image 33/414
-Processing image 34/414
-Processing image 35/414
-Processing image 36/414
-Processing image 37/414
-Processing image 38/414
-Processing image 39/414
-Processing image 40/414
-Processing image 41/414
-Processing image 42/414
-Processing image 43/414
-Processing image 44/414
-Processing image 45/414
-Processing image 46/414
-Processing image 47/414
-Processing image 48/414
-Processing image 49/414
-Processing image 50/414
-Processing image 51/414
-Processing image 52/414
-Processing image 53/414
-Processing image 54/414
-Processing image 55/414
-Processing image 56/414
-Processing image 57/414
-Processing image 58/414
-Processing image 59/414
-Processing image 60/414
-Processing image 61/414
-Processing image 62/414
-Processing image 63/414
-Processing image 64/414
-Processing image 65/414
-Processing image 66/414
-Processing image 67/414
-Processing image 68/414
-Processing image 69/414
-Processing image 70/414
-Processing image 71/414
-Processing image 72/414
-Processing image 73/414
-Processing image 74/414
-Processing image 75/414
-Processing image 76/414
-Processing image 77/414
-Processing image 78/414
-Processing image 79/414
-Processing image 80/414
-Processing image 81/414
-Processing image 82/414
-Processing image 83/414
-Processing image 84/414
-Processing image 85/414
-Processing image 86/414
-Processing image 87/414
-Processing image 88/414
-Processing image 89/414
-Processing image 90/414
-Processing image 91/414
-Processing image 92/414
-Processing image 93/414
-Processing image 94/414
-Processing image 95/414
-Processing image 96/414
-Processing image 97/414
-Processing image 98/414
-Processing image 99/414
-Processing image 100/414
-Processing image 101/414
-Processing image 102/414
-Processing image 103/414
-Processing image 104/414
-Processing image 105/414
-Processing image 106/414
-Processing image 107/414
-Processing image 108/414
-Processing image 109/414
-Processing image 110/414
-Processing image 111/414
-Processing image 112/414
-Processing image 113/414
-Processing image 114/414
-Processing image 115/414
-Processing image 116/414
-Processing image 117/414
-Processing image 118/414
-Processing image 119/414
-Processing image 120/414
-Processing image 121/414
-Processing image 122/414
-Processing image 123/414
-Processing image 124/414
-Processing image 125/414
-Processing image 126/414
-Processing image 127/414
-Processing image 128/414
-Processing image 129/414
-Processing image 130/414
-Processing image 131/414
-Processing image 132/414
-Processing image 133/414
-Processing image 134/414
-Processing image 135/414
-Processing image 136/414
-Processing image 137/414
-Processing image 138/414
-Processing image 139/414
-Processing image 140/414
-Processing image 141/414
-Processing image 142/414
-Processing image 143/414
-Processing image 144/414
-Processing image 145/414
-Processing image 146/414
-Processing image 147/414
-Processing image 148/414
-Processing image 149/414
-Processing image 150/414
-Processing image 151/414
-Processing image 152/414
-Processing image 153/414
-Processing image 154/414
-Processing image 155/414
-Processing image 156/414
-Processing image 157/414
-Processing image 158/414
-Processing image 159/414
-Processing image 160/414
-Processing image 161/414
-Processing image 162/414
-Processing image 163/414
-Processing image 164/414
-Processing image 165/414
-Processing image 166/414
-Processing image 167/414
-Processing image 168/414
-Processing image 169/414
-Processing image 170/414
-Processing image 171/414
-Processing image 172/414
-Processing image 173/414
-Processing image 174/414
-Processing image 175/414
-Processing image 176/414
-Processing image 177/414
-Processing image 178/414
-Processing image 179/414
-Processing image 180/414
-Processing image 181/414
-Processing image 182/414
-Processing image 183/414
-Processing image 184/414
-Processing image 185/414
-Processing image 186/414
-Processing image 187/414
-Processing image 188/414
-Processing image 189/414
-Processing image 190/414
-Processing image 191/414
-Processing image 192/414
-Processing image 193/414
-Processing image 194/414
-Processing image 195/414
-Processing image 196/414
-Processing image 197/414
-Processing image 198/414
-Processing image 199/414
-Processing image 200/414
-Processing image 201/414
-Processing image 202/414
-Processing image 203/414
-Processing image 204/414
-Processing image 205/414
-Processing image 206/414
-Processing image 207/414
-Processing image 208/414
-Processing image 209/414
-Processing image 210/414
-Processing image 211/414
-Processing image 212/414
-Processing image 213/414
-Processing image 214/414
-Processing image 215/414
-Processing image 216/414
-Processing image 217/414
-Processing image 218/414
-Processing image 219/414
-Processing image 220/414
-Processing image 221/414
-Processing image 222/414
-Processing image 223/414
-Processing image 224/414
-Processing image 225/414
-Processing image 226/414
-Processing image 227/414
-Processing image 228/414
-Processing image 229/414
-Processing image 230/414
-Processing image 231/414
-Processing image 232/414
-Processing image 233/414
-Processing image 234/414
-Processing image 235/414
-Processing image 236/414
-Processing image 237/414
-Processing image 238/414
-Processing image 239/414
-Processing image 240/414
-Processing image 241/414
-Processing image 242/414
-Processing image 243/414
-Processing image 244/414
-Processing image 245/414
-Processing image 246/414
-Processing image 247/414
-Processing image 248/414
-Processing image 249/414
-Processing image 250/414
-Processing image 251/414
-Processing image 252/414
-Processing image 253/414
-Processing image 254/414
-Processing image 255/414
-Processing image 256/414
-Processing image 257/414
-Processing image 258/414
-Processing image 259/414
-Processing image 260/414
-Processing image 261/414
-Processing image 262/414
-Processing image 263/414
-Processing image 264/414
-Processing image 265/414
-Processing image 266/414
-Processing image 267/414
-Processing image 268/414
-Processing image 269/414
-Processing image 270/414
-Processing image 271/414
-Processing image 272/414
-Processing image 273/414
-Processing image 274/414
-Processing image 275/414
-Processing image 276/414
-Processing image 277/414
-Processing image 278/414
-Processing image 279/414
-Processing image 280/414
-Processing image 281/414
-Processing image 282/414
-Processing image 283/414
-Processing image 284/414
-Processing image 285/414
-Processing image 286/414
-Processing image 287/414
-Processing image 288/414
-Processing image 289/414
-Processing image 290/414
-Processing image 291/414
-Processing image 292/414
-Processing image 293/414
-Processing image 294/414
-Processing image 295/414
-Processing image 296/414
-Processing image 297/414
-Processing image 298/414
-Processing image 299/414
-Processing image 300/414
-Processing image 301/414
-Processing image 302/414
-Processing image 303/414
-Processing image 304/414
-Processing image 305/414
-Processing image 306/414
-Processing image 307/414
-Processing image 308/414
-Processing image 309/414
-Processing image 310/414
-Processing image 311/414
-Processing image 312/414
-Processing image 313/414
-Processing image 314/414
-Processing image 315/414
-Processing image 316/414
-Processing image 317/414
-Processing image 318/414
-Processing image 319/414
-Processing image 320/414
-Processing image 321/414
-Processing image 322/414
-Processing image 323/414
-Processing image 324/414
-Processing image 325/414
-Processing image 326/414
-Processing image 327/414
-Processing image 328/414
-Processing image 329/414
-Processing image 330/414
-Processing image 331/414
-Processing image 332/414
-Processing image 333/414
-Processing image 334/414
-Processing image 335/414
-Processing image 336/414
-Processing image 337/414
-Processing image 338/414
-Processing image 339/414
-Processing image 340/414
-Processing image 341/414
-Processing image 342/414
-Processing image 343/414
-Processing image 344/414
-Processing image 345/414
-Processing image 346/414
-Processing image 347/414
-Processing image 348/414
-Processing image 349/414
-Processing image 350/414
-Processing image 351/414
-Processing image 352/414
-Processing image 353/414
-Processing image 354/414
-Processing image 355/414
-Processing image 356/414
-Processing image 357/414
-Processing image 358/414
-Processing image 359/414
-Processing image 360/414
-Processing image 361/414
-Processing image 362/414
-Processing image 363/414
-Processing image 364/414
-Processing image 365/414
-Processing image 366/414
-Processing image 367/414
-Processing image 368/414
-Processing image 369/414
-Processing image 370/414
-Processing image 371/414
-Processing image 372/414
-Processing image 373/414
-Processing image 374/414
-Processing image 375/414
-Processing image 376/414
-Processing image 377/414
-Processing image 378/414
-Processing image 379/414
-Processing image 380/414
-Processing image 381/414
-Processing image 382/414
-Processing image 383/414
-Processing image 384/414
-Processing image 385/414
-Processing image 386/414
-Processing image 387/414
-Processing image 388/414
-Processing image 389/414
-Processing image 390/414
-Processing image 391/414
-Processing image 392/414
-Processing image 393/414
-Processing image 394/414
-Processing image 395/414
-Processing image 396/414
-Processing image 397/414
-Processing image 398/414
-Processing image 399/414
-Processing image 400/414
-Processing image 401/414
-Processing image 402/414
-Processing image 403/414
-Processing image 404/414
-Processing image 405/414
-Processing image 406/414
-Processing image 407/414
-Processing image 408/414
-Processing image 409/414
-Processing image 410/414
-Processing image 411/414
-Processing image 412/414
-Processing image 413/414
-Processing image 414/414
-Starting fold 1
-Model: "model"
-__________________________________________________________________________________________________
- Layer (type)                   Output Shape         Param #     Connected to                     
-==================================================================================================
- input_1 (InputLayer)           [(None, 128, 128, 1  0           []                               
-                                28, 1)]                                                           
-                                                                                                  
- conv3d (Conv3D)                (None, 128, 128, 12  448         ['input_1[0][0]']                
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization (BatchNorm  (None, 128, 128, 12  64         ['conv3d[0][0]']                 
- alization)                     8, 16)                                                            
-                                                                                                  
- leaky_re_lu (LeakyReLU)        (None, 128, 128, 12  0           ['batch_normalization[0][0]']    
-                                8, 16)                                                            
-                                                                                                  
- conv3d_1 (Conv3D)              (None, 128, 128, 12  6928        ['leaky_re_lu[0][0]']            
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_1 (BatchNo  (None, 128, 128, 12  64         ['conv3d_1[0][0]']               
- rmalization)                   8, 16)                                                            
-                                                                                                  
- leaky_re_lu_1 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_1[0][0]']  
-                                8, 16)                                                            
-                                                                                                  
- spatial_dropout3d (SpatialDrop  (None, 128, 128, 12  0          ['leaky_re_lu_1[0][0]']          
- out3D)                         8, 16)                                                            
-                                                                                                  
- conv3d_2 (Conv3D)              (None, 128, 128, 12  6928        ['spatial_dropout3d[0][0]']      
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_2 (BatchNo  (None, 128, 128, 12  64         ['conv3d_2[0][0]']               
- rmalization)                   8, 16)                                                            
-                                                                                                  
- leaky_re_lu_2 (LeakyReLU)      (None, 128, 128, 12  0           ['batch_normalization_2[0][0]']  
-                                8, 16)                                                            
-                                                                                                  
- add (Add)                      (None, 128, 128, 12  0           ['leaky_re_lu_2[0][0]',          
-                                8, 16)                            'leaky_re_lu[0][0]']            
-                                                                                                  
- conv3d_3 (Conv3D)              (None, 64, 64, 64,   13856       ['add[0][0]']                    
-                                32)                                                               
-                                                                                                  
- batch_normalization_3 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_3[0][0]']               
- rmalization)                   32)                                                               
-                                                                                                  
- leaky_re_lu_3 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_3[0][0]']  
-                                32)                                                               
-                                                                                                  
- conv3d_4 (Conv3D)              (None, 64, 64, 64,   27680       ['leaky_re_lu_3[0][0]']          
-                                32)                                                               
-                                                                                                  
- batch_normalization_4 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_4[0][0]']               
- rmalization)                   32)                                                               
-                                                                                                  
- leaky_re_lu_4 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_4[0][0]']  
-                                32)                                                               
-                                                                                                  
- spatial_dropout3d_1 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_4[0][0]']          
- opout3D)                       32)                                                               
-                                                                                                  
- conv3d_5 (Conv3D)              (None, 64, 64, 64,   27680       ['spatial_dropout3d_1[0][0]']    
-                                32)                                                               
-                                                                                                  
- batch_normalization_5 (BatchNo  (None, 64, 64, 64,   128        ['conv3d_5[0][0]']               
- rmalization)                   32)                                                               
-                                                                                                  
- leaky_re_lu_5 (LeakyReLU)      (None, 64, 64, 64,   0           ['batch_normalization_5[0][0]']  
-                                32)                                                               
-                                                                                                  
- add_1 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_5[0][0]',          
-                                32)                               'leaky_re_lu_3[0][0]']          
-                                                                                                  
- conv3d_6 (Conv3D)              (None, 32, 32, 32,   55360       ['add_1[0][0]']                  
-                                64)                                                               
-                                                                                                  
- batch_normalization_6 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_6[0][0]']               
- rmalization)                   64)                                                               
-                                                                                                  
- leaky_re_lu_6 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_6[0][0]']  
-                                64)                                                               
-                                                                                                  
- conv3d_7 (Conv3D)              (None, 32, 32, 32,   110656      ['leaky_re_lu_6[0][0]']          
-                                64)                                                               
-                                                                                                  
- batch_normalization_7 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_7[0][0]']               
- rmalization)                   64)                                                               
-                                                                                                  
- leaky_re_lu_7 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_7[0][0]']  
-                                64)                                                               
-                                                                                                  
- spatial_dropout3d_2 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_7[0][0]']          
- opout3D)                       64)                                                               
-                                                                                                  
- conv3d_8 (Conv3D)              (None, 32, 32, 32,   110656      ['spatial_dropout3d_2[0][0]']    
-                                64)                                                               
-                                                                                                  
- batch_normalization_8 (BatchNo  (None, 32, 32, 32,   256        ['conv3d_8[0][0]']               
- rmalization)                   64)                                                               
-                                                                                                  
- leaky_re_lu_8 (LeakyReLU)      (None, 32, 32, 32,   0           ['batch_normalization_8[0][0]']  
-                                64)                                                               
-                                                                                                  
- add_2 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_8[0][0]',          
-                                64)                               'leaky_re_lu_6[0][0]']          
-                                                                                                  
- conv3d_9 (Conv3D)              (None, 16, 16, 16,   221312      ['add_2[0][0]']                  
-                                128)                                                              
-                                                                                                  
- batch_normalization_9 (BatchNo  (None, 16, 16, 16,   512        ['conv3d_9[0][0]']               
- rmalization)                   128)                                                              
-                                                                                                  
- leaky_re_lu_9 (LeakyReLU)      (None, 16, 16, 16,   0           ['batch_normalization_9[0][0]']  
-                                128)                                                              
-                                                                                                  
- conv3d_10 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_9[0][0]']          
-                                128)                                                              
-                                                                                                  
- batch_normalization_10 (BatchN  (None, 16, 16, 16,   512        ['conv3d_10[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_10 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_10[0][0]'] 
-                                128)                                                              
-                                                                                                  
- spatial_dropout3d_3 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_10[0][0]']         
- opout3D)                       128)                                                              
-                                                                                                  
- conv3d_11 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_3[0][0]']    
-                                128)                                                              
-                                                                                                  
- batch_normalization_11 (BatchN  (None, 16, 16, 16,   512        ['conv3d_11[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_11 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_11[0][0]'] 
-                                128)                                                              
-                                                                                                  
- add_3 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_11[0][0]',         
-                                128)                              'leaky_re_lu_9[0][0]']          
-                                                                                                  
- conv3d_12 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_3[0][0]']                  
-                                )                                                                 
-                                                                                                  
- batch_normalization_12 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_12[0][0]']              
- ormalization)                  )                                                                 
-                                                                                                  
- leaky_re_lu_12 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_12[0][0]'] 
-                                )                                                                 
-                                                                                                  
- conv3d_13 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_12[0][0]']         
-                                )                                                                 
-                                                                                                  
- batch_normalization_13 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_13[0][0]']              
- ormalization)                  )                                                                 
-                                                                                                  
- leaky_re_lu_13 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_13[0][0]'] 
-                                )                                                                 
-                                                                                                  
- spatial_dropout3d_4 (SpatialDr  (None, 8, 8, 8, 256  0          ['leaky_re_lu_13[0][0]']         
- opout3D)                       )                                                                 
-                                                                                                  
- conv3d_14 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_4[0][0]']    
-                                )                                                                 
-                                                                                                  
- batch_normalization_14 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_14[0][0]']              
- ormalization)                  )                                                                 
-                                                                                                  
- leaky_re_lu_14 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_14[0][0]'] 
-                                )                                                                 
-                                                                                                  
- add_4 (Add)                    (None, 8, 8, 8, 256  0           ['leaky_re_lu_14[0][0]',         
-                                )                                 'leaky_re_lu_12[0][0]']         
-                                                                                                  
- global_average_pooling3d (Glob  (None, 256)         0           ['add_4[0][0]']                  
- alAveragePooling3D)                                                                              
-                                                                                                  
- dropout (Dropout)              (None, 256)          0           ['global_average_pooling3d[0][0]'
-                                                                 ]                                
-                                                                                                  
- dense (Dense)                  (None, 2)            514         ['dropout[0][0]']                
-                                                                                                  
-==================================================================================================
-Total params: 5,897,410
-Trainable params: 5,894,434
-Non-trainable params: 2,976
-__________________________________________________________________________________________________
-Epoch 1/3
-2024-09-15 20:00:57.195634: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8101
-2024-09-15 20:01:03.520617: I tensorflow/stream_executor/cuda/cuda_blas.cc:1786] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
- 1/56 [..............................] - ETA: 12:50 - loss: 2.2901 - accuracy: 0.4000 - auc: 0.4200 2/56 [>.............................] - ETA: 16s - loss: 2.4742 - accuracy: 0.5000 - auc: 0.4950   3/56 [>.............................] - ETA: 16s - loss: 2.3074 - accuracy: 0.5333 - auc: 0.5622 4/56 [=>............................] - ETA: 16s - loss: 2.2978 - accuracy: 0.5500 - auc: 0.5838 5/56 [=>............................] - ETA: 15s - loss: 2.4291 - accuracy: 0.5600 - auc: 0.5448 6/56 [==>...........................] - ETA: 15s - loss: 2.4580 - accuracy: 0.5667 - auc: 0.5861 7/56 [==>...........................] - ETA: 15s - loss: 2.4867 - accuracy: 0.5429 - auc: 0.5873 8/56 [===>..........................] - ETA: 14s - loss: 2.3957 - accuracy: 0.5750 - auc: 0.6097 9/56 [===>..........................] - ETA: 14s - loss: 2.4689 - accuracy: 0.5333 - auc: 0.578010/56 [====>.........................] - ETA: 14s - loss: 2.6022 - accuracy: 0.5400 - auc: 0.591411/56 [====>.........................] - ETA: 13s - loss: 2.7099 - accuracy: 0.5455 - auc: 0.584012/56 [=====>........................] - ETA: 13s - loss: 2.7511 - accuracy: 0.5500 - auc: 0.588513/56 [=====>........................] - ETA: 13s - loss: 2.6956 - accuracy: 0.5692 - auc: 0.610814/56 [======>.......................] - ETA: 12s - loss: 2.6550 - accuracy: 0.5714 - auc: 0.614415/56 [=======>......................] - ETA: 12s - loss: 2.6910 - accuracy: 0.5733 - auc: 0.609716/56 [=======>......................] - ETA: 12s - loss: 2.7175 - accuracy: 0.5625 - auc: 0.597117/56 [========>.....................] - ETA: 11s - loss: 2.6783 - accuracy: 0.5647 - auc: 0.611118/56 [========>.....................] - ETA: 11s - loss: 2.6917 - accuracy: 0.5667 - auc: 0.612419/56 [=========>....................] - ETA: 11s - loss: 2.7039 - accuracy: 0.5684 - auc: 0.609620/56 [=========>....................] - ETA: 11s - loss: 2.7419 - accuracy: 0.5600 - auc: 0.593421/56 [==========>...................] - ETA: 10s - loss: 2.6935 - accuracy: 0.5714 - auc: 0.600022/56 [==========>...................] - ETA: 10s - loss: 2.6843 - accuracy: 0.5727 - auc: 0.602223/56 [===========>..................] - ETA: 10s - loss: 2.6370 - accuracy: 0.5913 - auc: 0.613624/56 [===========>..................] - ETA: 9s - loss: 2.6448 - accuracy: 0.5917 - auc: 0.6100 25/56 [============>.................] - ETA: 9s - loss: 2.6382 - accuracy: 0.5840 - auc: 0.608926/56 [============>.................] - ETA: 9s - loss: 2.6387 - accuracy: 0.5846 - auc: 0.611127/56 [=============>................] - ETA: 8s - loss: 2.6807 - accuracy: 0.5778 - auc: 0.602928/56 [==============>...............] - ETA: 8s - loss: 2.7375 - accuracy: 0.5786 - auc: 0.594629/56 [==============>...............] - ETA: 8s - loss: 2.7105 - accuracy: 0.5862 - auc: 0.598830/56 [===============>..............] - ETA: 7s - loss: 2.7177 - accuracy: 0.5800 - auc: 0.592631/56 [===============>..............] - ETA: 7s - loss: 2.7382 - accuracy: 0.5677 - auc: 0.583232/56 [================>.............] - ETA: 7s - loss: 2.7183 - accuracy: 0.5625 - auc: 0.583333/56 [================>.............] - ETA: 7s - loss: 2.7152 - accuracy: 0.5576 - auc: 0.577634/56 [=================>............] - ETA: 6s - loss: 2.6807 - accuracy: 0.5706 - auc: 0.589235/56 [=================>............] - ETA: 6s - loss: 2.6612 - accuracy: 0.5771 - auc: 0.592336/56 [==================>...........] - ETA: 6s - loss: 2.6416 - accuracy: 0.5778 - auc: 0.596137/56 [==================>...........] - ETA: 5s - loss: 2.6325 - accuracy: 0.5730 - auc: 0.595438/56 [===================>..........] - ETA: 5s - loss: 2.6161 - accuracy: 0.5737 - auc: 0.596739/56 [===================>..........] - ETA: 5s - loss: 2.6049 - accuracy: 0.5795 - auc: 0.596740/56 [====================>.........] - ETA: 4s - loss: 2.6067 - accuracy: 0.5700 - auc: 0.591541/56 [====================>.........] - ETA: 4s - loss: 2.6060 - accuracy: 0.5610 - auc: 0.586042/56 [=====================>........] - ETA: 4s - loss: 2.6193 - accuracy: 0.5571 - auc: 0.580243/56 [======================>.......] - ETA: 3s - loss: 2.6056 - accuracy: 0.5535 - auc: 0.581744/56 [======================>.......] - ETA: 3s - loss: 2.5905 - accuracy: 0.5545 - auc: 0.582345/56 [=======================>......] - ETA: 3s - loss: 2.5754 - accuracy: 0.5556 - auc: 0.584246/56 [=======================>......] - ETA: 3s - loss: 2.5625 - accuracy: 0.5565 - auc: 0.584847/56 [========================>.....] - ETA: 2s - loss: 2.5588 - accuracy: 0.5532 - auc: 0.583348/56 [========================>.....] - ETA: 2s - loss: 2.5526 - accuracy: 0.5542 - auc: 0.584249/56 [=========================>....] - ETA: 2s - loss: 2.5390 - accuracy: 0.5592 - auc: 0.587450/56 [=========================>....] - ETA: 1s - loss: 2.5336 - accuracy: 0.5560 - auc: 0.584851/56 [==========================>...] - ETA: 1s - loss: 2.5401 - accuracy: 0.5569 - auc: 0.582452/56 [==========================>...] - ETA: 1s - loss: 2.5281 - accuracy: 0.5577 - auc: 0.584453/56 [===========================>..] - ETA: 0s - loss: 2.5157 - accuracy: 0.5623 - auc: 0.586554/56 [===========================>..] - ETA: 0s - loss: 2.5044 - accuracy: 0.5667 - auc: 0.591155/56 [============================>.] - ETA: 0s - loss: 2.4945 - accuracy: 0.5709 - auc: 0.595756/56 [==============================] - ETA: 0s - loss: 2.4915 - accuracy: 0.5725 - auc: 0.596456/56 [==============================] - 36s 407ms/step - loss: 2.4915 - accuracy: 0.5725 - auc: 0.5964 - val_loss: 9.5261 - val_accuracy: 0.6377 - val_auc: 0.6377 - lr: 5.0000e-04
-Epoch 2/3
- 1/56 [..............................] - ETA: 17s - loss: 1.6692 - accuracy: 0.8000 - auc: 0.9600 2/56 [>.............................] - ETA: 16s - loss: 2.6013 - accuracy: 0.5000 - auc: 0.4300 3/56 [>.............................] - ETA: 16s - loss: 2.3071 - accuracy: 0.6000 - auc: 0.6000 4/56 [=>............................] - ETA: 16s - loss: 2.3880 - accuracy: 0.5500 - auc: 0.5425 5/56 [=>............................] - ETA: 15s - loss: 2.2792 - accuracy: 0.5600 - auc: 0.5824 6/56 [==>...........................] - ETA: 15s - loss: 2.3720 - accuracy: 0.5333 - auc: 0.5344 7/56 [==>...........................] - ETA: 15s - loss: 2.3612 - accuracy: 0.5143 - auc: 0.5273 8/56 [===>..........................] - ETA: 14s - loss: 2.3674 - accuracy: 0.5000 - auc: 0.5150 9/56 [===>..........................] - ETA: 14s - loss: 2.4115 - accuracy: 0.4889 - auc: 0.518010/56 [====>.........................] - ETA: 14s - loss: 2.4281 - accuracy: 0.4800 - auc: 0.509611/56 [====>.........................] - ETA: 13s - loss: 2.4194 - accuracy: 0.4727 - auc: 0.496912/56 [=====>........................] - ETA: 13s - loss: 2.3879 - accuracy: 0.4833 - auc: 0.510613/56 [=====>........................] - ETA: 13s - loss: 2.3698 - accuracy: 0.4923 - auc: 0.520014/56 [======>.......................] - ETA: 12s - loss: 2.3944 - accuracy: 0.5000 - auc: 0.510415/56 [=======>......................] - ETA: 12s - loss: 2.4189 - accuracy: 0.4800 - auc: 0.484416/56 [=======>......................] - ETA: 12s - loss: 2.3893 - accuracy: 0.5000 - auc: 0.500917/56 [========>.....................] - ETA: 12s - loss: 2.3619 - accuracy: 0.5059 - auc: 0.512418/56 [========>.....................] - ETA: 11s - loss: 2.3510 - accuracy: 0.5111 - auc: 0.519619/56 [=========>....................] - ETA: 11s - loss: 2.3446 - accuracy: 0.5158 - auc: 0.524020/56 [=========>....................] - ETA: 11s - loss: 2.3750 - accuracy: 0.5100 - auc: 0.501621/56 [==========>...................] - ETA: 10s - loss: 2.3507 - accuracy: 0.5238 - auc: 0.511822/56 [==========>...................] - ETA: 10s - loss: 2.3629 - accuracy: 0.5273 - auc: 0.510523/56 [===========>..................] - ETA: 10s - loss: 2.3417 - accuracy: 0.5391 - auc: 0.520824/56 [===========>..................] - ETA: 9s - loss: 2.3220 - accuracy: 0.5500 - auc: 0.5370 25/56 [============>.................] - ETA: 9s - loss: 2.3102 - accuracy: 0.5440 - auc: 0.540426/56 [============>.................] - ETA: 9s - loss: 2.2973 - accuracy: 0.5462 - auc: 0.544727/56 [=============>................] - ETA: 8s - loss: 2.2911 - accuracy: 0.5481 - auc: 0.546128/56 [==============>...............] - ETA: 8s - loss: 2.2796 - accuracy: 0.5500 - auc: 0.549429/56 [==============>...............] - ETA: 8s - loss: 2.2623 - accuracy: 0.5586 - auc: 0.560430/56 [===============>..............] - ETA: 8s - loss: 2.2705 - accuracy: 0.5467 - auc: 0.549231/56 [===============>..............] - ETA: 7s - loss: 2.2703 - accuracy: 0.5419 - auc: 0.545332/56 [================>.............] - ETA: 7s - loss: 2.2632 - accuracy: 0.5375 - auc: 0.546733/56 [================>.............] - ETA: 7s - loss: 2.2652 - accuracy: 0.5273 - auc: 0.542134/56 [=================>............] - ETA: 6s - loss: 2.2582 - accuracy: 0.5294 - auc: 0.542435/56 [=================>............] - ETA: 6s - loss: 2.2550 - accuracy: 0.5314 - auc: 0.542436/56 [==================>...........] - ETA: 6s - loss: 2.2597 - accuracy: 0.5333 - auc: 0.540737/56 [==================>...........] - ETA: 5s - loss: 2.2582 - accuracy: 0.5297 - auc: 0.537538/56 [===================>..........] - ETA: 5s - loss: 2.2647 - accuracy: 0.5263 - auc: 0.536139/56 [===================>..........] - ETA: 5s - loss: 2.2676 - accuracy: 0.5231 - auc: 0.532640/56 [====================>.........] - ETA: 4s - loss: 2.2764 - accuracy: 0.5200 - auc: 0.530841/56 [====================>.........] - ETA: 4s - loss: 2.2881 - accuracy: 0.5220 - auc: 0.530142/56 [=====================>........] - ETA: 4s - loss: 2.3105 - accuracy: 0.5190 - auc: 0.525143/56 [======================>.......] - ETA: 4s - loss: 2.3021 - accuracy: 0.5256 - auc: 0.529644/56 [======================>.......] - ETA: 3s - loss: 2.2959 - accuracy: 0.5273 - auc: 0.535845/56 [=======================>......] - ETA: 3s - loss: 2.2922 - accuracy: 0.5289 - auc: 0.540846/56 [=======================>......] - ETA: 3s - loss: 2.2787 - accuracy: 0.5348 - auc: 0.549447/56 [========================>.....] - ETA: 2s - loss: 2.2863 - accuracy: 0.5234 - auc: 0.540448/56 [========================>.....] - ETA: 2s - loss: 2.2841 - accuracy: 0.5208 - auc: 0.539949/56 [=========================>....] - ETA: 2s - loss: 2.2745 - accuracy: 0.5224 - auc: 0.545350/56 [=========================>....] - ETA: 1s - loss: 2.2661 - accuracy: 0.5280 - auc: 0.551651/56 [==========================>...] - ETA: 1s - loss: 2.2517 - accuracy: 0.5373 - auc: 0.562852/56 [==========================>...] - ETA: 1s - loss: 2.2614 - accuracy: 0.5308 - auc: 0.555053/56 [===========================>..] - ETA: 0s - loss: 2.2563 - accuracy: 0.5283 - auc: 0.556454/56 [===========================>..] - ETA: 0s - loss: 2.2586 - accuracy: 0.5296 - auc: 0.557055/56 [============================>.] - ETA: 0s - loss: 2.2481 - accuracy: 0.5345 - auc: 0.563956/56 [==============================] - ETA: 0s - loss: 2.2467 - accuracy: 0.5362 - auc: 0.564356/56 [==============================] - 19s 337ms/step - loss: 2.2467 - accuracy: 0.5362 - auc: 0.5643 - val_loss: 2.4110 - val_accuracy: 0.3623 - val_auc: 0.3386 - lr: 5.0000e-04
-Epoch 3/3
- 1/56 [..............................] - ETA: 16s - loss: 2.4065 - accuracy: 0.4000 - auc: 0.4800 2/56 [>.............................] - ETA: 16s - loss: 2.3481 - accuracy: 0.4000 - auc: 0.4600 3/56 [>.............................] - ETA: 16s - loss: 2.1307 - accuracy: 0.5333 - auc: 0.5867 4/56 [=>............................] - ETA: 16s - loss: 2.0357 - accuracy: 0.6000 - auc: 0.6550 5/56 [=>............................] - ETA: 15s - loss: 2.0776 - accuracy: 0.5600 - auc: 0.5904 6/56 [==>...........................] - ETA: 15s - loss: 1.9994 - accuracy: 0.6333 - auc: 0.6578 7/56 [==>...........................] - ETA: 15s - loss: 2.0700 - accuracy: 0.6000 - auc: 0.6024 8/56 [===>..........................] - ETA: 14s - loss: 2.1101 - accuracy: 0.5750 - auc: 0.5713 9/56 [===>..........................] - ETA: 14s - loss: 2.0791 - accuracy: 0.5778 - auc: 0.600010/56 [====>.........................] - ETA: 14s - loss: 2.0894 - accuracy: 0.5800 - auc: 0.610411/56 [====>.........................] - ETA: 13s - loss: 2.1433 - accuracy: 0.5636 - auc: 0.571912/56 [=====>........................] - ETA: 13s - loss: 2.1804 - accuracy: 0.5500 - auc: 0.545013/56 [=====>........................] - ETA: 13s - loss: 2.2121 - accuracy: 0.5385 - auc: 0.520914/56 [======>.......................] - ETA: 12s - loss: 2.1747 - accuracy: 0.5571 - auc: 0.557315/56 [=======>......................] - ETA: 12s - loss: 2.1917 - accuracy: 0.5600 - auc: 0.551816/56 [=======>......................] - ETA: 12s - loss: 2.2159 - accuracy: 0.5625 - auc: 0.535817/56 [========>.....................] - ETA: 11s - loss: 2.1961 - accuracy: 0.5529 - auc: 0.548918/56 [========>.....................] - ETA: 11s - loss: 2.1959 - accuracy: 0.5556 - auc: 0.546519/56 [=========>....................] - ETA: 11s - loss: 2.1801 - accuracy: 0.5579 - auc: 0.556020/56 [=========>....................] - ETA: 11s - loss: 2.1798 - accuracy: 0.5500 - auc: 0.552221/56 [==========>...................] - ETA: 10s - loss: 2.1910 - accuracy: 0.5429 - auc: 0.551522/56 [==========>...................] - ETA: 10s - loss: 2.2349 - accuracy: 0.5182 - auc: 0.525323/56 [===========>..................] - ETA: 10s - loss: 2.2188 - accuracy: 0.5304 - auc: 0.535424/56 [===========>..................] - ETA: 9s - loss: 2.2171 - accuracy: 0.5250 - auc: 0.5358 25/56 [============>.................] - ETA: 9s - loss: 2.2565 - accuracy: 0.5120 - auc: 0.517226/56 [============>.................] - ETA: 9s - loss: 2.2355 - accuracy: 0.5154 - auc: 0.531627/56 [=============>................] - ETA: 8s - loss: 2.2390 - accuracy: 0.5037 - auc: 0.522728/56 [==============>...............] - ETA: 8s - loss: 2.2280 - accuracy: 0.5071 - auc: 0.526329/56 [==============>...............] - ETA: 8s - loss: 2.2056 - accuracy: 0.5172 - auc: 0.544330/56 [===============>..............] - ETA: 7s - loss: 2.2048 - accuracy: 0.5133 - auc: 0.541831/56 [===============>..............] - ETA: 7s - loss: 2.1932 - accuracy: 0.5226 - auc: 0.549032/56 [================>.............] - ETA: 7s - loss: 2.1891 - accuracy: 0.5250 - auc: 0.549933/56 [================>.............] - ETA: 7s - loss: 2.1828 - accuracy: 0.5273 - auc: 0.553134/56 [=================>............] - ETA: 6s - loss: 2.1892 - accuracy: 0.5235 - auc: 0.547835/56 [=================>............] - ETA: 6s - loss: 2.1776 - accuracy: 0.5314 - auc: 0.558036/56 [==================>...........] - ETA: 6s - loss: 2.1636 - accuracy: 0.5389 - auc: 0.567537/56 [==================>...........] - ETA: 5s - loss: 2.1504 - accuracy: 0.5459 - auc: 0.576838/56 [===================>..........] - ETA: 5s - loss: 2.1486 - accuracy: 0.5421 - auc: 0.575439/56 [===================>..........] - ETA: 5s - loss: 2.1512 - accuracy: 0.5436 - auc: 0.572540/56 [====================>.........] - ETA: 4s - loss: 2.1475 - accuracy: 0.5400 - auc: 0.571141/56 [====================>.........] - ETA: 4s - loss: 2.1678 - accuracy: 0.5366 - auc: 0.562142/56 [=====================>........] - ETA: 4s - loss: 2.1554 - accuracy: 0.5429 - auc: 0.571143/56 [======================>.......] - ETA: 3s - loss: 2.1552 - accuracy: 0.5442 - auc: 0.570344/56 [======================>.......] - ETA: 3s - loss: 2.1464 - accuracy: 0.5500 - auc: 0.575645/56 [=======================>......] - ETA: 3s - loss: 2.1455 - accuracy: 0.5511 - auc: 0.578146/56 [=======================>......] - ETA: 3s - loss: 2.1553 - accuracy: 0.5478 - auc: 0.574347/56 [========================>.....] - ETA: 2s - loss: 2.1478 - accuracy: 0.5489 - auc: 0.579048/56 [========================>.....] - ETA: 2s - loss: 2.1434 - accuracy: 0.5500 - auc: 0.581349/56 [=========================>....] - ETA: 2s - loss: 2.1343 - accuracy: 0.5551 - auc: 0.588350/56 [=========================>....] - ETA: 1s - loss: 2.1348 - accuracy: 0.5520 - auc: 0.584851/56 [==========================>...] - ETA: 1s - loss: 2.1326 - accuracy: 0.5529 - auc: 0.587052/56 [==========================>...] - ETA: 1s - loss: 2.1511 - accuracy: 0.5500 - auc: 0.580053/56 [===========================>..] - ETA: 0s - loss: 2.1655 - accuracy: 0.5509 - auc: 0.574654/56 [===========================>..] - ETA: 0s - loss: 2.1609 - accuracy: 0.5519 - auc: 0.577555/56 [============================>.] - ETA: 0s - loss: 2.1562 - accuracy: 0.5527 - auc: 0.579656/56 [==============================] - ETA: 0s - loss: 2.1541 - accuracy: 0.5543 - auc: 0.580956/56 [==============================] - 19s 337ms/step - loss: 2.1541 - accuracy: 0.5543 - auc: 0.5809 - val_loss: 1.9762 - val_accuracy: 0.6377 - val_auc: 0.6206 - lr: 5.0000e-04
-Best val_auc during training for fold 1: 0.6377
-Final AUC for fold 1: 0.4848
-Starting fold 2
-Model: "model_1"
-__________________________________________________________________________________________________
- Layer (type)                   Output Shape         Param #     Connected to                     
-==================================================================================================
- input_2 (InputLayer)           [(None, 128, 128, 1  0           []                               
-                                28, 1)]                                                           
-                                                                                                  
- conv3d_15 (Conv3D)             (None, 128, 128, 12  448         ['input_2[0][0]']                
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_15 (BatchN  (None, 128, 128, 12  64         ['conv3d_15[0][0]']              
- ormalization)                  8, 16)                                                            
-                                                                                                  
- leaky_re_lu_15 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_15[0][0]'] 
-                                8, 16)                                                            
-                                                                                                  
- conv3d_16 (Conv3D)             (None, 128, 128, 12  6928        ['leaky_re_lu_15[0][0]']         
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_16 (BatchN  (None, 128, 128, 12  64         ['conv3d_16[0][0]']              
- ormalization)                  8, 16)                                                            
-                                                                                                  
- leaky_re_lu_16 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_16[0][0]'] 
-                                8, 16)                                                            
-                                                                                                  
- spatial_dropout3d_5 (SpatialDr  (None, 128, 128, 12  0          ['leaky_re_lu_16[0][0]']         
- opout3D)                       8, 16)                                                            
-                                                                                                  
- conv3d_17 (Conv3D)             (None, 128, 128, 12  6928        ['spatial_dropout3d_5[0][0]']    
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_17 (BatchN  (None, 128, 128, 12  64         ['conv3d_17[0][0]']              
- ormalization)                  8, 16)                                                            
-                                                                                                  
- leaky_re_lu_17 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_17[0][0]'] 
-                                8, 16)                                                            
-                                                                                                  
- add_5 (Add)                    (None, 128, 128, 12  0           ['leaky_re_lu_17[0][0]',         
-                                8, 16)                            'leaky_re_lu_15[0][0]']         
-                                                                                                  
- conv3d_18 (Conv3D)             (None, 64, 64, 64,   13856       ['add_5[0][0]']                  
-                                32)                                                               
-                                                                                                  
- batch_normalization_18 (BatchN  (None, 64, 64, 64,   128        ['conv3d_18[0][0]']              
- ormalization)                  32)                                                               
-                                                                                                  
- leaky_re_lu_18 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_18[0][0]'] 
-                                32)                                                               
-                                                                                                  
- conv3d_19 (Conv3D)             (None, 64, 64, 64,   27680       ['leaky_re_lu_18[0][0]']         
-                                32)                                                               
-                                                                                                  
- batch_normalization_19 (BatchN  (None, 64, 64, 64,   128        ['conv3d_19[0][0]']              
- ormalization)                  32)                                                               
-                                                                                                  
- leaky_re_lu_19 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_19[0][0]'] 
-                                32)                                                               
-                                                                                                  
- spatial_dropout3d_6 (SpatialDr  (None, 64, 64, 64,   0          ['leaky_re_lu_19[0][0]']         
- opout3D)                       32)                                                               
-                                                                                                  
- conv3d_20 (Conv3D)             (None, 64, 64, 64,   27680       ['spatial_dropout3d_6[0][0]']    
-                                32)                                                               
-                                                                                                  
- batch_normalization_20 (BatchN  (None, 64, 64, 64,   128        ['conv3d_20[0][0]']              
- ormalization)                  32)                                                               
-                                                                                                  
- leaky_re_lu_20 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_20[0][0]'] 
-                                32)                                                               
-                                                                                                  
- add_6 (Add)                    (None, 64, 64, 64,   0           ['leaky_re_lu_20[0][0]',         
-                                32)                               'leaky_re_lu_18[0][0]']         
-                                                                                                  
- conv3d_21 (Conv3D)             (None, 32, 32, 32,   55360       ['add_6[0][0]']                  
-                                64)                                                               
-                                                                                                  
- batch_normalization_21 (BatchN  (None, 32, 32, 32,   256        ['conv3d_21[0][0]']              
- ormalization)                  64)                                                               
-                                                                                                  
- leaky_re_lu_21 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_21[0][0]'] 
-                                64)                                                               
-                                                                                                  
- conv3d_22 (Conv3D)             (None, 32, 32, 32,   110656      ['leaky_re_lu_21[0][0]']         
-                                64)                                                               
-                                                                                                  
- batch_normalization_22 (BatchN  (None, 32, 32, 32,   256        ['conv3d_22[0][0]']              
- ormalization)                  64)                                                               
-                                                                                                  
- leaky_re_lu_22 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_22[0][0]'] 
-                                64)                                                               
-                                                                                                  
- spatial_dropout3d_7 (SpatialDr  (None, 32, 32, 32,   0          ['leaky_re_lu_22[0][0]']         
- opout3D)                       64)                                                               
-                                                                                                  
- conv3d_23 (Conv3D)             (None, 32, 32, 32,   110656      ['spatial_dropout3d_7[0][0]']    
-                                64)                                                               
-                                                                                                  
- batch_normalization_23 (BatchN  (None, 32, 32, 32,   256        ['conv3d_23[0][0]']              
- ormalization)                  64)                                                               
-                                                                                                  
- leaky_re_lu_23 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_23[0][0]'] 
-                                64)                                                               
-                                                                                                  
- add_7 (Add)                    (None, 32, 32, 32,   0           ['leaky_re_lu_23[0][0]',         
-                                64)                               'leaky_re_lu_21[0][0]']         
-                                                                                                  
- conv3d_24 (Conv3D)             (None, 16, 16, 16,   221312      ['add_7[0][0]']                  
-                                128)                                                              
-                                                                                                  
- batch_normalization_24 (BatchN  (None, 16, 16, 16,   512        ['conv3d_24[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_24 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_24[0][0]'] 
-                                128)                                                              
-                                                                                                  
- conv3d_25 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_24[0][0]']         
-                                128)                                                              
-                                                                                                  
- batch_normalization_25 (BatchN  (None, 16, 16, 16,   512        ['conv3d_25[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_25 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_25[0][0]'] 
-                                128)                                                              
-                                                                                                  
- spatial_dropout3d_8 (SpatialDr  (None, 16, 16, 16,   0          ['leaky_re_lu_25[0][0]']         
- opout3D)                       128)                                                              
-                                                                                                  
- conv3d_26 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_8[0][0]']    
-                                128)                                                              
-                                                                                                  
- batch_normalization_26 (BatchN  (None, 16, 16, 16,   512        ['conv3d_26[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_26 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_26[0][0]'] 
-                                128)                                                              
-                                                                                                  
- add_8 (Add)                    (None, 16, 16, 16,   0           ['leaky_re_lu_26[0][0]',         
-                                128)                              'leaky_re_lu_24[0][0]']         
-                                                                                                  
- conv3d_27 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_8[0][0]']                  
-                                )                                                                 
-                                                                                                  
- batch_normalization_27 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_27[0][0]']              
- ormalization)                  )                                                                 
-                                                                                                  
- leaky_re_lu_27 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_27[0][0]'] 
-                                )                                                                 
-                                                                                                  
- conv3d_28 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_27[0][0]']         
-                                )                                                                 
-                                                                                                  
- batch_normalization_28 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_28[0][0]']              
- ormalization)                  )                                                                 
-                                                                                                  
- leaky_re_lu_28 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_28[0][0]'] 
-                                )                                                                 
-                                                                                                  
- spatial_dropout3d_9 (SpatialDr  (None, 8, 8, 8, 256  0          ['leaky_re_lu_28[0][0]']         
- opout3D)                       )                                                                 
-                                                                                                  
- conv3d_29 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_9[0][0]']    
-                                )                                                                 
-                                                                                                  
- batch_normalization_29 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_29[0][0]']              
- ormalization)                  )                                                                 
-                                                                                                  
- leaky_re_lu_29 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_29[0][0]'] 
-                                )                                                                 
-                                                                                                  
- add_9 (Add)                    (None, 8, 8, 8, 256  0           ['leaky_re_lu_29[0][0]',         
-                                )                                 'leaky_re_lu_27[0][0]']         
-                                                                                                  
- global_average_pooling3d_1 (Gl  (None, 256)         0           ['add_9[0][0]']                  
- obalAveragePooling3D)                                                                            
-                                                                                                  
- dropout_1 (Dropout)            (None, 256)          0           ['global_average_pooling3d_1[0][0
-                                                                 ]']                              
-                                                                                                  
- dense_1 (Dense)                (None, 2)            514         ['dropout_1[0][0]']              
-                                                                                                  
-==================================================================================================
-Total params: 5,897,410
-Trainable params: 5,894,434
-Non-trainable params: 2,976
-__________________________________________________________________________________________________
-Epoch 1/3
- 1/56 [..............................] - ETA: 1:57 - loss: 1.5827 - accuracy: 1.0000 - auc: 1.0000 2/56 [>.............................] - ETA: 16s - loss: 3.3461 - accuracy: 0.5000 - auc: 0.2500  3/56 [>.............................] - ETA: 16s - loss: 2.8594 - accuracy: 0.5333 - auc: 0.4089 4/56 [=>............................] - ETA: 16s - loss: 3.4253 - accuracy: 0.5000 - auc: 0.4250 5/56 [=>............................] - ETA: 15s - loss: 3.2993 - accuracy: 0.4400 - auc: 0.4240 6/56 [==>...........................] - ETA: 15s - loss: 3.1762 - accuracy: 0.4667 - auc: 0.4600 7/56 [==>...........................] - ETA: 15s - loss: 3.1237 - accuracy: 0.4571 - auc: 0.4580 8/56 [===>..........................] - ETA: 14s - loss: 2.9911 - accuracy: 0.4750 - auc: 0.4662 9/56 [===>..........................] - ETA: 14s - loss: 2.9819 - accuracy: 0.4667 - auc: 0.473610/56 [====>.........................] - ETA: 14s - loss: 2.8703 - accuracy: 0.5000 - auc: 0.497211/56 [====>.........................] - ETA: 13s - loss: 2.9973 - accuracy: 0.4909 - auc: 0.484312/56 [=====>........................] - ETA: 13s - loss: 2.9738 - accuracy: 0.5000 - auc: 0.481713/56 [=====>........................] - ETA: 13s - loss: 2.8875 - accuracy: 0.5231 - auc: 0.503414/56 [======>.......................] - ETA: 12s - loss: 2.8494 - accuracy: 0.5143 - auc: 0.506715/56 [=======>......................] - ETA: 12s - loss: 2.8517 - accuracy: 0.5333 - auc: 0.522316/56 [=======>......................] - ETA: 12s - loss: 2.8592 - accuracy: 0.5500 - auc: 0.540017/56 [========>.....................] - ETA: 12s - loss: 2.9019 - accuracy: 0.5412 - auc: 0.524718/56 [========>.....................] - ETA: 11s - loss: 3.0017 - accuracy: 0.5333 - auc: 0.516919/56 [=========>....................] - ETA: 11s - loss: 2.9699 - accuracy: 0.5474 - auc: 0.536120/56 [=========>....................] - ETA: 11s - loss: 2.9469 - accuracy: 0.5500 - auc: 0.541321/56 [==========>...................] - ETA: 10s - loss: 2.9188 - accuracy: 0.5333 - auc: 0.540822/56 [==========>...................] - ETA: 10s - loss: 2.8564 - accuracy: 0.5455 - auc: 0.560723/56 [===========>..................] - ETA: 10s - loss: 2.8167 - accuracy: 0.5478 - auc: 0.573024/56 [===========>..................] - ETA: 9s - loss: 2.9024 - accuracy: 0.5333 - auc: 0.5554 25/56 [============>.................] - ETA: 9s - loss: 2.9564 - accuracy: 0.5280 - auc: 0.541326/56 [============>.................] - ETA: 9s - loss: 2.9046 - accuracy: 0.5385 - auc: 0.553527/56 [=============>................] - ETA: 8s - loss: 2.8712 - accuracy: 0.5407 - auc: 0.555728/56 [==============>...............] - ETA: 8s - loss: 2.8404 - accuracy: 0.5429 - auc: 0.563129/56 [==============>...............] - ETA: 8s - loss: 2.8058 - accuracy: 0.5448 - auc: 0.571030/56 [===============>..............] - ETA: 8s - loss: 2.7738 - accuracy: 0.5533 - auc: 0.579231/56 [===============>..............] - ETA: 7s - loss: 2.7793 - accuracy: 0.5484 - auc: 0.577432/56 [================>.............] - ETA: 7s - loss: 2.7493 - accuracy: 0.5562 - auc: 0.585133/56 [================>.............] - ETA: 7s - loss: 2.7146 - accuracy: 0.5636 - auc: 0.595834/56 [=================>............] - ETA: 6s - loss: 2.7436 - accuracy: 0.5529 - auc: 0.583235/56 [=================>............] - ETA: 6s - loss: 2.7200 - accuracy: 0.5600 - auc: 0.588136/56 [==================>...........] - ETA: 6s - loss: 2.7336 - accuracy: 0.5611 - auc: 0.583237/56 [==================>...........] - ETA: 5s - loss: 2.7077 - accuracy: 0.5676 - auc: 0.589338/56 [===================>..........] - ETA: 5s - loss: 2.6796 - accuracy: 0.5737 - auc: 0.597839/56 [===================>..........] - ETA: 5s - loss: 2.6553 - accuracy: 0.5795 - auc: 0.604840/56 [====================>.........] - ETA: 4s - loss: 2.6303 - accuracy: 0.5900 - auc: 0.611941/56 [====================>.........] - ETA: 4s - loss: 2.6165 - accuracy: 0.5902 - auc: 0.615242/56 [=====================>........] - ETA: 4s - loss: 2.6114 - accuracy: 0.5905 - auc: 0.613543/56 [======================>.......] - ETA: 4s - loss: 2.5966 - accuracy: 0.5860 - auc: 0.615144/56 [======================>.......] - ETA: 3s - loss: 2.6100 - accuracy: 0.5864 - auc: 0.609345/56 [=======================>......] - ETA: 3s - loss: 2.5927 - accuracy: 0.5867 - auc: 0.611646/56 [=======================>......] - ETA: 3s - loss: 2.5785 - accuracy: 0.5826 - auc: 0.613547/56 [========================>.....] - ETA: 2s - loss: 2.6028 - accuracy: 0.5745 - auc: 0.601148/56 [========================>.....] - ETA: 2s - loss: 2.5883 - accuracy: 0.5750 - auc: 0.602549/56 [=========================>....] - ETA: 2s - loss: 2.5752 - accuracy: 0.5714 - auc: 0.603350/56 [=========================>....] - ETA: 1s - loss: 2.5620 - accuracy: 0.5720 - auc: 0.605051/56 [==========================>...] - ETA: 1s - loss: 2.5637 - accuracy: 0.5686 - auc: 0.601552/56 [==========================>...] - ETA: 1s - loss: 2.5785 - accuracy: 0.5692 - auc: 0.598253/56 [===========================>..] - ETA: 0s - loss: 2.5669 - accuracy: 0.5698 - auc: 0.600954/56 [===========================>..] - ETA: 0s - loss: 2.5567 - accuracy: 0.5667 - auc: 0.601255/56 [============================>.] - ETA: 0s - loss: 2.5481 - accuracy: 0.5673 - auc: 0.601256/56 [==============================] - ETA: 0s - loss: 2.5441 - accuracy: 0.5688 - auc: 0.602856/56 [==============================] - 22s 365ms/step - loss: 2.5441 - accuracy: 0.5688 - auc: 0.6028 - val_loss: 2.9665 - val_accuracy: 0.6377 - val_auc: 0.7299 - lr: 5.0000e-04
-Epoch 2/3
- 1/56 [..............................] - ETA: 16s - loss: 2.4224 - accuracy: 0.6000 - auc: 0.6000 2/56 [>.............................] - ETA: 16s - loss: 2.0980 - accuracy: 0.7000 - auc: 0.7500 3/56 [>.............................] - ETA: 16s - loss: 1.9376 - accuracy: 0.7333 - auc: 0.8156 4/56 [=>............................] - ETA: 15s - loss: 1.9014 - accuracy: 0.7500 - auc: 0.8188 5/56 [=>............................] - ETA: 15s - loss: 1.9008 - accuracy: 0.7200 - auc: 0.8136 6/56 [==>...........................] - ETA: 15s - loss: 1.9760 - accuracy: 0.6667 - auc: 0.7683 7/56 [==>...........................] - ETA: 15s - loss: 1.9739 - accuracy: 0.6857 - auc: 0.7637 8/56 [===>..........................] - ETA: 14s - loss: 1.9575 - accuracy: 0.6750 - auc: 0.7766 9/56 [===>..........................] - ETA: 14s - loss: 1.9420 - accuracy: 0.6667 - auc: 0.784010/56 [====>.........................] - ETA: 14s - loss: 1.9174 - accuracy: 0.6800 - auc: 0.799811/56 [====>.........................] - ETA: 13s - loss: 1.9163 - accuracy: 0.6909 - auc: 0.799812/56 [=====>........................] - ETA: 13s - loss: 1.9237 - accuracy: 0.6833 - auc: 0.798213/56 [=====>........................] - ETA: 13s - loss: 1.8897 - accuracy: 0.7077 - auc: 0.820014/56 [======>.......................] - ETA: 12s - loss: 1.9442 - accuracy: 0.7000 - auc: 0.795015/56 [=======>......................] - ETA: 12s - loss: 1.9457 - accuracy: 0.7067 - auc: 0.794216/56 [=======>......................] - ETA: 12s - loss: 2.0327 - accuracy: 0.6750 - auc: 0.746517/56 [========>.....................] - ETA: 11s - loss: 2.0689 - accuracy: 0.6706 - auc: 0.734618/56 [========>.....................] - ETA: 11s - loss: 2.0973 - accuracy: 0.6667 - auc: 0.730119/56 [=========>....................] - ETA: 11s - loss: 2.0821 - accuracy: 0.6737 - auc: 0.732920/56 [=========>....................] - ETA: 11s - loss: 2.0933 - accuracy: 0.6600 - auc: 0.722221/56 [==========>...................] - ETA: 10s - loss: 2.1332 - accuracy: 0.6571 - auc: 0.705622/56 [==========>...................] - ETA: 10s - loss: 2.1331 - accuracy: 0.6545 - auc: 0.702923/56 [===========>..................] - ETA: 10s - loss: 2.1251 - accuracy: 0.6522 - auc: 0.702024/56 [===========>..................] - ETA: 9s - loss: 2.1181 - accuracy: 0.6500 - auc: 0.7012 25/56 [============>.................] - ETA: 9s - loss: 2.1269 - accuracy: 0.6400 - auc: 0.694226/56 [============>.................] - ETA: 9s - loss: 2.1267 - accuracy: 0.6385 - auc: 0.692927/56 [=============>................] - ETA: 8s - loss: 2.1092 - accuracy: 0.6444 - auc: 0.702128/56 [==============>...............] - ETA: 8s - loss: 2.1166 - accuracy: 0.6429 - auc: 0.698829/56 [==============>...............] - ETA: 8s - loss: 2.1250 - accuracy: 0.6414 - auc: 0.691130/56 [===============>..............] - ETA: 8s - loss: 2.1186 - accuracy: 0.6467 - auc: 0.693031/56 [===============>..............] - ETA: 7s - loss: 2.1041 - accuracy: 0.6581 - auc: 0.700532/56 [================>.............] - ETA: 7s - loss: 2.1004 - accuracy: 0.6625 - auc: 0.701833/56 [================>.............] - ETA: 7s - loss: 2.1157 - accuracy: 0.6485 - auc: 0.689334/56 [=================>............] - ETA: 6s - loss: 2.1281 - accuracy: 0.6412 - auc: 0.678335/56 [=================>............] - ETA: 6s - loss: 2.1383 - accuracy: 0.6343 - auc: 0.668136/56 [==================>...........] - ETA: 6s - loss: 2.1329 - accuracy: 0.6278 - auc: 0.669237/56 [==================>...........] - ETA: 5s - loss: 2.1210 - accuracy: 0.6324 - auc: 0.675538/56 [===================>..........] - ETA: 5s - loss: 2.1609 - accuracy: 0.6316 - auc: 0.664839/56 [===================>..........] - ETA: 5s - loss: 2.1566 - accuracy: 0.6359 - auc: 0.666740/56 [====================>.........] - ETA: 4s - loss: 2.1489 - accuracy: 0.6400 - auc: 0.669141/56 [====================>.........] - ETA: 4s - loss: 2.1462 - accuracy: 0.6341 - auc: 0.667942/56 [=====================>........] - ETA: 4s - loss: 2.1469 - accuracy: 0.6333 - auc: 0.667143/56 [======================>.......] - ETA: 4s - loss: 2.1352 - accuracy: 0.6372 - auc: 0.674044/56 [======================>.......] - ETA: 3s - loss: 2.1439 - accuracy: 0.6364 - auc: 0.669445/56 [=======================>......] - ETA: 3s - loss: 2.1398 - accuracy: 0.6356 - auc: 0.669846/56 [=======================>......] - ETA: 3s - loss: 2.1444 - accuracy: 0.6348 - auc: 0.667147/56 [========================>.....] - ETA: 2s - loss: 2.1494 - accuracy: 0.6340 - auc: 0.663048/56 [========================>.....] - ETA: 2s - loss: 2.1479 - accuracy: 0.6375 - auc: 0.662449/56 [=========================>....] - ETA: 2s - loss: 2.1411 - accuracy: 0.6408 - auc: 0.665750/56 [=========================>....] - ETA: 1s - loss: 2.1550 - accuracy: 0.6280 - auc: 0.656351/56 [==========================>...] - ETA: 1s - loss: 2.1633 - accuracy: 0.6235 - auc: 0.650352/56 [==========================>...] - ETA: 1s - loss: 2.1648 - accuracy: 0.6192 - auc: 0.646453/56 [===========================>..] - ETA: 0s - loss: 2.1550 - accuracy: 0.6264 - auc: 0.652454/56 [===========================>..] - ETA: 0s - loss: 2.1525 - accuracy: 0.6259 - auc: 0.652555/56 [============================>.] - ETA: 0s - loss: 2.1636 - accuracy: 0.6182 - auc: 0.643656/56 [==============================] - ETA: 0s - loss: 2.1654 - accuracy: 0.6159 - auc: 0.641756/56 [==============================] - 19s 337ms/step - loss: 2.1654 - accuracy: 0.6159 - auc: 0.6417 - val_loss: 3.4297 - val_accuracy: 0.6377 - val_auc: 0.6351 - lr: 5.0000e-04
-Epoch 3/3
- 1/56 [..............................] - ETA: 16s - loss: 2.2991 - accuracy: 0.4000 - auc: 0.4800 2/56 [>.............................] - ETA: 16s - loss: 2.3784 - accuracy: 0.3000 - auc: 0.3700 3/56 [>.............................] - ETA: 16s - loss: 2.2651 - accuracy: 0.4000 - auc: 0.4778 4/56 [=>............................] - ETA: 16s - loss: 2.1314 - accuracy: 0.5000 - auc: 0.5788 5/56 [=>............................] - ETA: 15s - loss: 2.0876 - accuracy: 0.5600 - auc: 0.6296 6/56 [==>...........................] - ETA: 15s - loss: 2.1515 - accuracy: 0.5667 - auc: 0.6206 7/56 [==>...........................] - ETA: 15s - loss: 2.3456 - accuracy: 0.5143 - auc: 0.5433 8/56 [===>..........................] - ETA: 14s - loss: 2.5230 - accuracy: 0.4750 - auc: 0.4872 9/56 [===>..........................] - ETA: 14s - loss: 2.6063 - accuracy: 0.4222 - auc: 0.435810/56 [====>.........................] - ETA: 14s - loss: 2.5844 - accuracy: 0.4000 - auc: 0.421811/56 [====>.........................] - ETA: 13s - loss: 2.5411 - accuracy: 0.4000 - auc: 0.436512/56 [=====>........................] - ETA: 13s - loss: 2.4758 - accuracy: 0.4333 - auc: 0.467913/56 [=====>........................] - ETA: 13s - loss: 2.4779 - accuracy: 0.4462 - auc: 0.451514/56 [======>.......................] - ETA: 12s - loss: 2.4471 - accuracy: 0.4429 - auc: 0.460515/56 [=======>......................] - ETA: 12s - loss: 2.4205 - accuracy: 0.4533 - auc: 0.466216/56 [=======>......................] - ETA: 12s - loss: 2.3900 - accuracy: 0.4750 - auc: 0.477617/56 [========>.....................] - ETA: 12s - loss: 2.3782 - accuracy: 0.4706 - auc: 0.475918/56 [========>.....................] - ETA: 11s - loss: 2.3853 - accuracy: 0.4556 - auc: 0.459919/56 [=========>....................] - ETA: 11s - loss: 2.3476 - accuracy: 0.4737 - auc: 0.485420/56 [=========>....................] - ETA: 11s - loss: 2.3313 - accuracy: 0.4900 - auc: 0.513121/56 [==========>...................] - ETA: 10s - loss: 2.3138 - accuracy: 0.5048 - auc: 0.525822/56 [==========>...................] - ETA: 10s - loss: 2.3032 - accuracy: 0.5000 - auc: 0.526623/56 [===========>..................] - ETA: 10s - loss: 2.3127 - accuracy: 0.4957 - auc: 0.518324/56 [===========>..................] - ETA: 9s - loss: 2.2896 - accuracy: 0.5000 - auc: 0.5330 25/56 [============>.................] - ETA: 9s - loss: 2.2866 - accuracy: 0.5040 - auc: 0.532426/56 [============>.................] - ETA: 9s - loss: 2.2752 - accuracy: 0.5077 - auc: 0.535927/56 [=============>................] - ETA: 8s - loss: 2.2573 - accuracy: 0.5185 - auc: 0.546928/56 [==============>...............] - ETA: 8s - loss: 2.2441 - accuracy: 0.5214 - auc: 0.555929/56 [==============>...............] - ETA: 8s - loss: 2.2338 - accuracy: 0.5310 - auc: 0.558730/56 [===============>..............] - ETA: 8s - loss: 2.2572 - accuracy: 0.5200 - auc: 0.549031/56 [===============>..............] - ETA: 7s - loss: 2.2580 - accuracy: 0.5290 - auc: 0.548932/56 [================>.............] - ETA: 7s - loss: 2.2492 - accuracy: 0.5312 - auc: 0.557233/56 [================>.............] - ETA: 7s - loss: 2.2565 - accuracy: 0.5212 - auc: 0.549534/56 [=================>............] - ETA: 6s - loss: 2.2518 - accuracy: 0.5235 - auc: 0.548035/56 [=================>............] - ETA: 6s - loss: 2.2425 - accuracy: 0.5314 - auc: 0.555536/56 [==================>...........] - ETA: 6s - loss: 2.2323 - accuracy: 0.5333 - auc: 0.559637/56 [==================>...........] - ETA: 5s - loss: 2.2281 - accuracy: 0.5351 - auc: 0.559138/56 [===================>..........] - ETA: 5s - loss: 2.2209 - accuracy: 0.5368 - auc: 0.560439/56 [===================>..........] - ETA: 5s - loss: 2.2141 - accuracy: 0.5385 - auc: 0.563840/56 [====================>.........] - ETA: 4s - loss: 2.2058 - accuracy: 0.5450 - auc: 0.570441/56 [====================>.........] - ETA: 4s - loss: 2.2056 - accuracy: 0.5512 - auc: 0.570742/56 [=====================>........] - ETA: 4s - loss: 2.1876 - accuracy: 0.5619 - auc: 0.586143/56 [======================>.......] - ETA: 4s - loss: 2.1824 - accuracy: 0.5628 - auc: 0.586144/56 [======================>.......] - ETA: 3s - loss: 2.1857 - accuracy: 0.5591 - auc: 0.580145/56 [=======================>......] - ETA: 3s - loss: 2.1887 - accuracy: 0.5556 - auc: 0.577646/56 [=======================>......] - ETA: 3s - loss: 2.1915 - accuracy: 0.5522 - auc: 0.575147/56 [========================>.....] - ETA: 2s - loss: 2.1940 - accuracy: 0.5447 - auc: 0.570648/56 [========================>.....] - ETA: 2s - loss: 2.1953 - accuracy: 0.5417 - auc: 0.568549/56 [=========================>....] - ETA: 2s - loss: 2.1959 - accuracy: 0.5388 - auc: 0.565150/56 [=========================>....] - ETA: 1s - loss: 2.1950 - accuracy: 0.5400 - auc: 0.562651/56 [==========================>...] - ETA: 1s - loss: 2.2026 - accuracy: 0.5373 - auc: 0.557352/56 [==========================>...] - ETA: 1s - loss: 2.1978 - accuracy: 0.5385 - auc: 0.558653/56 [===========================>..] - ETA: 0s - loss: 2.1991 - accuracy: 0.5396 - auc: 0.555754/56 [===========================>..] - ETA: 0s - loss: 2.1965 - accuracy: 0.5407 - auc: 0.555855/56 [============================>.] - ETA: 0s - loss: 2.2179 - accuracy: 0.5345 - auc: 0.546156/56 [==============================] - ETA: 0s - loss: 2.2149 - accuracy: 0.5362 - auc: 0.548956/56 [==============================] - 19s 337ms/step - loss: 2.2149 - accuracy: 0.5362 - auc: 0.5489 - val_loss: 2.0693 - val_accuracy: 0.3623 - val_auc: 0.3257 - lr: 5.0000e-04
-Best val_auc during training for fold 2: 0.7299
-Final AUC for fold 2: 0.4164
-Starting fold 3
-Model: "model_2"
-__________________________________________________________________________________________________
- Layer (type)                   Output Shape         Param #     Connected to                     
-==================================================================================================
- input_3 (InputLayer)           [(None, 128, 128, 1  0           []                               
-                                28, 1)]                                                           
-                                                                                                  
- conv3d_30 (Conv3D)             (None, 128, 128, 12  448         ['input_3[0][0]']                
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_30 (BatchN  (None, 128, 128, 12  64         ['conv3d_30[0][0]']              
- ormalization)                  8, 16)                                                            
-                                                                                                  
- leaky_re_lu_30 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_30[0][0]'] 
-                                8, 16)                                                            
-                                                                                                  
- conv3d_31 (Conv3D)             (None, 128, 128, 12  6928        ['leaky_re_lu_30[0][0]']         
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_31 (BatchN  (None, 128, 128, 12  64         ['conv3d_31[0][0]']              
- ormalization)                  8, 16)                                                            
-                                                                                                  
- leaky_re_lu_31 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_31[0][0]'] 
-                                8, 16)                                                            
-                                                                                                  
- spatial_dropout3d_10 (SpatialD  (None, 128, 128, 12  0          ['leaky_re_lu_31[0][0]']         
- ropout3D)                      8, 16)                                                            
-                                                                                                  
- conv3d_32 (Conv3D)             (None, 128, 128, 12  6928        ['spatial_dropout3d_10[0][0]']   
-                                8, 16)                                                            
-                                                                                                  
- batch_normalization_32 (BatchN  (None, 128, 128, 12  64         ['conv3d_32[0][0]']              
- ormalization)                  8, 16)                                                            
-                                                                                                  
- leaky_re_lu_32 (LeakyReLU)     (None, 128, 128, 12  0           ['batch_normalization_32[0][0]'] 
-                                8, 16)                                                            
-                                                                                                  
- add_10 (Add)                   (None, 128, 128, 12  0           ['leaky_re_lu_32[0][0]',         
-                                8, 16)                            'leaky_re_lu_30[0][0]']         
-                                                                                                  
- conv3d_33 (Conv3D)             (None, 64, 64, 64,   13856       ['add_10[0][0]']                 
-                                32)                                                               
-                                                                                                  
- batch_normalization_33 (BatchN  (None, 64, 64, 64,   128        ['conv3d_33[0][0]']              
- ormalization)                  32)                                                               
-                                                                                                  
- leaky_re_lu_33 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_33[0][0]'] 
-                                32)                                                               
-                                                                                                  
- conv3d_34 (Conv3D)             (None, 64, 64, 64,   27680       ['leaky_re_lu_33[0][0]']         
-                                32)                                                               
-                                                                                                  
- batch_normalization_34 (BatchN  (None, 64, 64, 64,   128        ['conv3d_34[0][0]']              
- ormalization)                  32)                                                               
-                                                                                                  
- leaky_re_lu_34 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_34[0][0]'] 
-                                32)                                                               
-                                                                                                  
- spatial_dropout3d_11 (SpatialD  (None, 64, 64, 64,   0          ['leaky_re_lu_34[0][0]']         
- ropout3D)                      32)                                                               
-                                                                                                  
- conv3d_35 (Conv3D)             (None, 64, 64, 64,   27680       ['spatial_dropout3d_11[0][0]']   
-                                32)                                                               
-                                                                                                  
- batch_normalization_35 (BatchN  (None, 64, 64, 64,   128        ['conv3d_35[0][0]']              
- ormalization)                  32)                                                               
-                                                                                                  
- leaky_re_lu_35 (LeakyReLU)     (None, 64, 64, 64,   0           ['batch_normalization_35[0][0]'] 
-                                32)                                                               
-                                                                                                  
- add_11 (Add)                   (None, 64, 64, 64,   0           ['leaky_re_lu_35[0][0]',         
-                                32)                               'leaky_re_lu_33[0][0]']         
-                                                                                                  
- conv3d_36 (Conv3D)             (None, 32, 32, 32,   55360       ['add_11[0][0]']                 
-                                64)                                                               
-                                                                                                  
- batch_normalization_36 (BatchN  (None, 32, 32, 32,   256        ['conv3d_36[0][0]']              
- ormalization)                  64)                                                               
-                                                                                                  
- leaky_re_lu_36 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_36[0][0]'] 
-                                64)                                                               
-                                                                                                  
- conv3d_37 (Conv3D)             (None, 32, 32, 32,   110656      ['leaky_re_lu_36[0][0]']         
-                                64)                                                               
-                                                                                                  
- batch_normalization_37 (BatchN  (None, 32, 32, 32,   256        ['conv3d_37[0][0]']              
- ormalization)                  64)                                                               
-                                                                                                  
- leaky_re_lu_37 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_37[0][0]'] 
-                                64)                                                               
-                                                                                                  
- spatial_dropout3d_12 (SpatialD  (None, 32, 32, 32,   0          ['leaky_re_lu_37[0][0]']         
- ropout3D)                      64)                                                               
-                                                                                                  
- conv3d_38 (Conv3D)             (None, 32, 32, 32,   110656      ['spatial_dropout3d_12[0][0]']   
-                                64)                                                               
-                                                                                                  
- batch_normalization_38 (BatchN  (None, 32, 32, 32,   256        ['conv3d_38[0][0]']              
- ormalization)                  64)                                                               
-                                                                                                  
- leaky_re_lu_38 (LeakyReLU)     (None, 32, 32, 32,   0           ['batch_normalization_38[0][0]'] 
-                                64)                                                               
-                                                                                                  
- add_12 (Add)                   (None, 32, 32, 32,   0           ['leaky_re_lu_38[0][0]',         
-                                64)                               'leaky_re_lu_36[0][0]']         
-                                                                                                  
- conv3d_39 (Conv3D)             (None, 16, 16, 16,   221312      ['add_12[0][0]']                 
-                                128)                                                              
-                                                                                                  
- batch_normalization_39 (BatchN  (None, 16, 16, 16,   512        ['conv3d_39[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_39 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_39[0][0]'] 
-                                128)                                                              
-                                                                                                  
- conv3d_40 (Conv3D)             (None, 16, 16, 16,   442496      ['leaky_re_lu_39[0][0]']         
-                                128)                                                              
-                                                                                                  
- batch_normalization_40 (BatchN  (None, 16, 16, 16,   512        ['conv3d_40[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_40 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_40[0][0]'] 
-                                128)                                                              
-                                                                                                  
- spatial_dropout3d_13 (SpatialD  (None, 16, 16, 16,   0          ['leaky_re_lu_40[0][0]']         
- ropout3D)                      128)                                                              
-                                                                                                  
- conv3d_41 (Conv3D)             (None, 16, 16, 16,   442496      ['spatial_dropout3d_13[0][0]']   
-                                128)                                                              
-                                                                                                  
- batch_normalization_41 (BatchN  (None, 16, 16, 16,   512        ['conv3d_41[0][0]']              
- ormalization)                  128)                                                              
-                                                                                                  
- leaky_re_lu_41 (LeakyReLU)     (None, 16, 16, 16,   0           ['batch_normalization_41[0][0]'] 
-                                128)                                                              
-                                                                                                  
- add_13 (Add)                   (None, 16, 16, 16,   0           ['leaky_re_lu_41[0][0]',         
-                                128)                              'leaky_re_lu_39[0][0]']         
-                                                                                                  
- conv3d_42 (Conv3D)             (None, 8, 8, 8, 256  884992      ['add_13[0][0]']                 
-                                )                                                                 
-                                                                                                  
- batch_normalization_42 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_42[0][0]']              
- ormalization)                  )                                                                 
-                                                                                                  
- leaky_re_lu_42 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_42[0][0]'] 
-                                )                                                                 
-                                                                                                  
- conv3d_43 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['leaky_re_lu_42[0][0]']         
-                                )                                                                 
-                                                                                                  
- batch_normalization_43 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_43[0][0]']              
- ormalization)                  )                                                                 
-                                                                                                  
- leaky_re_lu_43 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_43[0][0]'] 
-                                )                                                                 
-                                                                                                  
- spatial_dropout3d_14 (SpatialD  (None, 8, 8, 8, 256  0          ['leaky_re_lu_43[0][0]']         
- ropout3D)                      )                                                                 
-                                                                                                  
- conv3d_44 (Conv3D)             (None, 8, 8, 8, 256  1769728     ['spatial_dropout3d_14[0][0]']   
-                                )                                                                 
-                                                                                                  
- batch_normalization_44 (BatchN  (None, 8, 8, 8, 256  1024       ['conv3d_44[0][0]']              
- ormalization)                  )                                                                 
-                                                                                                  
- leaky_re_lu_44 (LeakyReLU)     (None, 8, 8, 8, 256  0           ['batch_normalization_44[0][0]'] 
-                                )                                                                 
-                                                                                                  
- add_14 (Add)                   (None, 8, 8, 8, 256  0           ['leaky_re_lu_44[0][0]',         
-                                )                                 'leaky_re_lu_42[0][0]']         
-                                                                                                  
- global_average_pooling3d_2 (Gl  (None, 256)         0           ['add_14[0][0]']                 
- obalAveragePooling3D)                                                                            
-                                                                                                  
- dropout_2 (Dropout)            (None, 256)          0           ['global_average_pooling3d_2[0][0
-                                                                 ]']                              
-                                                                                                  
- dense_2 (Dense)                (None, 2)            514         ['dropout_2[0][0]']              
-                                                                                                  
-==================================================================================================
-Total params: 5,897,410
-Trainable params: 5,894,434
-Non-trainable params: 2,976
-__________________________________________________________________________________________________
-Epoch 1/3
- 1/56 [..............................] - ETA: 1:57 - loss: 2.6728 - accuracy: 0.2000 - auc: 0.1400 2/56 [>.............................] - ETA: 16s - loss: 2.5155 - accuracy: 0.3000 - auc: 0.3150  3/56 [>.............................] - ETA: 16s - loss: 3.1735 - accuracy: 0.3333 - auc: 0.2733 4/56 [=>............................] - ETA: 16s - loss: 2.8174 - accuracy: 0.4500 - auc: 0.4338 5/56 [=>............................] - ETA: 15s - loss: 2.7225 - accuracy: 0.4400 - auc: 0.4440 6/56 [==>...........................] - ETA: 15s - loss: 2.6862 - accuracy: 0.4667 - auc: 0.4550 7/56 [==>...........................] - ETA: 15s - loss: 2.7693 - accuracy: 0.4857 - auc: 0.4869 8/56 [===>..........................] - ETA: 14s - loss: 2.7640 - accuracy: 0.5000 - auc: 0.5141 9/56 [===>..........................] - ETA: 14s - loss: 2.8855 - accuracy: 0.4889 - auc: 0.496010/56 [====>.........................] - ETA: 14s - loss: 2.8279 - accuracy: 0.5000 - auc: 0.513411/56 [====>.........................] - ETA: 13s - loss: 2.7666 - accuracy: 0.5091 - auc: 0.525112/56 [=====>........................] - ETA: 13s - loss: 2.6963 - accuracy: 0.5333 - auc: 0.535713/56 [=====>........................] - ETA: 13s - loss: 2.6206 - accuracy: 0.5538 - auc: 0.556114/56 [======>.......................] - ETA: 12s - loss: 2.5722 - accuracy: 0.5571 - auc: 0.568915/56 [=======>......................] - ETA: 12s - loss: 2.5716 - accuracy: 0.5467 - auc: 0.559716/56 [=======>......................] - ETA: 12s - loss: 2.5438 - accuracy: 0.5500 - auc: 0.572317/56 [========>.....................] - ETA: 12s - loss: 2.5429 - accuracy: 0.5647 - auc: 0.583018/56 [========>.....................] - ETA: 11s - loss: 2.5967 - accuracy: 0.5667 - auc: 0.580319/56 [=========>....................] - ETA: 11s - loss: 2.6637 - accuracy: 0.5684 - auc: 0.578820/56 [=========>....................] - ETA: 11s - loss: 2.6488 - accuracy: 0.5800 - auc: 0.594621/56 [==========>...................] - ETA: 10s - loss: 2.6520 - accuracy: 0.5714 - auc: 0.585822/56 [==========>...................] - ETA: 10s - loss: 2.6474 - accuracy: 0.5727 - auc: 0.580923/56 [===========>..................] - ETA: 10s - loss: 2.6353 - accuracy: 0.5739 - auc: 0.584224/56 [===========>..................] - ETA: 9s - loss: 2.6317 - accuracy: 0.5750 - auc: 0.5859 25/56 [============>.................] - ETA: 9s - loss: 2.6375 - accuracy: 0.5760 - auc: 0.586326/56 [============>.................] - ETA: 9s - loss: 2.6690 - accuracy: 0.5692 - auc: 0.574127/56 [=============>................] - ETA: 8s - loss: 2.7003 - accuracy: 0.5556 - auc: 0.559128/56 [==============>...............] - ETA: 8s - loss: 2.7512 - accuracy: 0.5571 - auc: 0.561229/56 [==============>...............] - ETA: 8s - loss: 2.7202 - accuracy: 0.5586 - auc: 0.567430/56 [===============>..............] - ETA: 8s - loss: 2.7264 - accuracy: 0.5533 - auc: 0.562331/56 [===============>..............] - ETA: 7s - loss: 2.7103 - accuracy: 0.5613 - auc: 0.567232/56 [================>.............] - ETA: 7s - loss: 2.6823 - accuracy: 0.5688 - auc: 0.573733/56 [================>.............] - ETA: 7s - loss: 2.6624 - accuracy: 0.5697 - auc: 0.575234/56 [=================>............] - ETA: 6s - loss: 2.6367 - accuracy: 0.5765 - auc: 0.581035/56 [=================>............] - ETA: 6s - loss: 2.6506 - accuracy: 0.5714 - auc: 0.574436/56 [==================>...........] - ETA: 6s - loss: 2.6689 - accuracy: 0.5667 - auc: 0.565537/56 [==================>...........] - ETA: 5s - loss: 2.6417 - accuracy: 0.5784 - auc: 0.574538/56 [===================>..........] - ETA: 5s - loss: 2.6227 - accuracy: 0.5842 - auc: 0.581039/56 [===================>..........] - ETA: 5s - loss: 2.6200 - accuracy: 0.5846 - auc: 0.578840/56 [====================>.........] - ETA: 4s - loss: 2.6215 - accuracy: 0.5800 - auc: 0.576241/56 [====================>.........] - ETA: 4s - loss: 2.6074 - accuracy: 0.5756 - auc: 0.577242/56 [=====================>........] - ETA: 4s - loss: 2.6008 - accuracy: 0.5762 - auc: 0.578843/56 [======================>.......] - ETA: 4s - loss: 2.6047 - accuracy: 0.5767 - auc: 0.575044/56 [======================>.......] - ETA: 3s - loss: 2.5927 - accuracy: 0.5818 - auc: 0.576945/56 [=======================>......] - ETA: 3s - loss: 2.5833 - accuracy: 0.5778 - auc: 0.575346/56 [=======================>......] - ETA: 3s - loss: 2.5631 - accuracy: 0.5826 - auc: 0.582547/56 [========================>.....] - ETA: 2s - loss: 2.5687 - accuracy: 0.5830 - auc: 0.580248/56 [========================>.....] - ETA: 2s - loss: 2.5571 - accuracy: 0.5833 - auc: 0.580949/56 [=========================>....] - ETA: 2s - loss: 2.5508 - accuracy: 0.5837 - auc: 0.582850/56 [=========================>....] - ETA: 1s - loss: 2.5431 - accuracy: 0.5880 - auc: 0.585251/56 [==========================>...] - ETA: 1s - loss: 2.5380 - accuracy: 0.5882 - auc: 0.585252/56 [==========================>...] - ETA: 1s - loss: 2.5358 - accuracy: 0.5846 - auc: 0.583053/56 [===========================>..] - ETA: 0s - loss: 2.5385 - accuracy: 0.5811 - auc: 0.578054/56 [===========================>..] - ETA: 0s - loss: 2.5211 - accuracy: 0.5889 - auc: 0.585055/56 [============================>.] - ETA: 0s - loss: 2.5136 - accuracy: 0.5927 - auc: 0.585256/56 [==============================] - ETA: 0s - loss: 2.5098 - accuracy: 0.5942 - auc: 0.587156/56 [==============================] - 22s 366ms/step - loss: 2.5098 - accuracy: 0.5942 - auc: 0.5871 - val_loss: 26.0668 - val_accuracy: 0.6304 - val_auc: 0.6304 - lr: 5.0000e-04
-Epoch 2/3
- 1/56 [..............................] - ETA: 16s - loss: 2.0493 - accuracy: 0.4000 - auc: 0.4800 2/56 [>.............................] - ETA: 16s - loss: 2.2475 - accuracy: 0.5000 - auc: 0.5700 3/56 [>.............................] - ETA: 16s - loss: 2.3013 - accuracy: 0.4000 - auc: 0.4444 4/56 [=>............................] - ETA: 15s - loss: 2.4320 - accuracy: 0.4000 - auc: 0.4150 5/56 [=>............................] - ETA: 15s - loss: 2.3115 - accuracy: 0.4400 - auc: 0.4976 6/56 [==>...........................] - ETA: 15s - loss: 2.2507 - accuracy: 0.4667 - auc: 0.5411 7/56 [==>...........................] - ETA: 15s - loss: 2.2212 - accuracy: 0.4571 - auc: 0.5592 8/56 [===>..........................] - ETA: 14s - loss: 2.2686 - accuracy: 0.4500 - auc: 0.5219 9/56 [===>..........................] - ETA: 14s - loss: 2.3200 - accuracy: 0.4444 - auc: 0.499310/56 [====>.........................] - ETA: 14s - loss: 2.2726 - accuracy: 0.4800 - auc: 0.529611/56 [====>.........................] - ETA: 13s - loss: 2.3210 - accuracy: 0.4909 - auc: 0.531912/56 [=====>........................] - ETA: 13s - loss: 2.3090 - accuracy: 0.4833 - auc: 0.529413/56 [=====>........................] - ETA: 13s - loss: 2.2833 - accuracy: 0.4923 - auc: 0.535414/56 [======>.......................] - ETA: 12s - loss: 2.3074 - accuracy: 0.4714 - auc: 0.506515/56 [=======>......................] - ETA: 12s - loss: 2.3228 - accuracy: 0.4800 - auc: 0.493716/56 [=======>......................] - ETA: 12s - loss: 2.2940 - accuracy: 0.4875 - auc: 0.511317/56 [========>.....................] - ETA: 12s - loss: 2.3027 - accuracy: 0.4706 - auc: 0.500118/56 [========>.....................] - ETA: 11s - loss: 2.2913 - accuracy: 0.4778 - auc: 0.497419/56 [=========>....................] - ETA: 11s - loss: 2.2891 - accuracy: 0.4842 - auc: 0.502420/56 [=========>....................] - ETA: 11s - loss: 2.2859 - accuracy: 0.4900 - auc: 0.506021/56 [==========>...................] - ETA: 10s - loss: 2.2661 - accuracy: 0.4952 - auc: 0.519522/56 [==========>...................] - ETA: 10s - loss: 2.2417 - accuracy: 0.5091 - auc: 0.541723/56 [===========>..................] - ETA: 10s - loss: 2.2373 - accuracy: 0.5130 - auc: 0.537724/56 [===========>..................] - ETA: 9s - loss: 2.2421 - accuracy: 0.5167 - auc: 0.5304 25/56 [============>.................] - ETA: 9s - loss: 2.2602 - accuracy: 0.5040 - auc: 0.514826/56 [============>.................] - ETA: 9s - loss: 2.2513 - accuracy: 0.5000 - auc: 0.518027/56 [=============>................] - ETA: 8s - loss: 2.2517 - accuracy: 0.4963 - auc: 0.515028/56 [==============>...............] - ETA: 8s - loss: 2.2544 - accuracy: 0.5000 - auc: 0.513129/56 [==============>...............] - ETA: 8s - loss: 2.2506 - accuracy: 0.5034 - auc: 0.517530/56 [===============>..............] - ETA: 8s - loss: 2.2353 - accuracy: 0.5133 - auc: 0.528431/56 [===============>..............] - ETA: 7s - loss: 2.2262 - accuracy: 0.5226 - auc: 0.532332/56 [================>.............] - ETA: 7s - loss: 2.2310 - accuracy: 0.5188 - auc: 0.529133/56 [================>.............] - ETA: 7s - loss: 2.2175 - accuracy: 0.5212 - auc: 0.539334/56 [=================>............] - ETA: 6s - loss: 2.2081 - accuracy: 0.5235 - auc: 0.545335/56 [=================>............] - ETA: 6s - loss: 2.2004 - accuracy: 0.5314 - auc: 0.552336/56 [==================>...........] - ETA: 6s - loss: 2.1903 - accuracy: 0.5389 - auc: 0.562637/56 [==================>...........] - ETA: 5s - loss: 2.1782 - accuracy: 0.5459 - auc: 0.572838/56 [===================>..........] - ETA: 5s - loss: 2.1700 - accuracy: 0.5526 - auc: 0.582039/56 [===================>..........] - ETA: 5s - loss: 2.1705 - accuracy: 0.5538 - auc: 0.583540/56 [====================>.........] - ETA: 4s - loss: 2.1689 - accuracy: 0.5550 - auc: 0.582641/56 [====================>.........] - ETA: 4s - loss: 2.1626 - accuracy: 0.5610 - auc: 0.585642/56 [=====================>........] - ETA: 4s - loss: 2.1693 - accuracy: 0.5619 - auc: 0.586043/56 [======================>.......] - ETA: 4s - loss: 2.1708 - accuracy: 0.5628 - auc: 0.584544/56 [======================>.......] - ETA: 3s - loss: 2.1854 - accuracy: 0.5636 - auc: 0.583945/56 [=======================>......] - ETA: 3s - loss: 2.1797 - accuracy: 0.5689 - auc: 0.587846/56 [=======================>......] - ETA: 3s - loss: 2.1760 - accuracy: 0.5739 - auc: 0.589747/56 [========================>.....] - ETA: 2s - loss: 2.1835 - accuracy: 0.5660 - auc: 0.583448/56 [========================>.....] - ETA: 2s - loss: 2.1967 - accuracy: 0.5625 - auc: 0.577549/56 [=========================>....] - ETA: 2s - loss: 2.1996 - accuracy: 0.5551 - auc: 0.571150/56 [=========================>....] - ETA: 1s - loss: 2.1926 - accuracy: 0.5600 - auc: 0.575851/56 [==========================>...] - ETA: 1s - loss: 2.2186 - accuracy: 0.5529 - auc: 0.565552/56 [==========================>...] - ETA: 1s - loss: 2.2216 - accuracy: 0.5538 - auc: 0.564853/56 [===========================>..] - ETA: 0s - loss: 2.2188 - accuracy: 0.5547 - auc: 0.567154/56 [===========================>..] - ETA: 0s - loss: 2.2204 - accuracy: 0.5556 - auc: 0.567255/56 [============================>.] - ETA: 0s - loss: 2.2146 - accuracy: 0.5527 - auc: 0.569656/56 [==============================] - ETA: 0s - loss: 2.2172 - accuracy: 0.5507 - auc: 0.567156/56 [==============================] - 19s 338ms/step - loss: 2.2172 - accuracy: 0.5507 - auc: 0.5671 - val_loss: 2.5598 - val_accuracy: 0.6304 - val_auc: 0.7871 - lr: 5.0000e-04
-Epoch 3/3
- 1/56 [..............................] - ETA: 16s - loss: 2.4031 - accuracy: 0.2000 - auc: 0.3600 2/56 [>.............................] - ETA: 16s - loss: 2.5049 - accuracy: 0.4000 - auc: 0.3800 3/56 [>.............................] - ETA: 16s - loss: 2.2294 - accuracy: 0.6000 - auc: 0.5600 4/56 [=>............................] - ETA: 15s - loss: 2.0882 - accuracy: 0.6500 - auc: 0.6750 5/56 [=>............................] - ETA: 15s - loss: 2.0798 - accuracy: 0.6000 - auc: 0.6640 6/56 [==>...........................] - ETA: 15s - loss: 2.0775 - accuracy: 0.6000 - auc: 0.6544 7/56 [==>...........................] - ETA: 15s - loss: 2.1126 - accuracy: 0.5714 - auc: 0.6253 8/56 [===>..........................] - ETA: 14s - loss: 2.2044 - accuracy: 0.5250 - auc: 0.5644 9/56 [===>..........................] - ETA: 14s - loss: 2.2570 - accuracy: 0.5333 - auc: 0.558510/56 [====>.........................] - ETA: 14s - loss: 2.2042 - accuracy: 0.5800 - auc: 0.587611/56 [====>.........................] - ETA: 13s - loss: 2.1421 - accuracy: 0.6182 - auc: 0.637012/56 [=====>........................] - ETA: 13s - loss: 2.1828 - accuracy: 0.6000 - auc: 0.602213/56 [=====>........................] - ETA: 13s - loss: 2.2357 - accuracy: 0.5692 - auc: 0.572314/56 [======>.......................] - ETA: 12s - loss: 2.2363 - accuracy: 0.5429 - auc: 0.562115/56 [=======>......................] - ETA: 12s - loss: 2.2158 - accuracy: 0.5467 - auc: 0.569316/56 [=======>......................] - ETA: 12s - loss: 2.1841 - accuracy: 0.5500 - auc: 0.589017/56 [========>.....................] - ETA: 11s - loss: 2.1785 - accuracy: 0.5647 - auc: 0.595418/56 [========>.....................] - ETA: 11s - loss: 2.1767 - accuracy: 0.5556 - auc: 0.592419/56 [=========>....................] - ETA: 11s - loss: 2.1662 - accuracy: 0.5579 - auc: 0.595520/56 [=========>....................] - ETA: 11s - loss: 2.1735 - accuracy: 0.5500 - auc: 0.588921/56 [==========>...................] - ETA: 10s - loss: 2.1500 - accuracy: 0.5619 - auc: 0.608322/56 [==========>...................] - ETA: 10s - loss: 2.1282 - accuracy: 0.5818 - auc: 0.623323/56 [===========>..................] - ETA: 10s - loss: 2.1423 - accuracy: 0.5652 - auc: 0.608124/56 [===========>..................] - ETA: 9s - loss: 2.1305 - accuracy: 0.5750 - auc: 0.6190 25/56 [============>.................] - ETA: 9s - loss: 2.1510 - accuracy: 0.5680 - auc: 0.604326/56 [============>.................] - ETA: 9s - loss: 2.1489 - accuracy: 0.5692 - auc: 0.608827/56 [=============>................] - ETA: 8s - loss: 2.1425 - accuracy: 0.5704 - auc: 0.611628/56 [==============>...............] - ETA: 8s - loss: 2.1598 - accuracy: 0.5571 - auc: 0.597729/56 [==============>...............] - ETA: 8s - loss: 2.1838 - accuracy: 0.5448 - auc: 0.581330/56 [===============>..............] - ETA: 7s - loss: 2.1762 - accuracy: 0.5400 - auc: 0.583031/56 [===============>..............] - ETA: 7s - loss: 2.1573 - accuracy: 0.5548 - auc: 0.598132/56 [================>.............] - ETA: 7s - loss: 2.1664 - accuracy: 0.5500 - auc: 0.588633/56 [================>.............] - ETA: 7s - loss: 2.1806 - accuracy: 0.5394 - auc: 0.575734/56 [=================>............] - ETA: 6s - loss: 2.1702 - accuracy: 0.5412 - auc: 0.580235/56 [=================>............] - ETA: 6s - loss: 2.1737 - accuracy: 0.5429 - auc: 0.575736/56 [==================>...........] - ETA: 6s - loss: 2.1751 - accuracy: 0.5389 - auc: 0.571137/56 [==================>...........] - ETA: 5s - loss: 2.1674 - accuracy: 0.5459 - auc: 0.573938/56 [===================>..........] - ETA: 5s - loss: 2.1585 - accuracy: 0.5474 - auc: 0.578839/56 [===================>..........] - ETA: 5s - loss: 2.1543 - accuracy: 0.5538 - auc: 0.582540/56 [====================>.........] - ETA: 4s - loss: 2.1544 - accuracy: 0.5550 - auc: 0.582541/56 [====================>.........] - ETA: 4s - loss: 2.1567 - accuracy: 0.5512 - auc: 0.579842/56 [=====================>........] - ETA: 4s - loss: 2.1542 - accuracy: 0.5524 - auc: 0.581443/56 [======================>.......] - ETA: 4s - loss: 2.1529 - accuracy: 0.5535 - auc: 0.584044/56 [======================>.......] - ETA: 3s - loss: 2.1442 - accuracy: 0.5591 - auc: 0.589745/56 [=======================>......] - ETA: 3s - loss: 2.1441 - accuracy: 0.5600 - auc: 0.587746/56 [=======================>......] - ETA: 3s - loss: 2.1337 - accuracy: 0.5652 - auc: 0.596747/56 [========================>.....] - ETA: 2s - loss: 2.1262 - accuracy: 0.5702 - auc: 0.601848/56 [========================>.....] - ETA: 2s - loss: 2.1217 - accuracy: 0.5708 - auc: 0.604349/56 [=========================>....] - ETA: 2s - loss: 2.1391 - accuracy: 0.5673 - auc: 0.596550/56 [=========================>....] - ETA: 1s - loss: 2.1301 - accuracy: 0.5720 - auc: 0.603851/56 [==========================>...] - ETA: 1s - loss: 2.1343 - accuracy: 0.5725 - auc: 0.600052/56 [==========================>...] - ETA: 1s - loss: 2.1412 - accuracy: 0.5731 - auc: 0.595653/56 [===========================>..] - ETA: 0s - loss: 2.1335 - accuracy: 0.5774 - auc: 0.600754/56 [===========================>..] - ETA: 0s - loss: 2.1306 - accuracy: 0.5815 - auc: 0.603055/56 [============================>.] - ETA: 0s - loss: 2.1259 - accuracy: 0.5818 - auc: 0.605656/56 [==============================] - ETA: 0s - loss: 2.1233 - accuracy: 0.5833 - auc: 0.607656/56 [==============================] - 19s 337ms/step - loss: 2.1233 - accuracy: 0.5833 - auc: 0.6076 - val_loss: 2.0009 - val_accuracy: 0.3696 - val_auc: 0.3984 - lr: 5.0000e-04
-Best val_auc during training for fold 3: 0.7871
-Final AUC for fold 3: 0.5720
-Loss vs Validation Loss plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/loss_vs_val_loss.png
-Average AUC across all folds: 0.4910
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_30.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_30_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_30.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_30_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_31.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_31_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_31.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_31_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_32.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_32_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_32.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_32_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_33.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_33_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_33.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_33_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_34.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_34_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_34.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_34_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_35.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_35_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_35.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_35_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_36.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_36_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_36.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_36_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_37.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_37_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_37.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_37_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_38.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_38_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_38.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_38_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_39.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_39_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_39.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_39_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_40.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_40_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_40.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_40_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_41.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_41_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_41.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_41_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_42.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_42_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_42.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_42_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_43.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_43_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_43.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_43_class1.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class0_conv3d_44.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_44_class0.png
-3D Grad-CAM heatmap saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/gradcam_cd_MRI_class1_conv3d_44.nii.gz
-Glass brain plot saved at ./grad-cam/5_context_from_16_0.5_dropout_1e3/cd/MRI/glass_brain_cd_MRI_conv3d_44_class1.png
---------------------------------------------------------------
-Begin Slurm Epilogue Sun Sep 15 20:20:22 CDT 2024 1726449622
-Name                : cd-MRI-train
-User                : l.peiwang
-Partition           : tier2_gpu
-Nodes               : gpua802
-Cores               : 2
-State               : COMPLETED
-Submit              : 2024-09-15T19:53:07
-Start               : 2024-09-15T19:53:10
-End                 : 2024-09-15T20:20:20
-Reserved Walltime   : 5-10:50:00
-Used Walltime       :   00:27:10
-Used CPU Time       :   00:24:38
-% User (Computation): 98.05%
-% System (I/O)      :  1.95%
-Mem Reserved        : 500000M
-Max Mem Used        : 36.38G (39060586496.0)
-Max Disk Write      : 136.46M (143088680.96)
-Max Disk Read       : 5.45G (5849890160.64)
-Max-Mem-Used Node   : gpua802
-Max-Disk-Write Node : gpua802
-Max-Disk-Read Node  : gpua802
-NVIDIA A100-SXM4-80GB
-Successfully retrieved statistics for job: 2044287. 
-+------------------------------------------------------------------------------+
-| GPU ID: 0                                                                    |
-+====================================+=========================================+
-|-----  Execution Stats  ------------+-----------------------------------------|
-| Start Time                         | Sun Sep 15 19:53:10 2024                |
-| End Time                           | Sun Sep 15 20:20:22 2024                |
-| Total Execution Time (sec)         | 1631.39                                 |
-| No. of Processes                   | 1                                       |
-+-----  Performance Stats  ----------+-----------------------------------------+
-| Energy Consumed (Joules)           | 276578                                  |
-| Power Usage (Watts)                | Avg: 170.777, Max: 268.233, Min: 63.187 |
-| Max GPU Memory Used (bytes)        | 84120961024                             |
-| SM Clock (MHz)                     | Avg: 1173, Max: 1410, Min: 210          |
-| Memory Clock (MHz)                 | Avg: 1593, Max: 1593, Min: 1593         |
-| SM Utilization (%)                 | Avg: 54, Max: 100, Min: 0               |
-| Memory Utilization (%)             | Avg: 14, Max: 27, Min: 0                |
-| PCIe Rx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-| PCIe Tx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-+-----  Event Stats  ----------------+-----------------------------------------+
-| Single Bit ECC Errors              | 0                                       |
-| Double Bit ECC Errors              | 0                                       |
-| PCIe Replay Warnings               | 0                                       |
-| Critical XID Errors                | 0                                       |
-+-----  Slowdown Stats  -------------+-----------------------------------------+
-| Due to - Power (%)                 | 0                                       |
-|        - Thermal (%)               | 0                                       |
-|        - Reliability (%)           | Not Supported                           |
-|        - Board Limit (%)           | Not Supported                           |
-|        - Low Utilization (%)       | Not Supported                           |
-|        - Sync Boost (%)            | 0                                       |
-+--  Compute Process Utilization  ---+-----------------------------------------+
-| PID                                | 1459031                                 |
-|     Avg SM Utilization (%)         | 75                                      |
-|     Avg Memory Utilization (%)     | 18                                      |
-+-----  Overall Health  -------------+-----------------------------------------+
-| Overall Health                     | Healthy                                 |
-+------------------------------------+-----------------------------------------+
-
-+------------------------------------------------------------------------------+
-| GPU ID: 1                                                                    |
-+====================================+=========================================+
-|-----  Execution Stats  ------------+-----------------------------------------|
-| Start Time                         | Sun Sep 15 19:53:10 2024                |
-| End Time                           | Sun Sep 15 20:20:22 2024                |
-| Total Execution Time (sec)         | 1631.39                                 |
-| No. of Processes                   | 0                                       |
-+-----  Performance Stats  ----------+-----------------------------------------+
-| Energy Consumed (Joules)           | 99177                                   |
-| Power Usage (Watts)                | Avg: 60.3745, Max: 60.891, Min: 59.816  |
-| Max GPU Memory Used (bytes)        | 0                                       |
-| SM Clock (MHz)                     | Avg: 210, Max: 210, Min: 210            |
-| Memory Clock (MHz)                 | Avg: 1593, Max: 1593, Min: 1593         |
-| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
-| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
-| PCIe Rx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-| PCIe Tx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-+-----  Event Stats  ----------------+-----------------------------------------+
-| Single Bit ECC Errors              | 0                                       |
-| Double Bit ECC Errors              | 0                                       |
-| PCIe Replay Warnings               | 0                                       |
-| Critical XID Errors                | 0                                       |
-+-----  Slowdown Stats  -------------+-----------------------------------------+
-| Due to - Power (%)                 | 0                                       |
-|        - Thermal (%)               | 0                                       |
-|        - Reliability (%)           | Not Supported                           |
-|        - Board Limit (%)           | Not Supported                           |
-|        - Low Utilization (%)       | Not Supported                           |
-|        - Sync Boost (%)            | 0                                       |
-+-----  Overall Health  -------------+-----------------------------------------+
-| Overall Health                     | Healthy                                 |
-+------------------------------------+-----------------------------------------+
-
-+------------------------------------------------------------------------------+
-| GPU ID: 2                                                                    |
-+====================================+=========================================+
-|-----  Execution Stats  ------------+-----------------------------------------|
-| Start Time                         | Sun Sep 15 19:53:10 2024                |
-| End Time                           | Sun Sep 15 20:20:22 2024                |
-| Total Execution Time (sec)         | 1631.39                                 |
-| No. of Processes                   | 0                                       |
-+-----  Performance Stats  ----------+-----------------------------------------+
-| Energy Consumed (Joules)           | 96777                                   |
-| Power Usage (Watts)                | Avg: 58.9116, Max: 59.233, Min: 58.45   |
-| Max GPU Memory Used (bytes)        | 0                                       |
-| SM Clock (MHz)                     | Avg: 210, Max: 210, Min: 210            |
-| Memory Clock (MHz)                 | Avg: 1593, Max: 1593, Min: 1593         |
-| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
-| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
-| PCIe Rx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-| PCIe Tx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-+-----  Event Stats  ----------------+-----------------------------------------+
-| Single Bit ECC Errors              | 0                                       |
-| Double Bit ECC Errors              | 0                                       |
-| PCIe Replay Warnings               | 0                                       |
-| Critical XID Errors                | 0                                       |
-+-----  Slowdown Stats  -------------+-----------------------------------------+
-| Due to - Power (%)                 | 0                                       |
-|        - Thermal (%)               | 0                                       |
-|        - Reliability (%)           | Not Supported                           |
-|        - Board Limit (%)           | Not Supported                           |
-|        - Low Utilization (%)       | Not Supported                           |
-|        - Sync Boost (%)            | 0                                       |
-+-----  Overall Health  -------------+-----------------------------------------+
-| Overall Health                     | Healthy                                 |
-+------------------------------------+-----------------------------------------+
-
-+------------------------------------------------------------------------------+
-| GPU ID: 3                                                                    |
-+====================================+=========================================+
-|-----  Execution Stats  ------------+-----------------------------------------|
-| Start Time                         | Sun Sep 15 19:53:10 2024                |
-| End Time                           | Sun Sep 15 20:20:22 2024                |
-| Total Execution Time (sec)         | 1631.39                                 |
-| No. of Processes                   | 0                                       |
-+-----  Performance Stats  ----------+-----------------------------------------+
-| Energy Consumed (Joules)           | 100765                                  |
-| Power Usage (Watts)                | Avg: 61.2628, Max: 61.966, Min: 60.489  |
-| Max GPU Memory Used (bytes)        | 0                                       |
-| SM Clock (MHz)                     | Avg: 210, Max: 210, Min: 210            |
-| Memory Clock (MHz)                 | Avg: 1593, Max: 1593, Min: 1593         |
-| SM Utilization (%)                 | Avg: 0, Max: 0, Min: 0                  |
-| Memory Utilization (%)             | Avg: 0, Max: 0, Min: 0                  |
-| PCIe Rx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-| PCIe Tx Bandwidth (megabytes)      | Avg: N/A, Max: N/A, Min: N/A            |
-+-----  Event Stats  ----------------+-----------------------------------------+
-| Single Bit ECC Errors              | 0                                       |
-| Double Bit ECC Errors              | 0                                       |
-| PCIe Replay Warnings               | 0                                       |
-| Critical XID Errors                | 0                                       |
-+-----  Slowdown Stats  -------------+-----------------------------------------+
-| Due to - Power (%)                 | 0                                       |
-|        - Thermal (%)               | 0                                       |
-|        - Reliability (%)           | Not Supported                           |
-|        - Board Limit (%)           | Not Supported                           |
-|        - Low Utilization (%)       | Not Supported                           |
-|        - Sync Boost (%)            | 0                                       |
-+-----  Overall Health  -------------+-----------------------------------------+
-| Overall Health                     | Healthy                                 |
-+------------------------------------+-----------------------------------------+
-
-End Slurm Epilogue Sun Sep 15 20:20:22 CDT 2024 1726449622
---------------------------------------------------------------
