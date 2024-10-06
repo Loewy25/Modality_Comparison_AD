@@ -38,7 +38,7 @@ def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
 # Context module: two convolution blocks with optional dropout
 def context_module(x, filters):
     x = convolution_block(x, filters)
-    x = SpatialDropout3D(0.1)(x)
+    x = SpatialDropout3D(0.05)(x)
     x = convolution_block(x, filters)
     return x
 
@@ -80,7 +80,7 @@ def create_3d_cnn(input_shape=(128, 128, 128, 1), num_classes=2):
     x = GlobalAveragePooling3D()(x)
 
     # Dropout for regularization
-    x = Dropout(0.1)(x)
+    x = Dropout(0.05)(x)
 
     # Dense layer with softmax for classification
     output = Dense(num_classes, activation='softmax')(x)
@@ -249,9 +249,9 @@ def augment_data(X):
     for img in X:
         img_aug = img.copy()
         # Randomly flip along each axis with 50% probability
-        if np.random.rand() < 0.3:
+        if np.random.rand() < 0.1:
             img_aug = np.flip(img_aug, axis=1)  # Flip along x-axis
-        if np.random.rand() < 0.3:
+        if np.random.rand() < 0.1:
             img_aug = np.flip(img_aug, axis=2)  # Flip along y-axis
         augmented_X.append(img_aug)
     return np.array(augmented_X)
@@ -375,7 +375,7 @@ def loading_mask_3d(task, modality):
 if __name__ == '__main__':
     task = 'cd'  # Update as per your task
     modality = 'PET'  # 'MRI' or 'PET'
-    info = '5_context_from_16_0.1_dropout_1e5_with_0.1_augmentation_xy'  # Additional info for saving results
+    info = '5_context_from_16_0.05_dropout_1e5_with_0.1_augmentation_xy'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = loading_mask_3d(task, modality)
