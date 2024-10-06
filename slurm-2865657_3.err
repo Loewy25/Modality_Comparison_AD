@@ -1,0 +1,12 @@
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+2024-10-05 04:50:09.944566: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-10-05 04:50:10.505699: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 78923 MB memory:  -> device: 0, name: NVIDIA A100-SXM4-80GB, pci bus id: 0000:31:00.0, compute capability: 8.0
+2024-10-05 04:50:13.429610: W tensorflow/core/framework/cpu_allocator_impl.cc:82] Allocation of 4026531840 exceeds 10% of free system memory.
+2024-10-05 04:50:16.964083: W tensorflow/core/framework/cpu_allocator_impl.cc:82] Allocation of 4026531840 exceeds 10% of free system memory.
+2024-10-05 04:50:22.508796: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8101
+2024-10-05 04:50:24.570412: I tensorflow/stream_executor/cuda/cuda_blas.cc:1786] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+2024-10-05 04:50:58.263026: W tensorflow/core/framework/cpu_allocator_impl.cc:82] Allocation of 2021654528 exceeds 10% of free system memory.
+2024-10-05 04:51:00.442028: W tensorflow/core/framework/cpu_allocator_impl.cc:82] Allocation of 2021654528 exceeds 10% of free system memory.
+2024-10-05 06:30:57.704474: W tensorflow/core/framework/cpu_allocator_impl.cc:82] Allocation of 2021654528 exceeds 10% of free system memory.
