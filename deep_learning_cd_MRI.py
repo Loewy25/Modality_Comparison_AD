@@ -358,13 +358,12 @@ class Trainer:
         }
 
         # Scheduler for early stopping bad trials
+# Scheduler for early stopping bad trials
         scheduler = HyperBandScheduler(
             time_attr="training_iteration",
-            metric="val_loss",
-            mode="min",
             max_t=20,  # Maximum number of epochs
         )
-
+        
         # Execute tuning
         analysis = tune.run(
             tune.with_parameters(Trainer.train_model, X_train=X_train, Y_train=Y_train, X_val=X_val, Y_val=Y_val),
@@ -377,6 +376,7 @@ class Trainer:
             name="hyperparameter_tuning",
             max_concurrent_trials=4  # Utilize up to 4 GPUs
         )
+
 
         # Get the best trial
         best_trial = analysis.get_best_trial("val_auc", "max", "last")
