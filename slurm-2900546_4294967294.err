@@ -1,0 +1,653 @@
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+2024-10-06 23:05:57,769	INFO worker.py:1786 -- Started a local Ray instance.
+[36m(pid=1897003)[0m /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+[36m(pid=1897003)[0m   warnings.warn(message, FutureWarning)
+[36m(train_model pid=1897003)[0m 2024-10-06 23:10:16.646671: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+[36m(train_model pid=1897003)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[36m(pid=1897005)[0m /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.[32m [repeated 3x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/user-guides/configure-logging.html#log-deduplication for more options.)[0m
+[36m(pid=1897005)[0m   warnings.warn(message, FutureWarning)[32m [repeated 3x across cluster][0m
+[36m(train_model pid=1897006)[0m 2024-10-06 23:10:20.447210: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:3e:00.0, compute capability: 7.0
+2024-10-06 23:10:21,950	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00000
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1897003, ip=10.1.1.106, actor_id=428af9b4801b4c1ddf9ca68f01000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+2024-10-06 23:10:22,130	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00002
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1897005, ip=10.1.1.106, actor_id=7d20c6d0f209aa83d64f0b4901000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+2024-10-06 23:10:22,138	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00001
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1897004, ip=10.1.1.106, actor_id=56cd4e248d0b6b6903e7f4c301000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+2024-10-06 23:10:22,146	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00003
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1897006, ip=10.1.1.106, actor_id=70714c271d16b16ea64e679f01000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+[36m(train_model pid=1897005)[0m 2024-10-06 23:10:16.647276: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA[32m [repeated 3x across cluster][0m
+[36m(train_model pid=1897005)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.[32m [repeated 3x across cluster][0m
+[36m(pid=1897430)[0m /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+[36m(pid=1897430)[0m   warnings.warn(message, FutureWarning)
+[36m(pid=1897431)[0m /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+[36m(pid=1897431)[0m   warnings.warn(message, FutureWarning)
+[36m(train_model pid=1897003)[0m 2024-10-06 23:10:20.501675: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:3d:00.0, compute capability: 7.0[32m [repeated 3x across cluster][0m
+[36m(train_model pid=1897431)[0m 2024-10-06 23:10:32.918732: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+[36m(train_model pid=1897431)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[36m(pid=1897438)[0m /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.[32m [repeated 2x across cluster][0m
+[36m(pid=1897438)[0m   warnings.warn(message, FutureWarning)[32m [repeated 2x across cluster][0m
+[36m(train_model pid=1897431)[0m 2024-10-06 23:10:33.342125: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:3d:00.0, compute capability: 7.0
+2024-10-06 23:10:34,001	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00004
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1897431, ip=10.1.1.106, actor_id=9899d7b4cd8dc464bee0b8c501000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+[36m(train_model pid=1897430)[0m 2024-10-06 23:10:36.605649: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+[36m(train_model pid=1897430)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-10-06 23:10:37,741	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00005
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1897430, ip=10.1.1.106, actor_id=cb3192ea524cfab6f05b32a001000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+[36m(pid=1897730)[0m /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+[36m(pid=1897730)[0m   warnings.warn(message, FutureWarning)
+[36m(train_model pid=1897438)[0m 2024-10-06 23:10:38.397969: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:3e:00.0, compute capability: 7.0[32m [repeated 2x across cluster][0m
+2024-10-06 23:10:39,105	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00006
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1897438, ip=10.1.1.106, actor_id=4259bb01c28f383215a1f31701000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+2024-10-06 23:10:40,431	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00007
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1897439, ip=10.1.1.106, actor_id=1ca569b5bdad2229668777b901000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+[36m(pid=1897834)[0m /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+[36m(pid=1897834)[0m   warnings.warn(message, FutureWarning)
+[36m(train_model pid=1897439)[0m 2024-10-06 23:10:38.721441: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA[32m [repeated 2x across cluster][0m
+[36m(train_model pid=1897439)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.[32m [repeated 2x across cluster][0m
+[36m(train_model pid=1897439)[0m 2024-10-06 23:10:39.360981: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:60:00.0, compute capability: 7.0
+[36m(pid=1897962)[0m /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.[32m [repeated 2x across cluster][0m
+[36m(pid=1897962)[0m   warnings.warn(message, FutureWarning)[32m [repeated 2x across cluster][0m
+[36m(train_model pid=1897962)[0m 2024-10-06 23:10:49.617317: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+[36m(train_model pid=1897962)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[36m(train_model pid=1897897)[0m 2024-10-06 23:10:49.866706: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+[36m(train_model pid=1897897)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[36m(train_model pid=1897962)[0m 2024-10-06 23:10:50.148660: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:60:00.0, compute capability: 7.0
+2024-10-06 23:10:50,991	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00011
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1897962, ip=10.1.1.106, actor_id=e30b365129400db1555828a701000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+2024-10-06 23:10:51,082	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00010
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1897897, ip=10.1.1.106, actor_id=de9af1c579742f2e439b1a9801000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+2024-10-06 23:10:54,595	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00008
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1897730, ip=10.1.1.106, actor_id=40889e2d8657d8820860d2ad01000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+[36m(pid=1898161)[0m /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.[32m [repeated 2x across cluster][0m
+[36m(pid=1898161)[0m   warnings.warn(message, FutureWarning)[32m [repeated 2x across cluster][0m
+[36m(train_model pid=1897834)[0m 2024-10-06 23:10:55.920132: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA[32m [repeated 2x across cluster][0m
+[36m(train_model pid=1897834)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.[32m [repeated 2x across cluster][0m
+[36m(train_model pid=1897730)[0m 2024-10-06 23:10:53.700470: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:3d:00.0, compute capability: 7.0[32m [repeated 2x across cluster][0m
+2024-10-06 23:10:57,106	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00009
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1897834, ip=10.1.1.106, actor_id=6eb3beb194603ec4f90978ae01000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+[36m(pid=1898381)[0m /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.[32m [repeated 2x across cluster][0m
+[36m(pid=1898381)[0m   warnings.warn(message, FutureWarning)[32m [repeated 2x across cluster][0m
+[36m(train_model pid=1898157)[0m 2024-10-06 23:11:03.194248: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+[36m(train_model pid=1898157)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[36m(train_model pid=1897834)[0m 2024-10-06 23:10:56.410416: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:61:00.0, compute capability: 7.0
+[36m(train_model pid=1898157)[0m 2024-10-06 23:11:03.608516: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:60:00.0, compute capability: 7.0
+2024-10-06 23:11:04,472	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00012
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1898157, ip=10.1.1.106, actor_id=96548afe2e6783636f5099ce01000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+[36m(train_model pid=1898161)[0m 2024-10-06 23:11:04.771104: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+[36m(train_model pid=1898161)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-10-06 23:11:06,171	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00013
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1898161, ip=10.1.1.106, actor_id=ed1ae56e8887982af4ef700001000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+2024-10-06 23:11:06,270	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00014
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1898289, ip=10.1.1.106, actor_id=051c6733ec72e551ce11783f01000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+[36m(pid=1898485)[0m /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+[36m(pid=1898485)[0m   warnings.warn(message, FutureWarning)
+[36m(train_model pid=1898289)[0m 2024-10-06 23:11:05.584188: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:3d:00.0, compute capability: 7.0[32m [repeated 2x across cluster][0m
+[36m(train_model pid=1898381)[0m 2024-10-06 23:11:11.003502: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA[32m [repeated 2x across cluster][0m
+[36m(train_model pid=1898381)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.[32m [repeated 2x across cluster][0m
+2024-10-06 23:11:12,131	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00015
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1898381, ip=10.1.1.106, actor_id=89e54882b0a7792bf1de3dd601000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+[36m(pid=1898734)[0m /home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.[32m [repeated 3x across cluster][0m
+[36m(pid=1898734)[0m   warnings.warn(message, FutureWarning)[32m [repeated 3x across cluster][0m
+[36m(train_model pid=1898381)[0m 2024-10-06 23:11:11.412180: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:61:00.0, compute capability: 7.0
+[36m(train_model pid=1898575)[0m 2024-10-06 23:11:16.328907: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+[36m(train_model pid=1898575)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[36m(train_model pid=1898575)[0m 2024-10-06 23:11:16.741201: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:3e:00.0, compute capability: 7.0
+2024-10-06 23:11:17,378	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00017
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1898575, ip=10.1.1.106, actor_id=12280c4e50b828b40a4236e401000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+[36m(train_model pid=1898485)[0m 2024-10-06 23:11:19.599358: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+[36m(train_model pid=1898485)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-10-06 23:11:20,736	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00016
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1898485, ip=10.1.1.106, actor_id=ddf968c71d1e682e100374d801000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+[36m(train_model pid=1898485)[0m 2024-10-06 23:11:20.039901: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:60:00.0, compute capability: 7.0
+[36m(train_model pid=1898734)[0m 2024-10-06 23:11:22.822215: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:61:00.0, compute capability: 7.0
+2024-10-06 23:11:23,509	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00019
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1898734, ip=10.1.1.106, actor_id=e96916a06bee24aae16dd3a301000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+2024-10-06 23:11:25,299	ERROR tune_controller.py:1331 -- Trial task failed for trial train_model_fe1ee_00018
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 871, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(DeprecationWarning): [36mray::ImplicitFunc.train()[39m (pid=1898580, ip=10.1.1.106, actor_id=4c5e4850f699946bda1e449201000000, repr=train_model)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 104, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 250, in _trainable_func
+    output = fn()
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/trainable/util.py", line 130, in inner
+    return trainable(config, **fn_kwargs)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 336, in train_model
+    TuneReportCallback(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/integration/keras.py", line 12, in __new__
+    raise DeprecationWarning(_DEPRECATION_MESSAGE)
+DeprecationWarning: The `ray.tune.integration.keras` module is deprecated in favor of `ray.train.tensorflow.keras.ReportCheckpointCallback`.
+2024-10-06 23:11:25,735	INFO tune.py:1009 -- Wrote the latest version of all result files and experiment state to '/home/l.peiwang/ray_results/hyperparameter_tuning' in 0.4334s.
+Traceback (most recent call last):
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 466, in <module>
+    main()
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 453, in main
+    best_model = Trainer.tune_model(X, Y, task, modality, info)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 368, in tune_model
+    analysis = tune.run(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/tune.py", line 1035, in run
+    raise TuneError("Trials did not complete", incomplete_trials)
+ray.tune.error.TuneError: ('Trials did not complete', [train_model_fe1ee_00000, train_model_fe1ee_00001, train_model_fe1ee_00002, train_model_fe1ee_00003, train_model_fe1ee_00004, train_model_fe1ee_00005, train_model_fe1ee_00006, train_model_fe1ee_00007, train_model_fe1ee_00008, train_model_fe1ee_00009, train_model_fe1ee_00010, train_model_fe1ee_00011, train_model_fe1ee_00012, train_model_fe1ee_00013, train_model_fe1ee_00014, train_model_fe1ee_00015, train_model_fe1ee_00016, train_model_fe1ee_00017, train_model_fe1ee_00018, train_model_fe1ee_00019])
+[36m(train_model pid=1898580)[0m 2024-10-06 23:11:23.724869: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA[32m [repeated 2x across cluster][0m
+[36m(train_model pid=1898580)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.[32m [repeated 2x across cluster][0m
+[36m(train_model pid=1898580)[0m 2024-10-06 23:11:24.353173: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:3d:00.0, compute capability: 7.0
