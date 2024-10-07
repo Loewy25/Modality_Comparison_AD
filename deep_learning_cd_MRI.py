@@ -363,7 +363,6 @@ class Trainer:
             metric="val_loss",
             mode="min",
             max_t=20,  # Maximum number of epochs
-            grace_period=5,
         )
 
         # Execute tuning
