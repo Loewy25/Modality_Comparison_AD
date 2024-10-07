@@ -25,7 +25,7 @@ from data_loading import generate_data_path_less, generate, binarylabel
 import ray
 from ray import tune
 from ray.tune.schedulers import HyperBandScheduler
-from ray.tune.integration.keras import TuneReportCallback
+from ray.train.tensorflow.keras import ReportCheckpointCallback
 
 # Initialize Ray
 ray.init(ignore_reinit_error=True)
@@ -300,13 +300,17 @@ class Trainer:
         X_train_augmented = DataLoader.augment_data(X_train, flip_prob=flip_prob, rotate_prob=rotate_prob)
 
         # Create model with hyperparameters
-        model = CNNModel.create_model(input_shape=(128, 128, 128, 1),
-                                      num_classes=2,
-                                      dropout_rate=dropout_rate,
-                                      l2_reg=l2_reg)
-        model.compile(optimizer=Adam(learning_rate=learning_rate),
-                      loss='categorical_crossentropy',
-                      metrics=['accuracy', AUC(name='auc')])
+        model = CNNModel.create_model(
+            input_shape=(128, 128, 128, 1),
+            num_classes=2,
+            dropout_rate=dropout_rate,
+            l2_reg=l2_reg
+        )
+        model.compile(
+            optimizer=Adam(learning_rate=learning_rate),
+            loss='categorical_crossentropy',
+            metrics=['accuracy', AUC(name='auc')]
+        )
 
         early_stopping = EarlyStopping(
             monitor='val_loss',
@@ -324,6 +328,9 @@ class Trainer:
             verbose=0
         )
 
+        # Use ReportCheckpointCallback
+        report_checkpoint_callback = ReportCheckpointCallback()
+
         # Train the model
         model.fit(
             X_train_augmented, Y_train,
@@ -333,8 +340,7 @@ class Trainer:
             callbacks=[
                 early_stopping,
                 reduce_lr,
-                TuneReportCallback(
-                    {"val_loss": "val_loss", "val_auc": "val_auc"}, on="epoch")
+                report_checkpoint_callback
             ],
             verbose=0
         )
