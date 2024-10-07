@@ -345,6 +345,15 @@ class Trainer:
             verbose=0
         )
 
+        # Report metrics to Ray Tune
+        val_loss, val_accuracy, val_auc = model.evaluate(X_val, Y_val, verbose=0)
+        tune.report(val_loss=val_loss, val_accuracy=val_accuracy, val_auc=val_auc)
+
+        # After training, clear the session and collect garbage to free memory
+        tf.keras.backend.clear_session()
+        import gc
+        gc.collect()
+
     @staticmethod
     def tune_model(X, Y, task, modality, info):
         # Split data
@@ -356,7 +365,7 @@ class Trainer:
         # Define search space including augmentation probabilities
         config = {
             "learning_rate": tune.loguniform(1e-5, 1e-3),
-            "batch_size": tune.choice([4, 8, 16]),
+            "batch_size": tune.choice([4, 8]),
             "dropout_rate": tune.uniform(0.0, 0.5),
             "l2_reg": tune.loguniform(1e-6, 1e-4),
             "flip_prob": tune.uniform(0.0, 0.5),
@@ -364,25 +373,23 @@ class Trainer:
         }
 
         # Scheduler for early stopping bad trials
-# Scheduler for early stopping bad trials
         scheduler = HyperBandScheduler(
             time_attr="training_iteration",
             max_t=20,  # Maximum number of epochs
         )
-        
+
         # Execute tuning
         analysis = tune.run(
             tune.with_parameters(Trainer.train_model, X_train=X_train, Y_train=Y_train, X_val=X_val, Y_val=Y_val),
             resources_per_trial={"cpu": 1, "gpu": 1},  # Use 1 GPU per trial
             config=config,
-            metric="val_loss",
-            mode="min",
-            num_samples=20,
+            metric="val_auc",  # Use AUC for selecting the best model
+            mode="max",
+            num_samples=8,
             scheduler=scheduler,
             name="hyperparameter_tuning",
             max_concurrent_trials=4  # Utilize up to 4 GPUs
         )
-
 
         # Get the best trial
         best_trial = analysis.get_best_trial("val_auc", "max", "last")
@@ -414,7 +421,7 @@ class Trainer:
         early_stopping = EarlyStopping(
             monitor='val_loss',
             patience=50,
-            mode='max',
+            mode='min',
             verbose=1,
             restore_best_weights=True
         )
