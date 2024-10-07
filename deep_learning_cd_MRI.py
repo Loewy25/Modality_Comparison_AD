@@ -16,10 +16,19 @@ from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import StratifiedKFold
 from nilearn import plotting
 from scipy.stats import zscore
-from scipy.ndimage import zoom
+from scipy.ndimage import zoom, rotate
 
+# Import your own data loading functions
 from data_loading import generate_data_path_less, generate, binarylabel
 
+# Import Ray and Ray Tune
+import ray
+from ray import tune
+from ray.tune.schedulers import HyperBandScheduler
+from ray.tune.integration.keras import TuneReportCallback
+
+# Initialize Ray
+ray.init(ignore_reinit_error=True)
 
 class Utils:
     """Utility functions for directory management and image resizing."""
@@ -49,59 +58,59 @@ class CNNModel:
     """Class to create and manage the 3D CNN model."""
 
     @staticmethod
-    def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
+    def convolution_block(x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1), l2_reg=1e-5):
         x = Conv3D(filters, kernel_size, strides=strides, padding='same',
-                   kernel_regularizer=l2(1e-5))(x)
+                   kernel_regularizer=l2(l2_reg))(x)
         x = BatchNormalization()(x)
         x = LeakyReLU()(x)
         return x
 
     @staticmethod
-    def context_module(x, filters):
-        x = CNNModel.convolution_block(x, filters)
-        x = SpatialDropout3D(0.05)(x)
-        x = CNNModel.convolution_block(x, filters)
+    def context_module(x, filters, dropout_rate=0.05, l2_reg=1e-5):
+        x = CNNModel.convolution_block(x, filters, l2_reg=l2_reg)
+        x = SpatialDropout3D(dropout_rate)(x)
+        x = CNNModel.convolution_block(x, filters, l2_reg=l2_reg)
         return x
 
     @staticmethod
-    def create_model(input_shape=(128, 128, 128, 1), num_classes=2):
+    def create_model(input_shape=(128, 128, 128, 1), num_classes=2, dropout_rate=0.05, l2_reg=1e-5):
         input_img = Input(shape=input_shape)
 
         # Conv1 block (16 filters)
-        x = CNNModel.convolution_block(input_img, 16)
+        x = CNNModel.convolution_block(input_img, 16, l2_reg=l2_reg)
         conv1_out = x
-        x = CNNModel.context_module(x, 16)
+        x = CNNModel.context_module(x, 16, dropout_rate=dropout_rate, l2_reg=l2_reg)
         x = Add()([x, conv1_out])
 
         # Conv2 block (32 filters, stride 2)
-        x = CNNModel.convolution_block(x, 32, strides=(2, 2, 2))
+        x = CNNModel.convolution_block(x, 32, strides=(2, 2, 2), l2_reg=l2_reg)
         conv2_out = x
-        x = CNNModel.context_module(x, 32)
+        x = CNNModel.context_module(x, 32, dropout_rate=dropout_rate, l2_reg=l2_reg)
         x = Add()([x, conv2_out])
 
         # Conv3 block (64 filters, stride 2)
-        x = CNNModel.convolution_block(x, 64, strides=(2, 2, 2))
+        x = CNNModel.convolution_block(x, 64, strides=(2, 2, 2), l2_reg=l2_reg)
         conv3_out = x
-        x = CNNModel.context_module(x, 64)
+        x = CNNModel.context_module(x, 64, dropout_rate=dropout_rate, l2_reg=l2_reg)
         x = Add()([x, conv3_out])
 
         # Conv4 block (128 filters, stride 2)
-        x = CNNModel.convolution_block(x, 128, strides=(2, 2, 2))
+        x = CNNModel.convolution_block(x, 128, strides=(2, 2, 2), l2_reg=l2_reg)
         conv4_out = x
-        x = CNNModel.context_module(x, 128)
+        x = CNNModel.context_module(x, 128, dropout_rate=dropout_rate, l2_reg=l2_reg)
         x = Add()([x, conv4_out])
 
         # Conv5 block (256 filters, stride 2)
-        x = CNNModel.convolution_block(x, 256, strides=(2, 2, 2))
+        x = CNNModel.convolution_block(x, 256, strides=(2, 2, 2), l2_reg=l2_reg)
         conv5_out = x
-        x = CNNModel.context_module(x, 256)
+        x = CNNModel.context_module(x, 256, dropout_rate=dropout_rate, l2_reg=l2_reg)
         x = Add()([x, conv5_out])
 
         # Global Average Pooling
         x = GlobalAveragePooling3D()(x)
 
         # Dropout for regularization
-        x = Dropout(0.05)(x)
+        x = Dropout(dropout_rate)(x)
 
         # Dense layer with softmax for classification
         output = Dense(num_classes, activation='softmax')(x)
@@ -132,7 +141,6 @@ class DataLoader:
 
         for i in range(len(data_train)):
             nifti_img = nib.load(data_train[i])
-            affine = nifti_img.affine
             original_imgs.append(nifti_img)  # Store the original NIfTI image
 
             reshaped_data = nifti_img.get_fdata()
@@ -149,15 +157,21 @@ class DataLoader:
         return train_data, train_label, original_imgs
 
     @staticmethod
-    def augment_data(X):
+    def augment_data(X, flip_prob=0.1, rotate_prob=0.1):
         augmented_X = []
         for img in X:
             img_aug = img.copy()
-            # Randomly flip along each axis with 10% probability
-            if np.random.rand() < 0.1:
+            # Randomly flip along each axis with specified probability
+            if np.random.rand() < flip_prob:
                 img_aug = np.flip(img_aug, axis=1)  # Flip along x-axis
-            if np.random.rand() < 0.1:
+            if np.random.rand() < flip_prob:
                 img_aug = np.flip(img_aug, axis=2)  # Flip along y-axis
+
+            # Random rotation with specified probability
+            if np.random.rand() < rotate_prob:
+                angle = np.random.uniform(-10, 10)  # Rotate between -10 and 10 degrees
+                img_aug = rotate(img_aug, angle, axes=(1, 2), reshape=False, order=1)
+
             augmented_X.append(img_aug)
         return np.array(augmented_X)
 
@@ -273,116 +287,154 @@ class Trainer:
     """Class to handle model training and evaluation."""
 
     @staticmethod
-    def plot_training_validation_loss(histories, save_dir):
-        # Initialize lists to collect losses
-        train_losses = []
-        val_losses = []
+    def train_model(config, X_train, Y_train, X_val, Y_val):
+        # Unpack hyperparameters from the config dictionary
+        learning_rate = config["learning_rate"]
+        batch_size = config["batch_size"]
+        dropout_rate = config["dropout_rate"]
+        l2_reg = config["l2_reg"]
+        flip_prob = config["flip_prob"]
+        rotate_prob = config["rotate_prob"]
 
-        for history in histories:
-            train_losses.extend(history.history['loss'])
-            val_losses.extend(history.history['val_loss'])
+        # Apply data augmentation with specified probabilities
+        X_train_augmented = DataLoader.augment_data(X_train, flip_prob=flip_prob, rotate_prob=rotate_prob)
 
-        # Create the plot
-        plt.figure(figsize=(10, 6))
+        # Create model with hyperparameters
+        model = CNNModel.create_model(input_shape=(128, 128, 128, 1),
+                                      num_classes=2,
+                                      dropout_rate=dropout_rate,
+                                      l2_reg=l2_reg)
+        model.compile(optimizer=Adam(learning_rate=learning_rate),
+                      loss='categorical_crossentropy',
+                      metrics=['accuracy', AUC(name='auc')])
 
-        # Plot the training and validation loss
-        plt.plot(train_losses, label='Training Loss')
-        plt.plot(val_losses, label='Validation Loss')
+        early_stopping = EarlyStopping(
+            monitor='val_loss',
+            patience=50,
+            mode='min',
+            verbose=0,
+            restore_best_weights=True
+        )
 
-        # Add title and labels
-        plt.title('Training Loss vs Validation Loss')
-        plt.xlabel('Epochs')
-        plt.ylabel('Loss')
+        reduce_lr = ReduceLROnPlateau(
+            monitor='val_loss',
+            factor=0.5,
+            patience=10,
+            mode='min',
+            verbose=0
+        )
 
-        # Set y-axis limits to focus on 0-1 range
-        plt.ylim(0, 1)
-
-        # Add a legend
-        plt.legend(loc='upper right')
-
-        # Save the plot
-        loss_plot_path = os.path.join(save_dir, 'loss_vs_val_loss.png')
-        plt.savefig(loss_plot_path)
-        plt.close()  # Close the figure to avoid displaying it in notebooks
-        print(f'Loss vs Validation Loss plot saved at {loss_plot_path}')
+        # Train the model
+        model.fit(
+            X_train_augmented, Y_train,
+            validation_data=(X_val, Y_val),
+            epochs=800,
+            batch_size=batch_size,
+            callbacks=[
+                early_stopping,
+                reduce_lr,
+                TuneReportCallback(
+                    {"val_loss": "val_loss", "val_auc": "val_auc"}, on="epoch")
+            ],
+            verbose=0
+        )
 
     @staticmethod
-    def train_model(X, Y, task, modality, info):
+    def tune_model(X, Y, task, modality, info):
+        # Split data
         stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=2)
-        all_y_val = []
-        all_y_val_pred = []
-        all_auc_scores = []
-        histories = []
+        train_idx, val_idx = next(stratified_kfold.split(X, Y.argmax(axis=1)))
+        X_train, X_val = X[train_idx], X[val_idx]
+        Y_train, Y_val = Y[train_idx], Y[val_idx]
 
-        # Directory to save loss vs val-loss plot
-        save_dir = os.path.join('./grad-cam', info, task, modality)
-        Utils.ensure_directory_exists(save_dir)
+        # Define search space including augmentation probabilities
+        config = {
+            "learning_rate": tune.loguniform(1e-5, 1e-3),
+            "batch_size": tune.choice([4, 8, 16]),
+            "dropout_rate": tune.uniform(0.0, 0.5),
+            "l2_reg": tune.loguniform(1e-6, 1e-4),
+            "flip_prob": tune.uniform(0.0, 0.5),
+            "rotate_prob": tune.uniform(0.0, 0.5),
+        }
 
-        best_auc = 0
-        best_model = None
+        # Scheduler for early stopping bad trials
+        scheduler = HyperBandScheduler(
+            time_attr="training_iteration",
+            metric="val_loss",
+            mode="min",
+            max_t=20,  # Maximum number of epochs
+            grace_period=5,
+        )
 
-        for fold_num, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1))):
-            print(f"Starting fold {fold_num + 1}")
-            X_train, X_val = X[train_idx], X[val_idx]
-            Y_train, Y_val = Y[train_idx], Y[val_idx]
+        # Execute tuning
+        analysis = tune.run(
+            tune.with_parameters(Trainer.train_model, X_train=X_train, Y_train=Y_train, X_val=X_val, Y_val=Y_val),
+            resources_per_trial={"cpu": 1, "gpu": 1},  # Use 1 GPU per trial
+            config=config,
+            metric="val_loss",
+            mode="min",
+            num_samples=20,
+            scheduler=scheduler,
+            name="hyperparameter_tuning",
+            max_concurrent_trials=4  # Utilize up to 4 GPUs
+        )
 
-            # Apply data augmentation to X_train
-            X_train_augmented = DataLoader.augment_data(X_train)
+        # Get the best trial
+        best_trial = analysis.get_best_trial("val_auc", "max", "last")
+        print("Best trial config: {}".format(best_trial.config))
+        print("Best trial final validation AUC: {}".format(
+            best_trial.last_result["val_auc"]))
 
-            model = CNNModel.create_model(input_shape=(128, 128, 128, 1), num_classes=2)
-            model.compile(optimizer=Adam(learning_rate=5e-4),
-                          loss='categorical_crossentropy',
-                          metrics=['accuracy', AUC(name='auc')])
+        # Train the best model on the full training data
+        best_model = CNNModel.create_model(
+            input_shape=(128, 128, 128, 1),
+            num_classes=2,
+            dropout_rate=best_trial.config["dropout_rate"],
+            l2_reg=best_trial.config["l2_reg"]
+        )
+        best_model.compile(
+            optimizer=Adam(learning_rate=best_trial.config["learning_rate"]),
+            loss='categorical_crossentropy',
+            metrics=['accuracy', AUC(name='auc')]
+        )
 
-            early_stopping = EarlyStopping(
-                monitor='val_auc',
-                patience=100,
-                mode='max',
-                verbose=1,
-                restore_best_weights=True
-            )
+        # Apply data augmentation with best probabilities
+        X_train_augmented = DataLoader.augment_data(
+            X_train,
+            flip_prob=best_trial.config["flip_prob"],
+            rotate_prob=best_trial.config["rotate_prob"]
+        )
 
-            reduce_lr = ReduceLROnPlateau(
-                monitor='val_loss',
-                factor=0.5,
-                patience=10,
-                mode='max',
-                verbose=1
-            )
+        # Retrain on the full data
+        early_stopping = EarlyStopping(
+            monitor='val_loss',
+            patience=50,
+            mode='max',
+            verbose=1,
+            restore_best_weights=True
+        )
 
-            history = model.fit(X_train_augmented, Y_train,
-                                batch_size=5,
-                                epochs=3,  # Adjust epochs as needed
-                                validation_data=(X_val, Y_val),
-                                callbacks=[early_stopping, reduce_lr])
-            histories.append(history)
+        reduce_lr = ReduceLROnPlateau(
+            monitor='val_loss',
+            factor=0.5,
+            patience=10,
+            mode='min',
+            verbose=1
+        )
 
-            # Get predictions after training
-            y_val_pred = model.predict(X_val)
-            y_val_pred_auc = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
+        history = best_model.fit(
+            X_train_augmented, Y_train,
+            validation_data=(X_val, Y_val),
+            epochs=20,
+            batch_size=best_trial.config["batch_size"],
+            callbacks=[early_stopping, reduce_lr],
+            verbose=1
+        )
 
-            # Track the best validation AUC during training for comparison
-            best_val_auc = max(history.history['val_auc'])
-            print(f'Best val_auc during training for fold {fold_num + 1}: {best_val_auc:.4f}')
-
-            # Calculate and print final AUC after restoring the best weights
-            final_auc = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
-            print(f'Final AUC for fold {fold_num + 1}: {final_auc:.4f}')
-
-            if final_auc > best_auc:
-                best_auc = final_auc
-                best_model = model  # Save the best model
-
-            all_y_val.extend(Y_val[:, 1])
-            all_y_val_pred.extend(y_val_pred[:, 1])
-            all_auc_scores.append(final_auc)
-
-        # Plot and save loss vs validation loss graph
-        Trainer.plot_training_validation_loss(histories, save_dir)
-
-        # Compute average AUC across all folds
-        average_auc = sum(all_auc_scores) / len(all_auc_scores)
-        print(f'Average AUC across all folds: {average_auc:.4f}')
+        # Evaluate on validation set
+        y_val_pred = best_model.predict(X_val)
+        final_auc = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
+        print(f'Final AUC on validation data: {final_auc:.4f}')
 
         return best_model
 
@@ -398,14 +450,17 @@ def main():
     X = np.expand_dims(X, axis=-1)  # Add channel dimension if not already present
     Y = to_categorical(train_label, num_classes=2)
 
-    # Train the model and get the best trained model
-    best_model = Trainer.train_model(X, Y, task, modality, info)
+    # Train the model with hyperparameter tuning and get the best trained model
+    best_model = Trainer.tune_model(X, Y, task, modality, info)
 
     # Apply Grad-CAM using the trained model
     imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
 
     # Apply Grad-CAM to all images
     GradCAM.apply_gradcam_all_layers_average(best_model, imgs, original_imgs, task, modality, info)
+
+    # Shutdown Ray
+    ray.shutdown()
 
 
 if __name__ == '__main__':
