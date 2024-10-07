@@ -1,13 +1,14 @@
 #!/bin/bash
 
 #SBATCH -N 1                     # Request 1 node
-#SBATCH -n 1                     # Request 1 CPU per task
-#SBATCH --mem 400000M            # Request 400GB memory per task
+#SBATCH -n 4                     # Request 4 CPU cores
+#SBATCH --mem=100G               # Request 400GB memory
 #SBATCH -t 130:50:00             # Set maximum time
-#SBATCH --gres=gpu:1             # Request 1 GPU per task
+#SBATCH --gres=gpu:4             # Request 4 GPUs
 #SBATCH --exclude=gpua403,gpua412,gpua407,gpua408,gpua802
 #SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
+
 ##SBATCH --array=0-7              # Array of 8 tasks (0 to 7)
 
 # Output and error filenames based on job ID and task ID
