@@ -25,7 +25,7 @@ from data_loading import generate_data_path_less, generate, binarylabel
 import ray
 from ray import tune
 from ray.tune.schedulers import HyperBandScheduler
-from ray.tune.integration.keras import TuneReportCallback  # Added import
+from ray.train.tensorflow.keras import ReportCheckpointCallback  # Updated import
 
 # Initialize Ray
 ray.init(ignore_reinit_error=True)
@@ -400,7 +400,7 @@ class Trainer:
         model.compile(
             optimizer=Adam(learning_rate=learning_rate),
             loss='categorical_crossentropy',
-            metrics=['accuracy', AUC(name='auc')]
+            metrics=['accuracy', AUC(name='val_auc')]
         )
 
         early_stopping = EarlyStopping(
@@ -419,14 +419,13 @@ class Trainer:
             verbose=0
         )
 
-        # Use TuneReportCallback to report metrics to Ray Tune
-        report_callback = TuneReportCallback(
-            {
+        # Use ReportCheckpointCallback to report metrics to Ray Tune
+        report_callback = ReportCheckpointCallback(
+            metrics={
                 "val_loss": "val_loss",
                 "val_accuracy": "val_accuracy",
                 "val_auc": "val_auc"
-            },
-            on="epoch_end"
+            }
         )
 
         # Train the model
@@ -437,14 +436,16 @@ class Trainer:
             callbacks=[
                 early_stopping,
                 reduce_lr,
-                report_callback  # Use the TuneReportCallback here
+                report_callback  # Use the ReportCheckpointCallback here
             ],
             verbose=0  # You can set this to 1 for more detailed logs if desired
         )
 
-        # Evaluate on validation data
-        val_loss, val_accuracy, val_auc = model.evaluate(val_generator, verbose=0)
-        tune.report(val_loss=val_loss, val_accuracy=val_accuracy, val_auc=val_auc)
+        # Remove the explicit evaluation and tune.report since ReportCheckpointCallback handles metric reporting
+        # However, if you still need to perform evaluation, ensure it doesn't conflict with the callback
+        # Uncomment the following lines if you need to perform additional evaluation
+        # val_loss, val_accuracy, val_auc = model.evaluate(val_generator, verbose=0)
+        # tune.report(val_loss=val_loss, val_accuracy=val_accuracy, val_auc=val_auc)
 
         # After training, clear the session and collect garbage to free memory
         tf.keras.backend.clear_session()
@@ -466,8 +467,8 @@ class Trainer:
         # Scheduler for early stopping bad trials
         scheduler = HyperBandScheduler(
             time_attr="training_iteration",
-            max_t=150,  # Maximum number of epochs
-            reduction_factor=3  # Reduction factor for HyperBand
+            max_t=30,            # Maximum number of epochs
+            reduction_factor=3    # Reduction factor for HyperBand
         )
 
         # Define the objective function for each trial
@@ -552,7 +553,7 @@ class Trainer:
         best_model.compile(
             optimizer=Adam(learning_rate=best_config["learning_rate"]),
             loss='categorical_crossentropy',
-            metrics=['accuracy', AUC(name='auc')]
+            metrics=['accuracy', AUC(name='val_auc')]
         )
 
         early_stopping = EarlyStopping(
@@ -606,28 +607,6 @@ def main():
 
     # Apply Grad-CAM using the trained model
     # For Grad-CAM, select a subset of images to avoid excessive computation
-    sample_indices = np.random.choice(len(X_file_paths), size=10, replace=False)
-    sampled_file_paths = [X_file_paths[i] for i in sample_indices]
-    sampled_original_imgs = [original_file_paths[i] for i in sample_indices]
-
-    # Create a list of expanded images for Grad-CAM
-    imgs = []
-    for file_path in sampled_file_paths:
-        nifti_img = nib.load(file_path)
-        img_data = nifti_img.get_fdata()
-        img_data = zscore(img_data, axis=None)
-        resized_data = Utils.resize_image(img_data, target_shape=(128, 128, 128))
-        resized_data = np.expand_dims(resized_data, axis=-1)  # Add channel dimension
-        resized_data = np.expand_dims(resized_data, axis=0)  # Add batch dimension
-        imgs.append(resized_data)
-
-    # Apply Grad-CAM to all sampled images
-    GradCAM.apply_gradcam_all_layers_average(best_model, imgs, sampled_original_imgs, task, modality, info)
-
-    # Shutdown Ray
-    ray.shutdown()
-
-if __name__ == '__main__':
-    main()
+    sample_indices = np.random
 
 
