@@ -529,7 +529,7 @@ class Trainer:
         # Scheduler for early stopping bad trials
         scheduler = HyperBandScheduler(
             time_attr="training_iteration",
-            max_t=150,            # Maximum number of epochs
+            max_t=12,            # Maximum number of epochs
             grace_period=10,      # Minimum number of epochs before a trial can be stopped
             reduction_factor=3    # Reduction factor for HyperBand
         )
