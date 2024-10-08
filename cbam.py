@@ -303,7 +303,7 @@ class Trainer:
         reduce_lr = ReduceLROnPlateau(
             monitor='val_loss',
             factor=0.5,
-            patience=5,
+            patience=10,
             mode='min',
             verbose=0
         )
@@ -345,8 +345,8 @@ class Trainer:
 
         # Define search space excluding CBAM as it's integral
         config = {
-            "learning_rate": tune.loguniform(1e-4, 1e-2),
-            "batch_size": tune.choice([4, 8, 16]),
+            "learning_rate": tune.loguniform(1e-5, 1e-4),
+            "batch_size": tune.choice([4, 8]),
             "dropout_rate": tune.uniform(0.1, 0.5),
             "l2_reg": tune.loguniform(1e-5, 1e-3),
             "flip_prob": tune.uniform(0.0, 0.3),
@@ -356,19 +356,18 @@ class Trainer:
         # Scheduler for early stopping bad trials
         scheduler = HyperBandScheduler(
             time_attr="training_iteration",
-            max_t=100,
-            grace_period=10,
+            max_t=5,
             reduction_factor=3
         )
 
         # Execute tuning
         analysis = tune.run(
             tune.with_parameters(Trainer.train_model, X_train=X_train, Y_train=Y_train, X_val=X_val, Y_val=Y_val),
-            resources_per_trial={"cpu": 2, "gpu": 1},  # Adjust based on your hardware
+            resources_per_trial={"cpu": 1, "gpu": 1},  # Adjust based on your hardware
             config=config,
             metric="val_auc",  # Use AUC for selecting the best model
             mode="max",
-            num_samples=20,  # Increased samples for better exploration
+            num_samples=8,  # Increased samples for better exploration
             scheduler=scheduler,
             name="hyperparameter_tuning",
             max_concurrent_trials=4  # Adjust based on available GPUs
