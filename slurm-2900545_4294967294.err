@@ -1,0 +1,25 @@
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+2024-10-06 22:56:54,307	INFO worker.py:1786 -- Started a local Ray instance.
+Traceback (most recent call last):
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 466, in <module>
+    main()
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 453, in main
+    best_model = Trainer.tune_model(X, Y, task, modality, info)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 369, in tune_model
+    analysis = tune.run(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/tune.py", line 851, in run
+    raise ValueError(
+ValueError: You passed a `metric` or `mode` argument to `tune.run(...)`, but the scheduler you are using was already instantiated with their own `metric` and `mode` parameters. Either remove the arguments from your scheduler or from `tune.run(...)` args.

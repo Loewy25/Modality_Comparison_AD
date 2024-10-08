@@ -1,0 +1,21 @@
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/__init__.py", line 6, in <module>
+    import pyarrow  # noqa: F401
+ModuleNotFoundError: No module named 'pyarrow'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 26, in <module>
+    from ray import tune
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/tune/__init__.py", line 9, in <module>
+    raise ImportError(
+ImportError: Can't import ray.tune as some dependencies are missing. Run `pip install "ray[tune]"` to fix.
