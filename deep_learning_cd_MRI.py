@@ -335,7 +335,7 @@ class Trainer:
         model.fit(
             X_train_augmented, Y_train,
             validation_data=(X_val, Y_val),
-            epochs=800,
+            epochs=150,
             batch_size=batch_size,
             callbacks=[
                 early_stopping,
@@ -375,7 +375,7 @@ class Trainer:
         # Scheduler for early stopping bad trials
         scheduler = HyperBandScheduler(
             time_attr="training_iteration",
-            max_t=8,  # Maximum number of epochs
+            max_t=150,  # Maximum number of epochs
         )
 
         # Execute tuning
@@ -385,7 +385,7 @@ class Trainer:
             config=config,
             metric="val_auc",  # Use AUC for selecting the best model
             mode="max",
-            num_samples=8,
+            num_samples=20,
             scheduler=scheduler,
             name="hyperparameter_tuning",
             max_concurrent_trials=4  # Utilize up to 4 GPUs
@@ -437,7 +437,7 @@ class Trainer:
         history = best_model.fit(
             X_train_augmented, Y_train,
             validation_data=(X_val, Y_val),
-            epochs=20,
+            epochs=800,
             batch_size=best_trial.config["batch_size"],
             callbacks=[early_stopping, reduce_lr],
             verbose=1
