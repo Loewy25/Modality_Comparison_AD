@@ -375,7 +375,7 @@ class Trainer:
         # Scheduler for early stopping bad trials
         scheduler = HyperBandScheduler(
             time_attr="training_iteration",
-            max_t=20,  # Maximum number of epochs
+            max_t=8,  # Maximum number of epochs
         )
 
         # Execute tuning
