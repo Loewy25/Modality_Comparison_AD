@@ -23,7 +23,8 @@ pip install protobuf==3.20.3
 pip install -U ray
 pip install fsspec
 pip install ray[tune]
-python deep_learning_cd_MRI.py# List of Python scripts you want to run (internal array)
+python deep_learning_cd_MRI.py
+# List of Python scripts you want to run (internal array)
 #scripts=("deep_learning_cd_MRI.py" "deep_learning_cd_PET.py" "deep_learning_cm_MRI.py" "deep_learning_cm_PET.py" "deep_learning_dm_MRI.py" "deep_learning_dm_PET.py" "deep_learning_pc_MRI.py" "deep_learning_pc_PET.py")
 
 # Select the Python script to run based on the SLURM_ARRAY_TASK_ID
