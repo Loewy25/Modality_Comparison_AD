@@ -25,7 +25,7 @@ from data_loading import generate_data_path_less, generate, binarylabel
 import ray
 from ray import tune
 from ray.tune.schedulers import HyperBandScheduler
-from ray.train.tensorflow.keras import ReportCheckpointCallback
+from ray.tune.integration.keras import TuneReportCallback  # Added import
 
 # Initialize Ray
 ray.init(ignore_reinit_error=True)
@@ -419,8 +419,15 @@ class Trainer:
             verbose=0
         )
 
-        # Use ReportCheckpointCallback
-        report_checkpoint_callback = ReportCheckpointCallback()
+        # Use TuneReportCallback to report metrics to Ray Tune
+        report_callback = TuneReportCallback(
+            {
+                "val_loss": "val_loss",
+                "val_accuracy": "val_accuracy",
+                "val_auc": "val_auc"
+            },
+            on="epoch_end"
+        )
 
         # Train the model
         model.fit(
@@ -430,9 +437,9 @@ class Trainer:
             callbacks=[
                 early_stopping,
                 reduce_lr,
-                report_checkpoint_callback
+                report_callback  # Use the TuneReportCallback here
             ],
-            verbose=0
+            verbose=0  # You can set this to 1 for more detailed logs if desired
         )
 
         # Evaluate on validation data
@@ -460,6 +467,8 @@ class Trainer:
         scheduler = HyperBandScheduler(
             time_attr="training_iteration",
             max_t=150,  # Maximum number of epochs
+            grace_period=20,  # Minimum number of epochs before a trial can be stopped
+            reduction_factor=3  # Reduction factor for HyperBand
         )
 
         # Define the objective function for each trial
@@ -621,4 +630,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
