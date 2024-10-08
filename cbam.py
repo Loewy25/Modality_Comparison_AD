@@ -13,11 +13,11 @@ from data_loading import generate_data_path_less, generate, binarylabel
 import tensorflow as tf
 from tensorflow.keras.layers import (Conv3D, Input, LeakyReLU, Add,
                                      GlobalAveragePooling3D, Dense, Dropout,
-                                     SpatialDropout3D, BatchNormalization)
+                                     SpatialDropout3D, BatchNormalization, Multiply, Reshape, Concatenate)
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.utils import to_categorical, Sequence
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
 # Import Ray and Ray Tune
@@ -206,56 +206,132 @@ class DataLoader:
 
     @staticmethod
     def loading_mask_3d(task, modality):
+        """
+        Load and preprocess 3D medical images based on the specified task and modality.
+
+        Parameters:
+        - task (str): The specific task identifier.
+        - modality (str): The imaging modality ('MRI' or 'PET').
+
+        Returns:
+        - file_paths (list): List of file paths for the specified modality and task.
+        - labels (list or np.ndarray): Corresponding binary labels.
+        """
         images_pet, images_mri, labels = generate_data_path_less()
-        original_imgs = []  # Initialize the list to store original images
 
         if modality == 'PET':
-            data_train, train_label = generate(images_pet, labels, task)
+            file_paths, train_label = generate(images_pet, labels, task)
         elif modality == 'MRI':
-            data_train, train_label = generate(images_mri, labels, task)
+            file_paths, train_label = generate(images_mri, labels, task)
         else:
             raise ValueError(f"Unsupported modality: {modality}")
 
-        train_data = []
-        target_shape = (128, 128, 128)
-
-        for i in range(len(data_train)):
-            nifti_img = nib.load(data_train[i])
-            original_imgs.append(nifti_img)  # Store the original NIfTI image
-
-            reshaped_data = nifti_img.get_fdata()
-            reshaped_data = zscore(reshaped_data, axis=None)
-
-            # Resize the image to (128, 128, 128)
-            resized_data = Utils.resize_image(reshaped_data, target_shape)
-
-            train_data.append(resized_data)
-
+        # Binary labeling based on the task
         train_label = binarylabel(train_label, task)
-        train_data = np.array(train_data)
 
-        return train_data, train_label, original_imgs
+        return file_paths, train_label
 
     @staticmethod
-    def augment_data(X, flip_prob=0.1, rotate_prob=0.1):
-        augmented_X = []
-        for img in X:
-            img_aug = img.copy()
-            # Randomly flip along each axis with specified probability
-            if np.random.rand() < flip_prob:
-                img_aug = np.flip(img_aug, axis=0)  # Flip along x-axis
-            if np.random.rand() < flip_prob:
-                img_aug = np.flip(img_aug, axis=1)  # Flip along y-axis
-            if np.random.rand() < flip_prob:
-                img_aug = np.flip(img_aug, axis=2)  # Flip along z-axis
+    def augment_data(image, flip_prob=0.1, rotate_prob=0.1):
+        """
+        Apply random augmentation to a single image.
 
-            # Random rotation with specified probability
-            if np.random.rand() < rotate_prob:
-                angle = np.random.uniform(-10, 10)  # Rotate between -10 and 10 degrees
-                img_aug = rotate(img_aug, angle, axes=(0, 1), reshape=False, order=1)  # Rotate in x-y plane
+        Parameters:
+        - image (np.ndarray): 3D image array.
+        - flip_prob (float): Probability of flipping along each axis.
+        - rotate_prob (float): Probability of applying rotation.
 
-            augmented_X.append(img_aug)
-        return np.array(augmented_X)
+        Returns:
+        - augmented_image (np.ndarray): Augmented image array.
+        """
+        img_aug = image.copy()
+        # Randomly flip along each axis with specified probability
+        if np.random.rand() < flip_prob:
+            img_aug = np.flip(img_aug, axis=0)  # Flip along x-axis
+        if np.random.rand() < flip_prob:
+            img_aug = np.flip(img_aug, axis=1)  # Flip along y-axis
+        if np.random.rand() < flip_prob:
+            img_aug = np.flip(img_aug, axis=2)  # Flip along z-axis
+
+        # Random rotation with specified probability
+        if np.random.rand() < rotate_prob:
+            angle = np.random.uniform(-10, 10)  # Rotate between -10 and 10 degrees
+            img_aug = rotate(img_aug, angle, axes=(0, 1), reshape=False, order=1)  # Rotate in x-y plane
+
+        return img_aug
+
+# -------------------------------
+# DataGenerator Class
+# -------------------------------
+
+class DataGenerator(Sequence):
+    """Keras Sequence Data Generator for loading and preprocessing 3D medical images."""
+
+    def __init__(self, file_paths, labels, batch_size=8, 
+                 target_shape=(128, 128, 128), num_classes=2, 
+                 augment=False, flip_prob=0.1, rotate_prob=0.1):
+        """
+        Initialization.
+
+        Parameters:
+        - file_paths (list): List of file paths to NIfTI images.
+        - labels (list or np.ndarray): Corresponding labels.
+        - batch_size (int): Size of the batches.
+        - target_shape (tuple): Desired shape of the images.
+        - num_classes (int): Number of classes for classification.
+        - augment (bool): Whether to apply data augmentation.
+        - flip_prob (float): Probability of flipping along each axis.
+        - rotate_prob (float): Probability of applying rotation.
+        """
+        self.file_paths = file_paths
+        self.labels = labels
+        self.batch_size = batch_size
+        self.target_shape = target_shape
+        self.num_classes = num_classes
+        self.augment = augment
+        self.flip_prob = flip_prob
+        self.rotate_prob = rotate_prob
+        self.indices = np.arange(len(self.file_paths))
+
+    def __len__(self):
+        """Denotes the number of batches per epoch."""
+        return int(np.ceil(len(self.file_paths) / self.batch_size))
+
+    def __getitem__(self, index):
+        """Generate one batch of data."""
+        # Generate indices of the batch
+        batch_indices = self.indices[index * self.batch_size:(index + 1) * self.batch_size]
+
+        # Initialize arrays
+        batch_x = np.empty((len(batch_indices), *self.target_shape, 1), dtype=np.float32)
+        batch_y = np.empty((len(batch_indices), self.num_classes), dtype=np.float32)
+
+        for i, idx in enumerate(batch_indices):
+            # Load NIfTI image
+            nifti_img = nib.load(self.file_paths[idx])
+            img_data = nifti_img.get_fdata()
+            img_data = zscore(img_data, axis=None)
+
+            # Resize the image
+            img_resized = Utils.resize_image(img_data, self.target_shape)
+
+            # Apply augmentation if enabled
+            if self.augment:
+                img_resized = DataLoader.augment_data(img_resized, 
+                                                     flip_prob=self.flip_prob, 
+                                                     rotate_prob=self.rotate_prob)
+
+            # Expand dimensions and assign to batch_x
+            batch_x[i, ..., 0] = img_resized
+
+            # Assign label
+            batch_y[i] = self.labels[idx]
+
+        return batch_x, batch_y
+
+    def on_epoch_end(self):
+        """Updates indexes after each epoch."""
+        np.random.shuffle(self.indices)
 
 # -------------------------------
 # Trainer Class
@@ -265,7 +341,17 @@ class Trainer:
     """Class to handle model training and hyperparameter tuning."""
 
     @staticmethod
-    def train_model(config, X_train, Y_train, X_val, Y_val):
+    def train_model(config, train_file_paths, train_labels, val_file_paths, val_labels):
+        """
+        Train the model with the given configuration.
+
+        Parameters:
+        - config (dict): Hyperparameter configuration.
+        - train_file_paths (list): List of training file paths.
+        - train_labels (list or np.ndarray): Training labels.
+        - val_file_paths (list): List of validation file paths.
+        - val_labels (list or np.ndarray): Validation labels.
+        """
         # Unpack hyperparameters from the config dictionary
         learning_rate = config["learning_rate"]
         batch_size = config["batch_size"]
@@ -274,8 +360,22 @@ class Trainer:
         flip_prob = config["flip_prob"]
         rotate_prob = config["rotate_prob"]
 
-        # Apply data augmentation with specified probabilities
-        X_train_augmented = DataLoader.augment_data(X_train, flip_prob=flip_prob, rotate_prob=rotate_prob)
+        # Create training and validation data generators
+        train_generator = DataGenerator(
+            file_paths=train_file_paths,
+            labels=train_labels,
+            batch_size=batch_size,
+            augment=True,
+            flip_prob=flip_prob,
+            rotate_prob=rotate_prob
+        )
+
+        val_generator = DataGenerator(
+            file_paths=val_file_paths,
+            labels=val_labels,
+            batch_size=batch_size,
+            augment=False
+        )
 
         # Create model with hyperparameters
         model = CNNModel.create_model(
@@ -294,7 +394,7 @@ class Trainer:
         # Define callbacks
         early_stopping = EarlyStopping(
             monitor='val_loss',
-            patience=20,
+            patience=50,
             mode='min',
             verbose=0,
             restore_best_weights=True
@@ -308,15 +408,14 @@ class Trainer:
             verbose=0
         )
 
-        # Use ReportCheckpointCallback
+        # Use ReportCheckpointCallback for Ray Tune
         report_checkpoint_callback = ReportCheckpointCallback()
 
         # Train the model
         model.fit(
-            X_train_augmented, Y_train,
-            validation_data=(X_val, Y_val),
-            epochs=100,  # Set a high epoch count; early stopping will handle termination
-            batch_size=batch_size,
+            train_generator,
+            validation_data=val_generator,
+            epochs=150,  # Set a high epoch count; early stopping will handle termination
             callbacks=[
                 early_stopping,
                 reduce_lr,
@@ -326,7 +425,7 @@ class Trainer:
         )
 
         # Report metrics to Ray Tune
-        val_loss, val_accuracy, val_auc = model.evaluate(X_val, Y_val, verbose=0)
+        val_loss, val_accuracy, val_auc = model.evaluate(val_generator, verbose=0)
         tune.report(val_loss=val_loss, val_accuracy=val_accuracy, val_auc=val_auc)
 
         # After training, clear the session and collect garbage to free memory
@@ -335,19 +434,25 @@ class Trainer:
         gc.collect()
 
     @staticmethod
-    def tune_model(X, Y, task, modality, info):
-        # Split data using StratifiedKFold
-        stratified_kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-        for train_idx, val_idx in stratified_kfold.split(X, Y.argmax(axis=1)):
-            X_train, X_val = X[train_idx], X[val_idx]
-            Y_train, Y_val = Y[train_idx], Y[val_idx]
-            break  # Use the first split
+    def tune_model(X_file_paths, Y_labels, task, modality, info):
+        """
+        Perform hyperparameter tuning using Ray Tune.
 
+        Parameters:
+        - X_file_paths (list): List of all file paths.
+        - Y_labels (list or np.ndarray): Corresponding labels.
+        - task (str): Task identifier.
+        - modality (str): Imaging modality ('MRI' or 'PET').
+        - info (str): Additional information for saving results.
+
+        Returns:
+        - best_model (tf.keras.Model): The best trained model.
+        """
         # Define search space excluding CBAM as it's integral
         config = {
-            "learning_rate": tune.loguniform(1e-5, 1e-4),
-            "batch_size": tune.choice([4, 8]),
-            "dropout_rate": tune.uniform(0.1, 0.5),
+            "learning_rate": tune.loguniform(1e-5, 1e-3),
+            "batch_size": tune.choice([4, 8, 16]),
+            "dropout_rate": tune.uniform(0.0, 0.5),
             "l2_reg": tune.loguniform(1e-5, 1e-3),
             "flip_prob": tune.uniform(0.0, 0.3),
             "rotate_prob": tune.uniform(0.0, 0.3),
@@ -356,18 +461,44 @@ class Trainer:
         # Scheduler for early stopping bad trials
         scheduler = HyperBandScheduler(
             time_attr="training_iteration",
-            max_t=5,
+            max_t=150,  # Maximum number of epochs
             reduction_factor=3
         )
 
+        # Split data using StratifiedKFold
+        stratified_kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        splits = list(stratified_kfold.split(X_file_paths, Y_labels.argmax(axis=1)))
+
+        def objective(config):
+            """
+            Objective function for each Ray Tune trial.
+
+            Parameters:
+            - config (dict): Hyperparameter configuration.
+            """
+            # Use the first fold for tuning
+            train_idx, val_idx = splits[0]
+            train_file_paths = [X_file_paths[i] for i in train_idx]
+            val_file_paths = [X_file_paths[i] for i in val_idx]
+            train_labels = Y_labels[train_idx]
+            val_labels = Y_labels[val_idx]
+
+            Trainer.train_model(
+                config=config,
+                train_file_paths=train_file_paths,
+                train_labels=train_labels,
+                val_file_paths=val_file_paths,
+                val_labels=val_labels
+            )
+
         # Execute tuning
         analysis = tune.run(
-            tune.with_parameters(Trainer.train_model, X_train=X_train, Y_train=Y_train, X_val=X_val, Y_val=Y_val),
+            objective,
             resources_per_trial={"cpu": 1, "gpu": 1},  # Adjust based on your hardware
             config=config,
             metric="val_auc",  # Use AUC for selecting the best model
             mode="max",
-            num_samples=8,  # Increased samples for better exploration
+            num_samples=20,  # Number of hyperparameter configurations to try
             scheduler=scheduler,
             name="hyperparameter_tuning",
             max_concurrent_trials=4  # Adjust based on available GPUs
@@ -378,31 +509,51 @@ class Trainer:
         print("Best trial config: {}".format(best_trial.config))
         print("Best trial final validation AUC: {:.4f}".format(best_trial.last_result["val_auc"]))
 
-        # Train the best model on the full training data
+        # Retrain the best model on the entire training data using the best hyperparameters
+        best_config = best_trial.config
+
+        # Use the first fold for final training
+        train_idx, val_idx = splits[0]
+        X_train = [X_file_paths[i] for i in train_idx]
+        X_val = [X_file_paths[i] for i in val_idx]
+        Y_train = Y_labels[train_idx]
+        Y_val = Y_labels[val_idx]
+
+        # Create data generators with best hyperparameters
+        train_generator = DataGenerator(
+            file_paths=X_train,
+            labels=Y_train,
+            batch_size=best_config["batch_size"],
+            augment=True,
+            flip_prob=best_config["flip_prob"],
+            rotate_prob=best_config["rotate_prob"]
+        )
+
+        val_generator = DataGenerator(
+            file_paths=X_val,
+            labels=Y_val,
+            batch_size=best_config["batch_size"],
+            augment=False
+        )
+
+        # Create the best model
         best_model = CNNModel.create_model(
             input_shape=(128, 128, 128, 1),
             num_classes=2,
-            dropout_rate=best_trial.config["dropout_rate"],
-            l2_reg=best_trial.config["l2_reg"],
+            dropout_rate=best_config["dropout_rate"],
+            l2_reg=best_config["l2_reg"],
             use_cbam=True  # CBAM is integral
         )
         best_model.compile(
-            optimizer=Adam(learning_rate=best_trial.config["learning_rate"]),
+            optimizer=Adam(learning_rate=best_config["learning_rate"]),
             loss='categorical_crossentropy',
             metrics=['accuracy', tf.keras.metrics.AUC(name='auc')]
-        )
-
-        # Apply data augmentation with best probabilities
-        X_train_augmented = DataLoader.augment_data(
-            X_train,
-            flip_prob=best_trial.config["flip_prob"],
-            rotate_prob=best_trial.config["rotate_prob"]
         )
 
         # Define callbacks
         early_stopping = EarlyStopping(
             monitor='val_loss',
-            patience=20,
+            patience=50,
             mode='min',
             verbose=1,
             restore_best_weights=True
@@ -411,27 +562,70 @@ class Trainer:
         reduce_lr = ReduceLROnPlateau(
             monitor='val_loss',
             factor=0.5,
-            patience=5,
+            patience=10,
             mode='min',
             verbose=1
         )
 
         # Retrain on the full data
         history = best_model.fit(
-            X_train_augmented, Y_train,
-            validation_data=(X_val, Y_val),
-            epochs=200,  # Set a high epoch count; early stopping will handle termination
-            batch_size=best_trial.config["batch_size"],
+            train_generator,
+            validation_data=val_generator,
+            epochs=400,  # Set a high epoch count; early stopping will handle termination
             callbacks=[early_stopping, reduce_lr],
             verbose=1
         )
 
         # Evaluate on validation set
-        y_val_pred = best_model.predict(X_val)
+        y_val_pred = best_model.predict(val_generator)
         final_auc = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
         print(f'Final AUC on validation data: {final_auc:.4f}')
 
+        # Plot training history
+        Trainer.plot_history(history, info, task, modality)
+
         return best_model
+
+    @staticmethod
+    def plot_history(history, info, task, modality):
+        """
+        Plot the training and validation loss and AUC.
+
+        Parameters:
+        - history (History): Keras History object.
+        - info (str): Additional information for saving plots.
+        - task (str): Task identifier.
+        - modality (str): Imaging modality ('MRI' or 'PET').
+        """
+        Utils.ensure_directory_exists('training_plots')
+        plot_dir = os.path.join('training_plots', info, task, modality)
+        Utils.ensure_directory_exists(plot_dir)
+
+        # Plot Loss
+        plt.figure(figsize=(10, 5))
+        plt.plot(history.history['loss'], label='Train Loss')
+        plt.plot(history.history['val_loss'], label='Validation Loss')
+        plt.title('Model Loss')
+        plt.ylabel('Loss')
+        plt.xlabel('Epoch')
+        plt.legend(loc='upper right')
+        loss_plot_path = os.path.join(plot_dir, 'loss_plot.png')
+        plt.savefig(loss_plot_path)
+        plt.close()
+        print(f'Loss plot saved at {loss_plot_path}')
+
+        # Plot AUC
+        plt.figure(figsize=(10, 5))
+        plt.plot(history.history['auc'], label='Train AUC')
+        plt.plot(history.history['val_auc'], label='Validation AUC')
+        plt.title('Model AUC')
+        plt.ylabel('AUC')
+        plt.xlabel('Epoch')
+        plt.legend(loc='lower right')
+        auc_plot_path = os.path.join(plot_dir, 'auc_plot.png')
+        plt.savefig(auc_plot_path)
+        plt.close()
+        print(f'AUC plot saved at {auc_plot_path}')
 
 # -------------------------------
 # Main Execution Flow
@@ -440,19 +634,22 @@ class Trainer:
 def main():
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'test'  # Additional info for saving results
+    info = 'test2'  # Additional info for saving results
 
     # Load your data
-    train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
-    X = np.array(train_data)
-    X = np.expand_dims(X, axis=-1)  # Add channel dimension if not already present
-    Y = to_categorical(train_label, num_classes=2)
+    file_paths, labels = DataLoader.loading_mask_3d(task, modality)
+    X_file_paths = np.array(file_paths)  # Convert to NumPy array for indexing
+    Y = to_categorical(labels, num_classes=2)
+
+    # Convert labels to numpy array if not already
+    Y = np.array(Y)
 
     # Train the model with hyperparameter tuning and get the best trained model
-    best_model = Trainer.tune_model(X, Y, task, modality, info)
+    best_model = Trainer.tune_model(X_file_paths, Y, task, modality, info)
 
     # Shutdown Ray
     ray.shutdown()
 
 if __name__ == '__main__':
     main()
+
