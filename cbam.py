@@ -12,20 +12,25 @@ from data_loading import generate_data_path_less, generate, binarylabel
 # Import TensorFlow and Keras
 import tensorflow as tf
 from tensorflow.keras.layers import (Conv3D, Input, LeakyReLU, Add,
-                                     GlobalAveragePooling3D, Dense, Dropout,
+                                     GlobalAveragePooling3D, GlobalMaxPooling3D, Dense, Dropout,
                                      SpatialDropout3D, BatchNormalization, Multiply, Reshape, Concatenate)
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical, Sequence
-from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
-from sklearn.model_selection import StratifiedKFold
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, TensorBoard
 
 # Import Ray and Ray Tune
 import ray
 from ray import tune
 from ray.tune.schedulers import HyperBandScheduler
 from ray.train.tensorflow.keras import ReportCheckpointCallback
+
+# Import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold
+
+# Initialize Ray
+ray.init(ignore_reinit_error=True)
 
 # Initialize Ray
 ray.init(ignore_reinit_error=True)
