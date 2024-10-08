@@ -467,7 +467,6 @@ class Trainer:
         scheduler = HyperBandScheduler(
             time_attr="training_iteration",
             max_t=150,  # Maximum number of epochs
-            grace_period=20,  # Minimum number of epochs before a trial can be stopped
             reduction_factor=3  # Reduction factor for HyperBand
         )
 
