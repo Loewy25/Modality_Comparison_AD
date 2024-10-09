@@ -397,13 +397,14 @@ class CNNTrainable:
         tuner = CustomTuner(
             self,
             hypermodel=self.build_model,
-            objective='val_auc',
+            objective=kt.Objective('val_auc', direction='max'),
             max_epochs=90,
             factor=3,
-            hyperband_iterations=1,  # Adjust this to control the number of trials
+            hyperband_iterations=1,
             directory='hyperband_dir',
             project_name='hyperband_project'
         )
+
 
         # Run the hyperparameter search
         tuner.search()
