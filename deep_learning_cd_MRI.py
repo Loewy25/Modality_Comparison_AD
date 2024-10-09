@@ -398,9 +398,9 @@ class CNNTrainable:
             self,
             hypermodel=self.build_model,
             objective='val_auc',
-            max_epochs=150,
+            max_epochs=90,
             factor=3,
-            hyperband_iterations=20,  # Adjust this to control the number of trials
+            hyperband_iterations=1,  # Adjust this to control the number of trials
             directory='hyperband_dir',
             project_name='hyperband_project'
         )
@@ -506,16 +506,19 @@ class CustomTuner(kt.Hyperband):
     def run_trial(self, trial, *args, **kwargs):
         hp = trial.hyperparameters
         batch_size = hp.Int('batch_size', min_value=4, max_value=16, step=4)
-
+    
         # Create data generators with hyperparameters from hp
         train_generator = self.cnn_trainable._data_generator_builder(hp)
         val_generator = self.cnn_trainable._validation_data_generator(batch_size)
-
+    
+        # Get the number of epochs for this trial
+        epochs = self.get_trial_epochs(trial)
+    
         # Update fit arguments
         fit_args = {
             'x': train_generator,
             'validation_data': val_generator,
-            'epochs': 50,  # Or get from hp
+            'epochs': epochs,  # Use epochs determined by Hyperband
             'callbacks': [
                 EarlyStopping(
                     monitor='val_loss',
