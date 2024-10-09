@@ -1,0 +1,31 @@
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+2024-10-09 00:01:58.123067: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-10-09 00:02:03.663193: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30982 MB memory:  -> device: 0, name: Tesla V100S-PCIE-32GB, pci bus id: 0000:3d:00.0, compute capability: 7.0
+2024-10-09 00:02:17.554368: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8101
+WARNING:tensorflow:5 out of the last 15 calls to <function Model.make_test_function.<locals>.test_function at 0x14e1351dd6c0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has experimental_relax_shapes=True option that relaxes argument shapes that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+WARNING:tensorflow:5 out of the last 11 calls to <function Model.make_test_function.<locals>.test_function at 0x14e1359d57e0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has experimental_relax_shapes=True option that relaxes argument shapes that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+Traceback (most recent call last):
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 605, in <module>
+    main()
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 580, in main
+    best_model = Trainer.tune_model(task, modality, info)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 570, in tune_model
+    cnn_trainable.train()
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/deep_learning_cd_MRI.py", line 418, in train
+    self.best_model = tuner.get_best_models(num_models=1)[0]
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras_tuner/src/engine/tuner.py", line 400, in get_best_models
+    return super().get_best_models(num_models)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras_tuner/src/engine/base_tuner.py", line 365, in get_best_models
+    models = [self.load_model(trial) for trial in best_trials]
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras_tuner/src/engine/base_tuner.py", line 365, in <listcomp>
+    models = [self.load_model(trial) for trial in best_trials]
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras_tuner/src/engine/tuner.py", line 331, in load_model
+    model.load_weights(self._get_checkpoint_fname(trial.trial_id))
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/utils/traceback_utils.py", line 67, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/tensorflow/python/training/py_checkpoint_reader.py", line 31, in error_translator
+    raise errors_impl.NotFoundError(None, None, error_message)
+tensorflow.python.framework.errors_impl.NotFoundError: Unsuccessful TensorSliceReader constructor: Failed to find any matching files for hyperband_dir/hyperband_project/trial_0068/checkpoint
