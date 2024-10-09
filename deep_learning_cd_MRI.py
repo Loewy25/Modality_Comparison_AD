@@ -17,20 +17,14 @@ from tensorflow.keras.utils import to_categorical, Sequence
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.metrics import AUC
 from sklearn.metrics import roc_auc_score
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold, train_test_split
 from nilearn import plotting
 from scipy.stats import zscore
 from scipy.ndimage import zoom, rotate
+import matplotlib.pyplot as plt
 
-# Import Ray and Ray Tune
-import ray
-from ray import tune
-from ray.tune.schedulers import HyperBandScheduler
-from ray.tune.integration.keras import TuneReportCallback
-
-# Initialize Ray
-ray.init(ignore_reinit_error=True)
-
+# Import Keras Tuner
+import keras_tuner as kt
 
 class Utils:
     """Utility functions for directory management and image resizing."""
@@ -75,8 +69,21 @@ class CNNModel:
         return x
 
     @staticmethod
-    def create_model(input_shape=(128, 128, 128, 1), num_classes=2, dropout_rate=0.05, l2_reg=1e-5):
+    def create_model(hp, input_shape=(128, 128, 128, 1), num_classes=2):
+        """
+        Build and compile the model with hyperparameters from Keras Tuner.
+
+        Hyperparameter Search Space:
+        - dropout_rate: Float between 0.0 and 0.5 with step size 0.1
+        - l2_reg: Log-uniform distribution between 1e-6 and 1e-4
+        - learning_rate: Log-uniform distribution between 1e-5 and 1e-3
+        """
         input_img = Input(shape=input_shape)
+
+        # Define hyperparameters and search space
+        dropout_rate = hp.Float('dropout_rate', min_value=0.0, max_value=0.5, step=0.1)
+        l2_reg = hp.Float('l2_reg', min_value=1e-6, max_value=1e-4, sampling='log')
+        learning_rate = hp.Float('learning_rate', min_value=1e-5, max_value=1e-3, sampling='log')
 
         # Conv1 block (16 filters)
         x = CNNModel.convolution_block(input_img, 16, l2_reg=l2_reg)
@@ -120,6 +127,12 @@ class CNNModel:
         model = Model(inputs=input_img, outputs=output)
         model.summary()
 
+        model.compile(
+            optimizer=Adam(learning_rate=learning_rate),
+            loss='categorical_crossentropy',
+            metrics=['accuracy', AUC(name='auc')]
+        )
+
         return model
 
 
@@ -138,7 +151,7 @@ class DataLoader:
         """
         # Placeholder for data loading logic
         # Replace this with your actual data loading code
-        num_samples = 100
+        num_samples = 50
         file_paths = [f"image_{i}_{modality}.nii.gz" for i in range(num_samples)]
         labels = np.random.randint(0, 2, size=num_samples)
         original_imgs = file_paths.copy()  # Assuming original images are the same
@@ -173,7 +186,7 @@ class DataLoader:
 class DataGenerator(Sequence):
     """Keras Sequence Data Generator for loading and preprocessing 3D medical images."""
 
-    def __init__(self, file_paths, labels, original_file_paths, batch_size=8,
+    def __init__(self, file_paths, labels, batch_size=8,
                  target_shape=(128, 128, 128), num_classes=2,
                  augment=False, flip_prob=0.1, rotate_prob=0.1):
         """
@@ -181,7 +194,6 @@ class DataGenerator(Sequence):
         """
         self.file_paths = file_paths
         self.labels = labels
-        self.original_file_paths = original_file_paths
         self.batch_size = batch_size
         self.target_shape = target_shape
         self.num_classes = num_classes
@@ -215,8 +227,8 @@ class DataGenerator(Sequence):
             # Apply augmentation if enabled
             if self.augment:
                 img_resized = DataLoader.augment_data(img_resized,
-                                                     flip_prob=self.flip_prob,
-                                                     rotate_prob=self.rotate_prob)
+                                                      flip_prob=self.flip_prob,
+                                                      rotate_prob=self.rotate_prob)
 
             # Expand dimensions and assign to batch_x
             batch_x[i, ..., 0] = img_resized
@@ -338,199 +350,152 @@ class GradCAM:
                                      task, modality, conv_layer_name, class_idx, info)
 
 
-class CNNTrainable(tune.Trainable):
-    """Custom Trainable class for Ray Tune."""
+class CNNTrainable:
+    """Class to encapsulate the model training logic for Keras Tuner."""
 
-    def setup(self, config):
-        """
-        Setup the training environment.
+    def __init__(self, task, modality, info):
+        self.task = task
+        self.modality = modality
+        self.info = info
 
-        Parameters:
-        - config (dict): Hyperparameters for training.
-        """
-        # Extract hyperparameters
-        self.learning_rate = config["learning_rate"]
-        self.batch_size = config["batch_size"]
-        self.dropout_rate = config["dropout_rate"]
-        self.l2_reg = config["l2_reg"]
-        self.flip_prob = config["flip_prob"]
-        self.rotate_prob = config["rotate_prob"]
+        # Load data
+        self.file_paths, self.labels, self.original_file_paths = DataLoader.loading_mask_3d(task, modality)
+        self.X_file_paths = np.array(self.file_paths)
+        self.Y = np.array(self.labels)
 
-        # Load and preprocess data
-        task = config.get("task", "cd")  # Default task is 'cd'
-        modality = config.get("modality", "MRI")  # Default modality is 'MRI'
+        # Split data into training and validation
+        self.train_idx, self.val_idx = train_test_split(
+            np.arange(len(self.X_file_paths)), test_size=0.2, stratify=self.Y, random_state=42
+        )
+        self.train_file_paths = self.X_file_paths[self.train_idx]
+        self.val_file_paths = self.X_file_paths[self.val_idx]
+        self.train_labels = self.Y[self.train_idx]
+        self.val_labels = self.Y[self.val_idx]
 
-        file_paths, labels, original_file_paths = DataLoader.loading_mask_3d(task, modality)
-        X_file_paths = np.array(file_paths)
-        Y = np.array(labels)
+    def build_model(self, hp):
+        """Builds the model using hyperparameters from Keras Tuner."""
+        model = CNNModel.create_model(hp)
+        return model
 
-        # Stratified K-Fold split (using first fold for simplicity)
-        stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=2)
-        train_idx, val_idx = next(stratified_kfold.split(X_file_paths, Y))
-        self.train_file_paths = X_file_paths[train_idx]
-        self.val_file_paths = X_file_paths[val_idx]
-        self.train_labels = Y[train_idx]
-        self.val_labels = Y[val_idx]
-        self.original_train_file_paths = [original_file_paths[i] for i in train_idx]
-
+    def train(self):
+        """Performs hyperparameter tuning and trains the best model."""
         # Create data generators
+        batch_size = 5
         self.train_generator = DataGenerator(
             file_paths=self.train_file_paths,
             labels=self.train_labels,
-            original_file_paths=self.original_train_file_paths,
-            batch_size=self.batch_size,
+            batch_size=batch_size,
             augment=True,
-            flip_prob=self.flip_prob,
-            rotate_prob=self.rotate_prob
+            flip_prob=0.2,
+            rotate_prob=0.2
         )
-
         self.val_generator = DataGenerator(
             file_paths=self.val_file_paths,
             labels=self.val_labels,
-            original_file_paths=self.original_train_file_paths,
-            batch_size=self.batch_size,
+            batch_size=batch_size,
             augment=False
         )
 
-        # Create and compile the model
-        self.model = CNNModel.create_model(
-            input_shape=(128, 128, 128, 1),
-            num_classes=2,
-            dropout_rate=self.dropout_rate,
-            l2_reg=self.l2_reg
-        )
-        self.model.compile(
-            optimizer=Adam(learning_rate=self.learning_rate),
-            loss='sparse_categorical_crossentropy',
-            metrics=['accuracy', AUC(name='val_auc')]
+        # Define the tuner with max_trials
+        tuner = kt.Hyperband(
+            self.build_model,
+            objective='val_auc',
+            max_epochs=50,
+            factor=3,
+            hyperband_iterations=2,  # Controls the number of times to repeat the Hyperband algorithm
+            directory='hyperband_dir',
+            project_name='hyperband_project'
         )
 
-    def step(self):
-        """
-        Perform one iteration of training.
+        # Early stopping and Reduce LR callbacks
+        early_stopping = EarlyStopping(
+            monitor='val_auc',
+            patience=10,
+            mode='max',
+            verbose=1,
+            restore_best_weights=True
+        )
 
-        Returns:
-        - metrics (dict): Dictionary of metrics to report to Ray Tune.
-        """
-        history = self.model.fit(
+        reduce_lr = ReduceLROnPlateau(
+            monitor='val_loss',
+            factor=0.5,
+            patience=5,
+            mode='min',
+            verbose=1
+        )
+
+        # Run the hyperparameter search
+        tuner.search(
             self.train_generator,
             validation_data=self.val_generator,
-            epochs=1,  # Train for one epoch per step
-            verbose=0,
-            callbacks=[
-                TuneReportCallback({
-                    "val_loss": "val_loss",
-                    "val_accuracy": "val_accuracy",
-                    "val_auc": "val_auc"
-                })
-            ]
+            epochs=50,
+            callbacks=[early_stopping, reduce_lr]
         )
 
-    def save_checkpoint(self, checkpoint_dir):
-        """
-        Save the model checkpoint.
+        # Retrieve the number of trials conducted
+        trials = tuner.oracle.get_best_trials(num_trials=100)
+        print(f"Number of trials conducted: {len(trials)}")
 
-        Parameters:
-        - checkpoint_dir (str): Directory to save the checkpoint.
-        """
-        path = os.path.join(checkpoint_dir, "model.h5")
-        self.model.save(path)
-        return path
+        # Get the best model
+        self.best_model = tuner.get_best_models(num_models=1)[0]
 
-    def load_checkpoint(self, checkpoint_path):
-        """
-        Load the model checkpoint.
-
-        Parameters:
-        - checkpoint_path (str): Path to the checkpoint.
-        """
-        self.model = tf.keras.models.load_model(checkpoint_path)
-        self.model.compile(
-            optimizer=Adam(learning_rate=self.learning_rate),
-            loss='sparse_categorical_crossentropy',
-            metrics=['accuracy', AUC(name='val_auc')]
+        # Train the best model on the full training data
+        self.history = self.best_model.fit(
+            self.train_generator,
+            validation_data=self.val_generator,
+            epochs=50,
+            callbacks=[early_stopping, reduce_lr]
         )
+
+        # Plot training vs validation loss
+        self.plot_training_validation_loss()
+
+    def plot_training_validation_loss(self):
+        """Plots and saves the training vs validation loss graph."""
+        save_dir = os.path.join('./grad-cam', self.info, self.task, self.modality)
+        Utils.ensure_directory_exists(save_dir)
+
+        plt.figure(figsize=(10, 6))
+        plt.plot(self.history.history['loss'], label='Training Loss')
+        plt.plot(self.history.history['val_loss'], label='Validation Loss')
+        plt.title('Training Loss vs Validation Loss')
+        plt.xlabel('Epochs')
+        plt.ylabel('Loss')
+        plt.ylim(0, 1)
+        plt.legend(loc='upper right')
+        loss_plot_path = os.path.join(save_dir, 'loss_vs_val_loss.png')
+        plt.savefig(loss_plot_path)
+        plt.close()
+        print(f'Loss vs Validation Loss plot saved at {loss_plot_path}')
+
+    def get_best_model(self):
+        """Returns the best trained model."""
+        return self.best_model
 
 
 class Trainer:
     """Class to handle model training and evaluation."""
 
     @staticmethod
-    def tune_model(X_file_paths, Y_labels, original_file_paths, task, modality, info):
-        # Define search space including augmentation probabilities
-        config = {
-            "learning_rate": tune.loguniform(1e-5, 1e-3),
-            "batch_size": tune.choice([4, 8]),
-            "dropout_rate": tune.uniform(0.0, 0.5),
-            "l2_reg": tune.loguniform(1e-6, 1e-4),
-            "flip_prob": tune.uniform(0.0, 0.5),
-            "rotate_prob": tune.uniform(0.0, 0.5),
-            "task": task,
-            "modality": modality
-        }
-
-        # Scheduler for early stopping bad trials
-        scheduler = HyperBandScheduler(
-            time_attr="training_iteration",
-            max_t=12,            # Maximum number of epochs
-            reduction_factor=3    # Reduction factor for HyperBand
-        )
-
-        # Execute tuning
-        analysis = tune.run(
-            CNNTrainable,
-            resources_per_trial={"cpu": 1, "gpu": 1},  # Adjust based on availability
-            config=config,
-            metric="val_auc",  # Use AUC for selecting the best model
-            mode="max",
-            num_samples=10,  # Reduced for quicker testing; increase as needed
-            scheduler=scheduler,
-            name="hyperparameter_tuning",
-            max_concurrent_trials=2  # Adjust based on available resources
-        )
-
-        # Get the best trial
-        best_trial = analysis.get_best_trial("val_auc", "max", "last")
-        print("Best trial config: {}".format(best_trial.config))
-        print("Best trial final validation AUC: {}".format(
-            best_trial.last_result["val_auc"]))
-
-        # Get the best checkpoint
-        best_checkpoint = analysis.get_best_checkpoint(
-            best_trial, metric="val_auc", mode="max"
-        )
-
-        # Load the best model
-        best_model = tf.keras.models.load_model(os.path.join(best_checkpoint, "model.h5"))
-
-        return best_model
+    def tune_model(task, modality, info):
+        cnn_trainable = CNNTrainable(task, modality, info)
+        cnn_trainable.train()
+        return cnn_trainable.get_best_model()
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--smoke-test", action="store_true", help="Finish quickly for testing"
-    )
-    args, _ = parser.parse_known_args()
-
-    ray.init(ignore_reinit_error=True)
-
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
     info = 'test'  # Additional info for saving results
 
-    # Load your data
-    file_paths, labels, original_file_paths = DataLoader.loading_mask_3d(task, modality)
-    X_file_paths = np.array(file_paths)
-    Y = np.array(labels)
-
     # Train the model with hyperparameter tuning and get the best trained model
-    best_model = Trainer.tune_model(X_file_paths, Y, original_file_paths, task, modality, info)
+    best_model = Trainer.tune_model(task, modality, info)
 
     # Apply Grad-CAM using the trained model
     # For Grad-CAM, select a subset of images to avoid excessive computation
-    sample_indices = np.random.choice(len(X_file_paths), size=10, replace=False)
-    sampled_file_paths = [X_file_paths[i] for i in sample_indices]
+    file_paths, labels, original_file_paths = DataLoader.loading_mask_3d(task, modality)
+    sample_indices = np.random.choice(len(file_paths), size=10, replace=False)
+    sampled_file_paths = [file_paths[i] for i in sample_indices]
     sampled_original_imgs = [np.random.rand(128, 128, 128) for _ in sample_indices]  # Dummy images
 
     # Create a list of expanded images for Grad-CAM
@@ -546,9 +511,6 @@ def main():
 
     # Apply Grad-CAM to all sampled images
     GradCAM.apply_gradcam_all_layers_average(best_model, imgs, sampled_original_imgs, task, modality, info)
-
-    # Shutdown Ray
-    ray.shutdown()
 
 
 if __name__ == "__main__":
