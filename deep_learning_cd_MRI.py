@@ -77,21 +77,13 @@ class CNNModel:
         - dropout_rate: Float between 0.0 and 0.5 with step size 0.1
         - l2_reg: Log-uniform distribution between 1e-6 and 1e-4
         - learning_rate: Log-uniform distribution between 1e-5 and 1e-3
-        - flip_prob: Float between 0.0 and 0.5 with step size 0.1 (Data Augmentation)
-        - rotate_prob: Float between 0.0 and 0.5 with step size 0.1 (Data Augmentation)
-        - batch_size: Integer between 4 and 16 with step size 4
         """
         input_img = Input(shape=input_shape)
 
-        # Define hyperparameters and search space
-        dropout_rate = hp.Float('dropout_rate', min_value=0.0, max_value=0.5, step=0.05)
-        l2_reg = hp.Float('l2_reg', min_value=1e-6, max_value=1e-4, sampling='log')
-        learning_rate = hp.Float('learning_rate', min_value=1e-5, max_value=1e-3, sampling='log')
-        # Data augmentation probabilities
-        flip_prob = hp.Float('flip_prob', min_value=0.0, max_value=0.5, step=0.1)
-        rotate_prob = hp.Float('rotate_prob', min_value=0.0, max_value=0.5, step=0.1)
-        # Batch size
-        batch_size = hp.Int('batch_size', min_value=4, max_value=16, step=4)
+        # Retrieve hyperparameters
+        dropout_rate = hp.get('dropout_rate')
+        l2_reg = hp.get('l2_reg')
+        learning_rate = hp.get('learning_rate')
 
         # Conv1 block (16 filters)
         x = CNNModel.convolution_block(input_img, 16, l2_reg=l2_reg)
@@ -140,11 +132,6 @@ class CNNModel:
             loss='categorical_crossentropy',
             metrics=['accuracy', AUC(name='auc')]
         )
-
-        # Store the data augmentation hyperparameters in the model for later use
-        model.flip_prob = flip_prob
-        model.rotate_prob = rotate_prob
-        model.batch_size = batch_size
 
         return model
 
@@ -387,6 +374,16 @@ class CNNTrainable:
 
     def build_model(self, hp):
         """Builds the model using hyperparameters from Keras Tuner."""
+        # Define hyperparameters and search space
+        dropout_rate = hp.Float('dropout_rate', min_value=0.0, max_value=0.5, step=0.05)
+        l2_reg = hp.Float('l2_reg', min_value=1e-6, max_value=1e-4, sampling='log')
+        learning_rate = hp.Float('learning_rate', min_value=1e-5, max_value=1e-3, sampling='log')
+        # Data augmentation probabilities
+        flip_prob = hp.Float('flip_prob', min_value=0.0, max_value=0.5, step=0.1)
+        rotate_prob = hp.Float('rotate_prob', min_value=0.0, max_value=0.5, step=0.1)
+        # Batch size
+        batch_size = hp.Int('batch_size', min_value=4, max_value=16, step=4)
+
         model = CNNModel.create_model(hp)
         return model
 
@@ -398,13 +395,12 @@ class CNNTrainable:
             self,
             hypermodel=self.build_model,
             objective=kt.Objective('val_auc', direction='max'),
-            max_epochs=90,
+            max_epochs=100,
             factor=3,
             hyperband_iterations=1,
             directory='hyperband_dir',
             project_name='hyperband_project'
         )
-
 
         # Run the hyperparameter search
         tuner.search()
@@ -420,6 +416,7 @@ class CNNTrainable:
         best_hp = tuner.get_best_hyperparameters(num_trials=1)[0]
         batch_size = best_hp.get('batch_size')
 
+        # Build data generators with best hyperparameters
         train_generator = self._data_generator_builder(best_hp)
         val_generator = self._validation_data_generator(batch_size)
 
@@ -431,7 +428,7 @@ class CNNTrainable:
                 EarlyStopping(
                     monitor='val_loss',
                     patience=50,
-                    mode='max',
+                    mode='min',
                     verbose=1,
                     restore_best_weights=True
                 ),
@@ -450,9 +447,9 @@ class CNNTrainable:
 
     def _data_generator_builder(self, hp):
         """Builds the data generator using the hyperparameters."""
-        batch_size = hp.get('batch_size', 5)
-        flip_prob = hp.get('flip_prob', 0.1)
-        rotate_prob = hp.get('rotate_prob', 0.1)
+        batch_size = hp.get('batch_size')
+        flip_prob = hp.get('flip_prob')
+        rotate_prob = hp.get('rotate_prob')
 
         train_generator = DataGenerator(
             file_paths=self.train_file_paths,
@@ -506,15 +503,16 @@ class CustomTuner(kt.Hyperband):
 
     def run_trial(self, trial, *args, **kwargs):
         hp = trial.hyperparameters
-        batch_size = hp.Int('batch_size', min_value=4, max_value=16, step=4)
-    
+
+        # Retrieve hyperparameters
+        batch_size = hp.get('batch_size')
         # Create data generators with hyperparameters from hp
         train_generator = self.cnn_trainable._data_generator_builder(hp)
         val_generator = self.cnn_trainable._validation_data_generator(batch_size)
-    
+
         # Get the number of epochs for this trial
         epochs = self.get_trial_epochs(trial)
-    
+
         # Update fit arguments
         fit_args = {
             'x': train_generator,
@@ -522,9 +520,9 @@ class CustomTuner(kt.Hyperband):
             'epochs': epochs,  # Use epochs determined by Hyperband
             'callbacks': [
                 EarlyStopping(
-                    monitor='val_loss',
+                    monitor='val_auc',
                     patience=50,
-                    mode='min',
+                    mode='max',
                     verbose=1,
                     restore_best_weights=True
                 ),
@@ -582,3 +580,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
