@@ -72,11 +72,6 @@ class CNNModel:
     def create_model(hp, input_shape=(128, 128, 128, 1), num_classes=2):
         """
         Build and compile the model with hyperparameters from Keras Tuner.
-
-        Hyperparameter Search Space:
-        - dropout_rate: Float between 0.0 and 0.5 with step size 0.1
-        - l2_reg: Log-uniform distribution between 1e-6 and 1e-4
-        - learning_rate: Log-uniform distribution between 1e-5 and 1e-3
         """
         input_img = Input(shape=input_shape)
 
@@ -390,7 +385,7 @@ class CNNTrainable:
     def train(self):
         """Performs hyperparameter tuning and trains the best model."""
 
-        # Define the tuner with max_trials
+        # Define the tuner
         tuner = CustomTuner(
             self,
             hypermodel=self.build_model,
@@ -409,11 +404,20 @@ class CNNTrainable:
         trials = tuner.oracle.get_best_trials(num_trials=100)
         print(f"Number of trials conducted: {len(trials)}")
 
+        # Get the best hyperparameters and print them
+        best_hp = tuner.get_best_hyperparameters(num_trials=1)[0]
+        print("Best hyperparameters found:")
+        for param in best_hp.values:
+            print(f"  {param}: {best_hp.values[param]}")
+
+        # Get the best score and print it
+        best_trial = tuner.oracle.get_best_trials(num_trials=1)[0]
+        print(f"Best score (val_auc): {best_trial.score}")
+
         # Get the best model
         self.best_model = tuner.get_best_models(num_models=1)[0]
 
         # Train the best model on the full training data
-        best_hp = tuner.get_best_hyperparameters(num_trials=1)[0]
         batch_size = best_hp.get('batch_size')
 
         # Build data generators with best hyperparameters
@@ -423,11 +427,11 @@ class CNNTrainable:
         self.history = self.best_model.fit(
             train_generator,
             validation_data=val_generator,
-            epochs=90,  # Use max_epochs or a suitable number
+            epochs=200,  # Use max_epochs or a suitable number
             callbacks=[
                 EarlyStopping(
                     monitor='val_loss',
-                    patience=10,
+                    patience=50,
                     mode='min',
                     verbose=1,
                     restore_best_weights=True
@@ -435,12 +439,19 @@ class CNNTrainable:
                 ReduceLROnPlateau(
                     monitor='val_loss',
                     factor=0.5,
-                    patience=5,
+                    patience=10,
                     mode='min',
                     verbose=1
                 )
             ]
         )
+
+        # Evaluate the best model on the validation data
+        val_loss, val_accuracy, val_auc = self.best_model.evaluate(val_generator)
+        print("\nBest model performance on validation data:")
+        print(f"  Validation Loss: {val_loss}")
+        print(f"  Validation Accuracy: {val_accuracy}")
+        print(f"  Validation AUC: {val_auc}")
 
         # Plot training vs validation loss
         self.plot_training_validation_loss()
@@ -526,16 +537,16 @@ class CustomTuner(kt.Hyperband):
             epochs=epochs,
             callbacks=[
                 EarlyStopping(
-                    monitor='val_auc',
-                    patience=10,
-                    mode='max',
+                    monitor='val_loss',
+                    patience=50,
+                    mode='min',
                     verbose=1,
                     restore_best_weights=True
                 ),
                 ReduceLROnPlateau(
                     monitor='val_loss',
                     factor=0.5,
-                    patience=5,
+                    patience=10,
                     mode='min',
                     verbose=1
                 )
