@@ -84,7 +84,7 @@ class CNNModel:
         input_img = Input(shape=input_shape)
 
         # Define hyperparameters and search space
-        dropout_rate = hp.Float('dropout_rate', min_value=0.0, max_value=0.5, step=0.1)
+        dropout_rate = hp.Float('dropout_rate', min_value=0.0, max_value=0.5, step=0.05)
         l2_reg = hp.Float('l2_reg', min_value=1e-6, max_value=1e-4, sampling='log')
         learning_rate = hp.Float('learning_rate', min_value=1e-5, max_value=1e-3, sampling='log')
         # Data augmentation probabilities
@@ -398,9 +398,9 @@ class CNNTrainable:
             self,
             hypermodel=self.build_model,
             objective='val_auc',
-            max_epochs=50,
+            max_epochs=150,
             factor=3,
-            hyperband_iterations=2,  # Adjust this to control the number of trials
+            hyperband_iterations=20,  # Adjust this to control the number of trials
             directory='hyperband_dir',
             project_name='hyperband_project'
         )
@@ -425,11 +425,11 @@ class CNNTrainable:
         self.history = self.best_model.fit(
             train_generator,
             validation_data=val_generator,
-            epochs=50,
+            epochs=400,
             callbacks=[
                 EarlyStopping(
-                    monitor='val_auc',
-                    patience=10,
+                    monitor='val_loss',
+                    patience=50,
                     mode='max',
                     verbose=1,
                     restore_best_weights=True
@@ -437,7 +437,7 @@ class CNNTrainable:
                 ReduceLROnPlateau(
                     monitor='val_loss',
                     factor=0.5,
-                    patience=5,
+                    patience=10,
                     mode='min',
                     verbose=1
                 )
@@ -518,16 +518,16 @@ class CustomTuner(kt.Hyperband):
             'epochs': 50,  # Or get from hp
             'callbacks': [
                 EarlyStopping(
-                    monitor='val_auc',
-                    patience=10,
-                    mode='max',
+                    monitor='val_loss',
+                    patience=50,
+                    mode='min',
                     verbose=1,
                     restore_best_weights=True
                 ),
                 ReduceLROnPlateau(
                     monitor='val_loss',
                     factor=0.5,
-                    patience=5,
+                    patience=10,
                     mode='min',
                     verbose=1
                 )
