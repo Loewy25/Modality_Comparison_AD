@@ -553,12 +553,19 @@ class CustomTuner(kt.Hyperband):
             ]
         )
 
+        # Save the model after training
+        self.save_model(trial.trial_id, model)  # Add this line
+
         # Get the last value of val_auc and val_loss
         val_auc = history.history.get('val_auc')[-1]
         val_loss = history.history.get('val_loss')[-1]
 
-        # Return the metrics
-        return {'val_auc': val_auc, 'val_loss': val_loss}
+        # Report the metrics to the tuner
+        self.oracle.update_trial(
+            trial.trial_id,
+            {'val_auc': val_auc, 'val_loss': val_loss}
+        )
+        self.oracle.save_trial(trial.trial_id)
 
 
 class Trainer:
