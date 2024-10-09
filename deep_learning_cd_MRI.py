@@ -511,7 +511,8 @@ class CustomTuner(kt.Hyperband):
         val_generator = self.cnn_trainable._validation_data_generator(batch_size)
 
         # Get the number of epochs for this trial
-        epochs = self.get_trial_epochs(trial)
+        epochs = trial.hyperparameters.get('tuner/epochs')
+
 
         # Update fit arguments
         fit_args = {
