@@ -530,6 +530,17 @@ class CustomTuner(kt.Hyperband):
         # Get the number of epochs for this trial
         epochs = trial.hyperparameters.get('tuner/epochs')
 
+        # Prepare the ModelCheckpoint callback
+        checkpoint_dir = self.get_trial_dir(trial.trial_id)
+        checkpoint_filepath = os.path.join(checkpoint_dir, 'checkpoint')
+        model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
+            filepath=checkpoint_filepath,
+            save_weights_only=True,
+            monitor='val_auc',
+            mode='max',
+            save_best_only=True
+        )
+
         # Fit the model
         history = model.fit(
             x=train_generator,
@@ -549,23 +560,20 @@ class CustomTuner(kt.Hyperband):
                     patience=10,
                     mode='min',
                     verbose=1
-                )
+                ),
+                model_checkpoint_callback  # Include ModelCheckpoint
             ]
         )
-
-        # Save the model after training
-        self.save_model(trial.trial_id, model)  # Add this line
-
-        # Get the last value of val_auc and val_loss
-        val_auc = history.history.get('val_auc')[-1]
-        val_loss = history.history.get('val_loss')[-1]
 
         # Report the metrics to the tuner
         self.oracle.update_trial(
             trial.trial_id,
-            {'val_auc': val_auc, 'val_loss': val_loss}
+            metrics={
+                'val_auc': history.history['val_auc'][-1],
+                'val_loss': history.history['val_loss'][-1]
+            }
         )
-        self.oracle.save_trial(trial.trial_id)
+
 
 
 class Trainer:
