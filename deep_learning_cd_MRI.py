@@ -395,7 +395,7 @@ class CNNTrainable:
             self,
             hypermodel=self.build_model,
             objective=kt.Objective('val_auc', direction='max'),
-            max_epochs=100,
+            max_epochs=90,
             factor=3,
             hyperband_iterations=1,
             directory='hyperband_dir',
@@ -423,11 +423,11 @@ class CNNTrainable:
         self.history = self.best_model.fit(
             train_generator,
             validation_data=val_generator,
-            epochs=400,
+            epochs=90,  # Use max_epochs or a suitable number
             callbacks=[
                 EarlyStopping(
                     monitor='val_loss',
-                    patience=50,
+                    patience=10,
                     mode='min',
                     verbose=1,
                     restore_best_weights=True
@@ -435,7 +435,7 @@ class CNNTrainable:
                 ReduceLROnPlateau(
                     monitor='val_loss',
                     factor=0.5,
-                    patience=10,
+                    patience=5,
                     mode='min',
                     verbose=1
                 )
@@ -506,23 +506,28 @@ class CustomTuner(kt.Hyperband):
 
         # Retrieve hyperparameters
         batch_size = hp.get('batch_size')
+        flip_prob = hp.get('flip_prob')
+        rotate_prob = hp.get('rotate_prob')
+
         # Create data generators with hyperparameters from hp
         train_generator = self.cnn_trainable._data_generator_builder(hp)
         val_generator = self.cnn_trainable._validation_data_generator(batch_size)
 
+        # Build the model
+        model = self.hypermodel.build(hp)
+
         # Get the number of epochs for this trial
         epochs = trial.hyperparameters.get('tuner/epochs')
 
-
-        # Update fit arguments
-        fit_args = {
-            'x': train_generator,
-            'validation_data': val_generator,
-            'epochs': epochs,  # Use epochs determined by Hyperband
-            'callbacks': [
+        # Fit the model
+        history = model.fit(
+            x=train_generator,
+            validation_data=val_generator,
+            epochs=epochs,
+            callbacks=[
                 EarlyStopping(
                     monitor='val_auc',
-                    patience=50,
+                    patience=10,
                     mode='max',
                     verbose=1,
                     restore_best_weights=True
@@ -530,13 +535,19 @@ class CustomTuner(kt.Hyperband):
                 ReduceLROnPlateau(
                     monitor='val_loss',
                     factor=0.5,
-                    patience=10,
+                    patience=5,
                     mode='min',
                     verbose=1
                 )
             ]
-        }
-        super().run_trial(trial, **fit_args)
+        )
+
+        # Get the last value of val_auc and val_loss
+        val_auc = history.history.get('val_auc')[-1]
+        val_loss = history.history.get('val_loss')[-1]
+
+        # Return the metrics
+        return {'val_auc': val_auc, 'val_loss': val_loss}
 
 
 class Trainer:
