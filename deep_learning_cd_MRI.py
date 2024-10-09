@@ -77,6 +77,9 @@ class CNNModel:
         - dropout_rate: Float between 0.0 and 0.5 with step size 0.1
         - l2_reg: Log-uniform distribution between 1e-6 and 1e-4
         - learning_rate: Log-uniform distribution between 1e-5 and 1e-3
+        - flip_prob: Float between 0.0 and 0.5 with step size 0.1 (Data Augmentation)
+        - rotate_prob: Float between 0.0 and 0.5 with step size 0.1 (Data Augmentation)
+        - batch_size: Integer between 4 and 16 with step size 4
         """
         input_img = Input(shape=input_shape)
 
@@ -84,6 +87,11 @@ class CNNModel:
         dropout_rate = hp.Float('dropout_rate', min_value=0.0, max_value=0.5, step=0.1)
         l2_reg = hp.Float('l2_reg', min_value=1e-6, max_value=1e-4, sampling='log')
         learning_rate = hp.Float('learning_rate', min_value=1e-5, max_value=1e-3, sampling='log')
+        # Data augmentation probabilities
+        flip_prob = hp.Float('flip_prob', min_value=0.0, max_value=0.5, step=0.1)
+        rotate_prob = hp.Float('rotate_prob', min_value=0.0, max_value=0.5, step=0.1)
+        # Batch size
+        batch_size = hp.Int('batch_size', min_value=4, max_value=16, step=4)
 
         # Conv1 block (16 filters)
         x = CNNModel.convolution_block(input_img, 16, l2_reg=l2_reg)
@@ -132,6 +140,11 @@ class CNNModel:
             loss='categorical_crossentropy',
             metrics=['accuracy', AUC(name='auc')]
         )
+
+        # Store the data augmentation hyperparameters in the model for later use
+        model.flip_prob = flip_prob
+        model.rotate_prob = rotate_prob
+        model.batch_size = batch_size
 
         return model
 
@@ -379,58 +392,21 @@ class CNNTrainable:
 
     def train(self):
         """Performs hyperparameter tuning and trains the best model."""
-        # Create data generators
-        batch_size = 5
-        self.train_generator = DataGenerator(
-            file_paths=self.train_file_paths,
-            labels=self.train_labels,
-            batch_size=batch_size,
-            augment=True,
-            flip_prob=0.2,
-            rotate_prob=0.2
-        )
-        self.val_generator = DataGenerator(
-            file_paths=self.val_file_paths,
-            labels=self.val_labels,
-            batch_size=batch_size,
-            augment=False
-        )
 
         # Define the tuner with max_trials
-        tuner = kt.Hyperband(
-            self.build_model,
+        tuner = CustomTuner(
+            self,
+            hypermodel=self.build_model,
             objective='val_auc',
             max_epochs=50,
             factor=3,
-            hyperband_iterations=2,  # Controls the number of times to repeat the Hyperband algorithm
+            hyperband_iterations=2,  # Adjust this to control the number of trials
             directory='hyperband_dir',
             project_name='hyperband_project'
         )
 
-        # Early stopping and Reduce LR callbacks
-        early_stopping = EarlyStopping(
-            monitor='val_auc',
-            patience=10,
-            mode='max',
-            verbose=1,
-            restore_best_weights=True
-        )
-
-        reduce_lr = ReduceLROnPlateau(
-            monitor='val_loss',
-            factor=0.5,
-            patience=5,
-            mode='min',
-            verbose=1
-        )
-
         # Run the hyperparameter search
-        tuner.search(
-            self.train_generator,
-            validation_data=self.val_generator,
-            epochs=50,
-            callbacks=[early_stopping, reduce_lr]
-        )
+        tuner.search()
 
         # Retrieve the number of trials conducted
         trials = tuner.oracle.get_best_trials(num_trials=100)
@@ -440,15 +416,62 @@ class CNNTrainable:
         self.best_model = tuner.get_best_models(num_models=1)[0]
 
         # Train the best model on the full training data
+        best_hp = tuner.get_best_hyperparameters(num_trials=1)[0]
+        batch_size = best_hp.get('batch_size')
+
+        train_generator = self._data_generator_builder(best_hp)
+        val_generator = self._validation_data_generator(batch_size)
+
         self.history = self.best_model.fit(
-            self.train_generator,
-            validation_data=self.val_generator,
+            train_generator,
+            validation_data=val_generator,
             epochs=50,
-            callbacks=[early_stopping, reduce_lr]
+            callbacks=[
+                EarlyStopping(
+                    monitor='val_auc',
+                    patience=10,
+                    mode='max',
+                    verbose=1,
+                    restore_best_weights=True
+                ),
+                ReduceLROnPlateau(
+                    monitor='val_loss',
+                    factor=0.5,
+                    patience=5,
+                    mode='min',
+                    verbose=1
+                )
+            ]
         )
 
         # Plot training vs validation loss
         self.plot_training_validation_loss()
+
+    def _data_generator_builder(self, hp):
+        """Builds the data generator using the hyperparameters."""
+        batch_size = hp.get('batch_size', 5)
+        flip_prob = hp.get('flip_prob', 0.1)
+        rotate_prob = hp.get('rotate_prob', 0.1)
+
+        train_generator = DataGenerator(
+            file_paths=self.train_file_paths,
+            labels=self.train_labels,
+            batch_size=batch_size,
+            augment=True,
+            flip_prob=flip_prob,
+            rotate_prob=rotate_prob
+        )
+        return train_generator
+
+    def _validation_data_generator(self, batch_size):
+        """Builds the validation data generator."""
+        val_generator = DataGenerator(
+            file_paths=self.val_file_paths,
+            labels=self.val_labels,
+            batch_size=batch_size,
+            augment=False
+        )
+        return val_generator
 
     def plot_training_validation_loss(self):
         """Plots and saves the training vs validation loss graph."""
@@ -471,6 +494,46 @@ class CNNTrainable:
     def get_best_model(self):
         """Returns the best trained model."""
         return self.best_model
+
+
+class CustomTuner(kt.Hyperband):
+    """Custom Tuner class to include batch_size as a hyperparameter."""
+
+    def __init__(self, cnn_trainable, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.cnn_trainable = cnn_trainable
+
+    def run_trial(self, trial, *args, **kwargs):
+        hp = trial.hyperparameters
+        batch_size = hp.Int('batch_size', min_value=4, max_value=16, step=4)
+
+        # Create data generators with hyperparameters from hp
+        train_generator = self.cnn_trainable._data_generator_builder(hp)
+        val_generator = self.cnn_trainable._validation_data_generator(batch_size)
+
+        # Update fit arguments
+        fit_args = {
+            'x': train_generator,
+            'validation_data': val_generator,
+            'epochs': 50,  # Or get from hp
+            'callbacks': [
+                EarlyStopping(
+                    monitor='val_auc',
+                    patience=10,
+                    mode='max',
+                    verbose=1,
+                    restore_best_weights=True
+                ),
+                ReduceLROnPlateau(
+                    monitor='val_loss',
+                    factor=0.5,
+                    patience=5,
+                    mode='min',
+                    verbose=1
+                )
+            ]
+        }
+        super().run_trial(trial, **fit_args)
 
 
 class Trainer:
@@ -515,4 +578,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
