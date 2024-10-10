@@ -484,10 +484,10 @@ def main():
 
 class CNNTrainable:
     """Class to encapsulate the model training logic for Ray Tune."""
-
+    
     def __init__(self, task, modality, info,
                  train_file_paths, train_labels,
-                 val_file_paths, val_labels):
+                 val_file_paths, val_labels, fold_idx):
         self.task = task
         self.modality = modality
         self.info = info
@@ -495,6 +495,8 @@ class CNNTrainable:
         self.train_labels = train_labels
         self.val_file_paths = val_file_paths
         self.val_labels = val_labels
+        self.fold_idx = fold_idx  # Store fold index
+
 
     def train(self, config):
         """Training function compatible with Ray Tune."""
