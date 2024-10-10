@@ -475,7 +475,7 @@ class CNNTrainable:
         history = model.fit(
             train_generator,
             validation_data=val_generator,
-            epochs=best_hp.get('epochs', 150),
+            epochs=best_hp.get('epochs', 30),
             callbacks=callbacks,
             verbose=1
         )
@@ -531,8 +531,8 @@ def main():
 
         # Define the scheduler
         scheduler = ASHAScheduler(
-            max_t=150,
-            grace_period=30,
+            max_t=30,
+            grace_period=10,
             reduction_factor=2
         )
 
@@ -560,7 +560,7 @@ def main():
             tune_config=TuneConfig(
                 metric="val_auc",
                 mode="max",
-                num_samples=20,
+                num_samples=10,
                 scheduler=scheduler,
                 search_alg=search_alg,
                 max_concurrent_trials=2,  # Limit concurrency to available GPUs
