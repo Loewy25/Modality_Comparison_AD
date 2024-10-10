@@ -28,6 +28,11 @@ from ray import tune
 from ray.tune.schedulers import ASHAScheduler
 from ray.tune.integration.keras import TuneReportCallback
 
+from ray import air
+from ray import tune
+from ray.tune.schedulers import ASHAScheduler
+from ray.tune.search.basic_variant import BasicVariantGenerator
+
 class Utils:
     """Utility functions for directory management and image resizing."""
 
@@ -388,7 +393,8 @@ def main():
         cnn_trainable = CNNTrainable(
             task, modality, info,
             train_file_paths, train_labels,
-            val_file_paths, val_labels
+            val_file_paths, val_labels,
+            fold_idx + 1  # Pass fold index
         )
 
         # Get hyperparameter search space
@@ -403,27 +409,38 @@ def main():
             reduction_factor=2
         )
 
+        # Define the search algorithm (Random Search)
+        search_alg = BasicVariantGenerator()
 
-        # Execute the hyperparameter search
-        analysis = tune.run(
+        # Execute the hyperparameter search using tune.Tuner
+        tuner = tune.Tuner(
             tune.with_parameters(cnn_trainable.train),
-            resources_per_trial={"cpu": 1, "gpu": 1},  # Adjust based on your resources
-            config=config,
-            metric="val_auc",
-            mode="max",
-            num_samples=20,  # Adjust based on your computational budget
-            scheduler=scheduler,
-            name=f"ray_tune_experiment_fold_{fold_idx + 1}",
-            local_dir="./ray_results"  # Directory to save results
+            param_space=config,
+            tune_config=tune.TuneConfig(
+                metric="val_auc",
+                mode="max",
+                num_samples=20,  # Adjust based on your computational budget
+                scheduler=scheduler,
+                search_alg=search_alg,
+            ),
+            run_config=air.RunConfig(
+                name=f"ray_tune_experiment_fold_{fold_idx + 1}",
+                storage_path="./ray_results",  # Use storage_path instead of local_dir
+            ),
         )
 
-        # Get the best trial
-        best_trial = analysis.get_best_trial("val_auc", "max", "last")
-        print(f"Best trial config for Fold {fold_idx + 1}: {best_trial.config}")
-        print(f"Best trial final validation AUC for Fold {fold_idx + 1}: {best_trial.last_result['val_auc']}")
+        results = tuner.fit()
+
+        # Get the best result
+        best_result = results.get_best_result(metric="val_auc", mode="max")
+        best_config = best_result.config
+        best_val_auc = best_result.metrics["val_auc"]
+
+        print(f"Best trial config for Fold {fold_idx + 1}: {best_config}")
+        print(f"Best trial final validation AUC for Fold {fold_idx + 1}: {best_val_auc}")
 
         # Retrain the model with the best hyperparameters on the training data
-        final_model, history = cnn_trainable.retrain_best_model(best_trial.config)
+        final_model, history = cnn_trainable.retrain_best_model(best_config)
 
         # Plot training and validation loss curves
         plt.figure()
@@ -462,6 +479,7 @@ def main():
 
     # Shutdown Ray after completion
     ray.shutdown()
+
 
 
 class CNNTrainable:
