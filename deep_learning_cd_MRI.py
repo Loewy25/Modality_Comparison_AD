@@ -26,7 +26,8 @@ import matplotlib.pyplot as plt
 import ray
 from ray import tune
 from ray.tune.schedulers import ASHAScheduler
-from ray.tune.integration.keras import TuneReportCallback
+from ray.train.tensorflow.keras import ReportCheckpointCallback
+
 
 from ray import air
 from ray import tune
@@ -491,7 +492,7 @@ def main():
 
 class CNNTrainable:
     """Class to encapsulate the model training logic for Ray Tune."""
-    
+
     def __init__(self, task, modality, info,
                  train_file_paths, train_labels,
                  val_file_paths, val_labels, fold_idx):
@@ -503,7 +504,6 @@ class CNNTrainable:
         self.val_file_paths = val_file_paths
         self.val_labels = val_labels
         self.fold_idx = fold_idx  # Store fold index
-
 
     def train(self, config):
         """Training function compatible with Ray Tune."""
@@ -544,14 +544,7 @@ class CNNTrainable:
                 mode='min',
                 verbose=1
             ),
-            TuneReportCallback(
-                {
-                    "val_loss": "val_loss",
-                    "val_accuracy": "val_accuracy",
-                    "val_auc": "val_auc"
-                },
-                on="epoch_end"
-            )
+            ReportCheckpointCallback()
         ]
 
         # Train the model
@@ -563,9 +556,8 @@ class CNNTrainable:
             verbose=0
         )
 
-        # Save the model checkpoint
-        with tune.checkpoint_dir(step=0) as checkpoint_dir:
-            model.save_weights(os.path.join(checkpoint_dir, "checkpoint"))
+        # The ReportCheckpointCallback handles reporting metrics and checkpoints
+
 
 def retrain_best_model(self, best_hp):
         """Retrain the model with the best hyperparameters on the training data."""
