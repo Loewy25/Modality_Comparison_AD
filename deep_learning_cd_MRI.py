@@ -14,17 +14,20 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical, Sequence
-from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, CSVLogger
 from tensorflow.keras.metrics import AUC
-from sklearn.metrics import roc_auc_score
-from sklearn.model_selection import StratifiedKFold, train_test_split
+from sklearn.model_selection import StratifiedKFold
 from nilearn import plotting
 from scipy.stats import zscore
 from scipy.ndimage import zoom, rotate
 import matplotlib.pyplot as plt
 
-# Import Keras Tuner
-import keras_tuner as kt
+# Import Ray Tune
+import ray
+from ray import tune
+from ray.tune.schedulers import ASHAScheduler
+from ray.tune.integration.keras import TuneReportCallback
+from ray.tune.suggest.basic_variant import BasicVariantGenerator
 
 class Utils:
     """Utility functions for directory management and image resizing."""
@@ -71,14 +74,14 @@ class CNNModel:
     @staticmethod
     def create_model(hp, input_shape=(128, 128, 128, 1), num_classes=2):
         """
-        Build and compile the model with hyperparameters from Keras Tuner.
+        Build and compile the model with hyperparameters from the configuration.
         """
         input_img = Input(shape=input_shape)
 
         # Retrieve hyperparameters
-        dropout_rate = hp.get('dropout_rate')
-        l2_reg = hp.get('l2_reg')
-        learning_rate = hp.get('learning_rate')
+        dropout_rate = hp['dropout_rate']
+        l2_reg = hp['l2_reg']
+        learning_rate = hp['learning_rate']
 
         # Conv1 block (16 filters)
         x = CNNModel.convolution_block(input_img, 16, l2_reg=l2_reg)
@@ -120,7 +123,8 @@ class CNNModel:
         output = Dense(num_classes, activation='softmax')(x)
 
         model = Model(inputs=input_img, outputs=output)
-        model.summary()
+        # Uncomment the following line if you want to see the model summary
+        # model.summary()
 
         model.compile(
             optimizer=Adam(learning_rate=learning_rate),
@@ -271,8 +275,8 @@ class GradCAM:
 
     @staticmethod
     def save_gradcam(heatmap, original_img,
-                     task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
-        save_dir = os.path.join(save_dir, info, task, modality)
+                     task, modality, layer_name, class_idx, info, fold_idx, save_dir='./grad-cam'):
+        save_dir = os.path.join(save_dir, info, f"fold_{fold_idx}", task, modality)
         Utils.ensure_directory_exists(save_dir)
 
         # Calculate the zoom factors based on the actual dimensions
@@ -309,7 +313,7 @@ class GradCAM:
 
     @staticmethod
     def apply_gradcam_all_layers_average(model, imgs, original_imgs,
-                                         task, modality, info):
+                                         task, modality, info, fold_idx):
         # Identify convolutional layers
         conv_layers = []
         cumulative_scales = []
@@ -342,253 +346,20 @@ class GradCAM:
                 avg_heatmap = accumulated_heatmap / len(imgs)
                 # Use the first original image as reference
                 GradCAM.save_gradcam(avg_heatmap, original_imgs[0],
-                                     task, modality, conv_layer_name, class_idx, info)
+                                     task, modality, conv_layer_name, class_idx, info, fold_idx)
 
 
-class CNNTrainable:
-    """Class to encapsulate the model training logic for Keras Tuner."""
-
-    def __init__(self, task, modality, info):
-        self.task = task
-        self.modality = modality
-        self.info = info
-
-        # Load data
-        self.file_paths, self.labels, self.original_file_paths = DataLoader.loading_mask_3d(task, modality)
-        self.X_file_paths = np.array(self.file_paths)
-        self.Y = np.array(self.labels)
-
-        # Split data into training and validation
-        self.train_idx, self.val_idx = train_test_split(
-            np.arange(len(self.X_file_paths)), test_size=0.2, stratify=self.Y, random_state=42
-        )
-        self.train_file_paths = self.X_file_paths[self.train_idx]
-        self.val_file_paths = self.X_file_paths[self.val_idx]
-        self.train_labels = self.Y[self.train_idx]
-        self.val_labels = self.Y[self.val_idx]
-
-    def build_model(self, hp):
-        """Builds the model using hyperparameters from Keras Tuner."""
-        # Define hyperparameters and search space
-        dropout_rate = hp.Float('dropout_rate', min_value=0.0, max_value=0.5, step=0.05)
-        l2_reg = hp.Float('l2_reg', min_value=1e-6, max_value=1e-4, sampling='log')
-        learning_rate = hp.Float('learning_rate', min_value=1e-5, max_value=1e-3, sampling='log')
-        # Data augmentation probabilities
-        flip_prob = hp.Float('flip_prob', min_value=0.0, max_value=0.5, step=0.1)
-        rotate_prob = hp.Float('rotate_prob', min_value=0.0, max_value=0.5, step=0.1)
-        # Batch size
-        batch_size = hp.Int('batch_size', min_value=4, max_value=16, step=4)
-
-        model = CNNModel.create_model(hp)
-        return model
-
-    def train(self):
-        """Performs hyperparameter tuning and trains the best model."""
-
-        # Define the tuner
-        tuner = CustomTuner(
-            self,
-            hypermodel=self.build_model,
-            objective=kt.Objective('val_auc', direction='max'),
-            max_epochs=90,
-            factor=3,
-            hyperband_iterations=1,
-            directory='hyperband_dir',
-            project_name='hyperband_project'
-        )
-
-        # Run the hyperparameter search
-        tuner.search()
-
-        # Retrieve the number of trials conducted
-        trials = tuner.oracle.get_best_trials(num_trials=100)
-        print(f"Number of trials conducted: {len(trials)}")
-
-        # Get the best hyperparameters and print them
-        best_hp = tuner.get_best_hyperparameters(num_trials=1)[0]
-        print("Best hyperparameters found:")
-        for param in best_hp.values:
-            print(f"  {param}: {best_hp.values[param]}")
-
-        # Get the best score and print it
-        best_trial = tuner.oracle.get_best_trials(num_trials=1)[0]
-        print(f"Best score (val_auc): {best_trial.score}")
-
-        # Get the best model
-        self.best_model = tuner.get_best_models(num_models=1)[0]
-
-        # Train the best model on the full training data
-        batch_size = best_hp.get('batch_size')
-
-        # Build data generators with best hyperparameters
-        train_generator = self._data_generator_builder(best_hp)
-        val_generator = self._validation_data_generator(batch_size)
-
-        self.history = self.best_model.fit(
-            train_generator,
-            validation_data=val_generator,
-            epochs=200,  # Use max_epochs or a suitable number
-            callbacks=[
-                EarlyStopping(
-                    monitor='val_loss',
-                    patience=50,
-                    mode='min',
-                    verbose=1,
-                    restore_best_weights=True
-                ),
-                ReduceLROnPlateau(
-                    monitor='val_loss',
-                    factor=0.5,
-                    patience=10,
-                    mode='min',
-                    verbose=1
-                )
-            ]
-        )
-
-        # Evaluate the best model on the validation data
-        val_loss, val_accuracy, val_auc = self.best_model.evaluate(val_generator)
-        print("\nBest model performance on validation data:")
-        print(f"  Validation Loss: {val_loss}")
-        print(f"  Validation Accuracy: {val_accuracy}")
-        print(f"  Validation AUC: {val_auc}")
-
-        # Plot training vs validation loss
-        self.plot_training_validation_loss()
-
-    def _data_generator_builder(self, hp):
-        """Builds the data generator using the hyperparameters."""
-        batch_size = hp.get('batch_size')
-        flip_prob = hp.get('flip_prob')
-        rotate_prob = hp.get('rotate_prob')
-
-        train_generator = DataGenerator(
-            file_paths=self.train_file_paths,
-            labels=self.train_labels,
-            batch_size=batch_size,
-            augment=True,
-            flip_prob=flip_prob,
-            rotate_prob=rotate_prob
-        )
-        return train_generator
-
-    def _validation_data_generator(self, batch_size):
-        """Builds the validation data generator."""
-        val_generator = DataGenerator(
-            file_paths=self.val_file_paths,
-            labels=self.val_labels,
-            batch_size=batch_size,
-            augment=False
-        )
-        return val_generator
-
-    def plot_training_validation_loss(self):
-        """Plots and saves the training vs validation loss graph."""
-        save_dir = os.path.join('./grad-cam', self.info, self.task, self.modality)
-        Utils.ensure_directory_exists(save_dir)
-
-        plt.figure(figsize=(10, 6))
-        plt.plot(self.history.history['loss'], label='Training Loss')
-        plt.plot(self.history.history['val_loss'], label='Validation Loss')
-        plt.title('Training Loss vs Validation Loss')
-        plt.xlabel('Epochs')
-        plt.ylabel('Loss')
-        plt.ylim(0, 1)
-        plt.legend(loc='upper right')
-        loss_plot_path = os.path.join(save_dir, 'loss_vs_val_loss.png')
-        plt.savefig(loss_plot_path)
-        plt.close()
-        print(f'Loss vs Validation Loss plot saved at {loss_plot_path}')
-
-    def get_best_model(self):
-        """Returns the best trained model."""
-        return self.best_model
-
-
-class CustomTuner(kt.Hyperband):
-    """Custom Tuner class to include batch_size as a hyperparameter."""
-
-    def __init__(self, cnn_trainable, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.cnn_trainable = cnn_trainable
-
-    def run_trial(self, trial, *args, **kwargs):
-        hp = trial.hyperparameters
-
-        # Retrieve hyperparameters
-        batch_size = hp.get('batch_size')
-        flip_prob = hp.get('flip_prob')
-        rotate_prob = hp.get('rotate_prob')
-
-        # Create data generators with hyperparameters from hp
-        train_generator = self.cnn_trainable._data_generator_builder(hp)
-        val_generator = self.cnn_trainable._validation_data_generator(batch_size)
-
-        # Build the model
-        model = self.hypermodel.build(hp)
-
-        # Get the number of epochs for this trial
-        epochs = trial.hyperparameters.get('tuner/epochs')
-
-        # Prepare the ModelCheckpoint callback with correct filepath
-        checkpoint_filepath = self._get_checkpoint_fname(trial.trial_id)
-        model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
-            filepath=checkpoint_filepath,
-            save_weights_only=True,
-            monitor='val_auc',
-            mode='max',
-            save_best_only=False  # Set to False to always save
-        )
-
-        # Fit the model
-        history = model.fit(
-            x=train_generator,
-            validation_data=val_generator,
-            epochs=epochs,
-            callbacks=[
-                EarlyStopping(
-                    monitor='val_loss',
-                    patience=50,
-                    mode='min',
-                    verbose=1,
-                    restore_best_weights=True
-                ),
-                ReduceLROnPlateau(
-                    monitor='val_loss',
-                    factor=0.5,
-                    patience=10,
-                    mode='min',
-                    verbose=1
-                ),
-                model_checkpoint_callback  # Include ModelCheckpoint
-            ]
-        )
-
-        # Explicitly save the model at the end of the trial
-        self.save_model(trial.trial_id, model)
-
-        # Report the metrics to the tuner
-        self.oracle.update_trial(
-            trial.trial_id,
-            metrics={
-                'val_auc': history.history['val_auc'][-1],
-                'val_loss': history.history['val_loss'][-1]
-            }
-        )
-
-        self.oracle.save_trial(trial.trial_id)
-        self.on_trial_end(trial)
-
-
-
-class Trainer:
-    """Class to handle model training and evaluation."""
-
-    @staticmethod
-    def tune_model(task, modality, info):
-        cnn_trainable = CNNTrainable(task, modality, info)
-        cnn_trainable.train()
-        return cnn_trainable.get_best_model()
+def get_hyperparameter_search_space():
+    config = {
+        "dropout_rate": tune.uniform(0.0, 0.5),
+        "l2_reg": tune.loguniform(1e-6, 1e-4),
+        "learning_rate": tune.loguniform(1e-5, 1e-3),
+        "flip_prob": tune.uniform(0.0, 0.5),
+        "rotate_prob": tune.uniform(0.0, 0.5),
+        "batch_size": tune.choice([4, 8, 12]),
+        "epochs": 150  # You can adjust this or make it a hyperparameter as well
+    }
+    return config
 
 
 def main():
@@ -596,29 +367,239 @@ def main():
     modality = 'MRI'  # 'MRI' or 'PET'
     info = 'test'  # Additional info for saving results
 
-    # Train the model with hyperparameter tuning and get the best trained model
-    best_model = Trainer.tune_model(task, modality, info)
+    # Initialize Ray
+    ray.init()
 
-    # Apply Grad-CAM using the trained model
-    # For Grad-CAM, select a subset of images to avoid excessive computation
+    # Load data
     file_paths, labels, original_file_paths = DataLoader.loading_mask_3d(task, modality)
-    sample_indices = np.random.choice(len(file_paths), size=10, replace=False)
-    sampled_file_paths = [file_paths[i] for i in sample_indices]
-    sampled_original_imgs = [np.random.rand(128, 128, 128) for _ in sample_indices]  # Dummy images
+    X_file_paths = np.array(file_paths)
+    Y = np.array(labels)
 
-    # Create a list of expanded images for Grad-CAM
-    imgs = []
-    for file_path in sampled_file_paths:
-        # Replace this with your actual image loading code
-        img_data = np.random.rand(128, 128, 128)
-        img_data = zscore(img_data, axis=None)
-        resized_data = Utils.resize_image(img_data, target_shape=(128, 128, 128))
-        resized_data = np.expand_dims(resized_data, axis=-1)  # Add channel dimension
-        resized_data = np.expand_dims(resized_data, axis=0)  # Add batch dimension
-        imgs.append(resized_data)
+    # Set up stratified k-fold cross-validation
+    skf = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
 
-    # Apply Grad-CAM to all sampled images
-    GradCAM.apply_gradcam_all_layers_average(best_model, imgs, sampled_original_imgs, task, modality, info)
+    for fold_idx, (train_indices, val_indices) in enumerate(skf.split(X_file_paths, Y)):
+        print(f"\nStarting Fold {fold_idx + 1}/3")
+        train_file_paths = X_file_paths[train_indices]
+        val_file_paths = X_file_paths[val_indices]
+        train_labels = Y[train_indices]
+        val_labels = Y[val_indices]
+
+        # Create an instance of CNNTrainable for this fold
+        cnn_trainable = CNNTrainable(
+            task, modality, info,
+            train_file_paths, train_labels,
+            val_file_paths, val_labels
+        )
+
+        # Get hyperparameter search space
+        config = get_hyperparameter_search_space()
+
+        # Define the scheduler
+        scheduler = ASHAScheduler(
+            metric="val_auc",
+            mode="max",
+            max_t=150,
+            grace_period=30,
+            reduction_factor=2
+        )
+
+        # Define the search algorithm (Random Search)
+        search_alg = BasicVariantGenerator()
+
+        # Execute the hyperparameter search
+        analysis = tune.run(
+            tune.with_parameters(cnn_trainable.train),
+            resources_per_trial={"cpu": 1, "gpu": 1},  # Adjust based on your resources
+            config=config,
+            metric="val_auc",
+            mode="max",
+            num_samples=20,  # Adjust based on your computational budget
+            scheduler=scheduler,
+            search_alg=search_alg,
+            name=f"ray_tune_experiment_fold_{fold_idx + 1}",
+            local_dir="./ray_results"  # Directory to save results
+        )
+
+        # Get the best trial
+        best_trial = analysis.get_best_trial("val_auc", "max", "last")
+        print(f"Best trial config for Fold {fold_idx + 1}: {best_trial.config}")
+        print(f"Best trial final validation AUC for Fold {fold_idx + 1}: {best_trial.last_result['val_auc']}")
+
+        # Retrain the model with the best hyperparameters on the training data
+        final_model, history = cnn_trainable.retrain_best_model(best_trial.config)
+
+        # Plot training and validation loss curves
+        plt.figure()
+        plt.plot(history.history['loss'], label='Training Loss')
+        plt.plot(history.history.get('val_loss', []), label='Validation Loss')
+        plt.title(f'Training and Validation Loss - Fold {fold_idx + 1}')
+        plt.xlabel('Epochs')
+        plt.ylabel('Loss')
+        plt.legend()
+        loss_curve_path = f'loss_curve_fold_{fold_idx + 1}.png'
+        plt.savefig(loss_curve_path)
+        plt.close()
+        print(f'Loss curve saved at {loss_curve_path}')
+
+        # Apply Grad-CAM using the trained model
+        # For Grad-CAM, select a subset of images to avoid excessive computation
+        sample_indices = np.random.choice(len(val_file_paths), size=10, replace=False)
+        sampled_file_paths = [val_file_paths[i] for i in sample_indices]
+        sampled_original_imgs = [np.random.rand(128, 128, 128) for _ in sample_indices]  # Dummy images
+
+        # Create a list of expanded images for Grad-CAM
+        imgs = []
+        for file_path in sampled_file_paths:
+            # Replace this with your actual image loading code
+            img_data = np.random.rand(128, 128, 128)
+            img_data = zscore(img_data, axis=None)
+            resized_data = Utils.resize_image(img_data, target_shape=(128, 128, 128))
+            resized_data = np.expand_dims(resized_data, axis=-1)  # Add channel dimension
+            resized_data = np.expand_dims(resized_data, axis=0)  # Add batch dimension
+            imgs.append(resized_data)
+
+        # Apply Grad-CAM to all sampled images using final_model
+        GradCAM.apply_gradcam_all_layers_average(
+            final_model, imgs, sampled_original_imgs, task, modality, info, fold_idx + 1
+        )
+
+    # Shutdown Ray after completion
+    ray.shutdown()
+
+
+class CNNTrainable:
+    """Class to encapsulate the model training logic for Ray Tune."""
+
+    def __init__(self, task, modality, info,
+                 train_file_paths, train_labels,
+                 val_file_paths, val_labels):
+        self.task = task
+        self.modality = modality
+        self.info = info
+        self.train_file_paths = train_file_paths
+        self.train_labels = train_labels
+        self.val_file_paths = val_file_paths
+        self.val_labels = val_labels
+
+    def train(self, config):
+        """Training function compatible with Ray Tune."""
+        # Build the model using the sampled hyperparameters
+        hp = config
+        model = CNNModel.create_model(hp)
+
+        # Build data generators
+        batch_size = hp['batch_size']
+        train_generator = DataGenerator(
+            file_paths=self.train_file_paths,
+            labels=self.train_labels,
+            batch_size=batch_size,
+            augment=True,
+            flip_prob=hp['flip_prob'],
+            rotate_prob=hp['rotate_prob']
+        )
+        val_generator = DataGenerator(
+            file_paths=self.val_file_paths,
+            labels=self.val_labels,
+            batch_size=batch_size,
+            augment=False
+        )
+
+        # Define callbacks
+        callbacks = [
+            EarlyStopping(
+                monitor='val_loss',
+                patience=50,
+                mode='min',
+                verbose=1,
+                restore_best_weights=True
+            ),
+            ReduceLROnPlateau(
+                monitor='val_loss',
+                factor=0.5,
+                patience=10,
+                mode='min',
+                verbose=1
+            ),
+            TuneReportCallback(
+                {
+                    "val_loss": "val_loss",
+                    "val_accuracy": "val_accuracy",
+                    "val_auc": "val_auc"
+                },
+                on="epoch_end"
+            )
+        ]
+
+        # Train the model
+        model.fit(
+            train_generator,
+            validation_data=val_generator,
+            epochs=hp.get('epochs', 150),
+            callbacks=callbacks,
+            verbose=0
+        )
+
+        # Save the model checkpoint
+        with tune.checkpoint_dir(step=0) as checkpoint_dir:
+            model.save_weights(os.path.join(checkpoint_dir, "checkpoint"))
+
+    def retrain_best_model(self, best_hp):
+        """Retrain the model with the best hyperparameters on the training data."""
+        # Build the model with best hyperparameters
+        model = CNNModel.create_model(best_hp)
+
+        # Get batch size and other hyperparameters
+        batch_size = best_hp['batch_size']
+
+        # Build data generators
+        train_generator = DataGenerator(
+            file_paths=self.train_file_paths,
+            labels=self.train_labels,
+            batch_size=batch_size,
+            augment=True,
+            flip_prob=best_hp['flip_prob'],
+            rotate_prob=best_hp['rotate_prob']
+        )
+        val_generator = DataGenerator(
+            file_paths=self.val_file_paths,
+            labels=self.val_labels,
+            batch_size=batch_size,
+            augment=False
+        )
+
+        # Define callbacks
+        callbacks = [
+            EarlyStopping(
+                monitor='val_loss',
+                patience=50,
+                mode='min',
+                verbose=1,
+                restore_best_weights=True
+            ),
+            ReduceLROnPlateau(
+                monitor='val_loss',
+                factor=0.5,
+                patience=10,
+                mode='min',
+                verbose=1
+            ),
+            CSVLogger(f'training_log_fold_{fold_idx + 1}.csv')
+        ]
+
+        # Retrain the model
+        history = model.fit(
+            train_generator,
+            validation_data=val_generator,
+            epochs=300,
+            callbacks=callbacks,
+            verbose=1
+        )
+
+        # Optionally, save the final model
+        model.save(f'final_model_fold_{fold_idx + 1}.h5')
+
+        return model, history
 
 
 if __name__ == "__main__":
