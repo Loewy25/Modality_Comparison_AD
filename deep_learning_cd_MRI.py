@@ -419,14 +419,15 @@ def main():
             tune_config=tune.TuneConfig(
                 metric="val_auc",
                 mode="max",
-                num_samples=20,  # Adjust based on your computational budget
+                num_samples=20,
                 scheduler=scheduler,
                 search_alg=search_alg,
             ),
             run_config=air.RunConfig(
                 name=f"ray_tune_experiment_fold_{fold_idx + 1}",
-                storage_path="./ray_results",  # Use storage_path instead of local_dir
+                storage_path=storage_path,  # Use absolute path without scheme
             ),
+    
         )
 
         results = tuner.fit()
