@@ -27,7 +27,6 @@ import ray
 from ray import tune
 from ray.tune.schedulers import ASHAScheduler
 from ray.tune.integration.keras import TuneReportCallback
-from ray.tune.suggest.basic_variant import BasicVariantGenerator
 
 class Utils:
     """Utility functions for directory management and image resizing."""
@@ -404,8 +403,6 @@ def main():
             reduction_factor=2
         )
 
-        # Define the search algorithm (Random Search)
-        search_alg = BasicVariantGenerator()
 
         # Execute the hyperparameter search
         analysis = tune.run(
@@ -416,7 +413,6 @@ def main():
             mode="max",
             num_samples=20,  # Adjust based on your computational budget
             scheduler=scheduler,
-            search_alg=search_alg,
             name=f"ray_tune_experiment_fold_{fold_idx + 1}",
             local_dir="./ray_results"  # Directory to save results
         )
