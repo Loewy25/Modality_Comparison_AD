@@ -146,30 +146,15 @@ class DataLoader:
     @staticmethod
     def loading_mask_3d(task, modality):
         images_pet, images_mri, labels = generate_data_path_less()
-        original_imgs = []
-    
         if modality == 'PET':
-            data_train, train_label = generate(images_pet, labels, task)
+            file_paths, binary_labels = generate(images_pet, labels, task)
         elif modality == 'MRI':
-            data_train, train_label = generate(images_mri, labels, task)
+            file_paths, binary_labels = generate(images_mri, labels, task)
         else:
             raise ValueError(f"Unsupported modality: {modality}")
-    
-        train_data = []
-        target_shape = (128, 128, 128)
-    
-        for i in range(len(data_train)):
-            nifti_img = nib.load(data_train[i])
-            original_imgs.append(nifti_img)
-    
-            reshaped_data = nifti_img.get_fdata()
-            reshaped_data = zscore(reshaped_data, axis=None)
-            resized_data = resize_image(reshaped_data, target_shape)
-            train_data.append(resized_data)
-    
-        train_label = binarylabel(train_label, task)
-        train_data = np.array(train_data)
-        return train_data, train_label, original_imgs
+        
+        return file_paths, binary_labels
+
 
     @staticmethod
     def augment_data(image, flip_prob=0.1, rotate_prob=0.1):
