@@ -145,22 +145,31 @@ class DataLoader:
 
     @staticmethod
     def loading_mask_3d(task, modality):
-        """
-        Load and preprocess 3D medical images based on the specified task and modality.
-
-        Returns:
-        - file_paths (list): List of file paths for the specified modality and task.
-        - labels (list): Corresponding binary labels.
-        - original_imgs (list): List of original NIfTI images (for Grad-CAM reference).
-        """
-        # Placeholder for data loading logic
-        # Replace this with your actual data loading code
-        num_samples = 50
-        file_paths = [f"image_{i}_{modality}.nii.gz" for i in range(num_samples)]
-        labels = np.random.randint(0, 2, size=num_samples)
-        original_imgs = file_paths.copy()  # Assuming original images are the same
-
-        return file_paths, labels, original_imgs
+        images_pet, images_mri, labels = generate_data_path_less()
+        original_imgs = []
+    
+        if modality == 'PET':
+            data_train, train_label = generate(images_pet, labels, task)
+        elif modality == 'MRI':
+            data_train, train_label = generate(images_mri, labels, task)
+        else:
+            raise ValueError(f"Unsupported modality: {modality}")
+    
+        train_data = []
+        target_shape = (128, 128, 128)
+    
+        for i in range(len(data_train)):
+            nifti_img = nib.load(data_train[i])
+            original_imgs.append(nifti_img)
+    
+            reshaped_data = nifti_img.get_fdata()
+            reshaped_data = zscore(reshaped_data, axis=None)
+            resized_data = resize_image(reshaped_data, target_shape)
+            train_data.append(resized_data)
+    
+        train_label = binarylabel(train_label, task)
+        train_data = np.array(train_data)
+        return train_data, train_label, original_imgs
 
     @staticmethod
     def augment_data(image, flip_prob=0.1, rotate_prob=0.1):
@@ -176,8 +185,6 @@ class DataLoader:
             img_aug = np.flip(img_aug, axis=0)  # Flip along x-axis
         if np.random.rand() < flip_prob:
             img_aug = np.flip(img_aug, axis=1)  # Flip along y-axis
-        if np.random.rand() < flip_prob:
-            img_aug = np.flip(img_aug, axis=2)  # Flip along z-axis
 
         # Random rotation with specified probability
         if np.random.rand() < rotate_prob:
@@ -220,12 +227,14 @@ class DataGenerator(Sequence):
         batch_y = np.empty((len(batch_indices), self.num_classes), dtype=np.float32)
 
         for i, idx in enumerate(batch_indices):
-            # Load NIfTI image
-            # Replace this with your actual image loading code
-            img_data = np.random.rand(*self.target_shape)
+            # Load NIfTI image using the actual file path
+            nifti_img = nib.load(self.file_paths[idx])
+            img_data = nifti_img.get_fdata()
+
+            # Normalize image data
             img_data = zscore(img_data, axis=None)
 
-            # Resize the image (if needed)
+            # Resize the image
             img_resized = Utils.resize_image(img_data, self.target_shape)
 
             # Apply augmentation if enabled
@@ -245,6 +254,7 @@ class DataGenerator(Sequence):
     def on_epoch_end(self):
         """Updates indexes after each epoch."""
         np.random.shuffle(self.indices)
+
 
 
 class GradCAM:
