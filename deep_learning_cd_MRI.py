@@ -404,8 +404,6 @@ def main():
 
         # Define the scheduler
         scheduler = ASHAScheduler(
-            metric="val_auc",
-            mode="max",
             max_t=150,
             grace_period=30,
             reduction_factor=2
