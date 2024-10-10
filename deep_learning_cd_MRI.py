@@ -151,7 +151,7 @@ class DataLoader:
             file_paths, binary_labels = generate(images_mri, labels, task)
         else:
             raise ValueError(f"Unsupported modality: {modality}")
-        binary_labels = binarylabel(labels,task)
+        binary_labels = binarylabel(binary_labels,task)
         
         return file_paths, binary_labels
 
