@@ -418,21 +418,30 @@ def main():
 
         # Ensure the storage directory exists
         os.makedirs('/home/l.peiwang/Modality_Comparison_AD/ray_result', exist_ok=True)
-
-        # Execute the hyperparameter search using tune.Tuner
-        tuner = tune.Tuner(
+        
+        from ray.tune import TuneConfig
+        
+        # Wrap the training function to specify resources
+        train_fn = tune.with_resources(
             tune.with_parameters(cnn_trainable.train),
+            resources={"cpu": 1, "gpu": 1}  # Adjust based on your needs
+        )
+        
+        # Initialize the tuner with the wrapped training function
+        tuner = tune.Tuner(
+            train_fn,
             param_space=config,
-            tune_config=tune.TuneConfig(
+            tune_config=TuneConfig(
                 metric="val_auc",
                 mode="max",
-                num_samples=20,  # Adjust based on your computational budget
+                num_samples=20,
                 scheduler=scheduler,
                 search_alg=search_alg,
+                max_concurrent_trials=2,  # Limit concurrency to available GPUs
             ),
             run_config=air.RunConfig(
                 name=f"ray_tune_experiment_fold_{fold_idx + 1}",
-                storage_path=storage_path,  # Use the specified storage path
+                storage_path=storage_path,
             ),
         )
 
