@@ -28,11 +28,9 @@ from ray import tune
 from ray.tune.schedulers import ASHAScheduler
 from ray.train.tensorflow.keras import ReportCheckpointCallback
 
-
 from ray import air
-from ray import tune
-from ray.tune.schedulers import ASHAScheduler
 from ray.tune.search.basic_variant import BasicVariantGenerator
+
 
 class Utils:
     """Utility functions for directory management and image resizing."""
@@ -145,6 +143,7 @@ class DataLoader:
 
     @staticmethod
     def loading_mask_3d(task, modality):
+        # Assuming generate_data_path_less() and generate() are defined elsewhere
         images_pet, images_mri, labels = generate_data_path_less()
         if modality == 'PET':
             file_paths, binary_labels = generate(images_pet, labels, task)
@@ -239,7 +238,6 @@ class DataGenerator(Sequence):
     def on_epoch_end(self):
         """Updates indexes after each epoch."""
         np.random.shuffle(self.indices)
-
 
 
 class GradCAM:
@@ -362,138 +360,6 @@ def get_hyperparameter_search_space():
     return config
 
 
-def main():
-    import os  # Import os module
-
-    task = 'cd'  # Update as per your task
-    modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'test'  # Additional info for saving results
-
-    # Initialize Ray
-    ray.init()
-
-    # Load data
-    file_paths, labels, original_file_paths = DataLoader.loading_mask_3d(task, modality)
-    X_file_paths = np.array(file_paths)
-    Y = np.array(labels)
-
-    # Set up stratified k-fold cross-validation
-    skf = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
-
-    for fold_idx, (train_indices, val_indices) in enumerate(skf.split(X_file_paths, Y)):
-        print(f"\nStarting Fold {fold_idx + 1}/3")
-        train_file_paths = X_file_paths[train_indices]
-        val_file_paths = X_file_paths[val_indices]
-        train_labels = Y[train_indices]
-        val_labels = Y[val_indices]
-
-        # Create an instance of CNNTrainable for this fold
-        cnn_trainable = CNNTrainable(
-            task, modality, info,
-            train_file_paths, train_labels,
-            val_file_paths, val_labels,
-            fold_idx + 1  # Pass fold index
-        )
-
-        # Get hyperparameter search space
-        config = get_hyperparameter_search_space()
-
-        # Define the scheduler
-        scheduler = ASHAScheduler(
-            max_t=150,
-            grace_period=30,
-            reduction_factor=2
-        )
-
-        # Define the search algorithm (Random Search)
-        search_alg = BasicVariantGenerator()
-
-        # Set storage_path to your desired absolute path with 'file://' scheme
-        storage_path = 'file:///home/l.peiwang/Modality_Comparison_AD/ray_result'
-
-        # Ensure the storage directory exists
-        os.makedirs('/home/l.peiwang/Modality_Comparison_AD/ray_result', exist_ok=True)
-        
-        from ray.tune import TuneConfig
-        
-        # Wrap the training function to specify resources
-        train_fn = tune.with_resources(
-            tune.with_parameters(cnn_trainable.train),
-            resources={"cpu": 1, "gpu": 1}  # Adjust based on your needs
-        )
-        
-        # Initialize the tuner with the wrapped training function
-        tuner = tune.Tuner(
-            train_fn,
-            param_space=config,
-            tune_config=TuneConfig(
-                metric="val_auc",
-                mode="max",
-                num_samples=20,
-                scheduler=scheduler,
-                search_alg=search_alg,
-                max_concurrent_trials=2,  # Limit concurrency to available GPUs
-            ),
-            run_config=air.RunConfig(
-                name=f"ray_tune_experiment_fold_{fold_idx + 1}",
-                storage_path=storage_path,
-            ),
-        )
-
-        results = tuner.fit()
-
-        # Get the best result
-        best_result = results.get_best_result(metric="val_auc", mode="max")
-        best_config = best_result.config
-        best_val_auc = best_result.metrics["val_auc"]
-
-        print(f"Best trial config for Fold {fold_idx + 1}: {best_config}")
-        print(f"Best trial final validation AUC for Fold {fold_idx + 1}: {best_val_auc}")
-
-        # Retrain the model with the best hyperparameters on the training data
-        final_model, history = cnn_trainable.retrain_best_model(best_config)
-
-        # Plot training and validation loss curves
-        plt.figure()
-        plt.plot(history.history['loss'], label='Training Loss')
-        plt.plot(history.history.get('val_loss', []), label='Validation Loss')
-        plt.title(f'Training and Validation Loss - Fold {fold_idx + 1}')
-        plt.xlabel('Epochs')
-        plt.ylabel('Loss')
-        plt.legend()
-        loss_curve_path = f'loss_curve_fold_{fold_idx + 1}.png'
-        plt.savefig(loss_curve_path)
-        plt.close()
-        print(f'Loss curve saved at {loss_curve_path}')
-
-        # Apply Grad-CAM using the trained model
-        # For Grad-CAM, select a subset of images to avoid excessive computation
-        sample_indices = np.random.choice(len(val_file_paths), size=10, replace=False)
-        sampled_file_paths = [val_file_paths[i] for i in sample_indices]
-        sampled_original_imgs = [np.random.rand(128, 128, 128) for _ in sample_indices]  # Dummy images
-
-        # Create a list of expanded images for Grad-CAM
-        imgs = []
-        for file_path in sampled_file_paths:
-            # Replace this with your actual image loading code
-            img_data = np.random.rand(128, 128, 128)
-            img_data = zscore(img_data, axis=None)
-            resized_data = Utils.resize_image(img_data, target_shape=(128, 128, 128))
-            resized_data = np.expand_dims(resized_data, axis=-1)  # Add channel dimension
-            resized_data = np.expand_dims(resized_data, axis=0)  # Add batch dimension
-            imgs.append(resized_data)
-
-        # Apply Grad-CAM to all sampled images using final_model
-        GradCAM.apply_gradcam_all_layers_average(
-            final_model, imgs, sampled_original_imgs, task, modality, info, fold_idx + 1
-        )
-
-    # Shutdown Ray after completion
-    ray.shutdown()
-
-
-
-
 class CNNTrainable:
     """Class to encapsulate the model training logic for Ray Tune."""
 
@@ -562,8 +428,7 @@ class CNNTrainable:
 
         # The ReportCheckpointCallback handles reporting metrics and checkpoints
 
-
-def retrain_best_model(self, best_hp):
+    def retrain_best_model(self, best_hp):
         """Retrain the model with the best hyperparameters on the training data."""
         # Build the model with best hyperparameters
         model = CNNModel.create_model(best_hp)
@@ -623,11 +488,161 @@ def retrain_best_model(self, best_hp):
         print(f"  Validation AUC: {val_auc}")
     
         # Optionally, save the final model
-        model.save(f'final_model_fold_{self.fold_idx}.h5')
+        model_save_path = f'final_model_fold_{self.fold_idx}.h5'
+        model.save(model_save_path)
+        print(f'Final model saved at {model_save_path}')
     
         return model, history
 
 
+def main():
+    task = 'cd'  # Update as per your task
+    modality = 'MRI'  # 'MRI' or 'PET'
+    info = 'test'  # Additional info for saving results
+
+    # Initialize Ray
+    ray.init(ignore_reinit_error=True)
+
+    # Load data
+    file_paths, labels = DataLoader.loading_mask_3d(task, modality)
+    X_file_paths = np.array(file_paths)
+    Y = np.array(labels)
+
+    # Set up stratified k-fold cross-validation
+    skf = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+
+    for fold_idx, (train_indices, val_indices) in enumerate(skf.split(X_file_paths, Y)):
+        print(f"\nStarting Fold {fold_idx + 1}/3")
+        train_file_paths = X_file_paths[train_indices]
+        val_file_paths = X_file_paths[val_indices]
+        train_labels = Y[train_indices]
+        val_labels = Y[val_indices]
+
+        # Create an instance of CNNTrainable for this fold
+        cnn_trainable = CNNTrainable(
+            task, modality, info,
+            train_file_paths, train_labels,
+            val_file_paths, val_labels,
+            fold_idx + 1  # Pass fold index
+        )
+
+        # Get hyperparameter search space
+        config = get_hyperparameter_search_space()
+
+        # Define the scheduler
+        scheduler = ASHAScheduler(
+            max_t=150,
+            grace_period=30,
+            reduction_factor=2
+        )
+
+        # Define the search algorithm (Basic Variant Generator)
+        search_alg = BasicVariantGenerator()
+
+        # Set storage_path to your desired absolute path with 'file://' scheme
+        storage_path = 'file:///home/l.peiwang/Modality_Comparison_AD/ray_result'
+
+        # Ensure the storage directory exists
+        os.makedirs('/home/l.peiwang/Modality_Comparison_AD/ray_result', exist_ok=True)
+        
+        from ray.tune import TuneConfig
+        
+        # Wrap the training function to specify resources
+        train_fn = tune.with_resources(
+            tune.with_parameters(cnn_trainable.train),
+            resources={"cpu": 1, "gpu": 1}  # Adjust based on your needs
+        )
+        
+        # Initialize the tuner with the wrapped training function
+        tuner = tune.Tuner(
+            train_fn,
+            param_space=config,
+            tune_config=TuneConfig(
+                metric="val_auc",
+                mode="max",
+                num_samples=20,
+                scheduler=scheduler,
+                search_alg=search_alg,
+                max_concurrent_trials=2,  # Limit concurrency to available GPUs
+            ),
+            run_config=air.RunConfig(
+                name=f"ray_tune_experiment_fold_{fold_idx + 1}",
+                storage_path=storage_path,
+            ),
+        )
+
+        results = tuner.fit()
+
+        # Get the best result
+        best_result = results.get_best_result(metric="val_auc", mode="max")
+        best_config = best_result.config
+        best_val_auc = best_result.metrics["val_auc"]
+
+        print(f"Best trial config for Fold {fold_idx + 1}: {best_config}")
+        print(f"Best trial final validation AUC for Fold {fold_idx + 1}: {best_val_auc}")
+
+        # Retrain the model with the best hyperparameters on the training data
+        final_model, history = cnn_trainable.retrain_best_model(best_config)
+
+        # Plot training and validation loss curves
+        plt.figure()
+        plt.plot(history.history['loss'], label='Training Loss')
+        if 'val_loss' in history.history:
+            plt.plot(history.history['val_loss'], label='Validation Loss')
+        plt.title(f'Training and Validation Loss - Fold {fold_idx + 1}')
+        plt.xlabel('Epochs')
+        plt.ylabel('Loss')
+        plt.legend()
+        loss_curve_path = f'loss_curve_fold_{fold_idx + 1}.png'
+        plt.savefig(loss_curve_path)
+        plt.close()
+        print(f'Loss curve saved at {loss_curve_path}')
+
+        # Apply Grad-CAM using the trained model
+        # Select a subset of images to avoid excessive computation
+        sample_size = min(10, len(val_file_paths))  # Ensure sample size does not exceed available images
+        sample_indices = np.random.choice(len(val_file_paths), size=sample_size, replace=False)
+        sampled_file_paths = [val_file_paths[i] for i in sample_indices]
+
+        sampled_original_imgs = []
+        imgs = []
+        for file_path in sampled_file_paths:
+            # Load the actual image
+            try:
+                nifti_img = nib.load(file_path)
+                img_data = nifti_img.get_fdata()
+            except Exception as e:
+                print(f"Error loading image {file_path}: {e}")
+                continue
+
+            # Normalize
+            img_data = zscore(img_data, axis=None)
+
+            # Resize
+            img_resized = Utils.resize_image(img_data, target_shape=(128, 128, 128))
+
+            # Append to sampled_original_imgs
+            sampled_original_imgs.append(img_data)
+
+            # Prepare for Grad-CAM
+            img_resized = np.expand_dims(img_resized, axis=-1)  # Add channel dimension
+            img_resized = np.expand_dims(img_resized, axis=0)  # Add batch dimension
+            imgs.append(img_resized)
+
+        if not imgs:
+            print(f"No valid images found for Grad-CAM in Fold {fold_idx + 1}. Skipping Grad-CAM.")
+            continue
+
+        # Apply Grad-CAM to all sampled images using final_model
+        GradCAM.apply_gradcam_all_layers_average(
+            final_model, imgs, sampled_original_imgs, task, modality, info, fold_idx + 1
+        )
+
+    # Shutdown Ray after completion
+    ray.shutdown()
+
+
 if __name__ == "__main__":
     main()
+
 
