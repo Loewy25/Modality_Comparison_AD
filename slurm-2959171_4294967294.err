@@ -1,0 +1,383 @@
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+
+[notice] A new release of pip is available: 23.2.1 -> 24.2
+[notice] To update, run: pip install --upgrade pip
+2024-10-10 13:31:29,640	INFO worker.py:1786 -- Started a local Ray instance.
+[36m(train pid=2312109)[0m 2024-10-10 13:32:08.784595: E tensorflow/stream_executor/cuda/cuda_driver.cc:271] failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+[36m(train pid=2312109)[0m 2024-10-10 13:32:08.784649: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:169] retrieving CUDA diagnostic information for host: gpu07.cluster
+[36m(train pid=2312109)[0m 2024-10-10 13:32:08.784656: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:176] hostname: gpu07.cluster
+[36m(train pid=2312109)[0m 2024-10-10 13:32:08.784806: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:200] libcuda reported version is: 545.23.8
+[36m(train pid=2312109)[0m 2024-10-10 13:32:08.784830: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:204] kernel reported version is: 545.23.8
+[36m(train pid=2312109)[0m 2024-10-10 13:32:08.784836: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:310] kernel version seems to match DSO: 545.23.8
+[36m(train pid=2312109)[0m 2024-10-10 13:32:08.785186: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+[36m(train pid=2312109)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[36m(train pid=2312110)[0m 2024-10-10 13:32:14.357808: E tensorflow/stream_executor/cuda/cuda_driver.cc:271] failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected[32m [repeated 2x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/user-guides/configure-logging.html#log-deduplication for more options.)[0m
+[36m(train pid=2312110)[0m 2024-10-10 13:32:14.357858: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:169] retrieving CUDA diagnostic information for host: gpu07.cluster[32m [repeated 2x across cluster][0m
+[36m(train pid=2312110)[0m 2024-10-10 13:32:14.357865: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:176] hostname: gpu07.cluster[32m [repeated 2x across cluster][0m
+[36m(train pid=2312110)[0m 2024-10-10 13:32:14.357995: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:200] libcuda reported version is: 545.23.8[32m [repeated 2x across cluster][0m
+[36m(train pid=2312110)[0m 2024-10-10 13:32:14.358018: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:204] kernel reported version is: 545.23.8[32m [repeated 2x across cluster][0m
+[36m(train pid=2312110)[0m 2024-10-10 13:32:14.358024: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:310] kernel version seems to match DSO: 545.23.8[32m [repeated 2x across cluster][0m
+[36m(train pid=2312110)[0m 2024-10-10 13:32:14.358341: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA[32m [repeated 2x across cluster][0m
+[36m(train pid=2312110)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.[32m [repeated 2x across cluster][0m
+[36m(train pid=2312165)[0m 2024-10-10 13:32:19.800223: E tensorflow/stream_executor/cuda/cuda_driver.cc:271] failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected[32m [repeated 5x across cluster][0m
+[36m(train pid=2312165)[0m 2024-10-10 13:32:19.800285: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:169] retrieving CUDA diagnostic information for host: gpu07.cluster[32m [repeated 5x across cluster][0m
+[36m(train pid=2312165)[0m 2024-10-10 13:32:19.800292: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:176] hostname: gpu07.cluster[32m [repeated 5x across cluster][0m
+[36m(train pid=2312165)[0m 2024-10-10 13:32:19.800510: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:200] libcuda reported version is: 545.23.8[32m [repeated 5x across cluster][0m
+[36m(train pid=2312165)[0m 2024-10-10 13:32:19.800552: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:204] kernel reported version is: 545.23.8[32m [repeated 5x across cluster][0m
+[36m(train pid=2312165)[0m 2024-10-10 13:32:19.800561: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:310] kernel version seems to match DSO: 545.23.8[32m [repeated 5x across cluster][0m
+[36m(train pid=2312165)[0m 2024-10-10 13:32:19.802654: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA[32m [repeated 5x across cluster][0m
+[36m(train pid=2312165)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.[32m [repeated 5x across cluster][0m
+2024-10-10 13:35:05,735	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00013
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: 9b8564d46256165da1c2c5d901000000
+	pid: 2312175
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:35:36,157	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00008
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: de7cee581e2d4d0ba5c69fae01000000
+	pid: 2312146
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:35:37,198	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00001
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: dbcaf5ff584fcebc776ad44d01000000
+	pid: 2312109
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:36:20,451	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00007
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: 16806b93114d03980136c37b01000000
+	pid: 2312145
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:36:22,742	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00010
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: 11eb9a7491dc667bc806390101000000
+	pid: 2312172
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:36:38,695	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00019
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: 94a214d4b0ba1394228a34d601000000
+	pid: 2312221
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:36:38,756	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00002
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: 23cb2dfd8fb087242fe9156101000000
+	pid: 2312110
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:36:55,785	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00000
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: b5a219db6c0045378807f0a501000000
+	pid: 2312066
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:37:01,113	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00011
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: d3d15df7b0337d60e51e257801000000
+	pid: 2312173
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:37:05,848	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00016
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: 74f64fb0e742f99f96a08bf401000000
+	pid: 2312180
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:37:19,900	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00015
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: 81817e38cc73d2734836b28601000000
+	pid: 2312181
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:37:35,265	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00004
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: 73cf676edfc96d307dda976101000000
+	pid: 2312124
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:38:01,694	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00017
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: 9c4bccab5cc09250764aef6c01000000
+	pid: 2312207
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:38:32,792	WARNING util.py:201 -- The `on_step_begin` operation took 11.527 s, which may be a performance bottleneck.
+2024-10-10 13:38:38,354	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00012
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: 55980f68931c81a179a32c9701000000
+	pid: 2312174
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:38:44,501	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00014
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: 0a38655a205cde202c5b6fb201000000
+	pid: 2312176
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:39:10,750	ERROR tune_controller.py:1331 -- Trial task failed for trial train_e166a_00003
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 2691, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/ray/_private/worker.py", line 873, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: wrap_function.<locals>.ImplicitFunc
+	actor_id: b75cd11a40bb7c30db4ec32d01000000
+	pid: 2312111
+	namespace: b4de7b4f-8ebc-4bc3-801b-eb8a28852d22
+	ip: 10.1.1.107
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+2024-10-10 13:52:01,652	WARNING util.py:201 -- The `on_step_begin` operation took 0.743 s, which may be a performance bottleneck.
+[36m(train pid=2312165)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00009_9_batch_size=4,dropout_rate=0.3423,flip_prob=0.1721,l2_reg=0.0000,learning_rate=0.0001,rotate_prob=0.4299_2024-10-10_13-31-35/checkpoint_000000)
+[36m(train pid=2312176)[0m 2024-10-10 13:32:24.682523: E tensorflow/stream_executor/cuda/cuda_driver.cc:271] failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected[32m [repeated 12x across cluster][0m
+[36m(train pid=2312176)[0m 2024-10-10 13:32:24.682590: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:169] retrieving CUDA diagnostic information for host: gpu07.cluster[32m [repeated 12x across cluster][0m
+[36m(train pid=2312176)[0m 2024-10-10 13:32:24.682596: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:176] hostname: gpu07.cluster[32m [repeated 12x across cluster][0m
+[36m(train pid=2312176)[0m 2024-10-10 13:32:24.682776: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:200] libcuda reported version is: 545.23.8[32m [repeated 12x across cluster][0m
+[36m(train pid=2312176)[0m 2024-10-10 13:32:24.682805: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:204] kernel reported version is: 545.23.8[32m [repeated 12x across cluster][0m
+[36m(train pid=2312176)[0m 2024-10-10 13:32:24.682810: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:310] kernel version seems to match DSO: 545.23.8[32m [repeated 12x across cluster][0m
+[36m(train pid=2312176)[0m 2024-10-10 13:32:24.683159: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA[32m [repeated 12x across cluster][0m
+[36m(train pid=2312176)[0m To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.[32m [repeated 12x across cluster][0m
+[36m(train pid=2312208)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00018_18_batch_size=8,dropout_rate=0.2226,flip_prob=0.4198,l2_reg=0.0000,learning_rate=0.0005,rotate_prob=0.0832_2024-10-10_13-31-35/checkpoint_000000)
+[36m(train pid=2312138)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00006_6_batch_size=8,dropout_rate=0.1386,flip_prob=0.4093,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.0086_2024-10-10_13-31-35/checkpoint_000000)
+[36m(train pid=2312131)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00005_5_batch_size=4,dropout_rate=0.1127,flip_prob=0.3303,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.1740_2024-10-10_13-31-35/checkpoint_000000)
+[36m(train pid=2312165)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00009_9_batch_size=4,dropout_rate=0.3423,flip_prob=0.1721,l2_reg=0.0000,learning_rate=0.0001,rotate_prob=0.4299_2024-10-10_13-31-35/checkpoint_000001)
+[36m(train pid=2312208)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00018_18_batch_size=8,dropout_rate=0.2226,flip_prob=0.4198,l2_reg=0.0000,learning_rate=0.0005,rotate_prob=0.0832_2024-10-10_13-31-35/checkpoint_000001)
+[36m(train pid=2312138)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00006_6_batch_size=8,dropout_rate=0.1386,flip_prob=0.4093,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.0086_2024-10-10_13-31-35/checkpoint_000001)
+[36m(train pid=2312131)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00005_5_batch_size=4,dropout_rate=0.1127,flip_prob=0.3303,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.1740_2024-10-10_13-31-35/checkpoint_000001)
+[36m(train pid=2312208)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00018_18_batch_size=8,dropout_rate=0.2226,flip_prob=0.4198,l2_reg=0.0000,learning_rate=0.0005,rotate_prob=0.0832_2024-10-10_13-31-35/checkpoint_000002)
+[36m(train pid=2312165)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00009_9_batch_size=4,dropout_rate=0.3423,flip_prob=0.1721,l2_reg=0.0000,learning_rate=0.0001,rotate_prob=0.4299_2024-10-10_13-31-35/checkpoint_000002)
+[36m(train pid=2312138)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00006_6_batch_size=8,dropout_rate=0.1386,flip_prob=0.4093,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.0086_2024-10-10_13-31-35/checkpoint_000002)
+[36m(train pid=2312131)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00005_5_batch_size=4,dropout_rate=0.1127,flip_prob=0.3303,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.1740_2024-10-10_13-31-35/checkpoint_000002)
+2024-10-10 15:07:49,325	WARNING util.py:201 -- The `on_step_begin` operation took 2.016 s, which may be a performance bottleneck.
+[36m(train pid=2312208)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00018_18_batch_size=8,dropout_rate=0.2226,flip_prob=0.4198,l2_reg=0.0000,learning_rate=0.0005,rotate_prob=0.0832_2024-10-10_13-31-35/checkpoint_000003)
+[36m(train pid=2312165)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00009_9_batch_size=4,dropout_rate=0.3423,flip_prob=0.1721,l2_reg=0.0000,learning_rate=0.0001,rotate_prob=0.4299_2024-10-10_13-31-35/checkpoint_000003)
+[36m(train pid=2312138)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00006_6_batch_size=8,dropout_rate=0.1386,flip_prob=0.4093,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.0086_2024-10-10_13-31-35/checkpoint_000003)
+[36m(train pid=2312131)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00005_5_batch_size=4,dropout_rate=0.1127,flip_prob=0.3303,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.1740_2024-10-10_13-31-35/checkpoint_000003)
+[36m(train pid=2312208)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00018_18_batch_size=8,dropout_rate=0.2226,flip_prob=0.4198,l2_reg=0.0000,learning_rate=0.0005,rotate_prob=0.0832_2024-10-10_13-31-35/checkpoint_000004)
+[36m(train pid=2312165)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00009_9_batch_size=4,dropout_rate=0.3423,flip_prob=0.1721,l2_reg=0.0000,learning_rate=0.0001,rotate_prob=0.4299_2024-10-10_13-31-35/checkpoint_000004)
+[36m(train pid=2312138)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00006_6_batch_size=8,dropout_rate=0.1386,flip_prob=0.4093,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.0086_2024-10-10_13-31-35/checkpoint_000004)
+[36m(train pid=2312131)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00005_5_batch_size=4,dropout_rate=0.1127,flip_prob=0.3303,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.1740_2024-10-10_13-31-35/checkpoint_000004)
+2024-10-10 15:57:52,243	WARNING util.py:201 -- The `on_step_begin` operation took 9.572 s, which may be a performance bottleneck.
+[36m(train pid=2312208)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00018_18_batch_size=8,dropout_rate=0.2226,flip_prob=0.4198,l2_reg=0.0000,learning_rate=0.0005,rotate_prob=0.0832_2024-10-10_13-31-35/checkpoint_000005)
+[36m(train pid=2312165)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00009_9_batch_size=4,dropout_rate=0.3423,flip_prob=0.1721,l2_reg=0.0000,learning_rate=0.0001,rotate_prob=0.4299_2024-10-10_13-31-35/checkpoint_000005)
+[36m(train pid=2312138)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00006_6_batch_size=8,dropout_rate=0.1386,flip_prob=0.4093,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.0086_2024-10-10_13-31-35/checkpoint_000005)
+[36m(train pid=2312131)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00005_5_batch_size=4,dropout_rate=0.1127,flip_prob=0.3303,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.1740_2024-10-10_13-31-35/checkpoint_000005)
+[36m(train pid=2312208)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00018_18_batch_size=8,dropout_rate=0.2226,flip_prob=0.4198,l2_reg=0.0000,learning_rate=0.0005,rotate_prob=0.0832_2024-10-10_13-31-35/checkpoint_000006)
+2024-10-10 16:38:16,127	WARNING util.py:201 -- The `on_step_begin` operation took 5.540 s, which may be a performance bottleneck.
+[36m(train pid=2312165)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00009_9_batch_size=4,dropout_rate=0.3423,flip_prob=0.1721,l2_reg=0.0000,learning_rate=0.0001,rotate_prob=0.4299_2024-10-10_13-31-35/checkpoint_000006)
+[36m(train pid=2312138)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00006_6_batch_size=8,dropout_rate=0.1386,flip_prob=0.4093,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.0086_2024-10-10_13-31-35/checkpoint_000006)
+[36m(train pid=2312131)[0m Checkpoint successfully created at: Checkpoint(filesystem=local, path=/home/l.peiwang/Modality_Comparison_AD/ray_result/ray_tune_experiment_fold_1/train_e166a_00005_5_batch_size=4,dropout_rate=0.1127,flip_prob=0.3303,l2_reg=0.0000,learning_rate=0.0000,rotate_prob=0.1740_2024-10-10_13-31-35/checkpoint_000006)
+2024-10-10 16:52:30,638	WARNING util.py:201 -- The `on_step_begin` operation took 10.021 s, which may be a performance bottleneck.
