@@ -367,6 +367,8 @@ def get_hyperparameter_search_space():
 
 
 def main():
+    import os  # Import os module
+
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
     info = 'test'  # Additional info for saving results
@@ -412,6 +414,12 @@ def main():
         # Define the search algorithm (Random Search)
         search_alg = BasicVariantGenerator()
 
+        # Set storage_path to your desired absolute path with 'file://' scheme
+        storage_path = 'file:///home/l.peiwang/Modality_Comparison_AD/ray_result'
+
+        # Ensure the storage directory exists
+        os.makedirs('/home/l.peiwang/Modality_Comparison_AD/ray_result', exist_ok=True)
+
         # Execute the hyperparameter search using tune.Tuner
         tuner = tune.Tuner(
             tune.with_parameters(cnn_trainable.train),
@@ -419,15 +427,14 @@ def main():
             tune_config=tune.TuneConfig(
                 metric="val_auc",
                 mode="max",
-                num_samples=20,
+                num_samples=20,  # Adjust based on your computational budget
                 scheduler=scheduler,
                 search_alg=search_alg,
             ),
             run_config=air.RunConfig(
                 name=f"ray_tune_experiment_fold_{fold_idx + 1}",
-                storage_path=storage_path,  # Use absolute path without scheme
+                storage_path=storage_path,  # Use the specified storage path
             ),
-    
         )
 
         results = tuner.fit()
@@ -480,6 +487,7 @@ def main():
 
     # Shutdown Ray after completion
     ray.shutdown()
+
 
 
 
