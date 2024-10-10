@@ -544,14 +544,14 @@ class CNNTrainable:
         with tune.checkpoint_dir(step=0) as checkpoint_dir:
             model.save_weights(os.path.join(checkpoint_dir, "checkpoint"))
 
-    def retrain_best_model(self, best_hp):
+def retrain_best_model(self, best_hp):
         """Retrain the model with the best hyperparameters on the training data."""
         # Build the model with best hyperparameters
         model = CNNModel.create_model(best_hp)
-
+    
         # Get batch size and other hyperparameters
         batch_size = best_hp['batch_size']
-
+    
         # Build data generators
         train_generator = DataGenerator(
             file_paths=self.train_file_paths,
@@ -567,7 +567,7 @@ class CNNTrainable:
             batch_size=batch_size,
             augment=False
         )
-
+    
         # Define callbacks
         callbacks = [
             EarlyStopping(
@@ -584,21 +584,28 @@ class CNNTrainable:
                 mode='min',
                 verbose=1
             ),
-            CSVLogger(f'training_log_fold_{fold_idx + 1}.csv')
+            CSVLogger(f'training_log_fold_{self.fold_idx}.csv')
         ]
-
+    
         # Retrain the model
         history = model.fit(
             train_generator,
             validation_data=val_generator,
-            epochs=300,
+            epochs=best_hp.get('epochs', 150),
             callbacks=callbacks,
             verbose=1
         )
-
+    
+        # Evaluate the model on the validation data
+        val_loss, val_accuracy, val_auc = model.evaluate(val_generator, verbose=0)
+        print(f"\nRetrained model performance on validation data for Fold {self.fold_idx}:")
+        print(f"  Validation Loss: {val_loss}")
+        print(f"  Validation Accuracy: {val_accuracy}")
+        print(f"  Validation AUC: {val_auc}")
+    
         # Optionally, save the final model
-        model.save(f'final_model_fold_{fold_idx + 1}.h5')
-
+        model.save(f'final_model_fold_{self.fold_idx}.h5')
+    
         return model, history
 
 
