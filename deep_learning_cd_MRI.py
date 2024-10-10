@@ -17,7 +17,6 @@ from tensorflow.keras.utils import to_categorical, Sequence
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, CSVLogger
 from tensorflow.keras.metrics import AUC
 from sklearn.model_selection import StratifiedKFold
-from nilearn import plotting
 from scipy.stats import zscore
 from scipy.ndimage import zoom, rotate
 import matplotlib.pyplot as plt
@@ -152,6 +151,7 @@ class DataLoader:
             file_paths, binary_labels = generate(images_mri, labels, task)
         else:
             raise ValueError(f"Unsupported modality: {modality}")
+        binary_labels = binarylabel(labels)
         
         return file_paths, binary_labels
 
@@ -241,113 +241,6 @@ class DataGenerator(Sequence):
         np.random.shuffle(self.indices)
 
 
-class GradCAM:
-    """Class to compute and save Grad-CAM heatmaps."""
-
-    @staticmethod
-    def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
-        grad_model = tf.keras.models.Model(
-            [model.inputs], [model.get_layer(last_conv_layer_name).output, model.output]
-        )
-
-        with tf.GradientTape() as tape:
-            conv_outputs, predictions = grad_model(img)
-            if pred_index is None:
-                pred_index = tf.argmax(predictions[0])
-            loss = predictions[:, pred_index]
-
-        grads = tape.gradient(loss, conv_outputs)
-        pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2, 3))
-
-        conv_outputs = conv_outputs[0]
-        conv_outputs = conv_outputs * pooled_grads
-        heatmap = tf.reduce_sum(conv_outputs, axis=-1)
-
-        # Apply ReLU and normalize
-        heatmap = np.maximum(heatmap, 0)
-        if np.max(heatmap) != 0:
-            heatmap /= np.max(heatmap)
-        else:
-            heatmap = np.zeros_like(heatmap)
-
-        return heatmap
-
-    @staticmethod
-    def save_gradcam(heatmap, original_img,
-                     task, modality, layer_name, class_idx, info, fold_idx, save_dir='./grad-cam'):
-        save_dir = os.path.join(save_dir, info, f"fold_{fold_idx}", task, modality)
-        Utils.ensure_directory_exists(save_dir)
-
-        # Calculate the zoom factors based on the actual dimensions
-        zoom_factors = [original_dim / heatmap_dim for original_dim, heatmap_dim in zip(original_img.shape[:3], heatmap.shape)]
-
-        # Upsample the heatmap to the original image size
-        upsampled_heatmap = zoom(heatmap, zoom=zoom_factors, order=1)
-
-        # Create a NIfTI image with a dummy affine (since original_img is dummy data)
-        heatmap_img = nib.Nifti1Image(upsampled_heatmap, affine=np.eye(4))
-
-        # Normalize the upsampled heatmap
-        data = heatmap_img.get_fdata()
-        min_val = np.min(data)
-        max_val = np.max(data)
-        if max_val - min_val != 0:
-            normalized_data = (data - min_val) / (max_val - min_val)
-        else:
-            normalized_data = np.zeros_like(data)
-
-        heatmap_img = nib.Nifti1Image(normalized_data, heatmap_img.affine)
-
-        # Save the 3D NIfTI file
-        nifti_file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.nii.gz"
-        nifti_save_path = os.path.join(save_dir, nifti_file_name)
-        nib.save(heatmap_img, nifti_save_path)
-        print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
-
-        # Plot the glass brain
-        output_glass_brain_path = os.path.join(save_dir, f'glass_brain_{task}_{modality}_{layer_name}_class{class_idx}.png')
-        plotting.plot_glass_brain(heatmap_img, colorbar=True, plot_abs=True,
-                                  cmap='jet', output_file=output_glass_brain_path)
-        print(f'Glass brain plot saved at {output_glass_brain_path}')
-
-    @staticmethod
-    def apply_gradcam_all_layers_average(model, imgs, original_imgs,
-                                         task, modality, info, fold_idx):
-        # Identify convolutional layers
-        conv_layers = []
-        cumulative_scales = []
-        cumulative_scale = 1
-        for layer in model.layers:
-            if isinstance(layer, Conv3D):
-                conv_layers.append(layer.name)
-                # Update cumulative scaling factor if stride is not 1
-                if layer.strides[0] != 1:
-                    cumulative_scale *= layer.strides[0]
-                cumulative_scales.append(cumulative_scale)
-
-        print("Cumulative scaling factors for each convolutional layer:")
-        for idx, (layer_name, scale_value) in enumerate(zip(conv_layers, cumulative_scales)):
-            print(f"Layer {layer_name}: cumulative_scale = {scale_value}")
-
-        for idx, conv_layer_name in enumerate(conv_layers):
-            cumulative_scale = cumulative_scales[idx]
-            for class_idx in range(2):  # Loop through both class indices (class 0 and class 1)
-                accumulated_heatmap = None
-                for i, img in enumerate(imgs):
-                    heatmap = GradCAM.make_gradcam_heatmap(model, img, conv_layer_name,
-                                                           pred_index=class_idx)
-                    print(f"Heatmap shape for layer {conv_layer_name} and class {class_idx}: {heatmap.shape}")
-                    if accumulated_heatmap is None:
-                        accumulated_heatmap = heatmap
-                    else:
-                        accumulated_heatmap += heatmap
-
-                avg_heatmap = accumulated_heatmap / len(imgs)
-                # Use the first original image as reference
-                GradCAM.save_gradcam(avg_heatmap, original_imgs[0],
-                                     task, modality, conv_layer_name, class_idx, info, fold_idx)
-
-
 def get_hyperparameter_search_space():
     config = {
         "dropout_rate": tune.uniform(0.0, 0.5),
@@ -422,7 +315,7 @@ class CNNTrainable:
         model.fit(
             train_generator,
             validation_data=val_generator,
-            epochs=hp.get('epochs', 150),
+            epochs=hp.get('epochs', 30),
             callbacks=callbacks,
             verbose=0
         )
@@ -598,46 +491,6 @@ def main():
         plt.savefig(loss_curve_path)
         plt.close()
         print(f'Loss curve saved at {loss_curve_path}')
-
-        # Apply Grad-CAM using the trained model
-        # Select a subset of images to avoid excessive computation
-        sample_size = min(10, len(val_file_paths))  # Ensure sample size does not exceed available images
-        sample_indices = np.random.choice(len(val_file_paths), size=sample_size, replace=False)
-        sampled_file_paths = [val_file_paths[i] for i in sample_indices]
-
-        sampled_original_imgs = []
-        imgs = []
-        for file_path in sampled_file_paths:
-            # Load the actual image
-            try:
-                nifti_img = nib.load(file_path)
-                img_data = nifti_img.get_fdata()
-            except Exception as e:
-                print(f"Error loading image {file_path}: {e}")
-                continue
-
-            # Normalize
-            img_data = zscore(img_data, axis=None)
-
-            # Resize
-            img_resized = Utils.resize_image(img_data, target_shape=(128, 128, 128))
-
-            # Append to sampled_original_imgs
-            sampled_original_imgs.append(img_data)
-
-            # Prepare for Grad-CAM
-            img_resized = np.expand_dims(img_resized, axis=-1)  # Add channel dimension
-            img_resized = np.expand_dims(img_resized, axis=0)  # Add batch dimension
-            imgs.append(img_resized)
-
-        if not imgs:
-            print(f"No valid images found for Grad-CAM in Fold {fold_idx + 1}. Skipping Grad-CAM.")
-            continue
-
-        # Apply Grad-CAM to all sampled images using final_model
-        GradCAM.apply_gradcam_all_layers_average(
-            final_model, imgs, sampled_original_imgs, task, modality, info, fold_idx + 1
-        )
 
     # Shutdown Ray after completion
     ray.shutdown()
