@@ -30,6 +30,11 @@ from ray.train.tensorflow.keras import ReportCheckpointCallback
 from ray import air
 from ray.tune.search.basic_variant import BasicVariantGenerator
 from data_loading import generate_data_path_less, generate, binarylabel
+from tensorflow.keras.mixed_precision import experimental as mixed_precision
+
+# Set the global mixed precision policy
+policy = mixed_precision.Policy('mixed_float16')
+mixed_precision.set_policy(policy)
 
 
 class Utils:
@@ -270,8 +275,13 @@ class CNNTrainable:
         self.fold_idx = fold_idx  # Store fold index
 
     def train(self, config):
-        """Training function compatible with Ray Tune, modified for multi-GPU support."""
-        
+        """Training function compatible with Ray Tune, modified for multi-GPU support and mixed precision."""
+
+        # Enable mixed precision for better performance on supported GPUs
+        from tensorflow.keras.mixed_precision import experimental as mixed_precision
+        policy = mixed_precision.Policy('mixed_float16')
+        mixed_precision.set_policy(policy)
+
         # Define the MirroredStrategy for multi-GPU support
         strategy = tf.distribute.MirroredStrategy(devices=["/gpu:0", "/gpu:1"])
 
@@ -327,6 +337,7 @@ class CNNTrainable:
                 workers=4,  # Number of CPU workers for data loading
                 use_multiprocessing=True  # Enable multiprocessing for data loading
             )
+
 
         # The ReportCheckpointCallback handles reporting metrics and checkpoints
 
@@ -457,7 +468,7 @@ def main():
         # Wrap the training function to specify resources
         train_fn = tune.with_resources(
             tune.with_parameters(cnn_trainable.train),
-            resources={"cpu": 8, "gpu": 2}  # Adjust based on your needs
+            resources={"cpu": 8, "gpu": 2, "accelerator_type": "V100"}  # Adjust based on your needs
         )
         
         # Initialize the tuner with the wrapped training function
