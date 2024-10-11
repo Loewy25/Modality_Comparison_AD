@@ -249,7 +249,7 @@ def get_hyperparameter_search_space():
         "flip_prob": tune.uniform(0.0, 0.5),
         "rotate_prob": tune.uniform(0.0, 0.5),
         "batch_size": tune.choice([4, 8, 12]),
-        "epochs": 150  # You can adjust this or make it a hyperparameter as well
+        "epochs": 200  # You can adjust this or make it a hyperparameter as well
     }
     return config
 
@@ -315,7 +315,7 @@ class CNNTrainable:
         model.fit(
             train_generator,
             validation_data=val_generator,
-            epochs=hp.get('epochs', 10),
+            epochs=hp.get('epochs', 100),
             callbacks=callbacks,
             verbose=0
         )
@@ -425,8 +425,8 @@ def main():
 
         # Define the scheduler
         scheduler = ASHAScheduler(
-            max_t=10,
-            grace_period=5,
+            max_t=100,
+            grace_period=20,
             reduction_factor=2
         )
 
@@ -442,7 +442,7 @@ def main():
         # Wrap the training function to specify resources
         train_fn = tune.with_resources(
             tune.with_parameters(cnn_trainable.train),
-            resources={"cpu": 1, "gpu": 1}  # Adjust based on your needs
+            resources={"cpu": 2, "gpu": 1}  # Adjust based on your needs
         )
         
         # Initialize the tuner with the wrapped training function
@@ -452,9 +452,9 @@ def main():
             tune_config=TuneConfig(
                 metric="val_auc",
                 mode="max",
-                num_samples=4,
+                num_samples=14,
                 scheduler=scheduler,
-                max_concurrent_trials=2,  # Limit concurrency to available GPUs
+                max_concurrent_trials=4,  # Limit concurrency to available GPUs
             ),
             run_config=air.RunConfig(
                 name=f"ray_tune_experiment_fold_{fold_idx + 1}",
