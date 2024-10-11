@@ -30,11 +30,6 @@ from ray.train.tensorflow.keras import ReportCheckpointCallback
 from ray import air
 from ray.tune.search.basic_variant import BasicVariantGenerator
 from data_loading import generate_data_path_less, generate, binarylabel
-from tensorflow.keras.mixed_precision import experimental as mixed_precision
-
-# Set the global mixed precision policy
-policy = mixed_precision.Policy('mixed_float16')
-mixed_precision.set_policy(policy)
 
 
 class Utils:
@@ -246,14 +241,7 @@ class CNNTrainable:
         return np.array(augmented_X, dtype=np.float32)
 
     def train(self, config):
-        """Training function compatible with Ray Tune, modified for single-GPU support and mixed precision."""
-
-        # Enable mixed precision for better performance on supported GPUs
-        from tensorflow.keras.mixed_precision import experimental as mixed_precision
-        policy = mixed_precision.Policy('mixed_float16')
-        mixed_precision.set_policy(policy)
-
-        # No distribution strategy since we're using a single GPU
+        """Training function compatible with Ray Tune, modified for single-GPU support."""
 
         # Build the model using the sampled hyperparameters
         hp = config
@@ -429,7 +417,7 @@ def main():
         # Wrap the training function to specify resources
         train_fn = tune.with_resources(
             tune.with_parameters(cnn_trainable.train),
-            resources={"cpu": 8, "gpu": 1}  # Changed from 2 GPUs to 1 GPU
+            resources={"cpu": 2, "gpu": 1}  # Changed from 2 GPUs to 1 GPU
         )
 
         # Initialize the tuner with the wrapped training function
