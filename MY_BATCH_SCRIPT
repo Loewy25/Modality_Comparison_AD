@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #SBATCH -N 1                     # Request 1 node
-#SBATCH -n 2                   # Request 4 CPU cores
+#SBATCH -n 4                   # Request 4 CPU cores
 #SBATCH --mem=100G               # Request 400GB memory
 #SBATCH -t 130:50:00             # Set maximum time
-#SBATCH --gres=gpu:2          # Request 4 GPUs
+#SBATCH --gres=gpu:4          # Request 4 GPUs
 #SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
 
