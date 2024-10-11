@@ -454,7 +454,7 @@ def main():
                 mode="max",
                 num_samples=14,
                 scheduler=scheduler,
-                max_concurrent_trials=4,  # Limit concurrency to available GPUs
+                max_concurrent_trials=2,  # Limit concurrency to available GPUs
             ),
             run_config=air.RunConfig(
                 name=f"ray_tune_experiment_fold_{fold_idx + 1}",
