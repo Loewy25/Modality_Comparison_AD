@@ -315,7 +315,7 @@ class CNNTrainable:
         model.fit(
             train_generator,
             validation_data=val_generator,
-            epochs=hp.get('epochs', 30),
+            epochs=hp.get('epochs', 10),
             callbacks=callbacks,
             verbose=0
         )
@@ -369,7 +369,7 @@ class CNNTrainable:
         history = model.fit(
             train_generator,
             validation_data=val_generator,
-            epochs=best_hp.get('epochs', 30),
+            epochs=best_hp.get('epochs', 10),
             callbacks=callbacks,
             verbose=1
         )
@@ -425,13 +425,11 @@ def main():
 
         # Define the scheduler
         scheduler = ASHAScheduler(
-            max_t=30,
-            grace_period=10,
+            max_t=10,
+            grace_period=5,
             reduction_factor=2
         )
 
-        # Define the search algorithm (Basic Variant Generator)
-        search_alg = BasicVariantGenerator()
 
         # Set storage_path to your desired absolute path with 'file://' scheme
         storage_path = 'file:///home/l.peiwang/Modality_Comparison_AD/ray_result'
@@ -454,9 +452,8 @@ def main():
             tune_config=TuneConfig(
                 metric="val_auc",
                 mode="max",
-                num_samples=10,
+                num_samples=4,
                 scheduler=scheduler,
-                search_alg=search_alg,
                 max_concurrent_trials=2,  # Limit concurrency to available GPUs
             ),
             run_config=air.RunConfig(
