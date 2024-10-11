@@ -13,7 +13,7 @@ from tensorflow.keras.layers import (
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.utils import to_categorical, Sequence
+from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, CSVLogger
 from tensorflow.keras.metrics import AUC
 from sklearn.model_selection import StratifiedKFold
@@ -147,8 +147,8 @@ class DataLoader:
     """Class to handle data loading and preprocessing."""
 
     @staticmethod
-    def loading_mask_3d(task, modality):
-        # Assuming generate_data_path_less() and generate() are defined elsewhere
+    def loading_mask_3d(task, modality, target_shape=(128, 128, 128)):
+        # Load data paths and labels
         images_pet, images_mri, labels = generate_data_path_less()
         if modality == 'PET':
             file_paths, binary_labels = generate(images_pet, labels, task)
@@ -156,10 +156,33 @@ class DataLoader:
             file_paths, binary_labels = generate(images_mri, labels, task)
         else:
             raise ValueError(f"Unsupported modality: {modality}")
-        binary_labels = binarylabel(binary_labels,task)
-        
-        return file_paths, binary_labels
+        binary_labels = binarylabel(binary_labels, task)
 
+        # Initialize lists to store image data
+        data = []
+        original_imgs = []
+
+        for idx, file_path in enumerate(file_paths):
+            # Load NIfTI image
+            nifti_img = nib.load(file_path)
+            img_data = nifti_img.get_fdata()
+            original_imgs.append(nifti_img)  # Store original image for Grad-CAM
+
+            # Normalize image data
+            img_data = zscore(img_data, axis=None)
+
+            # Resize the image
+            img_resized = Utils.resize_image(img_data, target_shape)
+
+            # Expand dimensions to add channel axis
+            img_resized = np.expand_dims(img_resized, axis=-1)  # Shape: (128,128,128,1)
+
+            data.append(img_resized)
+
+        data = np.array(data, dtype=np.float32)
+        labels = np.array(binary_labels, dtype=np.int32)
+
+        return data, labels, original_imgs
 
     @staticmethod
     def augment_data(image, flip_prob=0.1, rotate_prob=0.1):
@@ -184,68 +207,6 @@ class DataLoader:
         return img_aug
 
 
-class DataGenerator(Sequence):
-    """Keras Sequence Data Generator for loading and preprocessing 3D medical images."""
-
-    def __init__(self, file_paths, labels, batch_size=8,
-                 target_shape=(128, 128, 128), num_classes=2,
-                 augment=False, flip_prob=0.1, rotate_prob=0.1):
-        """
-        Initialization.
-        """
-        self.file_paths = file_paths
-        self.labels = labels
-        self.batch_size = batch_size
-        self.target_shape = target_shape
-        self.num_classes = num_classes
-        self.augment = augment
-        self.flip_prob = flip_prob
-        self.rotate_prob = rotate_prob
-        self.indices = np.arange(len(self.file_paths))
-
-    def __len__(self):
-        """Denotes the number of batches per epoch."""
-        return int(np.ceil(len(self.file_paths) / self.batch_size))
-
-    def __getitem__(self, index):
-        """Generate one batch of data."""
-        # Generate indices of the batch
-        batch_indices = self.indices[index * self.batch_size:(index + 1) * self.batch_size]
-
-        # Initialize arrays
-        batch_x = np.empty((len(batch_indices), *self.target_shape, 1), dtype=np.float32)
-        batch_y = np.empty((len(batch_indices), self.num_classes), dtype=np.float32)
-
-        for i, idx in enumerate(batch_indices):
-            # Load NIfTI image using the actual file path
-            nifti_img = nib.load(self.file_paths[idx])
-            img_data = nifti_img.get_fdata()
-
-            # Normalize image data
-            img_data = zscore(img_data, axis=None)
-
-            # Resize the image
-            img_resized = Utils.resize_image(img_data, self.target_shape)
-
-            # Apply augmentation if enabled
-            if self.augment:
-                img_resized = DataLoader.augment_data(img_resized,
-                                                      flip_prob=self.flip_prob,
-                                                      rotate_prob=self.rotate_prob)
-
-            # Expand dimensions and assign to batch_x
-            batch_x[i, ..., 0] = img_resized
-
-            # Assign label
-            batch_y[i] = to_categorical(self.labels[idx], num_classes=self.num_classes)
-
-        return batch_x, batch_y
-
-    def on_epoch_end(self):
-        """Updates indexes after each epoch."""
-        np.random.shuffle(self.indices)
-
-
 def get_hyperparameter_search_space():
     config = {
         "dropout_rate": tune.uniform(0.0, 0.5),
@@ -263,16 +224,26 @@ class CNNTrainable:
     """Class to encapsulate the model training logic for Ray Tune."""
 
     def __init__(self, task, modality, info,
-                 train_file_paths, train_labels,
-                 val_file_paths, val_labels, fold_idx):
+                 X_train, Y_train,
+                 X_val, Y_val, fold_idx):
         self.task = task
         self.modality = modality
         self.info = info
-        self.train_file_paths = train_file_paths
-        self.train_labels = train_labels
-        self.val_file_paths = val_file_paths
-        self.val_labels = val_labels
+        self.X_train = X_train
+        self.Y_train = Y_train
+        self.X_val = X_val
+        self.Y_val = Y_val
         self.fold_idx = fold_idx  # Store fold index
+
+    def augment_data_batch(self, X, flip_prob, rotate_prob):
+        """Apply data augmentation to the entire training set."""
+        augmented_X = []
+        for img in X:
+            img_aug = DataLoader.augment_data(img,
+                                              flip_prob=flip_prob,
+                                              rotate_prob=rotate_prob)
+            augmented_X.append(img_aug)
+        return np.array(augmented_X, dtype=np.float32)
 
     def train(self, config):
         """Training function compatible with Ray Tune, modified for multi-GPU support and mixed precision."""
@@ -291,21 +262,11 @@ class CNNTrainable:
             hp = config
             model = CNNModel.create_model(hp)
 
-            # Build data generators
-            batch_size = hp['batch_size']
-            train_generator = DataGenerator(
-                file_paths=self.train_file_paths,
-                labels=self.train_labels,
-                batch_size=batch_size,
-                augment=True,
+            # Apply data augmentation to training data
+            X_train_augmented = self.augment_data_batch(
+                self.X_train,
                 flip_prob=hp['flip_prob'],
                 rotate_prob=hp['rotate_prob']
-            )
-            val_generator = DataGenerator(
-                file_paths=self.val_file_paths,
-                labels=self.val_labels,
-                batch_size=batch_size,
-                augment=False
             )
 
             # Define callbacks
@@ -329,15 +290,16 @@ class CNNTrainable:
 
             # Train the model
             model.fit(
-                train_generator,
-                validation_data=val_generator,
+                X_train_augmented,
+                self.Y_train,
+                validation_data=(self.X_val, self.Y_val),
                 epochs=hp.get('epochs', 100),
                 callbacks=callbacks,
                 verbose=0,
+                batch_size=hp['batch_size'],
                 workers=4,  # Number of CPU workers for data loading
                 use_multiprocessing=True  # Enable multiprocessing for data loading
             )
-
 
         # The ReportCheckpointCallback handles reporting metrics and checkpoints
 
@@ -351,26 +313,14 @@ class CNNTrainable:
         with strategy.scope():
             # Build the model with the best hyperparameters
             model = CNNModel.create_model(best_hp)
-    
-            # Get batch size and other hyperparameters
-            batch_size = best_hp['batch_size']
-    
-            # Build data generators
-            train_generator = DataGenerator(
-                file_paths=self.train_file_paths,
-                labels=self.train_labels,
-                batch_size=batch_size,
-                augment=True,
+
+            # Apply data augmentation to training data
+            X_train_augmented = self.augment_data_batch(
+                self.X_train,
                 flip_prob=best_hp['flip_prob'],
                 rotate_prob=best_hp['rotate_prob']
             )
-            val_generator = DataGenerator(
-                file_paths=self.val_file_paths,
-                labels=self.val_labels,
-                batch_size=batch_size,
-                augment=False
-            )
-    
+
             # Define callbacks
             callbacks = [
                 EarlyStopping(
@@ -389,31 +339,34 @@ class CNNTrainable:
                 ),
                 CSVLogger(f'training_log_fold_{self.fold_idx}.csv')
             ]
-    
+
             # Retrain the model with multi-GPU support
             history = model.fit(
-                train_generator,
-                validation_data=val_generator,
+                X_train_augmented,
+                self.Y_train,
+                validation_data=(self.X_val, self.Y_val),
                 epochs=best_hp.get('epochs', 10),
                 callbacks=callbacks,
                 verbose=1,
+                batch_size=best_hp['batch_size'],
                 workers=4,  # Number of CPU workers for data loading
                 use_multiprocessing=True  # Enable multiprocessing for data loading
             )
-    
+
             # Evaluate the model on the validation data
-            val_loss, val_accuracy, val_auc = model.evaluate(val_generator, verbose=0)
+            val_loss, val_accuracy, val_auc = model.evaluate(self.X_val, self.Y_val, verbose=0)
             print(f"\nRetrained model performance on validation data for Fold {self.fold_idx}:")
             print(f"  Validation Loss: {val_loss}")
             print(f"  Validation Accuracy: {val_accuracy}")
             print(f"  Validation AUC: {val_auc}")
-    
+
             # Optionally, save the final model
             model_save_path = f'final_model_fold_{self.fold_idx}.h5'
             model.save(model_save_path)
             print(f'Final model saved at {model_save_path}')
-    
+
         return model, history
+
 
 def main():
     task = 'cd'  # Update as per your task
@@ -423,26 +376,32 @@ def main():
     # Initialize Ray
     ray.init(ignore_reinit_error=True)
 
-    # Load data
-    file_paths, labels = DataLoader.loading_mask_3d(task, modality)
-    X_file_paths = np.array(file_paths)
+    # Load all data
+    print("Loading data into memory...")
+    data, labels, original_imgs = DataLoader.loading_mask_3d(task, modality)
+    X = np.array(data)
     Y = np.array(labels)
+    print(f"Data loaded: X shape = {X.shape}, Y shape = {Y.shape}")
 
     # Set up stratified k-fold cross-validation
     skf = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
 
-    for fold_idx, (train_indices, val_indices) in enumerate(skf.split(X_file_paths, Y)):
+    for fold_idx, (train_indices, val_indices) in enumerate(skf.split(X, Y)):
         print(f"\nStarting Fold {fold_idx + 1}/3")
-        train_file_paths = X_file_paths[train_indices]
-        val_file_paths = X_file_paths[val_indices]
-        train_labels = Y[train_indices]
-        val_labels = Y[val_indices]
+        X_train = X[train_indices]
+        Y_train = Y[train_indices]
+        X_val = X[val_indices]
+        Y_val = Y[val_indices]
+
+        # Convert labels to categorical
+        Y_train_cat = to_categorical(Y_train, num_classes=2)
+        Y_val_cat = to_categorical(Y_val, num_classes=2)
 
         # Create an instance of CNNTrainable for this fold
         cnn_trainable = CNNTrainable(
             task, modality, info,
-            train_file_paths, train_labels,
-            val_file_paths, val_labels,
+            X_train, Y_train_cat,
+            X_val, Y_val_cat,
             fold_idx + 1  # Pass fold index
         )
 
@@ -456,21 +415,20 @@ def main():
             reduction_factor=2
         )
 
-
         # Set storage_path to your desired absolute path with 'file://' scheme
         storage_path = 'file:///home/l.peiwang/Modality_Comparison_AD/ray_result'
 
         # Ensure the storage directory exists
         os.makedirs('/home/l.peiwang/Modality_Comparison_AD/ray_result', exist_ok=True)
-        
+
         from ray.tune import TuneConfig
-        
+
         # Wrap the training function to specify resources
         train_fn = tune.with_resources(
             tune.with_parameters(cnn_trainable.train),
             resources={"cpu": 8, "gpu": 2}  # Adjust based on your needs
         )
-        
+
         # Initialize the tuner with the wrapped training function
         tuner = tune.Tuner(
             train_fn,
@@ -521,5 +479,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
