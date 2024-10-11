@@ -270,124 +270,139 @@ class CNNTrainable:
         self.fold_idx = fold_idx  # Store fold index
 
     def train(self, config):
-        """Training function compatible with Ray Tune."""
-        # Build the model using the sampled hyperparameters
-        hp = config
-        model = CNNModel.create_model(hp)
+        """Training function compatible with Ray Tune, modified for multi-GPU support."""
+        
+        # Define the MirroredStrategy for multi-GPU support
+        strategy = tf.distribute.MirroredStrategy(devices=["/gpu:0", "/gpu:1"])
 
-        # Build data generators
-        batch_size = hp['batch_size']
-        train_generator = DataGenerator(
-            file_paths=self.train_file_paths,
-            labels=self.train_labels,
-            batch_size=batch_size,
-            augment=True,
-            flip_prob=hp['flip_prob'],
-            rotate_prob=hp['rotate_prob']
-        )
-        val_generator = DataGenerator(
-            file_paths=self.val_file_paths,
-            labels=self.val_labels,
-            batch_size=batch_size,
-            augment=False
-        )
+        # Using the strategy scope to create and compile the model
+        with strategy.scope():
+            # Build the model using the sampled hyperparameters
+            hp = config
+            model = CNNModel.create_model(hp)
 
-        # Define callbacks
-        callbacks = [
-            EarlyStopping(
-                monitor='val_loss',
-                patience=50,
-                mode='min',
-                verbose=1,
-                restore_best_weights=True
-            ),
-            ReduceLROnPlateau(
-                monitor='val_loss',
-                factor=0.5,
-                patience=10,
-                mode='min',
-                verbose=1
-            ),
-            ReportCheckpointCallback()
-        ]
+            # Build data generators
+            batch_size = hp['batch_size']
+            train_generator = DataGenerator(
+                file_paths=self.train_file_paths,
+                labels=self.train_labels,
+                batch_size=batch_size,
+                augment=True,
+                flip_prob=hp['flip_prob'],
+                rotate_prob=hp['rotate_prob']
+            )
+            val_generator = DataGenerator(
+                file_paths=self.val_file_paths,
+                labels=self.val_labels,
+                batch_size=batch_size,
+                augment=False
+            )
 
-        # Train the model
-        model.fit(
-            train_generator,
-            validation_data=val_generator,
-            epochs=hp.get('epochs', 100),
-            callbacks=callbacks,
-            verbose=0
-        )
+            # Define callbacks
+            callbacks = [
+                EarlyStopping(
+                    monitor='val_loss',
+                    patience=50,
+                    mode='min',
+                    verbose=1,
+                    restore_best_weights=True
+                ),
+                ReduceLROnPlateau(
+                    monitor='val_loss',
+                    factor=0.5,
+                    patience=10,
+                    mode='min',
+                    verbose=1
+                ),
+                ReportCheckpointCallback()
+            ]
+
+            # Train the model
+            model.fit(
+                train_generator,
+                validation_data=val_generator,
+                epochs=hp.get('epochs', 100),
+                callbacks=callbacks,
+                verbose=0,
+                workers=4,  # Number of CPU workers for data loading
+                use_multiprocessing=True  # Enable multiprocessing for data loading
+            )
 
         # The ReportCheckpointCallback handles reporting metrics and checkpoints
 
     def retrain_best_model(self, best_hp):
         """Retrain the model with the best hyperparameters on the training data."""
-        # Build the model with best hyperparameters
-        model = CNNModel.create_model(best_hp)
+
+        # Define the MirroredStrategy for multi-GPU support
+        strategy = tf.distribute.MirroredStrategy(devices=["/gpu:0", "/gpu:1"])
+
+        # Using the strategy scope to create and compile the model
+        with strategy.scope():
+            # Build the model with the best hyperparameters
+            model = CNNModel.create_model(best_hp)
     
-        # Get batch size and other hyperparameters
-        batch_size = best_hp['batch_size']
+            # Get batch size and other hyperparameters
+            batch_size = best_hp['batch_size']
     
-        # Build data generators
-        train_generator = DataGenerator(
-            file_paths=self.train_file_paths,
-            labels=self.train_labels,
-            batch_size=batch_size,
-            augment=True,
-            flip_prob=best_hp['flip_prob'],
-            rotate_prob=best_hp['rotate_prob']
-        )
-        val_generator = DataGenerator(
-            file_paths=self.val_file_paths,
-            labels=self.val_labels,
-            batch_size=batch_size,
-            augment=False
-        )
+            # Build data generators
+            train_generator = DataGenerator(
+                file_paths=self.train_file_paths,
+                labels=self.train_labels,
+                batch_size=batch_size,
+                augment=True,
+                flip_prob=best_hp['flip_prob'],
+                rotate_prob=best_hp['rotate_prob']
+            )
+            val_generator = DataGenerator(
+                file_paths=self.val_file_paths,
+                labels=self.val_labels,
+                batch_size=batch_size,
+                augment=False
+            )
     
-        # Define callbacks
-        callbacks = [
-            EarlyStopping(
-                monitor='val_loss',
-                patience=50,
-                mode='min',
+            # Define callbacks
+            callbacks = [
+                EarlyStopping(
+                    monitor='val_loss',
+                    patience=50,
+                    mode='min',
+                    verbose=1,
+                    restore_best_weights=True
+                ),
+                ReduceLROnPlateau(
+                    monitor='val_loss',
+                    factor=0.5,
+                    patience=10,
+                    mode='min',
+                    verbose=1
+                ),
+                CSVLogger(f'training_log_fold_{self.fold_idx}.csv')
+            ]
+    
+            # Retrain the model with multi-GPU support
+            history = model.fit(
+                train_generator,
+                validation_data=val_generator,
+                epochs=best_hp.get('epochs', 10),
+                callbacks=callbacks,
                 verbose=1,
-                restore_best_weights=True
-            ),
-            ReduceLROnPlateau(
-                monitor='val_loss',
-                factor=0.5,
-                patience=10,
-                mode='min',
-                verbose=1
-            ),
-            CSVLogger(f'training_log_fold_{self.fold_idx}.csv')
-        ]
+                workers=4,  # Number of CPU workers for data loading
+                use_multiprocessing=True  # Enable multiprocessing for data loading
+            )
     
-        # Retrain the model
-        history = model.fit(
-            train_generator,
-            validation_data=val_generator,
-            epochs=best_hp.get('epochs', 10),
-            callbacks=callbacks,
-            verbose=1
-        )
+            # Evaluate the model on the validation data
+            val_loss, val_accuracy, val_auc = model.evaluate(val_generator, verbose=0)
+            print(f"\nRetrained model performance on validation data for Fold {self.fold_idx}:")
+            print(f"  Validation Loss: {val_loss}")
+            print(f"  Validation Accuracy: {val_accuracy}")
+            print(f"  Validation AUC: {val_auc}")
     
-        # Evaluate the model on the validation data
-        val_loss, val_accuracy, val_auc = model.evaluate(val_generator, verbose=0)
-        print(f"\nRetrained model performance on validation data for Fold {self.fold_idx}:")
-        print(f"  Validation Loss: {val_loss}")
-        print(f"  Validation Accuracy: {val_accuracy}")
-        print(f"  Validation AUC: {val_auc}")
-    
-        # Optionally, save the final model
-        model_save_path = f'final_model_fold_{self.fold_idx}.h5'
-        model.save(model_save_path)
-        print(f'Final model saved at {model_save_path}')
+            # Optionally, save the final model
+            model_save_path = f'final_model_fold_{self.fold_idx}.h5'
+            model.save(model_save_path)
+            print(f'Final model saved at {model_save_path}')
     
         return model, history
-
 
 def main():
     task = 'cd'  # Update as per your task
@@ -442,7 +457,7 @@ def main():
         # Wrap the training function to specify resources
         train_fn = tune.with_resources(
             tune.with_parameters(cnn_trainable.train),
-            resources={"cpu": 2, "gpu": 1}  # Adjust based on your needs
+            resources={"cpu": 8, "gpu": 2}  # Adjust based on your needs
         )
         
         # Initialize the tuner with the wrapped training function
