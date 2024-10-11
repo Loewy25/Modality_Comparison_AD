@@ -246,124 +246,116 @@ class CNNTrainable:
         return np.array(augmented_X, dtype=np.float32)
 
     def train(self, config):
-        """Training function compatible with Ray Tune, modified for multi-GPU support and mixed precision."""
+        """Training function compatible with Ray Tune, modified for single-GPU support and mixed precision."""
 
         # Enable mixed precision for better performance on supported GPUs
         from tensorflow.keras.mixed_precision import experimental as mixed_precision
         policy = mixed_precision.Policy('mixed_float16')
         mixed_precision.set_policy(policy)
 
-        # Define the MirroredStrategy for multi-GPU support
-        strategy = tf.distribute.MirroredStrategy(devices=["/gpu:0", "/gpu:1"])
+        # No distribution strategy since we're using a single GPU
 
-        # Using the strategy scope to create and compile the model
-        with strategy.scope():
-            # Build the model using the sampled hyperparameters
-            hp = config
-            model = CNNModel.create_model(hp)
+        # Build the model using the sampled hyperparameters
+        hp = config
+        model = CNNModel.create_model(hp)
 
-            # Apply data augmentation to training data
-            X_train_augmented = self.augment_data_batch(
-                self.X_train,
-                flip_prob=hp['flip_prob'],
-                rotate_prob=hp['rotate_prob']
-            )
+        # Apply data augmentation to training data
+        X_train_augmented = self.augment_data_batch(
+            self.X_train,
+            flip_prob=hp['flip_prob'],
+            rotate_prob=hp['rotate_prob']
+        )
 
-            # Define callbacks
-            callbacks = [
-                EarlyStopping(
-                    monitor='val_loss',
-                    patience=50,
-                    mode='min',
-                    verbose=1,
-                    restore_best_weights=True
-                ),
-                ReduceLROnPlateau(
-                    monitor='val_loss',
-                    factor=0.5,
-                    patience=10,
-                    mode='min',
-                    verbose=1
-                ),
-                ReportCheckpointCallback()
-            ]
+        # Define callbacks
+        callbacks = [
+            EarlyStopping(
+                monitor='val_loss',
+                patience=50,
+                mode='min',
+                verbose=1,
+                restore_best_weights=True
+            ),
+            ReduceLROnPlateau(
+                monitor='val_loss',
+                factor=0.5,
+                patience=10,
+                mode='min',
+                verbose=1
+            ),
+            ReportCheckpointCallback()
+        ]
 
-            # Train the model
-            model.fit(
-                X_train_augmented,
-                self.Y_train,
-                validation_data=(self.X_val, self.Y_val),
-                epochs=hp.get('epochs', 100),
-                callbacks=callbacks,
-                verbose=0,
-                batch_size=hp['batch_size'],
-                workers=4,  # Number of CPU workers for data loading
-                use_multiprocessing=True  # Enable multiprocessing for data loading
-            )
+        # Train the model
+        model.fit(
+            X_train_augmented,
+            self.Y_train,
+            validation_data=(self.X_val, self.Y_val),
+            epochs=hp.get('epochs', 100),
+            callbacks=callbacks,
+            verbose=0,
+            batch_size=hp['batch_size'],
+            workers=4,  # Number of CPU workers for data loading
+            use_multiprocessing=True  # Enable multiprocessing for data loading
+        )
 
         # The ReportCheckpointCallback handles reporting metrics and checkpoints
 
     def retrain_best_model(self, best_hp):
         """Retrain the model with the best hyperparameters on the training data."""
 
-        # Define the MirroredStrategy for multi-GPU support
-        strategy = tf.distribute.MirroredStrategy(devices=["/gpu:0", "/gpu:1"])
+        # Build the model with the best hyperparameters
+        model = CNNModel.create_model(best_hp)
 
-        # Using the strategy scope to create and compile the model
-        with strategy.scope():
-            # Build the model with the best hyperparameters
-            model = CNNModel.create_model(best_hp)
+        # Apply data augmentation to training data
+        X_train_augmented = self.augment_data_batch(
+            self.X_train,
+            flip_prob=best_hp['flip_prob'],
+            rotate_prob=best_hp['rotate_prob']
+        )
 
-            # Apply data augmentation to training data
-            X_train_augmented = self.augment_data_batch(
-                self.X_train,
-                flip_prob=best_hp['flip_prob'],
-                rotate_prob=best_hp['rotate_prob']
-            )
-
-            # Define callbacks
-            callbacks = [
-                EarlyStopping(
-                    monitor='val_loss',
-                    patience=50,
-                    mode='min',
-                    verbose=1,
-                    restore_best_weights=True
-                ),
-                ReduceLROnPlateau(
-                    monitor='val_loss',
-                    factor=0.5,
-                    patience=10,
-                    mode='min',
-                    verbose=1
-                ),
-                CSVLogger(f'training_log_fold_{self.fold_idx}.csv')
-            ]
-
-            # Retrain the model with multi-GPU support
-            history = model.fit(
-                X_train_augmented,
-                self.Y_train,
-                validation_data=(self.X_val, self.Y_val),
-                epochs=best_hp.get('epochs', 10),
-                callbacks=callbacks,
+        # Define callbacks
+        callbacks = [
+            EarlyStopping(
+                monitor='val_loss',
+                patience=50,
+                mode='min',
                 verbose=1,
-                batch_size=best_hp['batch_size'],
-                workers=4,  # Number of CPU workers for data loading
-                use_multiprocessing=True  # Enable multiprocessing for data loading
-            )
+                restore_best_weights=True
+            ),
+            ReduceLROnPlateau(
+                monitor='val_loss',
+                factor=0.5,
+                patience=10,
+                mode='min',
+                verbose=1
+            ),
+            CSVLogger(f'training_log_fold_{self.fold_idx}.csv')
+        ]
 
-            # Evaluate the model on the validation data
-            val_loss, val_accuracy, val_auc = model.evaluate(self.X_val, self.Y_val, verbose=0)
-            print(f"\nRetrained model performance on validation data for Fold {self.fold_idx}:")
-            print(f"  Validation Loss: {val_loss}")
-            print(f"  Validation Accuracy: {val_accuracy}")
-            print(f"  Validation AUC: {val_auc}")
+        # Retrain the model with single-GPU support
+        history = model.fit(
+            X_train_augmented,
+            self.Y_train,
+            validation_data=(self.X_val, self.Y_val),
+            epochs=best_hp.get('epochs', 10),
+            callbacks=callbacks,
+            verbose=1,
+            batch_size=best_hp['batch_size'],
+            workers=4,  # Number of CPU workers for data loading
+            use_multiprocessing=True  # Enable multiprocessing for data loading
+        )
 
-            # Optionally, save the final model
-            model_save_path = f'final_model_fold_{self.fold_idx}.h5'
-            model.save(model_save_path)
-            print(f'Final model saved at {model_save_path}')
+        # Evaluate the model on the validation data
+        val_loss, val_accuracy, val_auc = model.evaluate(self.X_val, self.Y_val, verbose=0)
+        print(f"\nRetrained model performance on validation data for Fold {self.fold_idx}:")
+        print(f"  Validation Loss: {val_loss}")
+        print(f"  Validation Accuracy: {val_accuracy}")
+        print(f"  Validation AUC: {val_auc}")
+
+        # Optionally, save the final model
+        model_save_path = f'final_model_fold_{self.fold_idx}.h5'
+        model.save(model_save_path)
+        print(f'Final model saved at {model_save_path}')
 
         return model, history
 
@@ -372,6 +364,17 @@ def main():
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
     info = 'test'  # Additional info for saving results
+
+    # Configure TensorFlow to use only one GPU
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        try:
+            # Restrict TensorFlow to only use the first GPU
+            tf.config.set_visible_devices(gpus[0], 'GPU')
+            tf.config.experimental.set_memory_growth(gpus[0], True)
+            print(f"Using GPU: {gpus[0].name}")
+        except RuntimeError as e:
+            print(e)
 
     # Initialize Ray
     ray.init(ignore_reinit_error=True)
@@ -426,7 +429,7 @@ def main():
         # Wrap the training function to specify resources
         train_fn = tune.with_resources(
             tune.with_parameters(cnn_trainable.train),
-            resources={"cpu": 8, "gpu": 2}  # Adjust based on your needs
+            resources={"cpu": 8, "gpu": 1}  # Changed from 2 GPUs to 1 GPU
         )
 
         # Initialize the tuner with the wrapped training function
@@ -438,7 +441,7 @@ def main():
                 mode="max",
                 num_samples=14,
                 scheduler=scheduler,
-                max_concurrent_trials=2,  # Limit concurrency to available GPUs
+                max_concurrent_trials=2,  
             ),
             run_config=air.RunConfig(
                 name=f"ray_tune_experiment_fold_{fold_idx + 1}",
@@ -473,10 +476,33 @@ def main():
         plt.close()
         print(f'Loss curve saved at {loss_curve_path}')
 
+        # Clear the Keras session to free up GPU memory
+        tf.keras.backend.clear_session()
+
+        # Explicitly delete the model and history to free up memory
+        del final_model
+        del history
+        del cnn_trainable
+        del X_train
+        del Y_train_cat
+        del X_val
+        del Y_val_cat
+
+        # Collect garbage
+        import gc
+        gc.collect()
+
+    # Final cleanup
+    del X
+    del Y
+    del data
+    del labels
+    del original_imgs
+    gc.collect()
+
     # Shutdown Ray after completion
     ray.shutdown()
 
 
 if __name__ == "__main__":
     main()
-
