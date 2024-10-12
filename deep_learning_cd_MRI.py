@@ -468,7 +468,7 @@ def main():
         # Wrap the training function to specify resources
         train_fn = tune.with_resources(
             tune.with_parameters(cnn_trainable.train),
-            resources={"cpu": 8, "gpu": 2, "accelerator_type": "V100"}  # Adjust based on your needs
+            resources={"cpu": 4, "gpu": 2}  # Adjust based on your needs
         )
         
         # Initialize the tuner with the wrapped training function
@@ -478,9 +478,8 @@ def main():
             tune_config=TuneConfig(
                 metric="val_auc",
                 mode="max",
-                num_samples=14,
+                num_samples=10,
                 scheduler=scheduler,
-                max_concurrent_trials=2,  # Limit concurrency to available GPUs
             ),
             run_config=air.RunConfig(
                 name=f"ray_tune_experiment_fold_{fold_idx + 1}",
