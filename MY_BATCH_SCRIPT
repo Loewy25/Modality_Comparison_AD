@@ -1,4 +1,4 @@
-#!/bin/bash\
+#!/bin/bash
 
 
 #SBATCH --job-name=cd_pet  # Assign a descriptive job name
