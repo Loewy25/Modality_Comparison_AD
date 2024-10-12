@@ -417,8 +417,8 @@ class CNNTrainable:
 
 def main():
     task = 'cd'  # Update as per your task
-    modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'test'  # Additional info for saving results
+    modality = 'PET'  # 'MRI' or 'PET'
+    info = 'u-net-ahas-random'  # Additional info for saving results
 
     # Initialize Ray
     ray.init(ignore_reinit_error=True)
