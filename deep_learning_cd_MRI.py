@@ -30,11 +30,11 @@ from ray.train.tensorflow.keras import ReportCheckpointCallback
 from ray import air
 from ray.tune.search.basic_variant import BasicVariantGenerator
 from data_loading import generate_data_path_less, generate, binarylabel
-from tensorflow.keras.mixed_precision import experimental as mixed_precision
+from tensorflow.keras import mixed_precision
 
-# Set the global mixed precision policy
 policy = mixed_precision.Policy('mixed_float16')
-mixed_precision.set_policy(policy)
+mixed_precision.set_global_policy(policy)
+
 
 
 class Utils:
