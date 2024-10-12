@@ -253,7 +253,7 @@ def get_hyperparameter_search_space():
         "learning_rate": tune.loguniform(1e-5, 1e-3),
         "flip_prob": tune.uniform(0.0, 0.5),
         "rotate_prob": tune.uniform(0.0, 0.5),
-        "batch_size": tune.choice([4, 8, 12]),
+        "batch_size": tune.choice([5,10]),
         "epochs": 200  # You can adjust this or make it a hyperparameter as well
     }
     return config
@@ -394,7 +394,7 @@ class CNNTrainable:
             history = model.fit(
                 train_generator,
                 validation_data=val_generator,
-                epochs=best_hp.get('epochs', 10),
+                epochs=300,
                 callbacks=callbacks,
                 verbose=1,
                 workers=4,  # Number of CPU workers for data loading
@@ -451,9 +451,9 @@ def main():
 
         # Define the scheduler
         scheduler = ASHAScheduler(
-            max_t=100,
+            max_t=80,
             grace_period=20,
-            reduction_factor=2
+            reduction_factor=3
         )
 
 
