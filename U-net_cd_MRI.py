@@ -281,131 +281,127 @@ class CNNTrainable:
 
     def train(self, config):
         """Training function compatible with Ray Tune, modified for multi-GPU support and mixed precision."""
+    
+        # Build the model using the sampled hyperparameters
+        hp = config
+        model = CNNModel.create_model(hp)
+    
+        # Build data generators
+        batch_size = hp['batch_size']
+        train_generator = DataGenerator(
+            file_paths=self.train_file_paths,
+            labels=self.train_labels,
+            batch_size=batch_size,
+            augment=True,
+            flip_prob=hp['flip_prob'],
+            rotate_prob=hp['rotate_prob']
+        )
+        val_generator = DataGenerator(
+            file_paths=self.val_file_paths,
+            labels=self.val_labels,
+            batch_size=batch_size,
+            augment=False
+        )
+    
+        # Define callbacks
+        callbacks = [
+            EarlyStopping(
+                monitor='val_loss',
+                patience=50,
+                mode='min',
+                verbose=1,
+                restore_best_weights=True
+            ),
+            ReduceLROnPlateau(
+                monitor='val_loss',
+                factor=0.5,
+                patience=10,
+                mode='min',
+                verbose=1
+            ),
+            ReportCheckpointCallback()
+        ]
+    
+        # Train the model
+        model.fit(
+            train_generator,
+            validation_data=val_generator,
+            epochs=hp.get('epochs', 100),
+            callbacks=callbacks,
+            verbose=0
+        )
 
-
-        # Using the strategy scope to create and compile the model
-        with strategy.scope():
-            # Build the model using the sampled hyperparameters
-            hp = config
-            model = CNNModel.create_model(hp)
-
-            # Build data generators
-            batch_size = hp['batch_size']
-            train_generator = DataGenerator(
-                file_paths=self.train_file_paths,
-                labels=self.train_labels,
-                batch_size=batch_size,
-                augment=True,
-                flip_prob=hp['flip_prob'],
-                rotate_prob=hp['rotate_prob']
-            )
-            val_generator = DataGenerator(
-                file_paths=self.val_file_paths,
-                labels=self.val_labels,
-                batch_size=batch_size,
-                augment=False
-            )
-
-            # Define callbacks
-            callbacks = [
-                EarlyStopping(
-                    monitor='val_loss',
-                    patience=50,
-                    mode='min',
-                    verbose=1,
-                    restore_best_weights=True
-                ),
-                ReduceLROnPlateau(
-                    monitor='val_loss',
-                    factor=0.5,
-                    patience=10,
-                    mode='min',
-                    verbose=1
-                ),
-                ReportCheckpointCallback()
-            ]
-
-            # Train the model
-            model.fit(
-                train_generator,
-                validation_data=val_generator,
-                epochs=hp.get('epochs', 100),
-                callbacks=callbacks,
-                verbose=0
-            )
 
 
         # The ReportCheckpointCallback handles reporting metrics and checkpoints
 
-    def retrain_best_model(self, best_hp):
-        """Retrain the model with the best hyperparameters on the training data."""
+def retrain_best_model(self, best_hp):
+    """Retrain the model with the best hyperparameters on the training data."""
 
+    # Build the model with the best hyperparameters
+    model = CNNModel.create_model(best_hp)
 
-        # Using the strategy scope to create and compile the model
-        with strategy.scope():
-            # Build the model with the best hyperparameters
-            model = CNNModel.create_model(best_hp)
-    
-            # Get batch size and other hyperparameters
-            batch_size = best_hp['batch_size']
-    
-            # Build data generators
-            train_generator = DataGenerator(
-                file_paths=self.train_file_paths,
-                labels=self.train_labels,
-                batch_size=batch_size,
-                augment=True,
-                flip_prob=best_hp['flip_prob'],
-                rotate_prob=best_hp['rotate_prob']
-            )
-            val_generator = DataGenerator(
-                file_paths=self.val_file_paths,
-                labels=self.val_labels,
-                batch_size=batch_size,
-                augment=False
-            )
-    
-            # Define callbacks
-            callbacks = [
-                EarlyStopping(
-                    monitor='val_loss',
-                    patience=50,
-                    mode='min',
-                    verbose=1,
-                    restore_best_weights=True
-                ),
-                ReduceLROnPlateau(
-                    monitor='val_loss',
-                    factor=0.5,
-                    patience=10,
-                    mode='min',
-                    verbose=1
-                ),
-                CSVLogger(f'training_log_fold_{self.fold_idx}.csv')
-            ]
-    
-            # Retrain the model with multi-GPU support
-            history = model.fit(
-                train_generator,
-                validation_data=val_generator,
-                epochs=300,
-                callbacks=callbacks,
-                verbose=1
-            )
-    
-            # Evaluate the model on the validation data
-            val_loss, val_accuracy, val_auc = model.evaluate(val_generator, verbose=0)
-            print(f"\nRetrained model performance on validation data for Fold {self.fold_idx}:")
-            print(f"  Validation Loss: {val_loss}")
-            print(f"  Validation Accuracy: {val_accuracy}")
-            print(f"  Validation AUC: {val_auc}")
-    
-            # Optionally, save the final model
-            model_save_path = f'final_model_fold_{self.fold_idx}.h5'
-            model.save(model_save_path)
-            print(f'Final model saved at {model_save_path}')
-    
-        return model, history
+    # Get batch size and other hyperparameters
+    batch_size = best_hp['batch_size']
+
+    # Build data generators
+    train_generator = DataGenerator(
+        file_paths=self.train_file_paths,
+        labels=self.train_labels,
+        batch_size=batch_size,
+        augment=True,
+        flip_prob=best_hp['flip_prob'],
+        rotate_prob=best_hp['rotate_prob']
+    )
+    val_generator = DataGenerator(
+        file_paths=self.val_file_paths,
+        labels=self.val_labels,
+        batch_size=batch_size,
+        augment=False
+    )
+
+    # Define callbacks
+    callbacks = [
+        EarlyStopping(
+            monitor='val_loss',
+            patience=50,
+            mode='min',
+            verbose=1,
+            restore_best_weights=True
+        ),
+        ReduceLROnPlateau(
+            monitor='val_loss',
+            factor=0.5,
+            patience=10,
+            mode='min',
+            verbose=1
+        ),
+        CSVLogger(f'training_log_fold_{self.fold_idx}.csv')
+    ]
+
+    # Retrain the model
+    history = model.fit(
+        train_generator,
+        validation_data=val_generator,
+        epochs=300,
+        callbacks=callbacks,
+        verbose=1
+    )
+
+    # Evaluate the model on the validation data
+    val_loss, val_accuracy, val_auc = model.evaluate(val_generator, verbose=0)
+    print(f"\nRetrained model performance on validation data for Fold {self.fold_idx}:")
+    print(f"  Validation Loss: {val_loss}")
+    print(f"  Validation Accuracy: {val_accuracy}")
+    print(f"  Validation AUC: {val_auc}")
+
+    # Optionally, save the final model
+    model_save_path = f'final_model_fold_{self.fold_idx}.h5'
+    model.save(model_save_path)
+    print(f'Final model saved at {model_save_path}')
+
+    return model, history
+
 
 def main():
     task = 'cd'  # Update as per your task
