@@ -35,7 +35,14 @@ from tensorflow.keras import mixed_precision
 policy = mixed_precision.Policy('mixed_float16')
 mixed_precision.set_global_policy(policy)
 
-
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        print(f"Enabled memory growth for {len(gpus)} GPU(s).")
+    except RuntimeError as e:
+        print(e)
 
 class Utils:
     """Utility functions for directory management and image resizing."""
@@ -396,9 +403,7 @@ class CNNTrainable:
                 validation_data=val_generator,
                 epochs=300,
                 callbacks=callbacks,
-                verbose=1,
-                workers=4,  # Number of CPU workers for data loading
-                use_multiprocessing=True  # Enable multiprocessing for data loading
+                verbose=1
             )
     
             # Evaluate the model on the validation data
@@ -468,7 +473,7 @@ def main():
         # Wrap the training function to specify resources
         train_fn = tune.with_resources(
             tune.with_parameters(cnn_trainable.train),
-            resources={"cpu": 4, "gpu": 2}  # Adjust based on your needs
+            resources={"cpu": 2, "gpu": 2}  # Adjust based on your needs
         )
         
         # Initialize the tuner with the wrapped training function
