@@ -352,21 +352,10 @@ def main():
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
     info = 'test'  # Additional info for saving results
-
-    # Configure TensorFlow to use only one GPU
-    gpus = tf.config.list_physical_devices('GPU')
-    if gpus:
-        try:
-            # Restrict TensorFlow to only use the first GPU
-            tf.config.set_visible_devices(gpus[0], 'GPU')
-            tf.config.experimental.set_memory_growth(gpus[0], True)
-            print(f"Using GPU: {gpus[0].name}")
-        except RuntimeError as e:
-            print(e)
-
     # Initialize Ray
+    print("yey")
     ray.init(ignore_reinit_error=True)
-
+    print("what")
     # Load all data
     print("Loading data into memory...")
     data, labels, original_imgs = DataLoader.loading_mask_3d(task, modality)
