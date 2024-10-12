@@ -17,7 +17,13 @@ from sklearn.model_selection import StratifiedKFold
 from nilearn import plotting
 from scipy.stats import zscore
 from scipy.ndimage import zoom, rotate
-
+from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import roc_auc_score
+from ray import tune
+from ray.tune.schedulers import HyperBandScheduler
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.metrics import AUC
 # Import your own data loading functions
 from data_loading import generate_data_path_less, generate, binarylabel
 
@@ -353,17 +359,8 @@ class Trainer:
         tf.keras.backend.clear_session()
         import gc
         gc.collect()
-
+      
     @staticmethod
-import numpy as np
-from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import roc_auc_score
-from ray import tune
-from ray.tune.schedulers import HyperBandScheduler
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
-from tensorflow.keras.metrics import AUC
-
   def tune_model_nested_cv(X, Y, task, modality, info):
       # Define the cross-validation strategy
       n_splits = 3
