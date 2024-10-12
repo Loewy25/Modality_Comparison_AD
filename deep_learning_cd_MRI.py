@@ -198,14 +198,14 @@ class DataLoader:
 
         return img_aug
 
-def save_fold_data(fold_idx, X_train, Y_train_cat, X_val, Y_val_cat):
+def save_fold_data(fold_idx, X_train, Y_train_cat, X_val, Y_val_cat, data_dir):
     """
     Save training and validation data for a specific fold to disk.
     """
-    np.save(f'train_data_fold_{fold_idx}.npy', X_train)
-    np.save(f'train_labels_fold_{fold_idx}.npy', Y_train_cat)
-    np.save(f'val_data_fold_{fold_idx}.npy', X_val)
-    np.save(f'val_labels_fold_{fold_idx}.npy', Y_val_cat)
+    np.save(os.path.join(data_dir, f'train_data_fold_{fold_idx}.npy'), X_train)
+    np.save(os.path.join(data_dir, f'train_labels_fold_{fold_idx}.npy'), Y_train_cat)
+    np.save(os.path.join(data_dir, f'val_data_fold_{fold_idx}.npy'), X_val)
+    np.save(os.path.join(data_dir, f'val_labels_fold_{fold_idx}.npy'), Y_val_cat)
 
 class DataGenerator(Sequence):
     """
@@ -401,6 +401,10 @@ def main():
     modality = 'MRI'  # 'MRI' or 'PET'
     info = 'test'  # Additional info for saving results
 
+    # Define a dedicated data directory for saving .npy files
+    DATA_DIR = '/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/data'
+    Utils.ensure_directory_exists(DATA_DIR)
+
     # Configure TensorFlow to use only one GPU
     gpus = tf.config.list_physical_devices('GPU')
     if gpus:
@@ -439,16 +443,16 @@ def main():
         Y_val_cat = to_categorical(Y_val, num_classes=2)
 
         # Save data to disk
-        save_fold_data(fold_idx + 1, X_train, Y_train_cat, X_val, Y_val_cat)
+        save_fold_data(fold_idx + 1, X_train, Y_train_cat, X_val, Y_val_cat, DATA_DIR)
         print(f"Saved Fold {fold_idx + 1} data to disk.")
 
         # Create an instance of CNNTrainable for this fold with file paths
         cnn_trainable = CNNTrainable(
             task, modality, info,
-            f'train_data_fold_{fold_idx + 1}.npy',
-            f'train_labels_fold_{fold_idx + 1}.npy',
-            f'val_data_fold_{fold_idx + 1}.npy',
-            f'val_labels_fold_{fold_idx + 1}.npy',
+            os.path.join(DATA_DIR, f'train_data_fold_{fold_idx + 1}.npy'),
+            os.path.join(DATA_DIR, f'train_labels_fold_{fold_idx + 1}.npy'),
+            os.path.join(DATA_DIR, f'val_data_fold_{fold_idx + 1}.npy'),
+            os.path.join(DATA_DIR, f'val_labels_fold_{fold_idx + 1}.npy'),
             fold_idx + 1  # Pass fold index
         )
 
@@ -466,7 +470,7 @@ def main():
         storage_path = 'file:///home/l.peiwang/Modality_Comparison_AD/ray_result'
 
         # Ensure the storage directory exists
-        os.makedirs('/home/l.peiwang/Modality_Comparison_AD/ray_result', exist_ok=True)
+        Utils.ensure_directory_exists('/home/l.peiwang/Modality_Comparison_AD/ray_result')
 
         from ray.tune import TuneConfig
 
@@ -485,7 +489,7 @@ def main():
                 mode="max",
                 num_samples=14,
                 scheduler=scheduler,
-                max_concurrent_trials=4,  # Ensure only one trial runs at a time
+                max_concurrent_trials=1,  # Ensure only one trial runs at a time
             ),
             run_config=air.RunConfig(
                 name=f"ray_tune_experiment_fold_{fold_idx + 1}",
@@ -554,4 +558,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
