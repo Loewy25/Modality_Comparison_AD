@@ -13,7 +13,7 @@ from tensorflow.keras.layers import (
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.utils import to_categorical, Sequence
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, CSVLogger
 from tensorflow.keras.metrics import AUC
 from sklearn.model_selection import StratifiedKFold
@@ -30,7 +30,6 @@ from ray.train.tensorflow.keras import ReportCheckpointCallback
 from ray import air
 from ray.tune.search.basic_variant import BasicVariantGenerator
 from data_loading import generate_data_path_less, generate, binarylabel
-
 
 class Utils:
     """Utility functions for directory management and image resizing."""
@@ -54,7 +53,6 @@ class Utils:
         # Apply zoom to the image
         resized_image = zoom(image, zoom_factors, order=1)
         return resized_image
-
 
 class CNNModel:
     """Class to create and manage the 3D CNN model."""
@@ -137,7 +135,6 @@ class CNNModel:
 
         return model
 
-
 class DataLoader:
     """Class to handle data loading and preprocessing."""
 
@@ -201,57 +198,90 @@ class DataLoader:
 
         return img_aug
 
+def save_fold_data(fold_idx, X_train, Y_train_cat, X_val, Y_val_cat):
+    """
+    Save training and validation data for a specific fold to disk.
+    """
+    np.save(f'train_data_fold_{fold_idx}.npy', X_train)
+    np.save(f'train_labels_fold_{fold_idx}.npy', Y_train_cat)
+    np.save(f'val_data_fold_{fold_idx}.npy', X_val)
+    np.save(f'val_labels_fold_{fold_idx}.npy', Y_val_cat)
 
-def get_hyperparameter_search_space():
-    config = {
-        "dropout_rate": tune.uniform(0.0, 0.5),
-        "l2_reg": tune.loguniform(1e-6, 1e-4),
-        "learning_rate": tune.loguniform(1e-5, 1e-3),
-        "flip_prob": tune.uniform(0.0, 0.5),
-        "rotate_prob": tune.uniform(0.0, 0.5),
-        "batch_size": tune.choice([4, 8, 12]),
-        "epochs": 200  # You can adjust this or make it a hyperparameter as well
-    }
-    return config
+class DataGenerator(Sequence):
+    """
+    Keras Sequence Data Generator for loading data in batches.
+    """
+    def __init__(self, data_path, labels_path, batch_size, flip_prob=0.1, rotate_prob=0.1, shuffle=True):
+        self.X = np.load(data_path)
+        self.Y = np.load(labels_path)
+        self.batch_size = batch_size
+        self.flip_prob = flip_prob
+        self.rotate_prob = rotate_prob
+        self.shuffle = shuffle
+        self.indices = np.arange(len(self.X))
+        self.on_epoch_end()
 
+    def __len__(self):
+        return int(np.ceil(len(self.X) / self.batch_size))
+
+    def __getitem__(self, index):
+        batch_indices = self.indices[index*self.batch_size:(index+1)*self.batch_size]
+        batch_X = self.X[batch_indices]
+        batch_Y = self.Y[batch_indices]
+
+        # Apply augmentation
+        augmented_X = []
+        for img in batch_X:
+            img_aug = DataLoader.augment_data(img,
+                                              flip_prob=self.flip_prob,
+                                              rotate_prob=self.rotate_prob)
+            augmented_X.append(img_aug)
+        augmented_X = np.array(augmented_X, dtype=np.float32)
+
+        return augmented_X, batch_Y
+
+    def on_epoch_end(self):
+        if self.shuffle:
+            np.random.shuffle(self.indices)
 
 class CNNTrainable:
     """Class to encapsulate the model training logic for Ray Tune."""
 
     def __init__(self, task, modality, info,
-                 X_train, Y_train,
-                 X_val, Y_val, fold_idx):
+                 train_data_path, train_labels_path,
+                 val_data_path, val_labels_path, fold_idx):
         self.task = task
         self.modality = modality
         self.info = info
-        self.X_train = X_train
-        self.Y_train = Y_train
-        self.X_val = X_val
-        self.Y_val = Y_val
+        self.train_data_path = train_data_path
+        self.train_labels_path = train_labels_path
+        self.val_data_path = val_data_path
+        self.val_labels_path = val_labels_path
         self.fold_idx = fold_idx  # Store fold index
 
-    def augment_data_batch(self, X, flip_prob, rotate_prob):
-        """Apply data augmentation to the entire training set."""
-        augmented_X = []
-        for img in X:
-            img_aug = DataLoader.augment_data(img,
-                                              flip_prob=flip_prob,
-                                              rotate_prob=rotate_prob)
-            augmented_X.append(img_aug)
-        return np.array(augmented_X, dtype=np.float32)
-
     def train(self, config):
-        """Training function compatible with Ray Tune, modified for single-GPU support."""
+        """Training function compatible with Ray Tune, using a data generator."""
 
         # Build the model using the sampled hyperparameters
         hp = config
         model = CNNModel.create_model(hp)
 
-        # Apply data augmentation to training data
-        X_train_augmented = self.augment_data_batch(
-            self.X_train,
+        # Initialize data generators
+        train_generator = DataGenerator(
+            data_path=self.train_data_path,
+            labels_path=self.train_labels_path,
+            batch_size=hp['batch_size'],
             flip_prob=hp['flip_prob'],
             rotate_prob=hp['rotate_prob']
+        )
+
+        val_generator = DataGenerator(
+            data_path=self.val_data_path,
+            labels_path=self.val_labels_path,
+            batch_size=hp['batch_size'],
+            flip_prob=0.0,  # No augmentation for validation data
+            rotate_prob=0.0,
+            shuffle=False
         )
 
         # Define callbacks
@@ -273,15 +303,13 @@ class CNNTrainable:
             ReportCheckpointCallback()
         ]
 
-        # Train the model
+        # Train the model using generators
         model.fit(
-            X_train_augmented,
-            self.Y_train,
-            validation_data=(self.X_val, self.Y_val),
+            train_generator,
+            validation_data=val_generator,
             epochs=hp.get('epochs', 100),
             callbacks=callbacks,
             verbose=0,
-            batch_size=hp['batch_size'],
             workers=4,  # Number of CPU workers for data loading
             use_multiprocessing=True  # Enable multiprocessing for data loading
         )
@@ -294,11 +322,22 @@ class CNNTrainable:
         # Build the model with the best hyperparameters
         model = CNNModel.create_model(best_hp)
 
-        # Apply data augmentation to training data
-        X_train_augmented = self.augment_data_batch(
-            self.X_train,
+        # Initialize data generators
+        train_generator = DataGenerator(
+            data_path=self.train_data_path,
+            labels_path=self.train_labels_path,
+            batch_size=best_hp['batch_size'],
             flip_prob=best_hp['flip_prob'],
             rotate_prob=best_hp['rotate_prob']
+        )
+
+        val_generator = DataGenerator(
+            data_path=self.val_data_path,
+            labels_path=self.val_labels_path,
+            batch_size=best_hp['batch_size'],
+            flip_prob=0.0,  # No augmentation for validation data
+            rotate_prob=0.0,
+            shuffle=False
         )
 
         # Define callbacks
@@ -320,21 +359,19 @@ class CNNTrainable:
             CSVLogger(f'training_log_fold_{self.fold_idx}.csv')
         ]
 
-        # Retrain the model with single-GPU support
+        # Retrain the model with single-GPU support using generators
         history = model.fit(
-            X_train_augmented,
-            self.Y_train,
-            validation_data=(self.X_val, self.Y_val),
+            train_generator,
+            validation_data=val_generator,
             epochs=best_hp.get('epochs', 10),
             callbacks=callbacks,
             verbose=1,
-            batch_size=best_hp['batch_size'],
             workers=4,  # Number of CPU workers for data loading
             use_multiprocessing=True  # Enable multiprocessing for data loading
         )
 
         # Evaluate the model on the validation data
-        val_loss, val_accuracy, val_auc = model.evaluate(self.X_val, self.Y_val, verbose=0)
+        val_loss, val_accuracy, val_auc = model.evaluate(val_generator, verbose=0)
         print(f"\nRetrained model performance on validation data for Fold {self.fold_idx}:")
         print(f"  Validation Loss: {val_loss}")
         print(f"  Validation Accuracy: {val_accuracy}")
@@ -347,15 +384,39 @@ class CNNTrainable:
 
         return model, history
 
+def get_hyperparameter_search_space():
+    config = {
+        "dropout_rate": tune.uniform(0.0, 0.5),
+        "l2_reg": tune.loguniform(1e-6, 1e-4),
+        "learning_rate": tune.loguniform(1e-5, 1e-3),
+        "flip_prob": tune.uniform(0.0, 0.5),
+        "rotate_prob": tune.uniform(0.0, 0.5),
+        "batch_size": tune.choice([4, 8, 12]),
+        "epochs": 200  # You can adjust this or make it a hyperparameter as well
+    }
+    return config
 
 def main():
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
     info = 'test'  # Additional info for saving results
+
+    # Configure TensorFlow to use only one GPU
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        try:
+            # Restrict TensorFlow to only use the first GPU
+            tf.config.set_visible_devices(gpus[0], 'GPU')
+            tf.config.experimental.set_memory_growth(gpus[0], True)
+            print(f"Using GPU: {gpus[0].name}")
+        except RuntimeError as e:
+            print(e)
+
     # Initialize Ray
-    print("yey")
+    print("Initializing Ray...")
     ray.init(ignore_reinit_error=True)
-    print("what")
+    print("Ray initialized.")
+
     # Load all data
     print("Loading data into memory...")
     data, labels, original_imgs = DataLoader.loading_mask_3d(task, modality)
@@ -377,11 +438,17 @@ def main():
         Y_train_cat = to_categorical(Y_train, num_classes=2)
         Y_val_cat = to_categorical(Y_val, num_classes=2)
 
-        # Create an instance of CNNTrainable for this fold
+        # Save data to disk
+        save_fold_data(fold_idx + 1, X_train, Y_train_cat, X_val, Y_val_cat)
+        print(f"Saved Fold {fold_idx + 1} data to disk.")
+
+        # Create an instance of CNNTrainable for this fold with file paths
         cnn_trainable = CNNTrainable(
             task, modality, info,
-            X_train, Y_train_cat,
-            X_val, Y_val_cat,
+            f'train_data_fold_{fold_idx + 1}.npy',
+            f'train_labels_fold_{fold_idx + 1}.npy',
+            f'val_data_fold_{fold_idx + 1}.npy',
+            f'val_labels_fold_{fold_idx + 1}.npy',
             fold_idx + 1  # Pass fold index
         )
 
@@ -406,7 +473,7 @@ def main():
         # Wrap the training function to specify resources
         train_fn = tune.with_resources(
             tune.with_parameters(cnn_trainable.train),
-            resources={"cpu": 2, "gpu": 1}  # Changed from 2 GPUs to 1 GPU
+            resources={"cpu": 2, "gpu": 1}  # Ensure only 1 GPU is allocated per trial
         )
 
         # Initialize the tuner with the wrapped training function
@@ -418,7 +485,7 @@ def main():
                 mode="max",
                 num_samples=14,
                 scheduler=scheduler,
-                max_concurrent_trials=1,  
+                max_concurrent_trials=4,  # Ensure only one trial runs at a time
             ),
             run_config=air.RunConfig(
                 name=f"ray_tune_experiment_fold_{fold_idx + 1}",
@@ -426,48 +493,52 @@ def main():
             ),
         )
 
-        results = tuner.fit()
+        try:
+            print(f"Starting Ray Tune for Fold {fold_idx + 1}...")
+            results = tuner.fit()
+            print(f"Ray Tune completed for Fold {fold_idx + 1}.")
 
-        # Get the best result
-        best_result = results.get_best_result(metric="val_auc", mode="max")
-        best_config = best_result.config
-        best_val_auc = best_result.metrics["val_auc"]
+            # Get the best result
+            best_result = results.get_best_result(metric="val_auc", mode="max")
+            best_config = best_result.config
+            best_val_auc = best_result.metrics["val_auc"]
 
-        print(f"Best trial config for Fold {fold_idx + 1}: {best_config}")
-        print(f"Best trial final validation AUC for Fold {fold_idx + 1}: {best_val_auc}")
+            print(f"Best trial config for Fold {fold_idx + 1}: {best_config}")
+            print(f"Best trial final validation AUC for Fold {fold_idx + 1}: {best_val_auc}")
 
-        # Retrain the model with the best hyperparameters on the training data
-        final_model, history = cnn_trainable.retrain_best_model(best_config)
+            # Retrain the model with the best hyperparameters on the training data
+            print(f"Retraining the best model for Fold {fold_idx + 1}...")
+            final_model, history = cnn_trainable.retrain_best_model(best_config)
+            print(f"Retraining completed for Fold {fold_idx + 1}.")
 
-        # Plot training and validation loss curves
-        plt.figure()
-        plt.plot(history.history['loss'], label='Training Loss')
-        if 'val_loss' in history.history:
-            plt.plot(history.history['val_loss'], label='Validation Loss')
-        plt.title(f'Training and Validation Loss - Fold {fold_idx + 1}')
-        plt.xlabel('Epochs')
-        plt.ylabel('Loss')
-        plt.legend()
-        loss_curve_path = f'loss_curve_fold_{fold_idx + 1}.png'
-        plt.savefig(loss_curve_path)
-        plt.close()
-        print(f'Loss curve saved at {loss_curve_path}')
+            # Plot training and validation loss curves
+            plt.figure()
+            plt.plot(history.history['loss'], label='Training Loss')
+            if 'val_loss' in history.history:
+                plt.plot(history.history['val_loss'], label='Validation Loss')
+            plt.title(f'Training and Validation Loss - Fold {fold_idx + 1}')
+            plt.xlabel('Epochs')
+            plt.ylabel('Loss')
+            plt.legend()
+            loss_curve_path = f'loss_curve_fold_{fold_idx + 1}.png'
+            plt.savefig(loss_curve_path)
+            plt.close()
+            print(f'Loss curve saved at {loss_curve_path}')
 
-        # Clear the Keras session to free up GPU memory
-        tf.keras.backend.clear_session()
+            # Clear the Keras session to free up GPU memory
+            tf.keras.backend.clear_session()
 
-        # Explicitly delete the model and history to free up memory
-        del final_model
-        del history
-        del cnn_trainable
-        del X_train
-        del Y_train_cat
-        del X_val
-        del Y_val_cat
+            # Explicitly delete the model and history to free up memory
+            del final_model
+            del history
+            del cnn_trainable
 
-        # Collect garbage
-        import gc
-        gc.collect()
+            # Collect garbage
+            import gc
+            gc.collect()
+
+        except Exception as e:
+            print(f"An error occurred during tuning for Fold {fold_idx + 1}: {e}")
 
     # Final cleanup
     del X
@@ -479,7 +550,8 @@ def main():
 
     # Shutdown Ray after completion
     ray.shutdown()
-
+    print("Ray has been shutdown.")
 
 if __name__ == "__main__":
     main()
+
