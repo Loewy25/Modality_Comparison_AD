@@ -32,8 +32,6 @@ from ray.tune.search.basic_variant import BasicVariantGenerator
 from data_loading import generate_data_path_less, generate, binarylabel
 from tensorflow.keras import mixed_precision
 
-policy = mixed_precision.Policy('mixed_float16')
-mixed_precision.set_global_policy(policy)
 
 gpus = tf.config.list_physical_devices('GPU')
 if gpus:
@@ -284,10 +282,6 @@ class CNNTrainable:
     def train(self, config):
         """Training function compatible with Ray Tune, modified for multi-GPU support and mixed precision."""
 
-        # Enable mixed precision for better performance on supported GPUs
-        from tensorflow.keras.mixed_precision import experimental as mixed_precision
-        policy = mixed_precision.Policy('mixed_float16')
-        mixed_precision.set_policy(policy)
 
         # Define the MirroredStrategy for multi-GPU support
         strategy = tf.distribute.MirroredStrategy(devices=["/gpu:0", "/gpu:1"])
@@ -340,9 +334,7 @@ class CNNTrainable:
                 validation_data=val_generator,
                 epochs=hp.get('epochs', 100),
                 callbacks=callbacks,
-                verbose=0,
-                workers=4,  # Number of CPU workers for data loading
-                use_multiprocessing=True  # Enable multiprocessing for data loading
+                verbose=0
             )
 
 
@@ -473,7 +465,7 @@ def main():
         # Wrap the training function to specify resources
         train_fn = tune.with_resources(
             tune.with_parameters(cnn_trainable.train),
-            resources={"cpu": 2, "gpu": 2}  # Adjust based on your needs
+            resources={"cpu": 1, "gpu": 2}  # Adjust based on your needs
         )
         
         # Initialize the tuner with the wrapped training function
