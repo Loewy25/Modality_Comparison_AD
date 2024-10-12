@@ -283,9 +283,6 @@ class CNNTrainable:
         """Training function compatible with Ray Tune, modified for multi-GPU support and mixed precision."""
 
 
-        # Define the MirroredStrategy for multi-GPU support
-        strategy = tf.distribute.MirroredStrategy(devices=["/gpu:0", "/gpu:1"])
-
         # Using the strategy scope to create and compile the model
         with strategy.scope():
             # Build the model using the sampled hyperparameters
@@ -343,8 +340,6 @@ class CNNTrainable:
     def retrain_best_model(self, best_hp):
         """Retrain the model with the best hyperparameters on the training data."""
 
-        # Define the MirroredStrategy for multi-GPU support
-        strategy = tf.distribute.MirroredStrategy(devices=["/gpu:0", "/gpu:1"])
 
         # Using the strategy scope to create and compile the model
         with strategy.scope():
@@ -465,7 +460,7 @@ def main():
         # Wrap the training function to specify resources
         train_fn = tune.with_resources(
             tune.with_parameters(cnn_trainable.train),
-            resources={"cpu": 1, "gpu": 2}  # Adjust based on your needs
+            resources={"cpu": 2, "gpu": 1}  # Adjust based on your needs
         )
         
         # Initialize the tuner with the wrapped training function
