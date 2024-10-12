@@ -1,46 +1,34 @@
-#!/usr/bin/env python
-
-import argparse
 import os
 import numpy as np
 import nibabel as nib
+import matplotlib.pyplot as plt
 import tensorflow as tf
-from tensorflow.keras.layers import (
-    Conv3D, Input, LeakyReLU, Add,
-    GlobalAveragePooling3D, Dense, Dropout,
-    SpatialDropout3D, BatchNormalization
-)
+from tensorflow.keras.layers import (Conv3D, Input, LeakyReLU, Add,
+                                     GlobalAveragePooling3D, Dense, Dropout,
+                                     SpatialDropout3D, BatchNormalization)
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.utils import to_categorical, Sequence
-from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, CSVLogger
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.metrics import AUC
+from tensorflow.keras.utils import to_categorical
+from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import StratifiedKFold
+from nilearn import plotting
 from scipy.stats import zscore
 from scipy.ndimage import zoom, rotate
-import matplotlib.pyplot as plt
 
-# Import Ray Tune
+# Import your own data loading functions
+from data_loading import generate_data_path_less, generate, binarylabel
+
+# Import Ray and Ray Tune
 import ray
 from ray import tune
-from ray.tune.schedulers import ASHAScheduler
+from ray.tune.schedulers import HyperBandScheduler
 from ray.train.tensorflow.keras import ReportCheckpointCallback
 
-from ray import air
-from ray.tune.search.basic_variant import BasicVariantGenerator
-from data_loading import generate_data_path_less, generate, binarylabel
-from tensorflow.keras import mixed_precision
-
-
-gpus = tf.config.list_physical_devices('GPU')
-if gpus:
-    try:
-        for gpu in gpus:
-            tf.config.experimental.set_memory_growth(gpu, True)
-        print(f"Enabled memory growth for {len(gpus)} GPU(s).")
-    except RuntimeError as e:
-        print(e)
+# Initialize Ray
+ray.init(ignore_reinit_error=True)
 
 class Utils:
     """Utility functions for directory management and image resizing."""
@@ -85,16 +73,8 @@ class CNNModel:
         return x
 
     @staticmethod
-    def create_model(hp, input_shape=(128, 128, 128, 1), num_classes=2):
-        """
-        Build and compile the model with hyperparameters from the configuration.
-        """
+    def create_model(input_shape=(128, 128, 128, 1), num_classes=2, dropout_rate=0.05, l2_reg=1e-5):
         input_img = Input(shape=input_shape)
-
-        # Retrieve hyperparameters
-        dropout_rate = hp['dropout_rate']
-        l2_reg = hp['l2_reg']
-        learning_rate = hp['learning_rate']
 
         # Conv1 block (16 filters)
         x = CNNModel.convolution_block(input_img, 16, l2_reg=l2_reg)
@@ -136,14 +116,7 @@ class CNNModel:
         output = Dense(num_classes, activation='softmax')(x)
 
         model = Model(inputs=input_img, outputs=output)
-        # Uncomment the following line if you want to see the model summary
-        # model.summary()
-
-        model.compile(
-            optimizer=Adam(learning_rate=learning_rate),
-            loss='categorical_crossentropy',
-            metrics=['accuracy', AUC(name='auc')]
-        )
+        model.summary()
 
         return model
 
@@ -153,360 +126,356 @@ class DataLoader:
 
     @staticmethod
     def loading_mask_3d(task, modality):
-        # Assuming generate_data_path_less() and generate() are defined elsewhere
         images_pet, images_mri, labels = generate_data_path_less()
+        original_imgs = []  # Initialize the list to store original images
+
         if modality == 'PET':
-            file_paths, binary_labels = generate(images_pet, labels, task)
+            data_train, train_label = generate(images_pet, labels, task)
         elif modality == 'MRI':
-            file_paths, binary_labels = generate(images_mri, labels, task)
+            data_train, train_label = generate(images_mri, labels, task)
         else:
             raise ValueError(f"Unsupported modality: {modality}")
-        binary_labels = binarylabel(binary_labels,task)
-        
-        return file_paths, binary_labels
 
+        train_data = []
+        target_shape = (128, 128, 128)
+
+        for i in range(len(data_train)):
+            nifti_img = nib.load(data_train[i])
+            original_imgs.append(nifti_img)  # Store the original NIfTI image
+
+            reshaped_data = nifti_img.get_fdata()
+            reshaped_data = zscore(reshaped_data, axis=None)
+
+            # Resize the image to (128, 128, 128)
+            resized_data = Utils.resize_image(reshaped_data, target_shape)
+
+            train_data.append(resized_data)
+
+        train_label = binarylabel(train_label, task)
+        train_data = np.array(train_data)
+
+        return train_data, train_label, original_imgs
 
     @staticmethod
-    def augment_data(image, flip_prob=0.1, rotate_prob=0.1):
-        """
-        Apply random augmentation to a single image.
+    def augment_data(X, flip_prob=0.1, rotate_prob=0.1):
+        augmented_X = []
+        for img in X:
+            img_aug = img.copy()
+            # Randomly flip along each axis with specified probability
+            if np.random.rand() < flip_prob:
+                img_aug = np.flip(img_aug, axis=1)  # Flip along x-axis
+            if np.random.rand() < flip_prob:
+                img_aug = np.flip(img_aug, axis=2)  # Flip along y-axis
 
-        Returns:
-        - augmented_image (np.ndarray): Augmented image array.
-        """
-        img_aug = image.copy()
-        # Randomly flip along each axis with specified probability
-        if np.random.rand() < flip_prob:
-            img_aug = np.flip(img_aug, axis=0)  # Flip along x-axis
-        if np.random.rand() < flip_prob:
-            img_aug = np.flip(img_aug, axis=1)  # Flip along y-axis
+            # Random rotation with specified probability
+            if np.random.rand() < rotate_prob:
+                angle = np.random.uniform(-10, 10)  # Rotate between -10 and 10 degrees
+                img_aug = rotate(img_aug, angle, axes=(1, 2), reshape=False, order=1)
 
-        # Random rotation with specified probability
-        if np.random.rand() < rotate_prob:
-            angle = np.random.uniform(-10, 10)  # Rotate between -10 and 10 degrees
-            img_aug = rotate(img_aug, angle, axes=(1, 2), reshape=False, order=1)
-
-        return img_aug
+            augmented_X.append(img_aug)
+        return np.array(augmented_X)
 
 
-class DataGenerator(Sequence):
-    """Keras Sequence Data Generator for loading and preprocessing 3D medical images."""
+class GradCAM:
+    """Class to compute and save Grad-CAM heatmaps."""
 
-    def __init__(self, file_paths, labels, batch_size=8,
-                 target_shape=(128, 128, 128), num_classes=2,
-                 augment=False, flip_prob=0.1, rotate_prob=0.1):
-        """
-        Initialization.
-        """
-        self.file_paths = file_paths
-        self.labels = labels
-        self.batch_size = batch_size
-        self.target_shape = target_shape
-        self.num_classes = num_classes
-        self.augment = augment
-        self.flip_prob = flip_prob
-        self.rotate_prob = rotate_prob
-        self.indices = np.arange(len(self.file_paths))
-
-    def __len__(self):
-        """Denotes the number of batches per epoch."""
-        return int(np.ceil(len(self.file_paths) / self.batch_size))
-
-    def __getitem__(self, index):
-        """Generate one batch of data."""
-        # Generate indices of the batch
-        batch_indices = self.indices[index * self.batch_size:(index + 1) * self.batch_size]
-
-        # Initialize arrays
-        batch_x = np.empty((len(batch_indices), *self.target_shape, 1), dtype=np.float32)
-        batch_y = np.empty((len(batch_indices), self.num_classes), dtype=np.float32)
-
-        for i, idx in enumerate(batch_indices):
-            # Load NIfTI image using the actual file path
-            nifti_img = nib.load(self.file_paths[idx])
-            img_data = nifti_img.get_fdata()
-
-            # Normalize image data
-            img_data = zscore(img_data, axis=None)
-
-            # Resize the image
-            img_resized = Utils.resize_image(img_data, self.target_shape)
-
-            # Apply augmentation if enabled
-            if self.augment:
-                img_resized = DataLoader.augment_data(img_resized,
-                                                      flip_prob=self.flip_prob,
-                                                      rotate_prob=self.rotate_prob)
-
-            # Expand dimensions and assign to batch_x
-            batch_x[i, ..., 0] = img_resized
-
-            # Assign label
-            batch_y[i] = to_categorical(self.labels[idx], num_classes=self.num_classes)
-
-        return batch_x, batch_y
-
-    def on_epoch_end(self):
-        """Updates indexes after each epoch."""
-        np.random.shuffle(self.indices)
-
-
-def get_hyperparameter_search_space():
-    config = {
-        "dropout_rate": tune.uniform(0.0, 0.5),
-        "l2_reg": tune.loguniform(1e-6, 1e-4),
-        "learning_rate": tune.loguniform(1e-5, 1e-3),
-        "flip_prob": tune.uniform(0.0, 0.5),
-        "rotate_prob": tune.uniform(0.0, 0.5),
-        "batch_size": tune.choice([5,10]),
-        "epochs": 200  # You can adjust this or make it a hyperparameter as well
-    }
-    return config
-
-
-class CNNTrainable:
-    """Class to encapsulate the model training logic for Ray Tune."""
-
-    def __init__(self, task, modality, info,
-                 train_file_paths, train_labels,
-                 val_file_paths, val_labels, fold_idx):
-        self.task = task
-        self.modality = modality
-        self.info = info
-        self.train_file_paths = train_file_paths
-        self.train_labels = train_labels
-        self.val_file_paths = val_file_paths
-        self.val_labels = val_labels
-        self.fold_idx = fold_idx  # Store fold index
-
-    def train(self, config):
-        """Training function compatible with Ray Tune, modified for multi-GPU support and mixed precision."""
-    
-        # Build the model using the sampled hyperparameters
-        hp = config
-        model = CNNModel.create_model(hp)
-    
-        # Build data generators
-        batch_size = hp['batch_size']
-        train_generator = DataGenerator(
-            file_paths=self.train_file_paths,
-            labels=self.train_labels,
-            batch_size=batch_size,
-            augment=True,
-            flip_prob=hp['flip_prob'],
-            rotate_prob=hp['rotate_prob']
+    @staticmethod
+    def make_gradcam_heatmap(model, img, last_conv_layer_name, pred_index=None):
+        grad_model = tf.keras.models.Model(
+            [model.inputs], [model.get_layer(last_conv_layer_name).output, model.output]
         )
-        val_generator = DataGenerator(
-            file_paths=self.val_file_paths,
-            labels=self.val_labels,
-            batch_size=batch_size,
-            augment=False
+
+        with tf.GradientTape() as tape:
+            conv_outputs, predictions = grad_model(img)
+            if pred_index is None:
+                pred_index = tf.argmax(predictions[0])
+            loss = predictions[:, pred_index]
+
+        grads = tape.gradient(loss, conv_outputs)
+        pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2, 3))
+
+        conv_outputs = conv_outputs[0]
+        conv_outputs = conv_outputs * pooled_grads
+        heatmap = tf.reduce_sum(conv_outputs, axis=-1)
+
+        # Apply ReLU and normalize
+        heatmap = np.maximum(heatmap, 0)
+        if np.max(heatmap) != 0:
+            heatmap /= np.max(heatmap)
+        else:
+            heatmap = np.zeros_like(heatmap)
+
+        return heatmap
+
+    @staticmethod
+    def save_gradcam(heatmap, original_img,
+                     task, modality, layer_name, class_idx, info, save_dir='./grad-cam'):
+        save_dir = os.path.join(save_dir, info, task, modality)
+        Utils.ensure_directory_exists(save_dir)
+
+        # Calculate the zoom factors based on the actual dimensions
+        zoom_factors = [original_dim / heatmap_dim for original_dim, heatmap_dim in zip(original_img.shape[:3], heatmap.shape)]
+
+        # Upsample the heatmap to the original image size
+        upsampled_heatmap = zoom(heatmap, zoom=zoom_factors, order=1)
+
+        # Create a NIfTI image with the same affine as the original image
+        heatmap_img = nib.Nifti1Image(upsampled_heatmap, original_img.affine)
+
+        # Normalize the upsampled heatmap
+        data = heatmap_img.get_fdata()
+        min_val = np.min(data)
+        max_val = np.max(data)
+        if max_val - min_val != 0:
+            normalized_data = (data - min_val) / (max_val - min_val)
+        else:
+            normalized_data = np.zeros_like(data)
+
+        heatmap_img = nib.Nifti1Image(normalized_data, heatmap_img.affine)
+
+        # Save the 3D NIfTI file
+        nifti_file_name = f"gradcam_{task}_{modality}_class{class_idx}_{layer_name}.nii.gz"
+        nifti_save_path = os.path.join(save_dir, nifti_file_name)
+        nib.save(heatmap_img, nifti_save_path)
+        print(f'3D Grad-CAM heatmap saved at {nifti_save_path}')
+
+        # Plot the glass brain
+        output_glass_brain_path = os.path.join(save_dir, f'glass_brain_{task}_{modality}_{layer_name}_class{class_idx}.png')
+        plotting.plot_glass_brain(heatmap_img, colorbar=True, plot_abs=True,
+                                  cmap='jet', output_file=output_glass_brain_path)
+        print(f'Glass brain plot saved at {output_glass_brain_path}')
+
+    @staticmethod
+    def apply_gradcam_all_layers_average(model, imgs, original_imgs,
+                                         task, modality, info):
+        # Identify convolutional layers
+        conv_layers = []
+        cumulative_scales = []
+        cumulative_scale = 1
+        for layer in model.layers:
+            if isinstance(layer, Conv3D):
+                conv_layers.append(layer.name)
+                # Update cumulative scaling factor if stride is not 1
+                if layer.strides[0] != 1:
+                    cumulative_scale *= layer.strides[0]
+                cumulative_scales.append(cumulative_scale)
+
+        print("Cumulative scaling factors for each convolutional layer:")
+        for idx, (layer_name, scale_value) in enumerate(zip(conv_layers, cumulative_scales)):
+            print(f"Layer {layer_name}: cumulative_scale = {scale_value}")
+
+        for idx, conv_layer_name in enumerate(conv_layers):
+            cumulative_scale = cumulative_scales[idx]
+            for class_idx in range(2):  # Loop through both class indices (class 0 and class 1)
+                accumulated_heatmap = None
+                for i, img in enumerate(imgs):
+                    heatmap = GradCAM.make_gradcam_heatmap(model, img, conv_layer_name,
+                                                           pred_index=class_idx)
+                    print(f"Heatmap shape for layer {conv_layer_name} and class {class_idx}: {heatmap.shape}")
+                    if accumulated_heatmap is None:
+                        accumulated_heatmap = heatmap
+                    else:
+                        accumulated_heatmap += heatmap
+
+                avg_heatmap = accumulated_heatmap / len(imgs)
+                # Use the first original image as reference
+                GradCAM.save_gradcam(avg_heatmap, original_imgs[0],
+                                     task, modality, conv_layer_name, class_idx, info)
+
+
+class Trainer:
+    """Class to handle model training and evaluation."""
+
+    @staticmethod
+    def train_model(config, X_train, Y_train, X_val, Y_val):
+        # Unpack hyperparameters from the config dictionary
+        learning_rate = config["learning_rate"]
+        batch_size = config["batch_size"]
+        dropout_rate = config["dropout_rate"]
+        l2_reg = config["l2_reg"]
+        flip_prob = config["flip_prob"]
+        rotate_prob = config["rotate_prob"]
+
+        # Apply data augmentation with specified probabilities
+        X_train_augmented = DataLoader.augment_data(X_train, flip_prob=flip_prob, rotate_prob=rotate_prob)
+
+        # Create model with hyperparameters
+        model = CNNModel.create_model(
+            input_shape=(128, 128, 128, 1),
+            num_classes=2,
+            dropout_rate=dropout_rate,
+            l2_reg=l2_reg
         )
-    
-        # Define callbacks
-        callbacks = [
-            EarlyStopping(
-                monitor='val_loss',
-                patience=50,
-                mode='min',
-                verbose=1,
-                restore_best_weights=True
-            ),
-            ReduceLROnPlateau(
-                monitor='val_loss',
-                factor=0.5,
-                patience=10,
-                mode='min',
-                verbose=1
-            ),
-            ReportCheckpointCallback()
-        ]
-    
-        # Train the model
-        model.fit(
-            train_generator,
-            validation_data=val_generator,
-            epochs=hp.get('epochs', 100),
-            callbacks=callbacks,
+        model.compile(
+            optimizer=Adam(learning_rate=learning_rate),
+            loss='categorical_crossentropy',
+            metrics=['accuracy', AUC(name='auc')]
+        )
+
+        early_stopping = EarlyStopping(
+            monitor='val_loss',
+            patience=50,
+            mode='min',
+            verbose=0,
+            restore_best_weights=True
+        )
+
+        reduce_lr = ReduceLROnPlateau(
+            monitor='val_loss',
+            factor=0.5,
+            patience=10,
+            mode='min',
             verbose=0
         )
 
+        # Use ReportCheckpointCallback
+        report_checkpoint_callback = ReportCheckpointCallback()
 
+        # Train the model
+        model.fit(
+            X_train_augmented, Y_train,
+            validation_data=(X_val, Y_val),
+            epochs=800,
+            batch_size=batch_size,
+            callbacks=[
+                early_stopping,
+                reduce_lr,
+                report_checkpoint_callback
+            ],
+            verbose=0
+        )
 
-        # The ReportCheckpointCallback handles reporting metrics and checkpoints
+        # Report metrics to Ray Tune
+        val_loss, val_accuracy, val_auc = model.evaluate(X_val, Y_val, verbose=0)
+        tune.report(val_loss=val_loss, val_accuracy=val_accuracy, val_auc=val_auc)
 
-def retrain_best_model(self, best_hp):
-    """Retrain the model with the best hyperparameters on the training data."""
+        # After training, clear the session and collect garbage to free memory
+        tf.keras.backend.clear_session()
+        import gc
+        gc.collect()
 
-    # Build the model with the best hyperparameters
-    model = CNNModel.create_model(best_hp)
+    @staticmethod
+    def tune_model(X, Y, task, modality, info):
+        # Split data
+        stratified_kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=2)
+        train_idx, val_idx = next(stratified_kfold.split(X, Y.argmax(axis=1)))
+        X_train, X_val = X[train_idx], X[val_idx]
+        Y_train, Y_val = Y[train_idx], Y[val_idx]
 
-    # Get batch size and other hyperparameters
-    batch_size = best_hp['batch_size']
+        # Define search space including augmentation probabilities
+        config = {
+            "learning_rate": tune.loguniform(1e-5, 1e-3),
+            "batch_size": tune.choice([4, 8]),
+            "dropout_rate": tune.uniform(0.0, 0.5),
+            "l2_reg": tune.loguniform(1e-6, 1e-4),
+            "flip_prob": tune.uniform(0.0, 0.5),
+            "rotate_prob": tune.uniform(0.0, 0.5),
+        }
 
-    # Build data generators
-    train_generator = DataGenerator(
-        file_paths=self.train_file_paths,
-        labels=self.train_labels,
-        batch_size=batch_size,
-        augment=True,
-        flip_prob=best_hp['flip_prob'],
-        rotate_prob=best_hp['rotate_prob']
-    )
-    val_generator = DataGenerator(
-        file_paths=self.val_file_paths,
-        labels=self.val_labels,
-        batch_size=batch_size,
-        augment=False
-    )
+        # Scheduler for early stopping bad trials
+        scheduler = HyperBandScheduler(
+            time_attr="training_iteration",
+            max_t=8,  # Maximum number of epochs
+        )
 
-    # Define callbacks
-    callbacks = [
-        EarlyStopping(
+        # Execute tuning
+        analysis = tune.run(
+            tune.with_parameters(Trainer.train_model, X_train=X_train, Y_train=Y_train, X_val=X_val, Y_val=Y_val),
+            resources_per_trial={"cpu": 1, "gpu": 1},  # Use 1 GPU per trial
+            config=config,
+            metric="val_auc",  # Use AUC for selecting the best model
+            mode="max",
+            num_samples=8,
+            scheduler=scheduler,
+            name="hyperparameter_tuning",
+            max_concurrent_trials=4  # Utilize up to 4 GPUs
+        )
+
+        # Get the best trial
+        best_trial = analysis.get_best_trial("val_auc", "max", "last")
+        print("Best trial config: {}".format(best_trial.config))
+        print("Best trial final validation AUC: {}".format(
+            best_trial.last_result["val_auc"]))
+
+        # Train the best model on the full training data
+        best_model = CNNModel.create_model(
+            input_shape=(128, 128, 128, 1),
+            num_classes=2,
+            dropout_rate=best_trial.config["dropout_rate"],
+            l2_reg=best_trial.config["l2_reg"]
+        )
+        best_model.compile(
+            optimizer=Adam(learning_rate=best_trial.config["learning_rate"]),
+            loss='categorical_crossentropy',
+            metrics=['accuracy', AUC(name='auc')]
+        )
+
+        # Apply data augmentation with best probabilities
+        X_train_augmented = DataLoader.augment_data(
+            X_train,
+            flip_prob=best_trial.config["flip_prob"],
+            rotate_prob=best_trial.config["rotate_prob"]
+        )
+
+        # Retrain on the full data
+        early_stopping = EarlyStopping(
             monitor='val_loss',
             patience=50,
             mode='min',
             verbose=1,
             restore_best_weights=True
-        ),
-        ReduceLROnPlateau(
+        )
+
+        reduce_lr = ReduceLROnPlateau(
             monitor='val_loss',
             factor=0.5,
             patience=10,
             mode='min',
             verbose=1
-        ),
-        CSVLogger(f'training_log_fold_{self.fold_idx}.csv')
-    ]
+        )
 
-    # Retrain the model
-    history = model.fit(
-        train_generator,
-        validation_data=val_generator,
-        epochs=300,
-        callbacks=callbacks,
-        verbose=1
-    )
+        history = best_model.fit(
+            X_train_augmented, Y_train,
+            validation_data=(X_val, Y_val),
+            epochs=20,
+            batch_size=best_trial.config["batch_size"],
+            callbacks=[early_stopping, reduce_lr],
+            verbose=1
+        )
 
-    # Evaluate the model on the validation data
-    val_loss, val_accuracy, val_auc = model.evaluate(val_generator, verbose=0)
-    print(f"\nRetrained model performance on validation data for Fold {self.fold_idx}:")
-    print(f"  Validation Loss: {val_loss}")
-    print(f"  Validation Accuracy: {val_accuracy}")
-    print(f"  Validation AUC: {val_auc}")
+        # Evaluate on validation set
+        y_val_pred = best_model.predict(X_val)
+        final_auc = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
+        print(f'Final AUC on validation data: {final_auc:.4f}')
 
-    # Optionally, save the final model
-    model_save_path = f'final_model_fold_{self.fold_idx}.h5'
-    model.save(model_save_path)
-    print(f'Final model saved at {model_save_path}')
-
-    return model, history
+        return best_model
 
 
 def main():
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'u-net-ahas-random'  # Additional info for saving results
+    info = 'test'  # Additional info for saving results
 
-    # Initialize Ray
-    ray.init(ignore_reinit_error=True)
+    # Load your data
+    train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
+    X = np.array(train_data)
+    X = np.expand_dims(X, axis=-1)  # Add channel dimension if not already present
+    Y = to_categorical(train_label, num_classes=2)
 
-    # Load data
-    file_paths, labels = DataLoader.loading_mask_3d(task, modality)
-    X_file_paths = np.array(file_paths)
-    Y = np.array(labels)
+    # Train the model with hyperparameter tuning and get the best trained model
+    best_model = Trainer.tune_model(X, Y, task, modality, info)
 
-    # Set up stratified k-fold cross-validation
-    skf = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+    # Apply Grad-CAM using the trained model
+    imgs = [np.expand_dims(X[i], axis=0) for i in range(X.shape[0])]
 
-    for fold_idx, (train_indices, val_indices) in enumerate(skf.split(X_file_paths, Y)):
-        print(f"\nStarting Fold {fold_idx + 1}/3")
-        train_file_paths = X_file_paths[train_indices]
-        val_file_paths = X_file_paths[val_indices]
-        train_labels = Y[train_indices]
-        val_labels = Y[val_indices]
+    # Apply Grad-CAM to all images
+    GradCAM.apply_gradcam_all_layers_average(best_model, imgs, original_imgs, task, modality, info)
 
-        # Create an instance of CNNTrainable for this fold
-        cnn_trainable = CNNTrainable(
-            task, modality, info,
-            train_file_paths, train_labels,
-            val_file_paths, val_labels,
-            fold_idx + 1  # Pass fold index
-        )
-
-        # Get hyperparameter search space
-        config = get_hyperparameter_search_space()
-
-        # Define the scheduler
-        scheduler = ASHAScheduler(
-            max_t=80,
-            grace_period=20,
-            reduction_factor=3
-        )
-
-
-        # Set storage_path to your desired absolute path with 'file://' scheme
-        storage_path = 'file:///home/l.peiwang/Modality_Comparison_AD/ray_result'
-
-        # Ensure the storage directory exists
-        os.makedirs('/home/l.peiwang/Modality_Comparison_AD/ray_result', exist_ok=True)
-        
-        from ray.tune import TuneConfig
-        
-        # Wrap the training function to specify resources
-        train_fn = tune.with_resources(
-            tune.with_parameters(cnn_trainable.train),
-            resources={"cpu": 2, "gpu": 1}  # Adjust based on your needs
-        )
-        
-        # Initialize the tuner with the wrapped training function
-        tuner = tune.Tuner(
-            train_fn,
-            param_space=config,
-            tune_config=TuneConfig(
-                metric="val_auc",
-                mode="max",
-                num_samples=10,
-                scheduler=scheduler,
-            ),
-            run_config=air.RunConfig(
-                name=f"ray_tune_experiment_fold_{fold_idx + 1}",
-                storage_path=storage_path,
-            ),
-        )
-
-        results = tuner.fit()
-
-        # Get the best result
-        best_result = results.get_best_result(metric="val_auc", mode="max")
-        best_config = best_result.config
-        best_val_auc = best_result.metrics["val_auc"]
-
-        print(f"Best trial config for Fold {fold_idx + 1}: {best_config}")
-        print(f"Best trial final validation AUC for Fold {fold_idx + 1}: {best_val_auc}")
-
-        # Retrain the model with the best hyperparameters on the training data
-        final_model, history = cnn_trainable.retrain_best_model(best_config)
-
-        # Plot training and validation loss curves
-        plt.figure()
-        plt.plot(history.history['loss'], label='Training Loss')
-        if 'val_loss' in history.history:
-            plt.plot(history.history['val_loss'], label='Validation Loss')
-        plt.title(f'Training and Validation Loss - Fold {fold_idx + 1}')
-        plt.xlabel('Epochs')
-        plt.ylabel('Loss')
-        plt.legend()
-        loss_curve_path = f'loss_curve_fold_{fold_idx + 1}.png'
-        plt.savefig(loss_curve_path)
-        plt.close()
-        print(f'Loss curve saved at {loss_curve_path}')
-
-    # Shutdown Ray after completion
+    # Shutdown Ray
     ray.shutdown()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 
 
