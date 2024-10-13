@@ -327,7 +327,7 @@ class Trainer:
         learning_rate = hp.Float('learning_rate', 1e-5, 1e-3, sampling='log')
         dropout_rate = hp.Float('dropout_rate', 0.0, 0.5, step=0.02)
         l2_reg = hp.Float('l2_reg', 1e-6, 1e-4, sampling='log')
-        reduction_ratio = hp.Float('filter_ratio', 4, 16, step=2)
+        reduction_ratio = hp.Float('reduction_ratio', 4, 16, step=2)
         
         # Build the model with the filter ratio
         model = CNNModel.create_model(
@@ -464,9 +464,14 @@ class Trainer:
         print(f'\nAverage AUC across all {n_splits} folds: {average_auc:.4f}')
 
         return average_auc
-
+      
+import shutil
 
 def main():
+    # Clear the entire keras_tuner_dir to start fresh
+    tuner_dir = 'keras_tuner_dir'
+    if os.path.exists(tuner_dir):
+        shutil.rmtree(tuner_dir)
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
     info = 'test'  # Additional info for saving results
