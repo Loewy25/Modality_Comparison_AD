@@ -17,7 +17,7 @@ from sklearn.model_selection import StratifiedKFold
 from nilearn import plotting
 from scipy.stats import zscore
 from scipy.ndimage import zoom, rotate
-from ray import tune
+from ray import tune, train
 from ray.tune.schedulers import HyperBandScheduler, ASHAScheduler
 from ray.train.tune import TuneConfig, RunConfig
 from ray.train import Checkpoint
