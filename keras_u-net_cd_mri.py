@@ -370,7 +370,6 @@ class Trainer:
             best_hyperparameters.append(best_hps)
             print(f"Best hyperparameters for fold {fold}:")
             print(f"Learning Rate: {best_hps.get('learning_rate')}")
-            print(f"Batch Size: {best_hps.get('batch_size')}")
             print(f"Dropout Rate: {best_hps.get('dropout_rate')}")
             print(f"L2 Regularization: {best_hps.get('l2_reg')}")
 
