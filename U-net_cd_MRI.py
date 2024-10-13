@@ -424,6 +424,7 @@ class Trainer:
     @staticmethod
     def train_model(config, X_train, Y_train, X_val, Y_val):
         # Unpack hyperparameters from the config dictionary
+        tune.utils.wait_for_gpu()
         learning_rate = config["learning_rate"]
         batch_size = config["batch_size"]
         dropout_rate = config["dropout_rate"]
