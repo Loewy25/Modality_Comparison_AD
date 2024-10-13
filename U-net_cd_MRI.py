@@ -19,7 +19,6 @@ from scipy.stats import zscore
 from scipy.ndimage import zoom, rotate
 from ray import tune, train
 from ray.tune.schedulers import HyperBandScheduler, ASHAScheduler
-from ray.train.tune import TuneConfig, RunConfig
 from ray.train import Checkpoint
 from ray.train.tune import Trainable
 import ray
@@ -415,14 +414,14 @@ class Trainer:
             # Define the tuner
             tuner = tune.Tuner(
                 CNNTrainable,
-                tune_config=TuneConfig(
+                tune_config=train.TuneConfig(
                     scheduler=scheduler,
                     metric="val_auc",
                     mode="max",
                     num_samples=8,  # Adjust based on your GPU memory
                     resources_per_trial={"cpu": 1, "gpu": 1}
                 ),
-                run_config=RunConfig(
+                run_config=train.RunConfig(
                     name=f"hyperparameter_tuning_fold_{fold}",
                     callbacks=[],
                     verbose=1
