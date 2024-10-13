@@ -414,7 +414,7 @@ class Trainer:
             # Define the tuner
             tuner = tune.Tuner(
                 CNNTrainable,
-                tune_config=train.TuneConfig(
+                tune_config=tune.TuneConfig(
                     scheduler=scheduler,
                     metric="val_auc",
                     mode="max",
