@@ -359,115 +359,116 @@ class Trainer:
         tf.keras.backend.clear_session()
         import gc
         gc.collect()
+      
       def tune_model_nested_cv(X, Y, task, modality, info):
       # Define the cross-validation strategy
-      n_splits = 3
-      stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
-      
-      # Initialize variables to store results
-      fold_results = []
-      
-      # Iterate over each fold
-      for fold, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1)), 1):
-          print(f"\nStarting fold {fold}/{n_splits}")
-          X_train, X_val = X[train_idx], X[val_idx]
-          Y_train, Y_val = Y[train_idx], Y[val_idx]
-          
-          # Define search space including augmentation probabilities
-          config = {
-              "learning_rate": tune.loguniform(1e-5, 1e-3),
-              "batch_size": tune.choice([4, 8]),
-              "dropout_rate": tune.uniform(0.0, 0.5),
-              "l2_reg": tune.loguniform(1e-6, 1e-4),
-              "flip_prob": tune.uniform(0.0, 0.5),
-              "rotate_prob": tune.uniform(0.0, 0.5),
-          }
-          
-          # Scheduler for early stopping bad trials
-          scheduler = HyperBandScheduler(
-              time_attr="training_iteration",
-              max_t=4,  # Maximum number of epochs
-          )
-          
-          # Execute tuning for the current fold
-          analysis = tune.run(
-              tune.with_parameters(Trainer.train_model, X_train=X_train, Y_train=Y_train, X_val=X_val, Y_val=Y_val),
-              resources_per_trial={"cpu": 1, "gpu": 1},  # Use 1 GPU per trial
-              config=config,
-              metric="val_auc",  # Use AUC for selecting the best model
-              mode="max",
-              num_samples=8,
-              scheduler=scheduler,
-              name=f"hyperparameter_tuning_fold_{fold}",
-              max_concurrent_trials=4  # Utilize up to 4 GPUs
-          )
-          
-          # Get the best trial for the current fold
-          best_trial = analysis.get_best_trial("val_auc", "max", "last")
-          print(f"Best trial config for fold {fold}: {best_trial.config}")
-          print(f"Best trial final validation AUC for fold {fold}: {best_trial.last_result['val_auc']}")
-          
-          # Train the best model on the current fold's training data
-          best_config = best_trial.config
-          best_model = CNNModel.create_model(
-              input_shape=(128, 128, 128, 1),
-              num_classes=2,
-              dropout_rate=best_config["dropout_rate"],
-              l2_reg=best_config["l2_reg"]
-          )
-          best_model.compile(
-              optimizer=Adam(learning_rate=best_config["learning_rate"]),
-              loss='categorical_crossentropy',
-              metrics=['accuracy', AUC(name='auc')]
-          )
-          
-          # Apply data augmentation with best probabilities
-          X_train_augmented = DataLoader.augment_data(
-              X_train,
-              flip_prob=best_config["flip_prob"],
-              rotate_prob=best_config["rotate_prob"]
-          )
-          
-          # Define callbacks
-          early_stopping = EarlyStopping(
-              monitor='val_loss',
-              patience=50,
-              mode='min',
-              verbose=1,
-              restore_best_weights=True
-          )
-          
-          reduce_lr = ReduceLROnPlateau(
-              monitor='val_loss',
-              factor=0.5,
-              patience=10,
-              mode='min',
-              verbose=1
-          )
-          
-          # Retrain on the current fold's training data
-          history = best_model.fit(
-              X_train_augmented, Y_train,
-              validation_data=(X_val, Y_val),
-              epochs=5,
-              batch_size=best_config["batch_size"],
-              callbacks=[early_stopping, reduce_lr],
-              verbose=1
-          )
-          
-          # Evaluate on validation set
-          y_val_pred = best_model.predict(X_val)
-          final_auc = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
-          print(f'Final AUC on validation data for fold {fold}: {final_auc:.4f}')
-          
-          # Store the result
-          fold_results.append(final_auc)
-      
-      # Compute the average AUC across all folds
-      average_auc = np.mean(fold_results)
-      print(f'\nAverage AUC across all {n_splits} folds: {average_auc:.4f}')
-      
-      return average_auc
+        n_splits = 3
+        stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
+        
+        # Initialize variables to store results
+        fold_results = []
+        
+        # Iterate over each fold
+        for fold, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1)), 1):
+            print(f"\nStarting fold {fold}/{n_splits}")
+            X_train, X_val = X[train_idx], X[val_idx]
+            Y_train, Y_val = Y[train_idx], Y[val_idx]
+            
+            # Define search space including augmentation probabilities
+            config = {
+                "learning_rate": tune.loguniform(1e-5, 1e-3),
+                "batch_size": tune.choice([4, 8]),
+                "dropout_rate": tune.uniform(0.0, 0.5),
+                "l2_reg": tune.loguniform(1e-6, 1e-4),
+                "flip_prob": tune.uniform(0.0, 0.5),
+                "rotate_prob": tune.uniform(0.0, 0.5),
+            }
+            
+            # Scheduler for early stopping bad trials
+            scheduler = HyperBandScheduler(
+                time_attr="training_iteration",
+                max_t=4,  # Maximum number of epochs
+            )
+            
+            # Execute tuning for the current fold
+            analysis = tune.run(
+                tune.with_parameters(Trainer.train_model, X_train=X_train, Y_train=Y_train, X_val=X_val, Y_val=Y_val),
+                resources_per_trial={"cpu": 1, "gpu": 1},  # Use 1 GPU per trial
+                config=config,
+                metric="val_auc",  # Use AUC for selecting the best model
+                mode="max",
+                num_samples=8,
+                scheduler=scheduler,
+                name=f"hyperparameter_tuning_fold_{fold}",
+                max_concurrent_trials=4  # Utilize up to 4 GPUs
+            )
+            
+            # Get the best trial for the current fold
+            best_trial = analysis.get_best_trial("val_auc", "max", "last")
+            print(f"Best trial config for fold {fold}: {best_trial.config}")
+            print(f"Best trial final validation AUC for fold {fold}: {best_trial.last_result['val_auc']}")
+            
+            # Train the best model on the current fold's training data
+            best_config = best_trial.config
+            best_model = CNNModel.create_model(
+                input_shape=(128, 128, 128, 1),
+                num_classes=2,
+                dropout_rate=best_config["dropout_rate"],
+                l2_reg=best_config["l2_reg"]
+            )
+            best_model.compile(
+                optimizer=Adam(learning_rate=best_config["learning_rate"]),
+                loss='categorical_crossentropy',
+                metrics=['accuracy', AUC(name='auc')]
+            )
+            
+            # Apply data augmentation with best probabilities
+            X_train_augmented = DataLoader.augment_data(
+                X_train,
+                flip_prob=best_config["flip_prob"],
+                rotate_prob=best_config["rotate_prob"]
+            )
+            
+            # Define callbacks
+            early_stopping = EarlyStopping(
+                monitor='val_loss',
+                patience=50,
+                mode='min',
+                verbose=1,
+                restore_best_weights=True
+            )
+            
+            reduce_lr = ReduceLROnPlateau(
+                monitor='val_loss',
+                factor=0.5,
+                patience=10,
+                mode='min',
+                verbose=1
+            )
+            
+            # Retrain on the current fold's training data
+            history = best_model.fit(
+                X_train_augmented, Y_train,
+                validation_data=(X_val, Y_val),
+                epochs=5,
+                batch_size=best_config["batch_size"],
+                callbacks=[early_stopping, reduce_lr],
+                verbose=1
+            )
+            
+            # Evaluate on validation set
+            y_val_pred = best_model.predict(X_val)
+            final_auc = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
+            print(f'Final AUC on validation data for fold {fold}: {final_auc:.4f}')
+            
+            # Store the result
+            fold_results.append(final_auc)
+        
+        # Compute the average AUC across all folds
+        average_auc = np.mean(fold_results)
+        print(f'\nAverage AUC across all {n_splits} folds: {average_auc:.4f}')
+        
+        return average_auc
 
 def main():
     task = 'cd'  # Update as per your task
