@@ -359,8 +359,7 @@ class Trainer:
         tf.keras.backend.clear_session()
         import gc
         gc.collect()
-      
-  def tune_model_nested_cv(X, Y, task, modality, info):
+      def tune_model_nested_cv(X, Y, task, modality, info):
       # Define the cross-validation strategy
       n_splits = 3
       stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
