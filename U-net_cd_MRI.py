@@ -413,13 +413,12 @@ class Trainer:
 
             # Define the tuner
             tuner = tune.Tuner(
-                CNNTrainable,
+                tune.with_resources(CNNTrainable, resources={"cpu": 1, "gpu": 1})
                 tune_config=tune.TuneConfig(
                     scheduler=scheduler,
                     metric="val_auc",
                     mode="max",
-                    num_samples=8,  # Adjust based on your GPU memory
-                    resources_per_trial={"cpu": 1, "gpu": 1}
+                    num_samples=8  # Adjust based on your GPU memory
                 ),
                 run_config=train.RunConfig(
                     name=f"hyperparameter_tuning_fold_{fold}",
