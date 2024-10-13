@@ -336,8 +336,7 @@ class CustomTuner(kt.RandomSearch):
         rotate_prob = hp.get('rotate_prob')
 
         # Extract training data
-        X_train = kwargs.pop('x')
-        Y_train = kwargs.pop('y')
+        X_train, Y_train = args[0], args[1]  # Extracting training data from positional arguments
 
         # Apply data augmentation based on hyperparameters
         X_train_augmented = DataLoader.augment_data(
@@ -347,12 +346,11 @@ class CustomTuner(kt.RandomSearch):
         )
         Y_train_augmented = Y_train.copy()  # Assuming labels remain the same for augmented data
 
-        # Update kwargs with augmented data
-        kwargs['x'] = X_train_augmented
-        kwargs['y'] = Y_train_augmented
+        # Update args with augmented data
+        new_args = (X_train_augmented, Y_train_augmented) + args[2:]
 
         # Proceed with the standard run_trial
-        super(CustomTuner, self).run_trial(trial, *args, **kwargs)
+        super(CustomTuner, self).run_trial(trial, *new_args, **kwargs)
 
 class Trainer:
     """Class to handle model training and evaluation."""
