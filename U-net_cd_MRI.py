@@ -332,6 +332,7 @@ class Trainer:
                 mode="max",
                 num_samples=8,
                 scheduler=scheduler,
+                max_concurrent_trials=2，
                 name=f"hyperparameter_tuning_fold_{fold}",
                 max_concurrent_trials=4  # Utilize up to 4 GPUs
             )
@@ -447,7 +448,7 @@ class Trainer:
 
         # Use ReportCheckpointCallback
         report_checkpoint_callback = ReportCheckpointCallback()
-        tune.utils.wait_for_gpu()
+
         # Train the model
         model.fit(
             X_train_augmented, Y_train,
@@ -492,5 +493,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
 
