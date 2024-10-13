@@ -404,7 +404,7 @@ class Trainer:
 
             # Define the tuner
             tuner = tune.Tuner(
-                tune.with_parameters(CNNTrainable, X_train=X_train, Y_train=Y_train, X_val=X_val, Y_val=Y_val),
+                tune.with_resources(tune.with_parameters(CNNTrainable, X_train=X_train, Y_train=Y_train, X_val=X_val, Y_val=Y_val),resources={"cpu": 2, "gpu": 1}),
                 tune_config=tune.TuneConfig(
                     scheduler=scheduler,
                     num_samples=8  # Adjust based on your GPU memory
