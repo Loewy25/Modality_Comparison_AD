@@ -291,76 +291,8 @@ class GradCAM:
 
 class Trainer:
     """Class to handle model training and evaluation."""
-
     @staticmethod
-    def train_model(config, X_train, Y_train, X_val, Y_val):
-        # Unpack hyperparameters from the config dictionary
-        learning_rate = config["learning_rate"]
-        batch_size = config["batch_size"]
-        dropout_rate = config["dropout_rate"]
-        l2_reg = config["l2_reg"]
-        flip_prob = config["flip_prob"]
-        rotate_prob = config["rotate_prob"]
-
-        # Apply data augmentation with specified probabilities
-        X_train_augmented = DataLoader.augment_data(X_train, flip_prob=flip_prob, rotate_prob=rotate_prob)
-
-        # Create model with hyperparameters
-        model = CNNModel.create_model(
-            input_shape=(128, 128, 128, 1),
-            num_classes=2,
-            dropout_rate=dropout_rate,
-            l2_reg=l2_reg
-        )
-        model.compile(
-            optimizer=Adam(learning_rate=learning_rate),
-            loss='categorical_crossentropy',
-            metrics=['accuracy', AUC(name='auc')]
-        )
-
-        early_stopping = EarlyStopping(
-            monitor='val_loss',
-            patience=50,
-            mode='min',
-            verbose=0,
-            restore_best_weights=True
-        )
-
-        reduce_lr = ReduceLROnPlateau(
-            monitor='val_loss',
-            factor=0.5,
-            patience=10,
-            mode='min',
-            verbose=0
-        )
-
-        # Use ReportCheckpointCallback
-        report_checkpoint_callback = ReportCheckpointCallback()
-
-        # Train the model
-        model.fit(
-            X_train_augmented, Y_train,
-            validation_data=(X_val, Y_val),
-            epochs=800,
-            batch_size=batch_size,
-            callbacks=[
-                early_stopping,
-                reduce_lr,
-                report_checkpoint_callback
-            ],
-            verbose=0
-        )
-
-        # Report metrics to Ray Tune
-        val_loss, val_accuracy, val_auc = model.evaluate(X_val, Y_val, verbose=0)
-        tune.report(val_loss=val_loss, val_accuracy=val_accuracy, val_auc=val_auc)
-
-        # After training, clear the session and collect garbage to free memory
-        tf.keras.backend.clear_session()
-        import gc
-        gc.collect()
-      
-      def tune_model_nested_cv(X, Y, task, modality, info):
+    def tune_model_nested_cv(X, Y, task, modality, info):
       # Define the cross-validation strategy
         n_splits = 3
         stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
@@ -469,6 +401,75 @@ class Trainer:
         print(f'\nAverage AUC across all {n_splits} folds: {average_auc:.4f}')
         
         return average_auc
+
+    @staticmethod
+    def train_model(config, X_train, Y_train, X_val, Y_val):
+        # Unpack hyperparameters from the config dictionary
+        learning_rate = config["learning_rate"]
+        batch_size = config["batch_size"]
+        dropout_rate = config["dropout_rate"]
+        l2_reg = config["l2_reg"]
+        flip_prob = config["flip_prob"]
+        rotate_prob = config["rotate_prob"]
+
+        # Apply data augmentation with specified probabilities
+        X_train_augmented = DataLoader.augment_data(X_train, flip_prob=flip_prob, rotate_prob=rotate_prob)
+
+        # Create model with hyperparameters
+        model = CNNModel.create_model(
+            input_shape=(128, 128, 128, 1),
+            num_classes=2,
+            dropout_rate=dropout_rate,
+            l2_reg=l2_reg
+        )
+        model.compile(
+            optimizer=Adam(learning_rate=learning_rate),
+            loss='categorical_crossentropy',
+            metrics=['accuracy', AUC(name='auc')]
+        )
+
+        early_stopping = EarlyStopping(
+            monitor='val_loss',
+            patience=50,
+            mode='min',
+            verbose=0,
+            restore_best_weights=True
+        )
+
+        reduce_lr = ReduceLROnPlateau(
+            monitor='val_loss',
+            factor=0.5,
+            patience=10,
+            mode='min',
+            verbose=0
+        )
+
+        # Use ReportCheckpointCallback
+        report_checkpoint_callback = ReportCheckpointCallback()
+
+        # Train the model
+        model.fit(
+            X_train_augmented, Y_train,
+            validation_data=(X_val, Y_val),
+            epochs=800,
+            batch_size=batch_size,
+            callbacks=[
+                early_stopping,
+                reduce_lr,
+                report_checkpoint_callback
+            ],
+            verbose=0
+        )
+
+        # Report metrics to Ray Tune
+        val_loss, val_accuracy, val_auc = model.evaluate(X_val, Y_val, verbose=0)
+        tune.report(val_loss=val_loss, val_accuracy=val_accuracy, val_auc=val_auc)
+
+        # After training, clear the session and collect garbage to free memory
+        tf.keras.backend.clear_session()
+        import gc
+        gc.collect()
+
 
 def main():
     task = 'cd'  # Update as per your task
