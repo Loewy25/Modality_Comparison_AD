@@ -292,7 +292,7 @@ from tensorflow.keras.layers import Input, Dense, Dropout, Flatten
 # from your_module import CNNModel, DataLoader
 
 class CustomHyperModel(HyperModel):
-    """Custom HyperModel to include batch_size and augmentation probabilities."""
+    """Custom HyperModel to include augmentation probabilities."""
 
     def build(self, hp):
         """Builds and compiles the model using hyperparameters."""
@@ -327,28 +327,33 @@ class CustomHyperModel(HyperModel):
         return model
 
 class CustomTuner(kt.RandomSearch):
-    """Custom Tuner to include batch_size and augmentation probabilities."""
+    """Custom Tuner to include augmentation probabilities."""
 
     def run_trial(self, trial, *args, **kwargs):
         # Extract hyperparameters
         hp = trial.hyperparameters
-        batch_size = hp.Int('batch_size', min_value=16, max_value=128, step=16)
         flip_prob = hp.get('flip_prob', 0.0)
         rotate_prob = hp.get('rotate_prob', 0.0)
 
+        # Extract training data
+        X_train = kwargs.pop('x')
+        Y_train = kwargs.pop('y')
+
         # Apply data augmentation based on hyperparameters
-        X_train_augmented, Y_train_augmented = DataLoader.augment_data(
-            kwargs['x'], 
+        X_train_augmented = DataLoader.augment_data(
+            X_train, 
             flip_prob=flip_prob, 
             rotate_prob=rotate_prob
         )
+        Y_train_augmented = Y_train.copy()  # Assuming labels remain the same for augmented data
 
-        # Update the training data in kwargs
-        kwargs['x'] = X_train_augmented
-        kwargs['y'] = Y_train_augmented
+        # Concatenate original and augmented data
+        X_combined = np.concatenate((X_train, X_train_augmented), axis=0)
+        Y_combined = np.concatenate((Y_train, Y_train_augmented), axis=0)
 
-        # Update the batch_size in kwargs
-        kwargs['batch_size'] = batch_size
+        # Update kwargs with augmented data
+        kwargs['x'] = X_combined
+        kwargs['y'] = Y_combined
 
         # Proceed with the standard run_trial
         super(CustomTuner, self).run_trial(trial, *args, **kwargs)
@@ -357,11 +362,12 @@ class Trainer:
     """Class to handle model training and evaluation."""
 
     @staticmethod
-    def build_model(best_hps):
-        """Builds and compiles the model using the best hyperparameters."""
-        learning_rate = best_hps.get('learning_rate')
-        dropout_rate = best_hps.get('dropout_rate')
-        l2_reg = best_hps.get('l2_reg')
+    def build_model(hp):
+        """Builds and compiles the model using hyperparameters."""
+        # Model hyperparameters
+        learning_rate = hp.get('learning_rate')
+        dropout_rate = hp.get('dropout_rate')
+        l2_reg = hp.get('l2_reg')
 
         # Build the model
         model = CNNModel.create_model(
@@ -442,23 +448,26 @@ class Trainer:
             best_hyperparameters.append(best_hps)
             print(f"Best hyperparameters for fold {fold}:")
             print(f"Learning Rate: {best_hps.get('learning_rate')}")
-            print(f"Batch Size: {best_hps.get('batch_size')}")
             print(f"Dropout Rate: {best_hps.get('dropout_rate')}")
             print(f"L2 Regularization: {best_hps.get('l2_reg')}")
             print(f"Flip Probability: {best_hps.get('flip_prob')}")
             print(f"Rotate Probability: {best_hps.get('rotate_prob')}")
 
-            # Extract augmentation probabilities and batch size
+            # Extract augmentation probabilities
             flip_prob = best_hps.get('flip_prob', 0.0)
             rotate_prob = best_hps.get('rotate_prob', 0.0)
-            batch_size = best_hps.get('batch_size', 32)  # Default to 32 if not set
 
             # Apply data augmentation to the training data based on best_hps
-            X_train_augmented, Y_train_augmented = DataLoader.augment_data(
+            X_train_augmented = DataLoader.augment_data(
                 X_train, 
                 flip_prob=flip_prob, 
                 rotate_prob=rotate_prob
             )
+            Y_train_augmented = Y_train.copy()  # Assuming labels remain the same for augmented data
+
+            # Concatenate original and augmented data
+            X_train_combined = np.concatenate((X_train, X_train_augmented), axis=0)
+            Y_train_combined = np.concatenate((Y_train, Y_train_augmented), axis=0)
 
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
@@ -481,12 +490,12 @@ class Trainer:
                 )
             ]
 
-            # Train the final model on augmented data with the tuned batch size
+            # Train the final model on augmented data
             history = final_model.fit(
-                X_train_augmented, Y_train_augmented,
+                X_train_combined, Y_train_combined,
                 validation_data=(X_val, Y_val),
                 epochs=100,  # Adjust as needed
-                batch_size=batch_size,
+                batch_size=32,  # Fixed batch size
                 callbacks=final_callbacks,
                 verbose=1
             )
@@ -524,5 +533,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
