@@ -332,8 +332,8 @@ class CustomTuner(kt.RandomSearch):
     def run_trial(self, trial, *args, **kwargs):
         # Extract hyperparameters
         hp = trial.hyperparameters
-        flip_prob = hp.get('flip_prob', 0.0)
-        rotate_prob = hp.get('rotate_prob', 0.0)
+        flip_prob = hp.get('flip_prob')
+        rotate_prob = hp.get('rotate_prob')
 
         # Extract training data
         X_train = kwargs.pop('x')
