@@ -283,12 +283,10 @@ class GradCAM:
                                      task, modality, conv_layer_name, class_idx, info)
 
 
-class CNNTrainable(Trainable):
-    """Custom Trainable class for Ray Tune using the Tuner API."""
-
-    def setup(self, config):
+class CNNTrainable(tune.Trainable):
+    def setup(self, config, X_train=None, Y_train=None, X_val=None, Y_val=None):
         self.config = config
-        # Unpack hyperparameters
+        # Unpack hyperparameters as before
         self.learning_rate = config["learning_rate"]
         self.batch_size = config["batch_size"]
         self.dropout_rate = config["dropout_rate"]
@@ -296,19 +294,16 @@ class CNNTrainable(Trainable):
         self.flip_prob = config["flip_prob"]
         self.rotate_prob = config["rotate_prob"]
 
-        # Load data from config
-        self.X_train = config["X_train"]
-        self.Y_train = config["Y_train"]
-        self.X_val = config["X_val"]
-        self.Y_val = config["Y_val"]
+        # Load data directly from parameters
+        self.X_train = X_train
+        self.Y_train = Y_train
+        self.X_val = X_val
+        self.Y_val = Y_val
 
-        # Apply data augmentation
+        # Data augmentation and model setup as before
         self.X_train_augmented = DataLoader.augment_data(
-            self.X_train,
-            flip_prob=self.flip_prob,
-            rotate_prob=self.rotate_prob
+            self.X_train, flip_prob=self.flip_prob, rotate_prob=self.rotate_prob
         )
-
         # Create and compile the model
         self.model = CNNModel.create_model(
             input_shape=(128, 128, 128, 1),
@@ -413,7 +408,7 @@ class Trainer:
 
             # Define the tuner
             tuner = tune.Tuner(
-                tune.with_resources(CNNTrainable,resources={"cpu": 1, "gpu": 1}),
+                tune.with_parameters(CNNTrainable, X_train=X_train, Y_train=Y_train, X_val=X_val, Y_val=Y_val),
                 tune_config=tune.TuneConfig(
                     scheduler=scheduler,
                     num_samples=8  # Adjust based on your GPU memory
