@@ -277,19 +277,91 @@ class GradCAM:
                                      task, modality, conv_layer_name, class_idx, info)
 
 
+import numpy as np
+import keras_tuner as kt
+from keras_tuner import HyperModel
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.utils import to_categorical
+from sklearn.model_selection import StratifiedKFold
+from tensorflow.keras.metrics import AUC
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Dense, Dropout, Flatten
+
+# Assuming CNNModel and DataLoader are defined elsewhere
+# from your_module import CNNModel, DataLoader
+
+class CustomHyperModel(HyperModel):
+    """Custom HyperModel to include batch_size and augmentation probabilities."""
+
+    def build(self, hp):
+        """Builds and compiles the model using hyperparameters."""
+        # Model hyperparameters
+        learning_rate = hp.Float('learning_rate', 1e-5, 1e-3, sampling='log')
+        dropout_rate = hp.Float('dropout_rate', 0.0, 0.5, step=0.05)
+        l2_reg = hp.Float('l2_reg', 1e-6, 1e-4, sampling='log')
+
+        # Augmentation hyperparameters
+        flip_prob = hp.Float('flip_prob', 0.0, 0.5, step=0.05)
+        rotate_prob = hp.Float('rotate_prob', 0.0, 0.5, step=0.05)
+
+        # Build the model
+        model = CNNModel.create_model(
+            input_shape=(128, 128, 128, 1),
+            num_classes=2,
+            dropout_rate=dropout_rate,
+            l2_reg=l2_reg
+        )
+
+        # Compile the model
+        model.compile(
+            optimizer=Adam(learning_rate=learning_rate),
+            loss='categorical_crossentropy',
+            metrics=['accuracy', AUC(name='auc')]
+        )
+
+        # Store augmentation probabilities for later use
+        self.flip_prob = flip_prob
+        self.rotate_prob = rotate_prob
+
+        return model
+
+class CustomTuner(kt.RandomSearch):
+    """Custom Tuner to include batch_size and augmentation probabilities."""
+
+    def run_trial(self, trial, *args, **kwargs):
+        # Extract hyperparameters
+        hp = trial.hyperparameters
+        batch_size = hp.Int('batch_size', min_value=16, max_value=128, step=16)
+        flip_prob = hp.get('flip_prob', 0.0)
+        rotate_prob = hp.get('rotate_prob', 0.0)
+
+        # Apply data augmentation based on hyperparameters
+        X_train_augmented, Y_train_augmented = DataLoader.augment_data(
+            kwargs['x'], 
+            flip_prob=flip_prob, 
+            rotate_prob=rotate_prob
+        )
+
+        # Update the training data in kwargs
+        kwargs['x'] = X_train_augmented
+        kwargs['y'] = Y_train_augmented
+
+        # Update the batch_size in kwargs
+        kwargs['batch_size'] = batch_size
+
+        # Proceed with the standard run_trial
+        super(CustomTuner, self).run_trial(trial, *args, **kwargs)
+
 class Trainer:
     """Class to handle model training and evaluation."""
 
     @staticmethod
-    def build_model(hp):
-        """Builds and compiles the model using hyperparameters from Keras Tuner."""
-        # Sample hyperparameters
-        learning_rate = hp.Float('learning_rate', 1e-5, 1e-3, sampling='log')
-        dropout_rate = hp.Float('dropout_rate', 0.0, 0.5, step=0.05)
-        l2_reg = hp.Float('l2_reg', 1e-6, 1e-4, sampling='log')
-        flip_prob = hp.Float('flip_prob', 0.0, 0.5, step=0.05)
-        rotate_prob = hp.Float('rotate_prob', 0.0, 0.5, step=0.05)
-
+    def build_model(best_hps):
+        """Builds and compiles the model using the best hyperparameters."""
+        learning_rate = best_hps.get('learning_rate')
+        dropout_rate = best_hps.get('dropout_rate')
+        l2_reg = best_hps.get('l2_reg')
 
         # Build the model
         model = CNNModel.create_model(
@@ -324,9 +396,12 @@ class Trainer:
             X_train, X_val = X[train_idx], X[val_idx]
             Y_train, Y_val = Y[train_idx], Y[val_idx]
 
-            # Define the search space within the build_model function
-            tuner = kt.RandomSearch(
-                hypermodel=Trainer.build_model,
+            # Initialize the custom hypermodel
+            hypermodel = CustomHyperModel()
+
+            # Define the tuner
+            tuner = CustomTuner(
+                hypermodel=hypermodel,
                 objective=kt.Objective("val_auc", direction="max"),
                 max_trials=max_trials,
                 executions_per_trial=executions_per_trial,
@@ -358,10 +433,8 @@ class Trainer:
                 X_train, Y_train,
                 validation_data=(X_val, Y_val),
                 epochs=100,  # Set a high number; early stopping will handle it
-                batch_size=32,  # Temporary batch size; will adjust based on hyperparameter
                 callbacks=callbacks,
-                verbose=1,
-                # Custom training loop to handle dynamic batch_size and augmentation
+                verbose=1
             )
 
             # Retrieve the best hyperparameters
@@ -375,9 +448,10 @@ class Trainer:
             print(f"Flip Probability: {best_hps.get('flip_prob')}")
             print(f"Rotate Probability: {best_hps.get('rotate_prob')}")
 
-            # Extract augmentation probabilities
-            flip_prob = best_hps.get('flip_prob') if 'flip_prob' in best_hps.values else 0.0
-            rotate_prob = best_hps.get('rotate_prob') if 'rotate_prob' in best_hps.values else 0.0
+            # Extract augmentation probabilities and batch size
+            flip_prob = best_hps.get('flip_prob', 0.0)
+            rotate_prob = best_hps.get('rotate_prob', 0.0)
+            batch_size = best_hps.get('batch_size', 32)  # Default to 32 if not set
 
             # Apply data augmentation to the training data based on best_hps
             X_train_augmented, Y_train_augmented = DataLoader.augment_data(
@@ -388,9 +462,6 @@ class Trainer:
 
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
-
-            # Retrieve the best batch size
-            batch_size = 5
 
             # Define callbacks for final training
             final_callbacks = [
@@ -410,7 +481,7 @@ class Trainer:
                 )
             ]
 
-            # Train the final model on augmented data
+            # Train the final model on augmented data with the tuned batch size
             history = final_model.fit(
                 X_train_augmented, Y_train_augmented,
                 validation_data=(X_val, Y_val),
@@ -436,7 +507,6 @@ class Trainer:
 
         return average_auc
 
-
 def main():
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
@@ -452,14 +522,7 @@ def main():
     average_auc = Trainer.tune_model_nested_cv(X, Y, task, modality, info)
     print(f"Average AUC across all folds: {average_auc:.4f}")
 
-
-if __name__ == '__main__':
-    # Set seeds for reproducibility
-    seed = 42
-    tf.random.set_seed(seed)
-    np.random.seed(seed)
-    random.seed(seed)
-
+if __name__ == "__main__":
     main()
 
 
