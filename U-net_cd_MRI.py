@@ -413,7 +413,7 @@ class Trainer:
 
             # Define the tuner
             tuner = tune.Tuner(
-                tune.with_resources(CNNTrainable, resources={"cpu": 1, "gpu": 1})
+                tune.with_resources(CNNTrainable,resources={"cpu": 1, "gpu": 1}),
                 tune_config=tune.TuneConfig(
                     scheduler=scheduler,
                     metric="val_auc",
