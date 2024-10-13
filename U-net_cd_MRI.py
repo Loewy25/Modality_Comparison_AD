@@ -447,7 +447,7 @@ class Trainer:
 
         # Use ReportCheckpointCallback
         report_checkpoint_callback = ReportCheckpointCallback()
-
+        tune.utils.wait_for_gpu()
         # Train the model
         model.fit(
             X_train_augmented, Y_train,
