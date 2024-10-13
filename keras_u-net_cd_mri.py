@@ -306,7 +306,7 @@ class Trainer:
         return model
 
     @staticmethod
-    def tune_model_nested_cv(X, Y, task, modality, info, n_splits=3, max_trials=10, executions_per_trial=1):
+    def tune_model_nested_cv(X, Y, task, modality, info, n_splits=3, max_trials=5, executions_per_trial=1):
         """Performs hyperparameter tuning using nested cross-validation."""
         # Define the cross-validation strategy
         stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
