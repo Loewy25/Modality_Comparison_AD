@@ -17,24 +17,19 @@ from sklearn.model_selection import StratifiedKFold
 from nilearn import plotting
 from scipy.stats import zscore
 from scipy.ndimage import zoom, rotate
-from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import roc_auc_score
 from ray import tune
-from ray.tune.schedulers import HyperBandScheduler
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
-from tensorflow.keras.metrics import AUC
+from ray.tune.schedulers import HyperBandScheduler, ASHAScheduler
+from ray.train.tune import TuneConfig, RunConfig
+from ray.train import Checkpoint
+from ray.train.tune import Trainable
+import ray
+
 # Import your own data loading functions
 from data_loading import generate_data_path_less, generate, binarylabel
 
-# Import Ray and Ray Tune
-import ray
-from ray import tune
-from ray.tune.schedulers import HyperBandScheduler
-from ray.train.tensorflow.keras import ReportCheckpointCallback
-
 # Initialize Ray
 ray.init(ignore_reinit_error=True)
+
 
 class Utils:
     """Utility functions for directory management and image resizing."""
@@ -289,23 +284,112 @@ class GradCAM:
                                      task, modality, conv_layer_name, class_idx, info)
 
 
+class CNNTrainable(Trainable):
+    """Custom Trainable class for Ray Tune using the Tuner API."""
+
+    def setup(self, config):
+        self.config = config
+        # Unpack hyperparameters
+        self.learning_rate = config["learning_rate"]
+        self.batch_size = config["batch_size"]
+        self.dropout_rate = config["dropout_rate"]
+        self.l2_reg = config["l2_reg"]
+        self.flip_prob = config["flip_prob"]
+        self.rotate_prob = config["rotate_prob"]
+
+        # Load data from config
+        self.X_train = config["X_train"]
+        self.Y_train = config["Y_train"]
+        self.X_val = config["X_val"]
+        self.Y_val = config["Y_val"]
+
+        # Apply data augmentation
+        self.X_train_augmented = DataLoader.augment_data(
+            self.X_train,
+            flip_prob=self.flip_prob,
+            rotate_prob=self.rotate_prob
+        )
+
+        # Create and compile the model
+        self.model = CNNModel.create_model(
+            input_shape=(128, 128, 128, 1),
+            num_classes=2,
+            dropout_rate=self.dropout_rate,
+            l2_reg=self.l2_reg
+        )
+        self.model.compile(
+            optimizer=Adam(learning_rate=self.learning_rate),
+            loss='categorical_crossentropy',
+            metrics=['accuracy', AUC(name='auc')]
+        )
+
+        # Define callbacks
+        self.callbacks = [
+            EarlyStopping(
+                monitor='val_loss',
+                patience=50,
+                mode='min',
+                verbose=0,
+                restore_best_weights=True
+            ),
+            ReduceLROnPlateau(
+                monitor='val_loss',
+                factor=0.5,
+                patience=10,
+                mode='min',
+                verbose=0
+            )
+        ]
+
+    def step(self):
+        # Train the model
+        history = self.model.fit(
+            self.X_train_augmented, self.Y_train,
+            validation_data=(self.X_val, self.Y_val),
+            epochs=800,  # You can adjust this as needed
+            batch_size=self.batch_size,
+            callbacks=self.callbacks,
+            verbose=0
+        )
+
+        # Evaluate the model
+        val_loss, val_accuracy, val_auc = self.model.evaluate(self.X_val, self.Y_val, verbose=0)
+
+        # Report metrics to Ray Tune
+        return {
+            "val_loss": val_loss,
+            "val_accuracy": val_accuracy,
+            "val_auc": val_auc
+        }
+
+    def save_checkpoint(self, checkpoint_dir):
+        checkpoint_path = os.path.join(checkpoint_dir, "model.h5")
+        self.model.save(checkpoint_path)
+        return Checkpoint.from_directory(checkpoint_dir)
+
+    def load_checkpoint(self, checkpoint):
+        checkpoint_path = checkpoint.to_directory_path()
+        self.model = tf.keras.models.load_model(os.path.join(checkpoint_path, "model.h5"))
+
+
 class Trainer:
     """Class to handle model training and evaluation."""
+
     @staticmethod
     def tune_model_nested_cv(X, Y, task, modality, info):
-      # Define the cross-validation strategy
+        # Define the cross-validation strategy
         n_splits = 3
         stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
-        
+
         # Initialize variables to store results
         fold_results = []
-        
+
         # Iterate over each fold
         for fold, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1)), 1):
             print(f"\nStarting fold {fold}/{n_splits}")
             X_train, X_val = X[train_idx], X[val_idx]
             Y_train, Y_val = Y[train_idx], Y[val_idx]
-            
+
             # Define search space including augmentation probabilities
             config = {
                 "learning_rate": tune.loguniform(1e-5, 1e-3),
@@ -314,162 +398,61 @@ class Trainer:
                 "l2_reg": tune.loguniform(1e-6, 1e-4),
                 "flip_prob": tune.uniform(0.0, 0.5),
                 "rotate_prob": tune.uniform(0.0, 0.5),
+                "X_train": X_train,
+                "Y_train": Y_train,
+                "X_val": X_val,
+                "Y_val": Y_val
             }
-            
+
             # Scheduler for early stopping bad trials
-            scheduler = HyperBandScheduler(
-                time_attr="training_iteration",
-                max_t=4,  # Maximum number of epochs
-              
-            )
-            
-            # Execute tuning for the current fold
-            analysis = tune.run(
-                tune.with_parameters(Trainer.train_model, X_train=X_train, Y_train=Y_train, X_val=X_val, Y_val=Y_val),
-                resources_per_trial={"cpu": 1, "gpu": 1},  # Use 1 GPU per trial
-                config=config,
-                metric="val_auc",  # Use AUC for selecting the best model
+            scheduler = ASHAScheduler(
+                metric="val_auc",
                 mode="max",
-                num_samples=8,
-                scheduler=scheduler,
-                name=f"hyperparameter_tuning_fold_{fold}",
-                max_concurrent_trials=4  # Utilize up to 4 GPUs
+                max_t=800,  # Maximum number of epochs
+                grace_period=50,
+                reduction_factor=2
             )
-            
+
+            # Define the tuner
+            tuner = tune.Tuner(
+                CNNTrainable,
+                tune_config=TuneConfig(
+                    scheduler=scheduler,
+                    metric="val_auc",
+                    mode="max",
+                    num_samples=8,  # Adjust based on your GPU memory
+                    resources_per_trial={"cpu": 1, "gpu": 1}
+                ),
+                run_config=RunConfig(
+                    name=f"hyperparameter_tuning_fold_{fold}",
+                    callbacks=[],
+                    verbose=1
+                ),
+                param_space=config
+            )
+
+            # Execute tuning for the current fold
+            results = tuner.fit()
+
             # Get the best trial for the current fold
-            best_trial = analysis.get_best_trial("val_auc", "max", "last")
-            print(f"Best trial config for fold {fold}: {best_trial.config}")
-            print(f"Best trial final validation AUC for fold {fold}: {best_trial.last_result['val_auc']}")
-            
-            # Train the best model on the current fold's training data
-            best_config = best_trial.config
-            best_model = CNNModel.create_model(
-                input_shape=(128, 128, 128, 1),
-                num_classes=2,
-                dropout_rate=best_config["dropout_rate"],
-                l2_reg=best_config["l2_reg"]
-            )
-            best_model.compile(
-                optimizer=Adam(learning_rate=best_config["learning_rate"]),
-                loss='categorical_crossentropy',
-                metrics=['accuracy', AUC(name='auc')]
-            )
-            
-            # Apply data augmentation with best probabilities
-            X_train_augmented = DataLoader.augment_data(
-                X_train,
-                flip_prob=best_config["flip_prob"],
-                rotate_prob=best_config["rotate_prob"]
-            )
-            
-            # Define callbacks
-            early_stopping = EarlyStopping(
-                monitor='val_loss',
-                patience=50,
-                mode='min',
-                verbose=1,
-                restore_best_weights=True
-            )
-            
-            reduce_lr = ReduceLROnPlateau(
-                monitor='val_loss',
-                factor=0.5,
-                patience=10,
-                mode='min',
-                verbose=1
-            )
-            
-            # Retrain on the current fold's training data
-            history = best_model.fit(
-                X_train_augmented, Y_train,
-                validation_data=(X_val, Y_val),
-                epochs=5,
-                batch_size=best_config["batch_size"],
-                callbacks=[early_stopping, reduce_lr],
-                verbose=1
-            )
-            
-            # Evaluate on validation set
-            y_val_pred = best_model.predict(X_val)
-            final_auc = roc_auc_score(Y_val[:, 1], y_val_pred[:, 1])
-            print(f'Final AUC on validation data for fold {fold}: {final_auc:.4f}')
-            
+            best_result = results.get_best_result(metric="val_auc", mode="max")
+            best_trial_config = best_result.config
+            best_val_auc = best_result.metrics["val_auc"]
+            print(f"Best trial config for fold {fold}: {best_trial_config}")
+            print(f"Best trial validation AUC for fold {fold}: {best_val_auc}")
+
             # Store the result
-            fold_results.append(final_auc)
-        
+            fold_results.append(best_val_auc)
+
+            # Optionally, save the best model
+            # best_model_checkpoint = best_result.checkpoint
+            # best_model = tf.keras.models.load_model(best_model_checkpoint.to_directory_path())
+
         # Compute the average AUC across all folds
         average_auc = np.mean(fold_results)
         print(f'\nAverage AUC across all {n_splits} folds: {average_auc:.4f}')
-        
+
         return average_auc
-
-    @staticmethod
-    def train_model(config, X_train, Y_train, X_val, Y_val):
-        # Unpack hyperparameters from the config dictionary
-        learning_rate = config["learning_rate"]
-        batch_size = config["batch_size"]
-        dropout_rate = config["dropout_rate"]
-        l2_reg = config["l2_reg"]
-        flip_prob = config["flip_prob"]
-        rotate_prob = config["rotate_prob"]
-
-        # Apply data augmentation with specified probabilities
-        X_train_augmented = DataLoader.augment_data(X_train, flip_prob=flip_prob, rotate_prob=rotate_prob)
-
-        # Create model with hyperparameters
-        model = CNNModel.create_model(
-            input_shape=(128, 128, 128, 1),
-            num_classes=2,
-            dropout_rate=dropout_rate,
-            l2_reg=l2_reg
-        )
-        model.compile(
-            optimizer=Adam(learning_rate=learning_rate),
-            loss='categorical_crossentropy',
-            metrics=['accuracy', AUC(name='auc')]
-        )
-
-        early_stopping = EarlyStopping(
-            monitor='val_loss',
-            patience=50,
-            mode='min',
-            verbose=0,
-            restore_best_weights=True
-        )
-
-        reduce_lr = ReduceLROnPlateau(
-            monitor='val_loss',
-            factor=0.5,
-            patience=10,
-            mode='min',
-            verbose=0
-        )
-
-        # Use ReportCheckpointCallback
-        report_checkpoint_callback = ReportCheckpointCallback()
-
-        # Train the model
-        model.fit(
-            X_train_augmented, Y_train,
-            validation_data=(X_val, Y_val),
-            epochs=800,
-            batch_size=batch_size,
-            callbacks=[
-                early_stopping,
-                reduce_lr,
-                report_checkpoint_callback
-            ],
-            verbose=0
-        )
-
-        # Report metrics to Ray Tune
-        val_loss, val_accuracy, val_auc = model.evaluate(X_val, Y_val, verbose=0)
-        tune.report(val_loss=val_loss, val_accuracy=val_accuracy, val_auc=val_auc)
-
-        # After training, clear the session and collect garbage to free memory
-        tf.keras.backend.clear_session()
-        import gc
-        gc.collect()
 
 
 def main():
@@ -483,8 +466,8 @@ def main():
     X = np.expand_dims(X, axis=-1)  # Add channel dimension if not already present
     Y = to_categorical(train_label, num_classes=2)
 
-    # Train the model with hyperparameter tuning and get the best trained model
-    best_model = Trainer.tune_model_nested_cv(X, Y, task, modality, info)
+    # Train the model with hyperparameter tuning and get the average AUC
+    average_auc = Trainer.tune_model_nested_cv(X, Y, task, modality, info)
 
     # Shutdown Ray
     ray.shutdown()
