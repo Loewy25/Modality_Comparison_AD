@@ -20,7 +20,7 @@ from scipy.ndimage import zoom, rotate
 from ray import tune, train
 from ray.tune.schedulers import HyperBandScheduler, ASHAScheduler
 from ray.train import Checkpoint
-from ray.train.tune import Trainable
+from ray.train import Trainable
 import ray
 
 # Import your own data loading functions
