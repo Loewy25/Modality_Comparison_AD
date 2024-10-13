@@ -318,6 +318,7 @@ class Trainer:
     
     # Reinitialize Ray for the new fold
             ray.init(ignore_reinit_error=True)
+            tune.utils.wait_for_gpu()
             print(f"\nStarting fold {fold}/{n_splits}")
             X_train, X_val = X[train_idx], X[val_idx]
             Y_train, Y_val = Y[train_idx], Y[val_idx]
