@@ -347,13 +347,9 @@ class CustomTuner(kt.RandomSearch):
         )
         Y_train_augmented = Y_train.copy()  # Assuming labels remain the same for augmented data
 
-        # Concatenate original and augmented data
-        X_combined = np.concatenate((X_train, X_train_augmented), axis=0)
-        Y_combined = np.concatenate((Y_train, Y_train_augmented), axis=0)
-
         # Update kwargs with augmented data
-        kwargs['x'] = X_combined
-        kwargs['y'] = Y_combined
+        kwargs['x'] = X_train_augmented
+        kwargs['y'] = Y_train_augmented
 
         # Proceed with the standard run_trial
         super(CustomTuner, self).run_trial(trial, *args, **kwargs)
@@ -381,14 +377,14 @@ class Trainer:
         model.compile(
             optimizer=Adam(learning_rate=learning_rate),
             loss='categorical_crossentropy',
-            metrics=['accuracy', AUC(name='auc')]
+            metrics=['accuracy', AUC(name='val_auc')]
         )
 
         return model
 
     @staticmethod
     def tune_model_nested_cv(X, Y, task, modality, info, n_splits=3, max_trials=10, executions_per_trial=1):
-        """Performs hyperparameter tuning using nested cross-validation."""
+        """Performs hyperparameter tuning using nested cross-validatiolike n."""
         # Define the cross-validation strategy
         stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
 
@@ -438,8 +434,9 @@ class Trainer:
             tuner.search(
                 X_train, Y_train,
                 validation_data=(X_val, Y_val),
-                epochs=100,  # Set a high number; early stopping will handle it
+                epochs=3,  # Set a high number; early stopping will handle it
                 callbacks=callbacks,
+                batch_size=5,
                 verbose=1
             )
 
@@ -465,10 +462,6 @@ class Trainer:
             )
             Y_train_augmented = Y_train.copy()  # Assuming labels remain the same for augmented data
 
-            # Concatenate original and augmented data
-            X_train_combined = np.concatenate((X_train, X_train_augmented), axis=0)
-            Y_train_combined = np.concatenate((Y_train, Y_train_augmented), axis=0)
-
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
 
@@ -492,10 +485,10 @@ class Trainer:
 
             # Train the final model on augmented data
             history = final_model.fit(
-                X_train_combined, Y_train_combined,
+                X_train_augmented, Y_train_augmented,
                 validation_data=(X_val, Y_val),
-                epochs=100,  # Adjust as needed
-                batch_size=32,  # Fixed batch size
+                epochs=4,  # Adjust as needed
+                batch_size=5,  # Fixed batch size
                 callbacks=final_callbacks,
                 verbose=1
             )
