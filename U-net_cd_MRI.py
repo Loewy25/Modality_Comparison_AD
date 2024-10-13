@@ -294,6 +294,7 @@ class Trainer:
     @staticmethod
     def tune_model_nested_cv(X, Y, task, modality, info):
       # Define the cross-validation strategy
+      
         n_splits = 3
         stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
         
@@ -302,6 +303,10 @@ class Trainer:
         
         # Iterate over each fold
         for fold, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1)), 1):
+            ray.shutdown()
+    
+    # Reinitialize Ray for the new fold
+            ray.init(ignore_reinit_error=True)
             print(f"\nStarting fold {fold}/{n_splits}")
             X_train, X_val = X[train_idx], X[val_idx]
             Y_train, Y_val = Y[train_idx], Y[val_idx]
