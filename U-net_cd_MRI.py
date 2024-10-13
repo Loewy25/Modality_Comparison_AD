@@ -320,6 +320,7 @@ class Trainer:
             scheduler = HyperBandScheduler(
                 time_attr="training_iteration",
                 max_t=4,  # Maximum number of epochs
+              
             )
             
             # Execute tuning for the current fold
@@ -331,6 +332,7 @@ class Trainer:
                 mode="max",
                 num_samples=8,
                 scheduler=scheduler,
+                max_concurrent_trials=2，
                 name=f"hyperparameter_tuning_fold_{fold}",
                 max_concurrent_trials=4  # Utilize up to 4 GPUs
             )
