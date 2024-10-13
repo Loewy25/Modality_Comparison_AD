@@ -105,7 +105,7 @@ class CNNModel:
         return x
 
     @staticmethod
-    def create_model(input_shape=(128, 128, 128, 1), num_classes=2, dropout_rate=0.05, l2_reg=1e-5):
+    def create_model(input_shape=(128, 128, 128, 1), num_classes=2, dropout_rate=0.05, l2_reg=1e-5, reduction_ratio = 8):
         input_img = Input(shape=input_shape)
 
         # Conv1 block (16 filters) with CBAM
