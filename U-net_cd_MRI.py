@@ -416,8 +416,6 @@ class Trainer:
                 tune.with_resources(CNNTrainable,resources={"cpu": 1, "gpu": 1}),
                 tune_config=tune.TuneConfig(
                     scheduler=scheduler,
-                    metric="val_auc",
-                    mode="max",
                     num_samples=8  # Adjust based on your GPU memory
                 ),
                 run_config=train.RunConfig(
