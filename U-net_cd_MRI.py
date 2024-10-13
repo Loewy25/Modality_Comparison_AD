@@ -33,8 +33,6 @@ from ray import tune
 from ray.tune.schedulers import HyperBandScheduler
 from ray.train.tensorflow.keras import ReportCheckpointCallback
 
-# Initialize Ray
-ray.init(ignore_reinit_error=True)
 
 class Utils:
     """Utility functions for directory management and image resizing."""
