@@ -360,7 +360,6 @@ class Trainer:
         import gc
         gc.collect()
       
-  @staticmethod
   def tune_model_nested_cv(X, Y, task, modality, info):
       # Define the cross-validation strategy
       n_splits = 3
