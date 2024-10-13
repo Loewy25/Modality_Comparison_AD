@@ -424,8 +424,13 @@ class Trainer:
 
         return average_auc
 
-
+import shutil
 def main():
+
+    tuner_dir = 'keras_tuner_dir'
+    if os.path.exists(tuner_dir):
+        shutil.rmtree(tuner_dir)
+      
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
     info = 'test'  # Additional info for saving results
