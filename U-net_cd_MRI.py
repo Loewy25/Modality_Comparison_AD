@@ -337,6 +337,7 @@ class CNNTrainable(tune.Trainable):
 
     def step(self):
         # Train the model
+        tune.utils.wait_for_gpu()
         history = self.model.fit(
             self.X_train_augmented, self.Y_train,
             validation_data=(self.X_val, self.Y_val),
