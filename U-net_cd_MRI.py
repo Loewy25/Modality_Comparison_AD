@@ -391,11 +391,7 @@ class Trainer:
                 "dropout_rate": tune.uniform(0.0, 0.5),
                 "l2_reg": tune.loguniform(1e-6, 1e-4),
                 "flip_prob": tune.uniform(0.0, 0.5),
-                "rotate_prob": tune.uniform(0.0, 0.5),
-                "X_train": X_train,
-                "Y_train": Y_train,
-                "X_val": X_val,
-                "Y_val": Y_val
+                "rotate_prob": tune.uniform(0.0, 0.5)
             }
 
             # Scheduler for early stopping bad trials
