@@ -481,7 +481,7 @@ def main():
     Y = to_categorical(train_label, num_classes=2)
 
     # Train the model with hyperparameter tuning and get the best trained model
-    best_model = Trainer.tune_model(X, Y, task, modality, info)
+    best_model = Trainer.tune_model_nested_cv(X, Y, task, modality, info)
 
     # Shutdown Ray
     ray.shutdown()
