@@ -26,12 +26,25 @@ from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.metrics import AUC
 # Import your own data loading functions
 from data_loading import generate_data_path_less, generate, binarylabel
-
+import gc
 # Import Ray and Ray Tune
 import ray
 from ray import tune
 from ray.tune.schedulers import HyperBandScheduler
 from ray.train.tensorflow.keras import ReportCheckpointCallback
+
+import tensorflow as tf
+
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        logical_gpus = tf.config.list_logical_devices('GPU')
+        print(f"{len(gpus)} Physical GPUs, {len(logical_gpus)} Logical GPUs")
+    except RuntimeError as e:
+        print(e)
+
 
 
 class Utils:
@@ -399,6 +412,7 @@ class Trainer:
             
             # Store the result
             fold_results.append(final_auc)
+            gc.collect()
         
         # Compute the average AUC across all folds
         average_auc = np.mean(fold_results)
@@ -468,10 +482,8 @@ class Trainer:
         # Report metrics to Ray Tune
         val_loss, val_accuracy, val_auc = model.evaluate(X_val, Y_val, verbose=0)
         tune.report(val_loss=val_loss, val_accuracy=val_accuracy, val_auc=val_auc)
-
         # After training, clear the session and collect garbage to free memory
         tf.keras.backend.clear_session()
-        import gc
         gc.collect()
 
 
