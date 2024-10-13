@@ -346,7 +346,7 @@ class CNNTrainable(Trainable):
         history = self.model.fit(
             self.X_train_augmented, self.Y_train,
             validation_data=(self.X_val, self.Y_val),
-            epochs=800,  # You can adjust this as needed
+            epochs=5,  # You can adjust this as needed
             batch_size=self.batch_size,
             callbacks=self.callbacks,
             verbose=0
@@ -408,8 +408,7 @@ class Trainer:
             scheduler = ASHAScheduler(
                 metric="val_auc",
                 mode="max",
-                max_t=800,  # Maximum number of epochs
-                grace_period=50,
+                max_t=8,  # Maximum number of epochs
                 reduction_factor=2
             )
 
