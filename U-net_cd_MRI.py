@@ -26,17 +26,15 @@ from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.metrics import AUC
 # Import your own data loading functions
 from data_loading import generate_data_path_less, generate, binarylabel
-import gc
+
 # Import Ray and Ray Tune
 import ray
 from ray import tune
 from ray.tune.schedulers import HyperBandScheduler
 from ray.train.tensorflow.keras import ReportCheckpointCallback
 
-import tensorflow as tf
-
-
-
+# Initialize Ray
+ray.init(ignore_reinit_error=True)
 
 class Utils:
     """Utility functions for directory management and image resizing."""
@@ -296,7 +294,6 @@ class Trainer:
     @staticmethod
     def tune_model_nested_cv(X, Y, task, modality, info):
       # Define the cross-validation strategy
-      
         n_splits = 3
         stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
         
@@ -305,10 +302,6 @@ class Trainer:
         
         # Iterate over each fold
         for fold, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1)), 1):
-            ray.shutdown()
-    
-    # Reinitialize Ray for the new fold
-            ray.init(ignore_reinit_error=True)
             print(f"\nStarting fold {fold}/{n_splits}")
             X_train, X_val = X[train_idx], X[val_idx]
             Y_train, Y_val = Y[train_idx], Y[val_idx]
@@ -403,7 +396,6 @@ class Trainer:
             
             # Store the result
             fold_results.append(final_auc)
-            gc.collect()
         
         # Compute the average AUC across all folds
         average_auc = np.mean(fold_results)
@@ -414,7 +406,6 @@ class Trainer:
     @staticmethod
     def train_model(config, X_train, Y_train, X_val, Y_val):
         # Unpack hyperparameters from the config dictionary
-        tune.utils.wait_for_gpu()
         learning_rate = config["learning_rate"]
         batch_size = config["batch_size"]
         dropout_rate = config["dropout_rate"]
@@ -474,8 +465,10 @@ class Trainer:
         # Report metrics to Ray Tune
         val_loss, val_accuracy, val_auc = model.evaluate(X_val, Y_val, verbose=0)
         tune.report(val_loss=val_loss, val_accuracy=val_accuracy, val_auc=val_auc)
+
         # After training, clear the session and collect garbage to free memory
         tf.keras.backend.clear_session()
+        import gc
         gc.collect()
 
 
