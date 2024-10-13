@@ -428,6 +428,8 @@ class Trainer:
 
             # Execute tuning for the current fold
             results = tuner.fit()
+            for i in results:
+              print(i)
 
             # Get the best trial for the current fold
             best_result = results.get_best_result(metric="val_auc", mode="max")
