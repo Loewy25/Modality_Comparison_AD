@@ -376,8 +376,10 @@ class Trainer:
             print(f"L2 Regularization: {best_hps.get('l2_reg')}")
           
             # Clear the session to free memory before building the new model
+            # Clear the session and release GPU memory
             tf.keras.backend.clear_session()
-            
+            import torch
+            torch.cuda.empty_cache()
             # Optionally, you can also delete the tuner object here if it’s no longer needed
             del tuner
             import gc
