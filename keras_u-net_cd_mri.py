@@ -439,7 +439,7 @@ def main():
       
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'keras_v1'  # Additional info for saving results
+    info = 'keras_v2'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
@@ -459,6 +459,8 @@ if __name__ == '__main__':
     np.random.seed(seed)
     random.seed(seed)
     main()
+
+
 
 
 
