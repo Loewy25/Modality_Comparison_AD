@@ -325,7 +325,7 @@ class Trainer:
         """Builds and compiles the model using hyperparameters from Keras Tuner."""
         # Sample hyperparameters
         learning_rate = hp.Float('learning_rate', 1e-5, 1e-3, sampling='log')
-        dropout_rate = hp.Float('dropout_rate', 0.0, 0.5, step=0.02)
+        dropout_rate = hp.Float('dropout_rate', 0.0, 0.5, step=0.05)
         l2_reg = hp.Float('l2_reg', 1e-6, 1e-4, sampling='log')
         reduction_ratio = hp.Float('reduction_ratio', 4, 16, step=2)
         
@@ -346,7 +346,7 @@ class Trainer:
         return model
 
     @staticmethod
-    def tune_model_nested_cv(X, Y, task, modality, info, n_splits=3, max_trials=5, executions_per_trial=1):
+    def tune_model_nested_cv(X, Y, task, modality, info, n_splits=2, max_trials=10, executions_per_trial=1):
         """Performs hyperparameter tuning using nested cross-validation."""
         # Define the cross-validation strategy
         stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
@@ -398,7 +398,7 @@ class Trainer:
             tuner.search(
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
-                epochs=4,  # Set a high number; early stopping will handle it
+                epochs=80,  # Set a high number; early stopping will handle it
                 batch_size=5,  # Temporary batch size; will adjust based on hyperparameter
                 callbacks=callbacks,
                 verbose=1,
@@ -443,7 +443,7 @@ class Trainer:
             history = final_model.fit(
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
-                epochs=4,  # Adjust as needed
+                epochs=250,  # Adjust as needed
                 batch_size=5,
                 callbacks=final_callbacks,
                 verbose=1
