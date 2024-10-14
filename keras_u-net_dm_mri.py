@@ -374,7 +374,14 @@ class Trainer:
             print(f"Learning Rate: {best_hps.get('learning_rate')}")
             print(f"Dropout Rate: {best_hps.get('dropout_rate')}")
             print(f"L2 Regularization: {best_hps.get('l2_reg')}")
-
+          
+            # Clear the session to free memory before building the new model
+            tf.keras.backend.clear_session()
+            
+            # Optionally, you can also delete the tuner object here if it’s no longer needed
+            del tuner
+            import gc
+            gc.collect()
 
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
@@ -430,9 +437,9 @@ import shutil
 def main():
 
       
-    task = 'dm'# Update as per your task
+    task = 'dm'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'keras_v1'  # Additional info for saving results
+    info = 'keras_v2'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
@@ -452,6 +459,8 @@ if __name__ == '__main__':
     np.random.seed(seed)
     random.seed(seed)
     main()
+
+
 
 
 
