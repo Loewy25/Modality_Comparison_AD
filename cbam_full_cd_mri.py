@@ -362,8 +362,8 @@ class Trainer:
             Y_train, Y_val = Y[train_idx], Y[val_idx]
             X_train_augmented = DataLoader.augment_data(
                 X_train, 
-                flip_prob=0.1, 
-                rotate_prob=0.1
+                flip_prob=0.5, 
+                rotate_prob=0.5
             )
             tuner_dir = os.path.join('keras_tuner_dir', task, modality, info, f"fold_{fold}")
             os.makedirs(tuner_dir, exist_ok=True)
@@ -415,7 +415,13 @@ class Trainer:
             print(f"Dropout Rate: {best_hps.get('dropout_rate')}")
             print(f"L2 Regularization: {best_hps.get('l2_reg')}")
             print(f"Reduction Ratio: {best_hps.get('reduction_ratio')}")
-
+            tf.keras.backend.clear_session()
+            import torch
+            torch.cuda.empty_cache()
+            # Optionally, you can also delete the tuner object here if it’s no longer needed
+            del tuner
+            import gc
+            gc.collect()
 
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
@@ -473,7 +479,7 @@ def main():
     # Clear the entire keras_tuner_dir to start fresh
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'cbam_full_v1'  # Additional info for saving results
+    info = 'cbam_full_v2'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
