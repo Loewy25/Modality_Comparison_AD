@@ -365,13 +365,15 @@ class Trainer:
                 flip_prob=0.1, 
                 rotate_prob=0.1
             )
+            tuner_dir = os.path.join('keras_tuner_dir', task, modality, info, f"fold_{fold}")
+            os.makedirs(tuner_dir, exist_ok=True)
             # Define the search space within the build_model function
             tuner = kt.RandomSearch(
                 hypermodel=Trainer.build_model,
                 objective=kt.Objective("val_auc", direction="max"),
                 max_trials=max_trials,
                 executions_per_trial=executions_per_trial,
-                directory='keras_tuner_dir',
+                directory=tuner_dir,
                 project_name=f"hyperparam_tuning_fold_{fold}",
                 seed=42
             )
@@ -465,16 +467,13 @@ class Trainer:
 
         return average_auc
       
-import shutil
+
 
 def main():
     # Clear the entire keras_tuner_dir to start fresh
-    tuner_dir = 'keras_tuner_dir'
-    if os.path.exists(tuner_dir):
-        shutil.rmtree(tuner_dir)
     task = 'cd'  # Update as per your task
     modality = 'PET'  # 'MRI' or 'PET'
-    info = 'test'  # Additional info for saving results
+    info = 'cbam_v1'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
@@ -494,4 +493,5 @@ if __name__ == '__main__':
     np.random.seed(seed)
     random.seed(seed)
     main()
+
 
