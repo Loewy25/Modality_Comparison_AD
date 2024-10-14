@@ -374,7 +374,14 @@ class Trainer:
             print(f"Learning Rate: {best_hps.get('learning_rate')}")
             print(f"Dropout Rate: {best_hps.get('dropout_rate')}")
             print(f"L2 Regularization: {best_hps.get('l2_reg')}")
-
+          
+            # Clear the session to free memory before building the new model
+            tf.keras.backend.clear_session()
+            
+            # Optionally, you can also delete the tuner object here if it’s no longer needed
+            del tuner
+            import gc
+            gc.collect()
 
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
