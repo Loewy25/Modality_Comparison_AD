@@ -48,7 +48,7 @@ class Utils:
 
 
 import tensorflow as tf
-from tensorflow.keras.layers import (Conv3D, Input, LeakyReLU, Add, GlobalAveragePooling3D, 
+from tensorflow.keras.layers import (Conv3D, Input, LeakyReLU, Add, GlobalAveragePooling3D, GlobalMaxPooling3D,
                                      Dense, Dropout, SpatialDropout3D, BatchNormalization, 
                                      Reshape, multiply, Concatenate)
 from tensorflow.keras.models import Model
