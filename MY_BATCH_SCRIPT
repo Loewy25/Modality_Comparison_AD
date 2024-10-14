@@ -3,7 +3,7 @@
 
 #SBATCH --job-name=_pet  # Assign a descriptive job name
 #SBATCH -N 1                     # Request 1 node
-#SBATCH --mem=100G               # Request 400GB memory
+#SBATCH --mem=80G               # Request 400GB memory
 #SBATCH -t 130:50:00             # Set maximum time
 #SBATCH --gres=gpu:1     # Request 4 GPUs
 #SBATCH --partition=tier2_gpu
