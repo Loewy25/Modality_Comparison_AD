@@ -2,12 +2,12 @@
 
 
 #SBATCH --job-name=ke_dm_pet # Assign a descriptive job name
-#SBATCH --nodelist=gpa[401-410],gpua[801-805],gpuh[801-802],gpugh01  
+
 #SBATCH -N 1                     # Request 1 node
 #SBATCH --mem=80G               # Request 400GB memory
 #SBATCH -t 130:50:00             # Set maximum time
 
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:nvidia_a100_80:1
 #SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
 
