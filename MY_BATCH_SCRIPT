@@ -7,6 +7,7 @@
 #SBATCH -t 130:50:00             # Set maximum time
 #SBATCH --gres=gpu:1     # Request 4 GPUs
 #SBATCH --partition=tier2_gpu
+#SBATCH --nodelist=gpu02,gpu03,gpa[401-410],gpua[801-805],gpuh[801-802],gpugh01  # Specify the high-memory, advanced GPU nodes
 #SBATCH --account=aristeidis_sotiras
 
 ##SBATCH --array=0-7              # Array of 8 tasks (0 to 7)
