@@ -416,10 +416,6 @@ class Trainer:
             print(f"L2 Regularization: {best_hps.get('l2_reg')}")
             print(f"Reduction Ratio: {best_hps.get('reduction_ratio')}")
             tf.keras.backend.clear_session()
-            import torch
-            torch.cuda.empty_cache()
-            # Optionally, you can also delete the tuner object here if it’s no longer needed
-            del tuner
             import gc
             gc.collect()
 
