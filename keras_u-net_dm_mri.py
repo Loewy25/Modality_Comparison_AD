@@ -306,7 +306,7 @@ class Trainer:
         return model
 
     @staticmethod
-    def tune_model_nested_cv(X, Y, task, modality, info, n_splits=3, max_trials=10, executions_per_trial=1):
+    def tune_model_nested_cv(X, Y, task, modality, info, n_splits=3, max_trials=8, executions_per_trial=1):
         """Performs hyperparameter tuning using nested cross-validation."""
         # Define the cross-validation strategy
         stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
@@ -360,7 +360,7 @@ class Trainer:
             tuner.search(
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
-                epochs=120,  # Set a high number; early stopping will handle it
+                epochs=80,  # Set a high number; early stopping will handle it
                 batch_size=5,  # Temporary batch size; will adjust based on hyperparameter
                 callbacks=callbacks,
                 verbose=1,
@@ -375,16 +375,6 @@ class Trainer:
             print(f"Dropout Rate: {best_hps.get('dropout_rate')}")
             print(f"L2 Regularization: {best_hps.get('l2_reg')}")
           
-            # Clear the session to free memory before building the new model
-            # Clear the session and release GPU memory
-            tf.keras.backend.clear_session()
-            import torch
-            torch.cuda.empty_cache()
-            # Optionally, you can also delete the tuner object here if it’s no longer needed
-            del tuner
-            import gc
-            gc.collect()
-
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
 
@@ -441,7 +431,7 @@ def main():
       
     task = 'dm'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'keras_v4'  # Additional info for saving results
+    info = 'keras_v5'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
@@ -461,6 +451,7 @@ if __name__ == '__main__':
     np.random.seed(seed)
     random.seed(seed)
     main()
+
 
 
 
