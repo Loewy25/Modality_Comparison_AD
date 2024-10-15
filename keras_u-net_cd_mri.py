@@ -441,7 +441,7 @@ def main():
       
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'te'  # Additional info for saving results
+    info = 'keras_v3'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
