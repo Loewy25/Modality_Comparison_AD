@@ -415,9 +415,6 @@ class Trainer:
             print(f"Dropout Rate: {best_hps.get('dropout_rate')}")
             print(f"L2 Regularization: {best_hps.get('l2_reg')}")
             print(f"Reduction Ratio: {best_hps.get('reduction_ratio')}")
-            tf.keras.backend.clear_session()
-            import gc
-            gc.collect()
 
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
