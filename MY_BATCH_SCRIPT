@@ -7,7 +7,7 @@
 #SBATCH --mem=80G               # Request 400GB memory
 #SBATCH -t 130:50:00             # Set maximum time
 
-#SBATCH --gres=gpu:nvidia_gh200:1
+#SBATCH --gres=gpu:nvidia_a100_80:1
 #SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
 
