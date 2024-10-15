@@ -346,7 +346,7 @@ class Trainer:
         return model
 
     @staticmethod
-    def tune_model_nested_cv(X, Y, task, modality, info, n_splits=2, max_trials=10, executions_per_trial=1):
+    def tune_model_nested_cv(X, Y, task, modality, info, n_splits=3, max_trials=10, executions_per_trial=1):
         """Performs hyperparameter tuning using nested cross-validation."""
         # Define the cross-validation strategy
         stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
@@ -400,7 +400,7 @@ class Trainer:
             tuner.search(
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
-                epochs=80,  # Set a high number; early stopping will handle it
+                epochs=120,  # Set a high number; early stopping will handle it
                 batch_size=5,  # Temporary batch size; will adjust based on hyperparameter
                 callbacks=callbacks,
                 verbose=1,
@@ -479,7 +479,7 @@ def main():
     # Clear the entire keras_tuner_dir to start fresh
     task = 'dm'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'cbam_v2'  # Additional info for saving results
+    info = 'cbam_v4'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
