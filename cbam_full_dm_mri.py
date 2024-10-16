@@ -325,7 +325,7 @@ class Trainer:
         """Builds and compiles the model using hyperparameters from Keras Tuner."""
         # Sample hyperparameters
         learning_rate = hp.Float('learning_rate', 1e-5, 1e-3, sampling='log')
-        dropout_rate = hp.Float('dropout_rate', 0.0, 0.5, step=0.05)
+        dropout_rate = hp.Float('dropout_rate', 0.1, 0.5, step=0.1)
         l2_reg = hp.Float('l2_reg', 1e-6, 1e-4, sampling='log')
         reduction_ratio = hp.Float('reduction_ratio', 4, 16, step=2)
         
@@ -346,7 +346,7 @@ class Trainer:
         return model
 
     @staticmethod
-    def tune_model_nested_cv(X, Y, task, modality, info, n_splits=3, max_trials=10, executions_per_trial=1):
+    def tune_model_nested_cv(X, Y, task, modality, info, n_splits=3, max_trials=8, executions_per_trial=1):
         """Performs hyperparameter tuning using nested cross-validation."""
         # Define the cross-validation strategy
         stratified_kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=2)
@@ -400,7 +400,7 @@ class Trainer:
             tuner.search(
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
-                epochs=120,  # Set a high number; early stopping will handle it
+                epochs=80,  # Set a high number; early stopping will handle it
                 batch_size=5,  # Temporary batch size; will adjust based on hyperparameter
                 callbacks=callbacks,
                 verbose=1,
@@ -415,13 +415,6 @@ class Trainer:
             print(f"Dropout Rate: {best_hps.get('dropout_rate')}")
             print(f"L2 Regularization: {best_hps.get('l2_reg')}")
             print(f"Reduction Ratio: {best_hps.get('reduction_ratio')}")
-            tf.keras.backend.clear_session()
-            import torch
-            torch.cuda.empty_cache()
-            # Optionally, you can also delete the tuner object here if it’s no longer needed
-            del tuner
-            import gc
-            gc.collect()
 
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
@@ -479,7 +472,7 @@ def main():
     # Clear the entire keras_tuner_dir to start fresh
     task = 'dm'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'cbam_full_v4'  # Additional info for saving results
+    info = 'cbam_full_v5'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
@@ -495,6 +488,12 @@ def main():
 if __name__ == '__main__':
     # Set seeds for reproducibility
     seed = 42
+    tf.random.set_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    main()
+
+
     tf.random.set_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
