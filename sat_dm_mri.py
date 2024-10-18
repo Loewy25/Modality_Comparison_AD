@@ -83,15 +83,14 @@ class ModelBuilder:
     # Function for a single convolution block with Batch Normalization
     def convolution_block(self, x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
         x = Conv3D(filters, kernel_size, strides=strides, padding='same',
-                   kernel_regularizer=l2(1e-5))(x)
+                   kernel_regularizer=l2(8.547485565344061e-05))(x)
         x = BatchNormalization()(x)
         x = LeakyReLU()(x)
         return x
 
-    # Context module: two convolution blocks with optional dropout
     def context_module(self, x, filters):
         x = self.convolution_block(x, filters)
-        x = SpatialDropout3D(0.05)(x)
+        x = SpatialDropout3D(0.0)(x)
         x = self.convolution_block(x, filters)
         return x
 
@@ -133,7 +132,7 @@ class ModelBuilder:
         x = GlobalAveragePooling3D()(x)
 
         # Dropout for regularization
-        x = Dropout(0.05)(x)
+        x = Dropout(0.0)(x)
 
         # Dense layer with softmax for classification
         output = Dense(self.num_classes, activation='softmax')(x)
@@ -226,7 +225,7 @@ class Trainer:
             X_train_augmented = self.augment_data(X_train)
 
             model = self.model_builder.create_model()
-            model.compile(optimizer=Adam(learning_rate=5e-4),
+            model.compile(optimizer=Adam(learning_rate=0.0006718710759425462),
                           loss='categorical_crossentropy',
                           metrics=['accuracy', AUC(name='auc')])
 
@@ -424,7 +423,7 @@ class MedicalImageClassifier:
 if __name__ == '__main__':
     task = 'dm'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'HYPER'  # Additional info for saving results
+    info = 'tunning_later'  # Additional info for saving results
 
     classifier = MedicalImageClassifier(task, modality, info)
     classifier.run()
