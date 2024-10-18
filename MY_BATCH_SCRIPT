@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-#SBATCH --job-name=cbFULL_dm_mri # Assign a descriptive job name
+#SBATCH --job-name=cbFULL_dm_pet # Assign a descriptive job name
 
 #SBATCH -N 1                     # Request 1 node
 #SBATCH --mem=100G               # Request 400GB memory
@@ -25,7 +25,7 @@ source ~/liuenv/bin/activate
 pip install torch
 #python keras_u-net_dm_pet.py
 #python cbam_cd_mri.py
-python cbam_full_dm_mri.py
+python cbam_full_dm_pet.py
 # List of Python scripts you want to run (internal array)
 #scripts=("deep_learning_cd_MRI.py" "deep_learning_cd_PET.py" "deep_learning_cm_MRI.py" "deep_learning_cm_PET.py" "deep_learning_dm_MRI.py" "deep_learning_dm_PET.py" "deep_learning_pc_MRI.py" "deep_learning_pc_PET.py")
 
