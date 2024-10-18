@@ -230,9 +230,9 @@ class Trainer:
                           metrics=['accuracy', AUC(name='auc')])
 
             early_stopping = EarlyStopping(
-                monitor='val_auc',
-                patience=100,
-                mode='max',
+                monitor='val_loss',
+                patience=50,
+                mode='min',
                 verbose=1,
                 restore_best_weights=True
             )
