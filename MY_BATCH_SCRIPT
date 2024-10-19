@@ -1,13 +1,13 @@
 #!/bin/bash
 
 
-#SBATCH --job-name=ke_dm_pet # Assign a descriptive job name
+#SBATCH --job-name=cb_dm_mri # Assign a descriptive job name
 
 #SBATCH -N 1                     # Request 1 node
 #SBATCH --mem=100G               # Request 400GB memory
 #SBATCH -t 130:50:00             # Set maximum time
 
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:tesla_a100:1
 #SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
 
@@ -23,8 +23,8 @@ module load cudnn/8.1.1
 
 source ~/liuenv/bin/activate
 pip install torch
-python keras_u-net_dm_pet.py
-#python cbam_dm_mri.py
+#python keras_u-net_dm_pet.py
+python cbam_dm_mri.py
 #python cbam_full_cd_mri.py
 #python cbam_sin_dm_mri.py
 # List of Python scripts you want to run (internal array)
