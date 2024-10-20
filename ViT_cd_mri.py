@@ -177,7 +177,7 @@ class ViTModelBuilder:
         inputs = Input(shape=self.input_shape + (1,))
         patch_embedding_model = patch_embedding_layer(input_shape, patch_size, d_model)
         # Patch Embedding
-        x = self.patch_embedding_layer()(inputs)
+        x = self.patch_embedding_model()(inputs)
 
         # Add class token and positional embeddings
         x = self.ClassToken()(x)
