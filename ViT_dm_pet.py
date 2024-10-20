@@ -274,8 +274,8 @@ class Trainer:
             Y_train, Y_val = Y[train_idx], Y[val_idx]
             X_train_augmented = DataLoader.augment_data(
                 X_train, 
-                flip_prob=0.5, 
-                rotate_prob=0.5
+                flip_prob=0.3, 
+                rotate_prob=0.3
             )
             tuner_dir = os.path.join('keras_tuner_dir', task, modality, info, f"fold_{fold}")
             os.makedirs(tuner_dir, exist_ok=True)
