@@ -342,7 +342,7 @@ class Trainer:
 
 def main():
     task = 'cd'  # Update as per your task
-    modality = 'MRI'  # 'MRI' or 'PET'
+    modality = 'PET'  # 'MRI' or 'PET'
     info = 'vit_model_final'  # Additional info for saving results
 
     # Load your data
