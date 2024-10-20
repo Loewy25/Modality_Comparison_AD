@@ -2,7 +2,7 @@ import os
 import numpy as np
 import nibabel as nib
 import tensorflow as tf
-from tensorflow.keras.layers import (Input, Dense, LayerNormalization, Dropout, Add, Reshape)
+from tensorflow.keras.layers import (Input, Dense, LayerNormalization, Dropout, Add, Reshape, Conv3D)
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
@@ -155,6 +155,7 @@ class ViTModelBuilder:
         return x2
 
     # Patch embedding layer
+    @staticmethod
     def patch_embedding_layer(input_shape, patch_size, d_model):
         inputs = Input(shape=input_shape + (1,))  # Adding a channel dimension for 3D images
         
@@ -175,9 +176,9 @@ class ViTModelBuilder:
     # Create the ViT model
     def create_model(self):
         inputs = Input(shape=self.input_shape + (1,))
-        patch_embedding_model = patch_embedding_layer(input_shape, patch_size, d_model)
+        patch_embedding_model = self.patch_embedding_layer(self.input_shape, self.patch_size, self.d_model)
         # Patch Embedding
-        x = patch_embedding_model()(inputs)
+        x = patch_embedding_model(inputs)
 
         # Add class token and positional embeddings
         x = self.ClassToken()(x)
@@ -208,7 +209,7 @@ class Trainer:
     def build_model(hp):
         """Builds and compiles the model using hyperparameters from Keras Tuner."""
         # Sample hyperparameters
-        # Sample hyperparameters
+        learning_rate = 1e-5
         dropout_rate = hp.Float('dropout_rate', 0.0, 0.5, step=0.1)
         num_layers = hp.Int('num_layers', min_value=4, max_value=8, step=2)
         d_model = hp.Choice('d_model', [64, 128, 256])
@@ -216,7 +217,6 @@ class Trainer:
         d_ff = hp.Choice('d_ff', [128, 256, 512])
         patch_size_value = hp.Choice('patch_size', [8, 16])
         patch_size = (patch_size_value, patch_size_value, patch_size_value)
-
 
         # Ensure d_model is divisible by num_heads
         if d_model % num_heads != 0:
@@ -251,6 +251,23 @@ class Trainer:
         fold_results = []
         best_hyperparameters = []
 
+        callbacks = [
+            EarlyStopping(
+                monitor='val_loss',
+                patience=50,
+                mode='min',
+                verbose=1,
+                restore_best_weights=True
+            ),
+            ReduceLROnPlateau(
+                monitor='val_loss',
+                factor=0.5,
+                patience=10,
+                mode='min',
+                verbose=1
+            )
+        ]
+
         for fold, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1)), 1):
             print(f"\nStarting fold {fold}/{n_splits}")
             X_train, X_val = X[train_idx], X[val_idx]
@@ -272,24 +289,6 @@ class Trainer:
                 project_name=f"hyperparam_tuning_fold_{fold}",
                 seed=42
             )
-
-            # Define callbacks
-            callbacks = [
-                EarlyStopping(
-                    monitor='val_loss',
-                    patience=50,
-                    mode='min',
-                    verbose=1,
-                    restore_best_weights=True
-                ),
-                ReduceLROnPlateau(
-                    monitor='val_loss',
-                    factor=0.5,
-                    patience=10,
-                    mode='min',
-                    verbose=1
-                )
-            ]
 
             # Perform hyperparameter search
             tuner.search(
@@ -315,31 +314,13 @@ class Trainer:
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
 
-            # Define callbacks for final training
-            final_callbacks = [
-                EarlyStopping(
-                    monitor='val_loss',
-                    patience=50,
-                    mode='min',
-                    verbose=1,
-                    restore_best_weights=True
-                ),
-                ReduceLROnPlateau(
-                    monitor='val_loss',
-                    factor=0.5,
-                    patience=10,
-                    mode='min',
-                    verbose=1
-                )
-            ]
-
             # Train the final model on augmented data
             history = final_model.fit(
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
                 epochs=250,
                 batch_size=5,
-                callbacks=final_callbacks,
+                callbacks=callbacks,
                 verbose=1
             )
 
