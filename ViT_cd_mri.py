@@ -155,34 +155,27 @@ class ViTModelBuilder:
         return x2
 
     # Patch embedding layer
-    def patch_embedding_layer(self):
-        inputs = Input(shape=self.input_shape) 
-        # Compute number of patches
-        num_patches = (self.input_shape[0] // self.patch_size[0]) * \
-                      (self.input_shape[1] // self.patch_size[1]) * \
-                      (self.input_shape[2] // self.patch_size[2])
-
-        # Extract patches and flatten them
-        patches = tf.image.extract_patches(
-            images=inputs,
-            sizes=[1, self.patch_size[0], self.patch_size[1], self.patch_size[2], 1],
-            strides=[1, self.patch_size[0], self.patch_size[1], self.patch_size[2], 1],
-            rates=[1, 1, 1, 1, 1],
-            padding='VALID'
-        )
-        patches_shape = tf.shape(patches)
-        patch_volume = patches_shape[-1]
-        x = tf.reshape(patches, [patches_shape[0], num_patches, patch_volume])
-
-        # Linear projection of flattened patches to embedding dimension
-        x = Dense(self.d_model)(x)
-
-        return Model(inputs=inputs, outputs=x, name='patch_embedding')
+    def patch_embedding_layer(input_shape, patch_size, d_model):
+        inputs = Input(shape=input_shape + (1,))  # Adding a channel dimension for 3D images
+        
+        # Use Conv3D to extract patches and project to the embedding dimension
+        x = Conv3D(
+            filters=d_model,
+            kernel_size=patch_size,
+            strides=patch_size,
+            padding='valid'
+        )(inputs)
+        
+        # Flatten the patches into a sequence
+        seq_len = (input_shape[0] // patch_size[0]) * (input_shape[1] // patch_size[1]) * (input_shape[2] // patch_size[2])
+        x = Reshape((seq_len, d_model))(x)
+        
+        return Model(inputs=inputs, outputs=x)
 
     # Create the ViT model
     def create_model(self):
         inputs = Input(shape=self.input_shape + (1,))
-
+        patch_embedding_model = patch_embedding_layer(input_shape, patch_size, d_model)
         # Patch Embedding
         x = self.patch_embedding_layer()(inputs)
 
