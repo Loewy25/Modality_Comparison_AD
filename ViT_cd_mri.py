@@ -215,12 +215,15 @@ class Trainer:
     def build_model(hp):
         """Builds and compiles the model using hyperparameters from Keras Tuner."""
         # Sample hyperparameters
+        # Sample hyperparameters
         dropout_rate = hp.Float('dropout_rate', 0.0, 0.5, step=0.1)
         num_layers = hp.Int('num_layers', min_value=4, max_value=8, step=2)
         d_model = hp.Choice('d_model', [64, 128, 256])
         num_heads = hp.Choice('num_heads', [4, 8])
         d_ff = hp.Choice('d_ff', [128, 256, 512])
-        patch_size = hp.Choice('patch_size', [(8, 8, 8), (16, 16, 16)])
+        patch_size_value = hp.Choice('patch_size', [8, 16])
+        patch_size = (patch_size_value, patch_size_value, patch_size_value)
+
 
         # Ensure d_model is divisible by num_heads
         if d_model % num_heads != 0:
