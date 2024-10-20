@@ -66,20 +66,20 @@ class DataLoader:
 
     @staticmethod
     def augment_data(X, flip_prob=0.1, rotate_prob=0.1):
+        """Applies random flipping and rotation to the data based on given probabilities."""
         augmented_X = []
         for img in X:
             img_aug = img.copy()
+            # Randomly flip along each axis with specified probability
             if np.random.rand() < flip_prob:
-                img_aug = np.flip(img_aug, axis=0)
+                img_aug = np.flip(img_aug, axis=1)  # Flip along x-axis
             if np.random.rand() < flip_prob:
-                img_aug = np.flip(img_aug, axis=1)
-            if np.random.rand() < flip_prob:
-                img_aug = np.flip(img_aug, axis=2)
+                img_aug = np.flip(img_aug, axis=2)  # Flip along y-axis
 
+            # Random rotation with specified probability
             if np.random.rand() < rotate_prob:
-                angle = np.random.uniform(-10, 10)
-                axes = np.random.choice([(0, 1), (0, 2), (1, 2)])
-                img_aug = rotate(img_aug, angle, axes=axes, reshape=False, order=1)
+                angle = np.random.uniform(-10, 10)  # Rotate between -10 and 10 degrees
+                img_aug = rotate(img_aug, angle, axes=(1, 2), reshape=False, order=1)
 
             augmented_X.append(img_aug)
         return np.array(augmented_X)
