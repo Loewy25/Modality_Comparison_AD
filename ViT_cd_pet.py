@@ -304,7 +304,6 @@ class Trainer:
             best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
             best_hyperparameters.append(best_hps)
             print(f"Best hyperparameters for fold {fold}:")
-            print(f"Learning Rate: {best_hps.get('learning_rate')}")
             print(f"Dropout Rate: {best_hps.get('dropout_rate')}")
             print(f"Number of Layers: {best_hps.get('num_layers')}")
             print(f"d_model (Embedding Dimension): {best_hps.get('d_model')}")
