@@ -11,7 +11,8 @@ from sklearn.model_selection import train_test_split
 from scipy.stats import zscore
 from scipy.ndimage import zoom
 from tensorflow_addons.layers import InstanceNormalization
-
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras.models import Model
 # Import data loading functions
 from data_loading import generate_data_path_less, generate, binarylabel
 
@@ -182,7 +183,33 @@ class BMGAN:
         self.lambda1 = lambda1  # Weight for L1 Loss
         self.lambda2 = lambda2  # Weight for Perceptual Loss
         self.input_shape = input_shape
+        self.vgg_model = self.get_vgg_model()  # Load pretrained VGG model for perceptual loss
         self.build_bmgan()
+
+    def get_vgg_model(self):
+        # Load the VGG16 model with ImageNet weights (pretrained)
+        vgg = VGG16(weights='imagenet', include_top=False, input_shape=(128, 128, 3))  # Using 2D version; extend for 3D if required
+
+        # Extract features from an intermediate layer
+        output = vgg.get_layer('block3_conv3').output  # Choosing an intermediate layer for perceptual loss
+
+        # Create the feature extraction model
+        model = Model(inputs=vgg.input, outputs=output)
+        model.trainable = False  # Freeze the VGG model
+
+        return model
+
+    def perceptual_loss(self, y_true, y_pred):
+        # VGG requires 3-channel input (RGB), so we tile the input to match (1 channel to 3 channels)
+        y_true_rgb = tf.tile(y_true, [1, 1, 1, 3])  # Replicate grayscale channels to RGB
+        y_pred_rgb = tf.tile(y_pred, [1, 1, 1, 3])
+
+        # Extract VGG features from real and generated images
+        y_true_features = self.vgg_model(y_true_rgb)
+        y_pred_features = self.vgg_model(y_pred_rgb)
+
+        # Compute perceptual loss (L1 loss between feature maps)
+        return tf.reduce_mean(tf.abs(y_true_features - y_pred_features))
 
     def build_bmgan(self):
         # Build and compile the discriminator
