@@ -378,7 +378,7 @@ if __name__ == '__main__':
 
     # Initialize BMGAN model and train
     bmgan = BMGAN(generator, discriminator, encoder, input_shape)
-    bmgan.train(mri_train, pet_train, epochs=100, batch_size=4)
+    bmgan.train(mri_train, pet_train, epochs=250, batch_size=2)
 
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
