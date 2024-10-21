@@ -187,32 +187,38 @@ class BMGAN:
     def build_bmgan(self):
         # Build and compile the discriminator
         self.discriminator.compile(optimizer=Adam(0.0002, beta_1=0.5), loss='mse', metrics=['accuracy'])
-
-        # Input images
+    
+        # Input images (real MRI and real PET)
         real_mri = tf.keras.Input(shape=self.input_shape)
-
+        real_pet = tf.keras.Input(shape=self.input_shape)  # Real PET image for forward KL loss
+    
         # Generate synthetic PET images
         fake_pet = self.generator(real_mri)
-
+    
         # For the combined model, only train the generator and encoder
         self.discriminator.trainable = False
-
-        # Discriminator output for generated images
-        validity = self.discriminator(fake_pet)
-
-        # Encoder outputs for KL-divergence
-        z_mean_real, z_log_var_real = self.encoder(fake_pet)
-
-        # Compute KL-divergence loss
-        kl_loss = -0.5 * tf.reduce_mean(1 + z_log_var_real - tf.square(z_mean_real) - tf.exp(z_log_var_real))
-
-        # Define the combined model
-        self.combined = Model(inputs=real_mri, outputs=[validity, fake_pet, kl_loss])
-
+    
+        # Discriminator output for generated images (fake PET)
+        validity_fake = self.discriminator(fake_pet)
+    
+        # Encoder outputs for KL-divergence on real PET (forward KL loss)
+        z_mean_real_pet, z_log_var_real_pet = self.encoder(real_pet)
+    
+        # Encoder outputs for KL-divergence on generated PET (backward KL loss)
+        z_mean_fake_pet, z_log_var_fake_pet = self.encoder(fake_pet)
+    
+        # Compute KL-divergence loss for real and generated PET
+        kl_loss_real = -0.5 * tf.reduce_mean(1 + z_log_var_real_pet - tf.square(z_mean_real_pet) - tf.exp(z_log_var_real_pet))
+        kl_loss_fake = -0.5 * tf.reduce_mean(1 + z_log_var_fake_pet - tf.square(z_mean_fake_pet) - tf.exp(z_log_var_fake_pet))
+    
+        # Define the combined model (input: MRI and real PET; output: fake PET validity, fake PET, KL losses)
+        self.combined = Model(inputs=[real_mri, real_pet], 
+                              outputs=[validity_fake, fake_pet, kl_loss_real, kl_loss_fake])
+    
         # Compile the combined model with custom loss
         self.combined.compile(optimizer=Adam(0.0002, beta_1=0.5),
-                              loss=[self.lsgan_loss, self.l1_perceptual_loss, self.kl_divergence_loss],
-                              loss_weights=[1, self.lambda1, self.lambda2])
+                              loss=[self.lsgan_loss, self.l1_perceptual_loss, self.kl_divergence_loss, self.kl_divergence_loss],
+                              loss_weights=[1, self.lambda1, self.lambda2, self.lambda2])
 
     def lsgan_loss(self, y_true, y_pred):
         return tf.reduce_mean(tf.square(y_pred - y_true))
@@ -249,26 +255,28 @@ class BMGAN:
     def train(self, mri_images, pet_images, epochs, batch_size):
         real_labels = np.ones((batch_size,) + (8, 8, 8, 1))  # Adjusted for patch-level output
         fake_labels = np.zeros((batch_size,) + (8, 8, 8, 1))
-
+    
         for epoch in range(epochs):
             # Select random batch for training
             idx = np.random.randint(0, mri_images.shape[0], batch_size)
             real_mri = mri_images[idx]
             real_pet = pet_images[idx]
-
+    
             # Generate synthetic PET images
             generated_pet = self.generator.predict(real_mri)
-
+    
             # Train Discriminator
             d_loss_real = self.discriminator.train_on_batch(real_pet, real_labels)
             d_loss_fake = self.discriminator.train_on_batch(generated_pet, fake_labels)
             d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
-
+    
             # Train Generator (Combined Model)
-            g_loss = self.combined.train_on_batch(real_mri, [real_labels, real_pet, np.zeros((batch_size,))])
-
+            g_loss = self.combined.train_on_batch([real_mri, real_pet], 
+                                                  [real_labels, real_pet, np.zeros((batch_size,)), np.zeros((batch_size,))])
+    
             # Print losses
             print(f"Epoch {epoch+1}/{epochs}, D loss: {d_loss[0]:.4f}, D acc.: {d_loss[1]*100:.2f}%, G loss: {g_loss[0]:.4f}")
+  
 
 # ------------------------------------------------------------
 # Data Loading and Preprocessing Functions
