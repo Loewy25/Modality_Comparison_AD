@@ -188,10 +188,10 @@ class BMGAN:
 
     def get_vgg_model(self):
         # Load the VGG16 model with ImageNet weights (pretrained)
-        vgg = VGG16(weights='imagenet', include_top=False, input_shape=(128, 128, 3))  # Using 2D version; extend for 3D if required
+        vgg = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
 
-        # Extract features from an intermediate layer
-        output = vgg.get_layer('block3_conv3').output  # Choosing an intermediate layer for perceptual loss
+        # Extract features from an intermediate layer (before the second max-pooling operation)
+        output = vgg.get_layer('block2_pool').output  # As per your paper
 
         # Create the feature extraction model
         model = Model(inputs=vgg.input, outputs=output)
@@ -200,16 +200,47 @@ class BMGAN:
         return model
 
     def perceptual_loss(self, y_true, y_pred):
-        # VGG requires 3-channel input (RGB), so we tile the input to match (1 channel to 3 channels)
-        y_true_rgb = tf.tile(y_true, [1, 1, 1, 3])  # Replicate grayscale channels to RGB
-        y_pred_rgb = tf.tile(y_pred, [1, 1, 1, 3])
+        # y_true and y_pred are 5D tensors: (batch_size, depth, height, width, channels)
+        # We need to extract 2D slices to feed into VGG16
 
-        # Extract VGG features from real and generated images
+        # Reshape to merge batch and depth dimensions
+        batch_size = tf.shape(y_true)[0]
+        depth = tf.shape(y_true)[1]
+        y_true = tf.transpose(y_true, [0, 2, 3, 1, 4])  # Shape: (batch_size, height, width, depth, channels)
+        y_pred = tf.transpose(y_pred, [0, 2, 3, 1, 4])
+
+        y_true = tf.reshape(y_true, [batch_size * depth, self.input_shape[0], self.input_shape[1], 1])
+        y_pred = tf.reshape(y_pred, [batch_size * depth, self.input_shape[0], self.input_shape[1], 1])
+
+        # Resize to VGG16 input size (224x224)
+        y_true_resized = tf.image.resize(y_true, [224, 224])
+        y_pred_resized = tf.image.resize(y_pred, [224, 224])
+
+        # Convert grayscale to RGB by repeating channels
+        y_true_rgb = tf.image.grayscale_to_rgb(y_true_resized)
+        y_pred_rgb = tf.image.grayscale_to_rgb(y_pred_resized)
+
+        # Extract VGG features
         y_true_features = self.vgg_model(y_true_rgb)
         y_pred_features = self.vgg_model(y_pred_rgb)
 
-        # Compute perceptual loss (L1 loss between feature maps)
-        return tf.reduce_mean(tf.abs(y_true_features - y_pred_features))
+        # Compute perceptual loss
+        loss = tf.reduce_mean(tf.abs(y_true_features - y_pred_features))
+        return loss
+
+    def l1_perceptual_loss(self, y_true, y_pred):
+        # L1 Loss
+        l1_loss = tf.reduce_mean(tf.abs(y_true - y_pred))
+        # Perceptual Loss using VGG16
+        perceptual_loss = self.perceptual_loss(y_true, y_pred)
+        return l1_loss + self.lambda2 * perceptual_loss
+
+    def kl_divergence_loss(self, y_true, y_pred):
+        # y_pred is the kl_loss computed during model building
+        return y_pred
+
+    def lsgan_loss(self, y_true, y_pred):
+        return tf.reduce_mean(tf.square(y_pred - y_true))
 
     def build_bmgan(self):
         # Build and compile the discriminator
@@ -247,37 +278,6 @@ class BMGAN:
                               loss=[self.lsgan_loss, self.l1_perceptual_loss, self.kl_divergence_loss, self.kl_divergence_loss],
                               loss_weights=[1, self.lambda1, self.lambda2, self.lambda2])
 
-    def lsgan_loss(self, y_true, y_pred):
-        return tf.reduce_mean(tf.square(y_pred - y_true))
-
-    def l1_perceptual_loss(self, y_true, y_pred):
-        # L1 Loss
-        l1_loss = tf.reduce_mean(tf.abs(y_true - y_pred))
-        # Perceptual Loss using a simple 3D CNN feature extractor
-        perceptual_loss = self.perceptual_loss(y_true, y_pred)
-        return l1_loss + self.lambda2 * perceptual_loss
-
-    def kl_divergence_loss(self, y_true, y_pred):
-        # y_pred is the kl_loss computed during model building
-        return y_pred
-
-    def perceptual_loss(self, y_true, y_pred):
-        # Define a simple 3D feature extractor
-        feature_extractor = self.get_feature_extractor()
-        y_true_features = feature_extractor(y_true)
-        y_pred_features = feature_extractor(y_pred)
-        return tf.reduce_mean(tf.abs(y_true_features - y_pred_features))
-
-    def get_feature_extractor(self):
-        input_shape = self.input_shape
-        model_input = tf.keras.Input(shape=input_shape)
-        x = Conv3D(16, (3, 3, 3), activation='relu', padding='same')(model_input)
-        x = MaxPooling3D((2, 2, 2))(x)
-        x = Conv3D(32, (3, 3, 3), activation='relu', padding='same')(x)
-        x = GlobalAveragePooling3D()(x)
-        model = Model(inputs=model_input, outputs=x)
-        model.trainable = False
-        return model
 
     def train(self, mri_images, pet_images, epochs, batch_size):
         real_labels = np.ones((batch_size,) + (8, 8, 8, 1))  # Adjusted for patch-level output
