@@ -309,10 +309,35 @@ class BMGAN:
 # Data Loading and Preprocessing Functions
 # ------------------------------------------------------------
 # Utility functions for data loading and resizing
+import os
+import numpy as np
+import nibabel as nib
+import tensorflow as tf
+from tensorflow.keras.layers import (Conv3D, ReLU, Add, Concatenate,
+                                     Conv3DTranspose, GlobalAveragePooling3D, LeakyReLU,
+                                     Dense, AveragePooling3D, MaxPooling3D, BatchNormalization)
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+from sklearn.model_selection import train_test_split
+from scipy.stats import zscore
+from scipy.ndimage import zoom
+from tensorflow_addons.layers import InstanceNormalization
+from tensorflow.keras.applications import VGG16
+
+# Import data loading functions
+from data_loading import generate_data_path_less, generate, binarylabel
+
+# ------------------------------------------------------------
+# Utility function to save images in the specified directory
+def save_images(image, file_path):
+    nib.save(nib.Nifti1Image(image, np.eye(4)), file_path)
+
+# ------------------------------------------------------------
+# Modify load_mri_pet_data to accept task and info for saving data
 def load_mri_pet_data(task):
     images_pet, images_mri, labels = generate_data_path_less()
-    pet_data = generate(images_pet, labels, task)
-    mri_data = generate(images_mri, labels, task)
+    pet_data,label = generate(images_pet, labels, task)
+    mri_data,label = generate(images_mri, labels, task)
 
     mri_resized = []
     pet_resized = []
@@ -336,17 +361,43 @@ def resize_image(image, target_shape):
 # ------------------------------------------------------------
 if __name__ == '__main__':
     task = 'cd'
+    info = 'experiment1'  # New parameter for the subfolder
+
+    # Load MRI and PET data
     mri_data, pet_data = load_mri_pet_data(task)
-    mri_train, mri_gen, pet_train, _ = train_test_split(mri_data, pet_data, test_size=0.33, random_state=42)
+
+    # Split data into training (2/3) and test (1/3)
+    mri_train, mri_gen, pet_train, pet_gen = train_test_split(mri_data, pet_data, test_size=0.33, random_state=42)
 
     input_shape = (128, 128, 128, 1)
+
+    # Initialize generator, discriminator, and encoder
     generator = DenseUNetGenerator(input_shape).model
     discriminator = Discriminator(input_shape).model
     encoder = ResNetEncoder(input_shape).model
 
+    # Initialize BMGAN model and train
     bmgan = BMGAN(generator, discriminator, encoder, input_shape)
     bmgan.train(mri_train, pet_train, epochs=100, batch_size=4)
 
-    # Generate PET images for the test MRI data
+    # Create directories to store the results
+    output_dir_mri = f'gan/{task}/{info}/mri'
+    output_dir_pet = f'gan/{task}/{info}/pet'
+    
+    os.makedirs(output_dir_mri, exist_ok=True)
+    os.makedirs(output_dir_pet, exist_ok=True)
+
+    # Predict PET images for the test MRI data
     generated_pet_images = generator.predict(mri_gen)
-    print("Generated PET images shape:", generated_pet_images.shape)
+
+    # Save the test MRI data and the generated PET images in their respective folders
+    for i in range(len(mri_gen)):
+        mri_file_path = os.path.join(output_dir_mri, f'mri_{i}.nii.gz')
+        pet_file_path = os.path.join(output_dir_pet, f'generated_pet_{i}.nii.gz')
+
+        # Save MRI and generated PET images
+        save_images(mri_gen[i, :, :, :, 0], mri_file_path)  # Save MRI
+        save_images(generated_pet_images[i, :, :, :, 0], pet_file_path)  # Save generated PET
+
+    # Print confirmation
+    print(f"Saved {len(mri_gen)} MRI and corresponding generated PET images in 'gan/{task}/{info}'")
