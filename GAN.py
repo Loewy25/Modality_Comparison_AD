@@ -237,48 +237,37 @@ class BMGAN:
             model.trainable = False  # Freeze the VGG model
 
             return model
-
+    
     def perceptual_loss(self, y_true, y_pred, batch_slices=16):
-        """
-        Compute the perceptual loss using VGG features.
-        Splits the depth dimension into smaller batches to manage memory.
-        """
-        # y_true and y_pred are 5D tensors: (batch_size, depth, height, width, channels)
         batch_size = tf.shape(y_true)[0]
         depth = tf.shape(y_true)[1]
-
-        # Calculate number of steps
-        num_steps = tf.cast(tf.math.ceil(depth / batch_slices), tf.int32)
-
+    
+        # Convert num_steps to an integer
+        num_steps = tf.cast(tf.math.ceil(depth / batch_slices), tf.int32).numpy()
+    
         # Split depth into slices
         y_true_slices = tf.split(y_true, num_or_size_splits=num_steps, axis=1)
         y_pred_slices = tf.split(y_pred, num_or_size_splits=num_steps, axis=1)
-
+    
         perceptual_losses = []
-
+    
         for true_slice, pred_slice in zip(y_true_slices, y_pred_slices):
-            # Remove the singleton dimension
-            true_slice = tf.squeeze(true_slice, axis=1)  # Shape: (batch_size, height, width, channels)
+            true_slice = tf.squeeze(true_slice, axis=1)
             pred_slice = tf.squeeze(pred_slice, axis=1)
-
-            # Resize to VGG16 input size (224x224)
+    
             true_resized = tf.image.resize(true_slice, [224, 224])
             pred_resized = tf.image.resize(pred_slice, [224, 224])
-
-            # Convert grayscale to RGB by repeating channels
+    
             true_rgb = tf.image.grayscale_to_rgb(true_resized)
             pred_rgb = tf.image.grayscale_to_rgb(pred_resized)
-
-            # Extract VGG features on GPU:0
+    
             with tf.device('/GPU:0'):
                 true_features = self.vgg_model(true_rgb)
                 pred_features = self.vgg_model(pred_rgb)
-
-            # Compute perceptual loss for this batch
+    
             loss = tf.reduce_mean(tf.abs(true_features - pred_features))
             perceptual_losses.append(loss)
-
-        # Average perceptual loss over all slices
+    
         total_perceptual_loss = tf.reduce_mean(perceptual_losses)
         return total_perceptual_loss
 
