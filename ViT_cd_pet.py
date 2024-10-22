@@ -13,6 +13,9 @@ from scipy.stats import zscore
 from scipy.ndimage import zoom, rotate
 import keras_tuner as kt
 import random
+from tensorflow.keras.callbacks import TensorBoard
+
+
 
 # Import your own data loading functions
 from data_loading import generate_data_path_less, generate, binarylabel
@@ -295,7 +298,7 @@ class Trainer:
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
                 epochs=80,
-                batch_size=2,
+                batch_size=5,
                 callbacks=callbacks,
                 verbose=1,
             )
@@ -312,19 +315,22 @@ class Trainer:
 
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
-
+            # TensorBoard callback to monitor memory usage and other metrics
+            log_dir = "logs/"
+            tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1, profile_batch=2)
+            
             # Train the final model on augmented data
             history = final_model.fit(
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
                 epochs=250,
-                batch_size=1,
+                batch_size=5,
                 callbacks=callbacks,
                 verbose=1
             )
 
             # Evaluate the final model on validation data
-            val_loss, val_accuracy, val_auc = final_model.evaluate(X_val, Y_val, verbose=0)
+            val_loss, val_accuracy, val_auc = final_model.evaluate(X_val, Y_val, verbose=0, batch_size=5)
             print(f"Final Validation AUC for fold {fold}: {val_auc}")
 
             # Store the result
@@ -342,7 +348,7 @@ class Trainer:
 def main():
     task = 'cd'  # Update as per your task
     modality = 'PET'  # 'MRI' or 'PET'
-    info = 'vit_model_final2'  # Additional info for saving results
+    info = 'vit_model_final3'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
@@ -361,3 +367,4 @@ if __name__ == '__main__':
     np.random.seed(seed)
     random.seed(seed)
     main()
+
