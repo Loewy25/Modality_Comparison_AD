@@ -390,18 +390,17 @@ def resize_image(image, target_shape):
 # Main Function
 # ------------------------------------------------------------
 if __name__ == '__main__':
-
-
-
-    gpus = tf.config.experimental.list_physical_devices('GPU')
-    if gpus:
+    # Ensure that TensorFlow sees the GPUs and sets memory growth
+    physical_gpus = tf.config.list_physical_devices('GPU')
+    print("Physical GPUs:", physical_gpus)
+    if physical_gpus:
         try:
-            for gpu in gpus:
+            # Enable memory growth for each GPU
+            for gpu in physical_gpus:
                 tf.config.experimental.set_memory_growth(gpu, True)
         except RuntimeError as e:
             print(e)
 
-    
     task = 'cd'
     info = 'experiment1'  # New parameter for the subfolder
 
@@ -409,14 +408,20 @@ if __name__ == '__main__':
     mri_data, pet_data = load_mri_pet_data(task)
 
     # Split data into training (2/3) and test (1/3)
-    mri_train, mri_gen, pet_train, pet_gen = train_test_split(mri_data, pet_data, test_size=0.33, random_state=42)
+    mri_train, mri_gen, pet_train, pet_gen = train_test_split(
+        mri_data, pet_data, test_size=0.33, random_state=42
+    )
 
     input_shape = (128, 128, 128, 1)
 
-    # Initialize generator, discriminator, and encoder
-    generator = DenseUNetGenerator(input_shape).model
-    discriminator = Discriminator(input_shape).model
-    encoder = ResNetEncoder(input_shape).model
+    # Initialize generator on GPU 0
+    with tf.device('/GPU:0'):
+        generator = DenseUNetGenerator(input_shape).model
+
+    # Initialize discriminator and encoder on GPU 1
+    with tf.device('/GPU:1'):
+        discriminator = Discriminator(input_shape).model
+        encoder = ResNetEncoder(input_shape).model
 
     # Initialize BMGAN model and train
     bmgan = BMGAN(generator, discriminator, encoder, input_shape)
@@ -425,12 +430,13 @@ if __name__ == '__main__':
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
     output_dir_pet = f'gan/{task}/{info}/pet'
-    
+
     os.makedirs(output_dir_mri, exist_ok=True)
     os.makedirs(output_dir_pet, exist_ok=True)
 
-    # Predict PET images for the test MRI data
-    generated_pet_images = generator.predict(mri_gen)
+    # Predict PET images for the test MRI data on GPU 0
+    with tf.device('/GPU:0'):
+        generated_pet_images = generator.predict(mri_gen)
 
     # Save the test MRI data and the generated PET images in their respective folders
     for i in range(len(mri_gen)):
