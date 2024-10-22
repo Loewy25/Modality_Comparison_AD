@@ -10,17 +10,54 @@ from tensorflow.keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
 from scipy.stats import zscore
 from scipy.ndimage import zoom
-from tensorflow_addons.layers import InstanceNormalization
 from tensorflow.keras.applications import VGG16
-from tensorflow.keras.models import Model
-# Import data loading functions
+from tensorflow.keras import mixed_precision
+
+# Import data loading functions (Ensure these are correctly implemented)
 from data_loading import generate_data_path_less, generate, binarylabel
+
+# ------------------------------------------------------------
+# Custom InstanceNormalization Layer
+# ------------------------------------------------------------
+class InstanceNormalization(tf.keras.layers.Layer):
+    def __init__(self, epsilon=1e-5, **kwargs):
+        super(InstanceNormalization, self).__init__(**kwargs)
+        self.epsilon = epsilon
+
+    def build(self, input_shape):
+        # Create scale and offset parameters
+        self.scale = self.add_weight(
+            shape=(input_shape[-1],),
+            initializer='ones',
+            trainable=True,
+            name='scale'
+        )
+        self.offset = self.add_weight(
+            shape=(input_shape[-1],),
+            initializer='zeros',
+            trainable=True,
+            name='offset'
+        )
+        super(InstanceNormalization, self).build(input_shape)
+
+    def call(self, inputs):
+        # Compute mean and variance across spatial dimensions (excluding batch and channels)
+        mean, variance = tf.nn.moments(inputs, axes=[1,2,3], keepdims=True)
+        # Normalize
+        inv = tf.math.rsqrt(variance + self.epsilon)
+        normalized = (inputs - mean) * inv
+        return self.scale * normalized + self.offset
+
+    def get_config(self):
+        config = super(InstanceNormalization, self).get_config()
+        config.update({"epsilon": self.epsilon})
+        return config
 
 # ------------------------------------------------------------
 # DenseUNetGenerator Class
 # ------------------------------------------------------------
 class DenseUNetGenerator:
-    """Class for the DenseU-Net based Generator with 13 Dense Blocks, feature map concatenation, 7 Transition Layers, and 7 Upsampling Layers."""
+    """Class for the DenseU-Net based Generator with Dense Blocks and Transition Layers."""
 
     def __init__(self, input_shape=(128, 128, 128, 1)):
         self.input_shape = input_shape
@@ -56,11 +93,11 @@ class DenseUNetGenerator:
     def build_generator(self):
         input_img = tf.keras.Input(shape=self.input_shape)
         skips = []
-        filters_list = [64, 128, 256, 512, 512, 512]  # Adjusted to match 13 dense blocks
+        filters_list = [64, 128, 256, 512, 512, 512]  # Adjusted to match desired depth
 
-        # Downsampling Path with 6 Dense Blocks and 6 Transition Layers
+        # Downsampling Path with Dense Blocks and Transition Layers
         x = self.convolution_block(input_img, 64)
-        for filters in filters_list:  # 6 dense blocks with 6 transitions
+        for filters in filters_list:
             x = self.dense_block(x, filters)
             skips.append(x)
             x = self.transition_layer(x, filters)
@@ -68,7 +105,7 @@ class DenseUNetGenerator:
         # Bottleneck Dense Block
         x = self.dense_block(x, 512)
 
-        # Upsampling Path with 6 Upsampling Layers and 6 Dense Blocks
+        # Upsampling Path with Upsampling Blocks and Dense Blocks
         for filters in reversed(filters_list):
             x = self.upsampling_block(x, skips.pop(), filters)
             x = self.dense_block(x, filters)  # Dense block after each upsampling
@@ -201,51 +238,49 @@ class BMGAN:
 
             return model
 
-    def perceptual_loss(self, y_true, y_pred, batch_slices=4):
+    def perceptual_loss(self, y_true, y_pred, batch_slices=16):
+        """
+        Compute the perceptual loss using VGG features.
+        Splits the depth dimension into smaller batches to manage memory.
+        """
         # y_true and y_pred are 5D tensors: (batch_size, depth, height, width, channels)
         batch_size = tf.shape(y_true)[0]
         depth = tf.shape(y_true)[1]
 
-        total_loss = 0.0
+        # Calculate number of steps
         num_steps = tf.cast(tf.math.ceil(depth / batch_slices), tf.int32)
 
-        for i in range(num_steps):
-            start = i * batch_slices
-            end = tf.minimum(start + batch_slices, depth)
+        # Split depth into slices
+        y_true_slices = tf.split(y_true, num_or_size_splits=num_steps, axis=1)
+        y_pred_slices = tf.split(y_pred, num_or_size_splits=num_steps, axis=1)
 
-            # Extract the batch of slices
-            y_true_batch = y_true[:, start:end, :, :, :]
-            y_pred_batch = y_pred[:, start:end, :, :, :]
+        perceptual_losses = []
 
-            # Reshape and prepare for VGG16 input
-            y_true_batch = tf.transpose(y_true_batch, [0, 2, 3, 1, 4])  # Shape: (batch_size, height, width, batch_slices, channels)
-            y_pred_batch = tf.transpose(y_pred_batch, [0, 2, 3, 1, 4])
-
-            y_true_batch = tf.reshape(y_true_batch, [-1, self.input_shape[0], self.input_shape[1], 1])
-            y_pred_batch = tf.reshape(y_pred_batch, [-1, self.input_shape[0], self.input_shape[1], 1])
+        for true_slice, pred_slice in zip(y_true_slices, y_pred_slices):
+            # Remove the singleton dimension
+            true_slice = tf.squeeze(true_slice, axis=1)  # Shape: (batch_size, height, width, channels)
+            pred_slice = tf.squeeze(pred_slice, axis=1)
 
             # Resize to VGG16 input size (224x224)
-            y_true_resized = tf.image.resize(y_true_batch, [224, 224])
-            y_pred_resized = tf.image.resize(y_pred_batch, [224, 224])
+            true_resized = tf.image.resize(true_slice, [224, 224])
+            pred_resized = tf.image.resize(pred_slice, [224, 224])
 
             # Convert grayscale to RGB by repeating channels
-            y_true_rgb = tf.image.grayscale_to_rgb(y_true_resized)
-            y_pred_rgb = tf.image.grayscale_to_rgb(y_pred_resized)
+            true_rgb = tf.image.grayscale_to_rgb(true_resized)
+            pred_rgb = tf.image.grayscale_to_rgb(pred_resized)
 
-            # Extract VGG features
+            # Extract VGG features on GPU:0
             with tf.device('/GPU:0'):
-                y_true_features = self.vgg_model(y_true_rgb)
-                y_pred_features = self.vgg_model(y_pred_rgb)
+                true_features = self.vgg_model(true_rgb)
+                pred_features = self.vgg_model(pred_rgb)
 
             # Compute perceptual loss for this batch
-            batch_loss = tf.reduce_mean(tf.abs(y_true_features - y_pred_features))
+            loss = tf.reduce_mean(tf.abs(true_features - pred_features))
+            perceptual_losses.append(loss)
 
-            # Accumulate the loss
-            total_loss += batch_loss
-
-        # Compute the average loss over all batches
-        total_loss /= tf.cast(num_steps, tf.float32)
-        return total_loss
+        # Average perceptual loss over all slices
+        total_perceptual_loss = tf.reduce_mean(perceptual_losses)
+        return total_perceptual_loss
 
     def l1_perceptual_loss(self, y_true, y_pred):
         # L1 Loss
@@ -270,17 +305,19 @@ class BMGAN:
                 metrics=['accuracy']
             )
 
-        # Input images (real MRI and real PET)
+        # Input images (real MRI and real PET) on GPU:0
         with tf.device('/GPU:0'):
             real_mri = tf.keras.Input(shape=self.input_shape)
             fake_pet = self.generator(real_mri)  # Generator is on GPU:0
 
+        # Encoder on GPU:2
         with tf.device('/GPU:2'):
             real_pet = tf.keras.Input(shape=self.input_shape)
-            # Encoder is on GPU:2
+            # Encoder outputs
             z_mean_real_pet, z_log_var_real_pet = self.encoder(real_pet)
             z_mean_fake_pet, z_log_var_fake_pet = self.encoder(fake_pet)
 
+        # Discriminator and KL loss on GPU:1
         with tf.device('/GPU:1'):
             # Discriminator output for generated images (fake PET)
             validity_fake = self.discriminator(fake_pet)
@@ -322,8 +359,8 @@ class BMGAN:
             real_pet = pet_images[idx]
 
             # Convert data to tensors
-            real_mri_tensor = tf.convert_to_tensor(real_mri)
-            real_pet_tensor = tf.convert_to_tensor(real_pet)
+            real_mri_tensor = tf.convert_to_tensor(real_mri, dtype=tf.float32)
+            real_pet_tensor = tf.convert_to_tensor(real_pet, dtype=tf.float32)
 
             # Generate synthetic PET images using generator on GPU:0
             with tf.device('/GPU:0'):
@@ -349,16 +386,14 @@ class BMGAN:
 # ------------------------------------------------------------
 # Data Loading and Preprocessing Functions
 # ------------------------------------------------------------
-# Utility functions for data loading and resizing
-
-# ------------------------------------------------------------
-# Utility function to save images in the specified directory
-def save_images(image, file_path):
-    nib.save(nib.Nifti1Image(image, np.eye(4)), file_path)
-
-# ------------------------------------------------------------
-# Modify load_mri_pet_data to accept task and info for saving data
 def load_mri_pet_data(task):
+    """
+    Load and preprocess MRI and PET data.
+    Args:
+        task (str): Task identifier.
+    Returns:
+        Tuple of numpy arrays: (mri_data, pet_data)
+    """
     images_pet, images_mri, labels = generate_data_path_less()
     pet_data, label = generate(images_pet, labels, task)
     mri_data, label = generate(images_mri, labels, task)
@@ -377,51 +412,92 @@ def load_mri_pet_data(task):
     return np.expand_dims(np.array(mri_resized), -1), np.expand_dims(np.array(pet_resized), -1)
 
 def resize_image(image, target_shape):
+    """
+    Resize a 3D image to the target shape using zoom.
+    Args:
+        image (numpy.ndarray): 3D image.
+        target_shape (tuple): Desired shape.
+    Returns:
+        numpy.ndarray: Resized image.
+    """
     zoom_factors = [target_shape[i] / image.shape[i] for i in range(3)]
     return zoom(image, zoom_factors, order=1)
+
+# ------------------------------------------------------------
+# Utility Function to Save Images
+# ------------------------------------------------------------
+def save_images(image, file_path):
+    """
+    Save a 3D image as a NIfTI file.
+    Args:
+        image (numpy.ndarray): 3D image.
+        file_path (str): Destination file path.
+    """
+    nib.save(nib.Nifti1Image(image, np.eye(4)), file_path)
 
 # ------------------------------------------------------------
 # Main Function
 # ------------------------------------------------------------
 if __name__ == '__main__':
-    # Ensure that TensorFlow sees the GPUs and sets memory growth
+    # Enable mixed precision (Optional but recommended)
+    mixed_precision.set_global_policy('mixed_float16')
+
+    # List available GPUs
     physical_gpus = tf.config.list_physical_devices('GPU')
-    print("Physical GPUs:", physical_gpus)
+    print("Available GPUs:", physical_gpus)
+
     if physical_gpus:
         try:
             # Enable memory growth for each GPU
             for gpu in physical_gpus:
                 tf.config.experimental.set_memory_growth(gpu, True)
+            print("Enabled memory growth for all GPUs.")
         except RuntimeError as e:
             print(e)
 
+    # Define task and experiment info
     task = 'cd'
     info = 'experiment1'  # New parameter for the subfolder
 
     # Load MRI and PET data
+    print("Loading MRI and PET data...")
     mri_data, pet_data = load_mri_pet_data(task)
+    print(f"Loaded {mri_data.shape[0]} MRI and PET image pairs.")
 
     # Split data into training (2/3) and test (1/3)
+    print("Splitting data into training and testing sets...")
     mri_train, mri_gen, pet_train, pet_gen = train_test_split(
         mri_data, pet_data, test_size=0.33, random_state=42
     )
+    print(f"Training set: {mri_train.shape[0]} samples")
+    print(f"Testing set: {mri_gen.shape[0]} samples")
 
     input_shape = (128, 128, 128, 1)
 
     # Initialize generator on GPU:0
     with tf.device('/GPU:0'):
+        print("Initializing Generator on GPU:0")
         generator = DenseUNetGenerator(input_shape).model
+        generator.summary()
 
     # Initialize discriminator on GPU:1
     with tf.device('/GPU:1'):
+        print("Initializing Discriminator on GPU:1")
         discriminator = Discriminator(input_shape).model
+        discriminator.summary()
 
     # Initialize encoder on GPU:2
     with tf.device('/GPU:2'):
+        print("Initializing Encoder on GPU:2")
         encoder = ResNetEncoder(input_shape).model
+        encoder.summary()
 
-    # Initialize BMGAN model and train
+    # Initialize BMGAN model
+    print("Building BMGAN model...")
     bmgan = BMGAN(generator, discriminator, encoder, input_shape)
+
+    # Train the model
+    print("Starting training...")
     bmgan.train(mri_train, pet_train, epochs=250, batch_size=1)
 
     # Create directories to store the results
@@ -430,12 +506,15 @@ if __name__ == '__main__':
 
     os.makedirs(output_dir_mri, exist_ok=True)
     os.makedirs(output_dir_pet, exist_ok=True)
+    print(f"Created directories: {output_dir_mri}, {output_dir_pet}")
 
     # Predict PET images for the test MRI data on GPU:0
     with tf.device('/GPU:0'):
+        print("Generating PET images for the test set...")
         generated_pet_images = generator.predict(mri_gen)
 
     # Save the test MRI data and the generated PET images in their respective folders
+    print("Saving generated PET images and corresponding MRI scans...")
     for i in range(len(mri_gen)):
         mri_file_path = os.path.join(output_dir_mri, f'mri_{i}.nii.gz')
         pet_file_path = os.path.join(output_dir_pet, f'generated_pet_{i}.nii.gz')
@@ -446,4 +525,5 @@ if __name__ == '__main__':
 
     # Print confirmation
     print(f"Saved {len(mri_gen)} MRI and corresponding generated PET images in 'gan/{task}/{info}'")
+
 
