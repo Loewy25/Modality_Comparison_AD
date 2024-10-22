@@ -7,7 +7,7 @@
 #SBATCH --mem=100G               # Request 400GB memory
 #SBATCH -t 130:50:00             # Set maximum time
 
-#SBATCH --gres=gpu:2
+#SBATCH --gres=gpu:tesla_a100:3
 #SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
 
@@ -22,7 +22,14 @@ module load cuda/11.3
 module load cudnn/8.1.1
 
 source ~/liuenv/bin/activate
+pip install --upgrade pip
+pip install tensorflow==2.12.0 tensorflow-addons==0.20.0
+
+# Install other dependencies
 pip install torch
+pip install nilearn  # Ensure nilearn is installed
+pip install nibabel    # Ensure nibabel is installed
+pip install scipy      # Ensure scipy is installed
 #python ViT_cd_pet.py
 #python keras_u-net_dm_mri.py
 #python cbam_cd_mri.py
