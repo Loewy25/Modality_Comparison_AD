@@ -238,39 +238,45 @@ class BMGAN:
 
             return model
     
-    def perceptual_loss(self, y_true, y_pred, batch_slices=16):
+    def perceptual_loss(self, y_true, y_pred):
+        """
+        Compute the perceptual loss using VGG features by processing all slices in a batched manner.
+        Args:
+            y_true (Tensor): Ground truth images, shape (batch_size, depth, height, width, channels)
+            y_pred (Tensor): Generated images, shape (batch_size, depth, height, width, channels)
+        Returns:
+            Tensor: Scalar perceptual loss value
+        """
+        # Get the shape parameters
         batch_size = tf.shape(y_true)[0]
         depth = tf.shape(y_true)[1]
+        height = tf.shape(y_true)[2]
+        width = tf.shape(y_true)[3]
+        channels = tf.shape(y_true)[4]
     
-        # Calculate num_steps as an integer (use tf.get_static_value for graph compatibility)
-        num_steps_tensor = tf.cast(tf.math.ceil(depth / batch_slices), tf.int32)
-        num_steps = tf.get_static_value(num_steps_tensor)  # Convert to static value (int)
+        # Reshape to combine batch and depth dimensions
+        # New shape: (batch_size * depth, height, width, channels)
+        y_true_reshaped = tf.reshape(y_true, [batch_size * depth, height, width, channels])
+        y_pred_reshaped = tf.reshape(y_pred, [batch_size * depth, height, width, channels])
     
-        # Split depth into slices using num_steps (which is now an integer)
-        y_true_slices = tf.split(y_true, num_or_size_splits=num_steps, axis=1)
-        y_pred_slices = tf.split(y_pred, num_or_size_splits=num_steps, axis=1)
+        # Resize to VGG16 input size (224x224)
+        y_true_resized = tf.image.resize(y_true_reshaped, [224, 224])
+        y_pred_resized = tf.image.resize(y_pred_reshaped, [224, 224])
     
-        perceptual_losses = []
+        # Convert grayscale to RGB by repeating channels
+        y_true_rgb = tf.image.grayscale_to_rgb(y_true_resized)
+        y_pred_rgb = tf.image.grayscale_to_rgb(y_pred_resized)
     
-        for true_slice, pred_slice in zip(y_true_slices, y_pred_slices):
-            true_slice = tf.squeeze(true_slice, axis=1)
-            pred_slice = tf.squeeze(pred_slice, axis=1)
+        # Pass through VGG model to extract features
+        with tf.device('/GPU:0'):
+            y_true_features = self.vgg_model(y_true_rgb)
+            y_pred_features = self.vgg_model(y_pred_rgb)
     
-            true_resized = tf.image.resize(true_slice, [224, 224])
-            pred_resized = tf.image.resize(pred_slice, [224, 224])
+        # Compute the mean absolute error between the features
+        perceptual_loss = tf.reduce_mean(tf.abs(y_true_features - y_pred_features))
     
-            true_rgb = tf.image.grayscale_to_rgb(true_resized)
-            pred_rgb = tf.image.grayscale_to_rgb(pred_resized)
-    
-            with tf.device('/GPU:0'):
-                true_features = self.vgg_model(true_rgb)
-                pred_features = self.vgg_model(pred_rgb)
-    
-            loss = tf.reduce_mean(tf.abs(true_features - pred_features))
-            perceptual_losses.append(loss)
-    
-        total_perceptual_loss = tf.reduce_mean(perceptual_losses)
-        return total_perceptual_loss
+        return perceptual_loss
+
 
 
 
