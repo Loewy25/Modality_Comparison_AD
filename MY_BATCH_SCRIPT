@@ -22,8 +22,8 @@ module load cuda/11.3
 module load cudnn/8.1.1
 
 source ~/liuenv/bin/activate
-pip install --upgrade pip
-pip install tensorflow==2.7.0 tensorflow-addons==0.15.0
+
+pip install tensorflow==2.6.0 tensorflow-addons==0.14.0
 
 
 python ViT_dm_pet.py
