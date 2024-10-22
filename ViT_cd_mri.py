@@ -348,7 +348,7 @@ class Trainer:
 def main():
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'vit_model_final2'  # Additional info for saving results
+    info = 'vit_model_final3'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
