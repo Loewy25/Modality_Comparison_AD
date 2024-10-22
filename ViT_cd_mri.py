@@ -13,6 +13,9 @@ from scipy.stats import zscore
 from scipy.ndimage import zoom, rotate
 import keras_tuner as kt
 import random
+from tensorflow.keras.callbacks import TensorBoard
+
+
 
 # Import your own data loading functions
 from data_loading import generate_data_path_less, generate, binarylabel
@@ -312,7 +315,10 @@ class Trainer:
 
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
-
+            # TensorBoard callback to monitor memory usage and other metrics
+            log_dir = "logs/"
+            tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1, profile_batch=2)
+            
             # Train the final model on augmented data
             history = final_model.fit(
                 X_train_augmented, Y_train,
