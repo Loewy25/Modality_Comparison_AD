@@ -439,8 +439,6 @@ def save_images(image, file_path):
 # Main Function
 # ------------------------------------------------------------
 if __name__ == '__main__':
-    # Enable mixed precision (Optional but recommended)
-    mixed_precision.set_global_policy('mixed_float16')
 
     # List available GPUs
     physical_gpus = tf.config.list_physical_devices('GPU')
