@@ -298,7 +298,7 @@ class Trainer:
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
                 epochs=80,
-                batch_size=2,
+                batch_size=5,
                 callbacks=callbacks,
                 verbose=1,
             )
@@ -324,13 +324,13 @@ class Trainer:
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
                 epochs=250,
-                batch_size=1,
+                batch_size=5,
                 callbacks=callbacks,
                 verbose=1
             )
 
             # Evaluate the final model on validation data
-            val_loss, val_accuracy, val_auc = final_model.evaluate(X_val, Y_val, verbose=0)
+            val_loss, val_accuracy, val_auc = final_model.evaluate(X_val, Y_val, verbose=0, batch_size=5)
             print(f"Final Validation AUC for fold {fold}: {val_auc}")
 
             # Store the result
