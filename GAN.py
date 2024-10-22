@@ -242,10 +242,11 @@ class BMGAN:
         batch_size = tf.shape(y_true)[0]
         depth = tf.shape(y_true)[1]
     
-        # Calculate num_steps as a tensor (no need for .numpy())
-        num_steps = tf.cast(tf.math.ceil(depth / batch_slices), tf.int32)
+        # Calculate num_steps as an integer (use tf.get_static_value for graph compatibility)
+        num_steps_tensor = tf.cast(tf.math.ceil(depth / batch_slices), tf.int32)
+        num_steps = tf.get_static_value(num_steps_tensor)  # Convert to static value (int)
     
-        # Split depth into slices using num_steps (which is now a tensor)
+        # Split depth into slices using num_steps (which is now an integer)
         y_true_slices = tf.split(y_true, num_or_size_splits=num_steps, axis=1)
         y_pred_slices = tf.split(y_pred, num_or_size_splits=num_steps, axis=1)
     
@@ -270,6 +271,7 @@ class BMGAN:
     
         total_perceptual_loss = tf.reduce_mean(perceptual_losses)
         return total_perceptual_loss
+
 
 
     def l1_perceptual_loss(self, y_true, y_pred):
