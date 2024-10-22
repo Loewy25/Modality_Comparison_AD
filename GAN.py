@@ -199,34 +199,51 @@ class BMGAN:
 
         return model
 
-    def perceptual_loss(self, y_true, y_pred):
+    def perceptual_loss(self, y_true, y_pred, batch_slices=16):
         # y_true and y_pred are 5D tensors: (batch_size, depth, height, width, channels)
-        # We need to extract 2D slices to feed into VGG16
-
-        # Reshape to merge batch and depth dimensions
         batch_size = tf.shape(y_true)[0]
         depth = tf.shape(y_true)[1]
-        y_true = tf.transpose(y_true, [0, 2, 3, 1, 4])  # Shape: (batch_size, height, width, depth, channels)
-        y_pred = tf.transpose(y_pred, [0, 2, 3, 1, 4])
+    
+        total_loss = 0.0
+        num_steps = tf.cast(tf.math.ceil(depth / batch_slices), tf.int32)
+    
+        for i in range(num_steps):
+            start = i * batch_slices
+            end = tf.minimum(start + batch_slices, depth)
+    
+            # Extract the batch of slices
+            y_true_batch = y_true[:, start:end, :, :, :]
+            y_pred_batch = y_pred[:, start:end, :, :, :]
+    
+            # Reshape and prepare for VGG16 input
+            y_true_batch = tf.transpose(y_true_batch, [0, 2, 3, 1, 4])  # Shape: (batch_size, height, width, batch_slices, channels)
+            y_pred_batch = tf.transpose(y_pred_batch, [0, 2, 3, 1, 4])
+    
+            y_true_batch = tf.reshape(y_true_batch, [-1, self.input_shape[0], self.input_shape[1], 1])
+            y_pred_batch = tf.reshape(y_pred_batch, [-1, self.input_shape[0], self.input_shape[1], 1])
+    
+            # Resize to VGG16 input size (224x224)
+            y_true_resized = tf.image.resize(y_true_batch, [224, 224])
+            y_pred_resized = tf.image.resize(y_pred_batch, [224, 224])
+    
+            # Convert grayscale to RGB by repeating channels
+            y_true_rgb = tf.image.grayscale_to_rgb(y_true_resized)
+            y_pred_rgb = tf.image.grayscale_to_rgb(y_pred_resized)
+    
+            # Extract VGG features
+            y_true_features = self.vgg_model(y_true_rgb)
+            y_pred_features = self.vgg_model(y_pred_rgb)
+    
+            # Compute perceptual loss for this batch
+            batch_loss = tf.reduce_mean(tf.abs(y_true_features - y_pred_features))
+    
+            # Accumulate the loss
+            total_loss += batch_loss
+    
+        # Compute the average loss over all batches
+        total_loss /= tf.cast(num_steps, tf.float32)
+        return total_loss
 
-        y_true = tf.reshape(y_true, [batch_size * depth, self.input_shape[0], self.input_shape[1], 1])
-        y_pred = tf.reshape(y_pred, [batch_size * depth, self.input_shape[0], self.input_shape[1], 1])
-
-        # Resize to VGG16 input size (224x224)
-        y_true_resized = tf.image.resize(y_true, [224, 224])
-        y_pred_resized = tf.image.resize(y_pred, [224, 224])
-
-        # Convert grayscale to RGB by repeating channels
-        y_true_rgb = tf.image.grayscale_to_rgb(y_true_resized)
-        y_pred_rgb = tf.image.grayscale_to_rgb(y_pred_resized)
-
-        # Extract VGG features
-        y_true_features = self.vgg_model(y_true_rgb)
-        y_pred_features = self.vgg_model(y_pred_rgb)
-
-        # Compute perceptual loss
-        loss = tf.reduce_mean(tf.abs(y_true_features - y_pred_features))
-        return loss
 
     def l1_perceptual_loss(self, y_true, y_pred):
         # L1 Loss
