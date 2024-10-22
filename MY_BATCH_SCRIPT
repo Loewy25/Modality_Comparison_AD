@@ -1,13 +1,13 @@
 #!/bin/bash
 
 
-#SBATCH --job-name=vit_dm_mri # Assign a descriptive job name
+#SBATCH --job-name=test # Assign a descriptive job name
 
-#SBATCH -N 1                     # Request 1 node
+#SBATCH -N 1                    # Request 1 node
 #SBATCH --mem=100G               # Request 400GB memory
 #SBATCH -t 130:50:00             # Set maximum time
 
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:3
 #SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
 
@@ -26,12 +26,12 @@ source ~/liuenv/bin/activate
 pip install tensorflow==2.11.0 
 
 
-python ViT_dm_mri.py
+#python ViT_dm_mri.py
 #python keras_u-net_dm_mri.py
 #python cbam_cd_mri.py
 #python cbam_full_cd_mri.py
 #python cbam_sin_dm_mri.py
-#python GAN.py
+python GAN.py
 # List of Python scripts you want to run (internal array)
 #scripts=("deep_learning_cd_MRI.py" "deep_learning_cd_PET.py" "deep_learning_cm_MRI.py" "deep_learning_cm_PET.py" "deep_learning_dm_MRI.py" "deep_learning_dm_PET.py" "deep_learning_pc_MRI.py" "deep_learning_pc_PET.py")
 
