@@ -214,7 +214,7 @@ class Trainer:
         num_layers = hp.Int('num_layers', min_value=4, max_value=8, step=2)
         d_model = hp.Choice('d_model', [64, 128, 256])
         num_heads = hp.Choice('num_heads', [4, 8])
-        d_ff = hp.Choice('d_ff', [128, 256, 512])
+        d_ff = hp.Choice('d_ff', [128, 256])
         patch_size_value = hp.Choice('patch_size', [8, 16])
         patch_size = (patch_size_value, patch_size_value, patch_size_value)
 
