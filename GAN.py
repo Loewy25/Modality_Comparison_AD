@@ -356,10 +356,23 @@ def resize_image(image, target_shape):
     zoom_factors = [target_shape[i] / image.shape[i] for i in range(3)]
     return zoom(image, zoom_factors, order=1)
 
+
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+    except RuntimeError as e:
+        print(e)
+
+
 # ------------------------------------------------------------
 # Main Function
 # ------------------------------------------------------------
 if __name__ == '__main__':
+
+
+    
     task = 'cd'
     info = 'experiment1'  # New parameter for the subfolder
 
@@ -378,7 +391,7 @@ if __name__ == '__main__':
 
     # Initialize BMGAN model and train
     bmgan = BMGAN(generator, discriminator, encoder, input_shape)
-    bmgan.train(mri_train, pet_train, epochs=250, batch_size=2)
+    bmgan.train(mri_train, pet_train, epochs=250, batch_size=1)
 
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
