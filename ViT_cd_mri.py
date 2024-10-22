@@ -324,7 +324,7 @@ class Trainer:
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
                 epochs=250,
-                batch_size=2,
+                batch_size=1,
                 callbacks=callbacks,
                 verbose=1
             )
