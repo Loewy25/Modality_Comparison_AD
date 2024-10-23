@@ -318,8 +318,6 @@ class Trainer:
             # Build a new model with the best hyperparameters
             final_model = Trainer.build_model(best_hps)
             # TensorBoard callback to monitor memory usage and other metrics
-            log_dir = "logs/"
-            tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1, profile_batch=2)
             
             # Train the final model on augmented data
             history = final_model.fit(
@@ -350,7 +348,7 @@ class Trainer:
 def main():
     task = 'cd'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'vit_model_final4'  # Additional info for saving results
+    info = 'vit_model_final5'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
