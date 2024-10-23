@@ -1,13 +1,13 @@
 #!/bin/bash
 
 
-#SBATCH --job-name=vit_cd_pet #Assign a descriptive job name
+#SBATCH --job-name=vit_dm_pet #Assign a descriptive job name
 
 #SBATCH -N 1                    # Request 1 node
 #SBATCH --mem=100G               # Request 400GB memory
 #SBATCH -t 130:50:00             # Set maximum time
 
-#SBATCH --gres=gpu:nvidia_a100_80:1
+#SBATCH --gres=gpu:2
 #SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
 
@@ -26,7 +26,7 @@ source ~/liuenv/bin/activate
 pip install tensorflow==2.11.0 
 
 
-python ViT_cd_pet.py
+python ViT_dm_pet.py
 #python keras_u-net_dm_mri.py
 #python cbam_cd_mri.py
 #python cbam_full_cd_mri.py
