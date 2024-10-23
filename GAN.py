@@ -224,20 +224,18 @@ class BMGAN:
         self.build_bmgan()
 
     def get_vgg_model(self):
-        # Place the VGG model on GPU:0 alongside the generator
-        with tf.device('/GPU:0'):
-            # Load the VGG16 model with ImageNet weights (pretrained)
-            vgg = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+        # Load the VGG16 model with ImageNet weights (pretrained)
+        vgg = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
 
-            # Extract features from an intermediate layer (before the second max-pooling operation)
-            output = vgg.get_layer('block2_pool').output  # Adjust layer as needed
+        # Extract features from an intermediate layer (before the second max-pooling operation)
+        output = vgg.get_layer('block2_pool').output  # Adjust layer as needed
 
-            # Create the feature extraction model
-            model = Model(inputs=vgg.input, outputs=output)
-            model.trainable = False  # Freeze the VGG model
+        # Create the feature extraction model
+        model = Model(inputs=vgg.input, outputs=output)
+        model.trainable = False  # Freeze the VGG model
 
-            return model
-    
+        return model
+
     def perceptual_loss(self, y_true, y_pred):
         """
         Compute the perceptual loss using VGG features by processing all slices in a batched manner.
@@ -253,32 +251,28 @@ class BMGAN:
         height = tf.shape(y_true)[2]
         width = tf.shape(y_true)[3]
         channels = tf.shape(y_true)[4]
-    
+
         # Reshape to combine batch and depth dimensions
         # New shape: (batch_size * depth, height, width, channels)
         y_true_reshaped = tf.reshape(y_true, [batch_size * depth, height, width, channels])
         y_pred_reshaped = tf.reshape(y_pred, [batch_size * depth, height, width, channels])
-    
+
         # Resize to VGG16 input size (224x224)
         y_true_resized = tf.image.resize(y_true_reshaped, [224, 224])
         y_pred_resized = tf.image.resize(y_pred_reshaped, [224, 224])
-    
+
         # Convert grayscale to RGB by repeating channels
         y_true_rgb = tf.image.grayscale_to_rgb(y_true_resized)
         y_pred_rgb = tf.image.grayscale_to_rgb(y_pred_resized)
-    
+
         # Pass through VGG model to extract features
-        with tf.device('/GPU:0'):
-            y_true_features = self.vgg_model(y_true_rgb)
-            y_pred_features = self.vgg_model(y_pred_rgb)
-    
+        y_true_features = self.vgg_model(y_true_rgb)
+        y_pred_features = self.vgg_model(y_pred_rgb)
+
         # Compute the mean absolute error between the features
         perceptual_loss = tf.reduce_mean(tf.abs(y_true_features - y_pred_features))
-    
+
         return perceptual_loss
-
-
-
 
     def l1_perceptual_loss(self, y_true, y_pred):
         # L1 Loss
@@ -295,56 +289,50 @@ class BMGAN:
         return tf.reduce_mean(tf.square(y_pred - y_true))
 
     def build_bmgan(self):
-        # Build and compile the discriminator on GPU:1
-        with tf.device('/GPU:1'):
-            self.discriminator.compile(
-                optimizer=Adam(0.0002, beta_1=0.5),
-                loss='mse',
-                metrics=['accuracy']
-            )
+        # Compile the discriminator
+        self.discriminator.compile(
+            optimizer=Adam(0.0002, beta_1=0.5),
+            loss='mse',
+            metrics=['accuracy']
+        )
 
-        # Input images (real MRI and real PET) on GPU:0
-        with tf.device('/GPU:0'):
-            real_mri = tf.keras.Input(shape=self.input_shape)
-            fake_pet = self.generator(real_mri)  # Generator is on GPU:0
+        # Input images
+        real_mri = tf.keras.Input(shape=self.input_shape)
+        fake_pet = self.generator(real_mri)  # Generator is on default device
 
-        # Encoder on GPU:2
-        with tf.device('/GPU:2'):
-            real_pet = tf.keras.Input(shape=self.input_shape)
-            # Encoder outputs
-            z_mean_real_pet, z_log_var_real_pet = self.encoder(real_pet)
-            z_mean_fake_pet, z_log_var_fake_pet = self.encoder(fake_pet)
+        # Encoder outputs
+        real_pet = tf.keras.Input(shape=self.input_shape)
+        z_mean_real_pet, z_log_var_real_pet = self.encoder(real_pet)
+        z_mean_fake_pet, z_log_var_fake_pet = self.encoder(fake_pet)
 
-        # Discriminator and KL loss on GPU:1
-        with tf.device('/GPU:1'):
-            # Discriminator output for generated images (fake PET)
-            validity_fake = self.discriminator(fake_pet)
+        # Discriminator output for generated images (fake PET)
+        validity_fake = self.discriminator(fake_pet)
 
-            # Compute KL-divergence loss
-            kl_loss_real = -0.5 * tf.reduce_mean(
-                1 + z_log_var_real_pet - tf.square(z_mean_real_pet) - tf.exp(z_log_var_real_pet)
-            )
-            kl_loss_fake = -0.5 * tf.reduce_mean(
-                1 + z_log_var_fake_pet - tf.square(z_mean_fake_pet) - tf.exp(z_log_var_fake_pet)
-            )
+        # Compute KL-divergence loss
+        kl_loss_real = -0.5 * tf.reduce_mean(
+            1 + z_log_var_real_pet - tf.square(z_mean_real_pet) - tf.exp(z_log_var_real_pet)
+        )
+        kl_loss_fake = -0.5 * tf.reduce_mean(
+            1 + z_log_var_fake_pet - tf.square(z_mean_fake_pet) - tf.exp(z_log_var_fake_pet)
+        )
 
-            # Define the combined model
-            self.combined = Model(
-                inputs=[real_mri, real_pet],
-                outputs=[validity_fake, fake_pet, kl_loss_real, kl_loss_fake]
-            )
+        # Define the combined model
+        self.combined = Model(
+            inputs=[real_mri, real_pet],
+            outputs=[validity_fake, fake_pet, kl_loss_real, kl_loss_fake]
+        )
 
-            # Compile the combined model on GPU:1
-            self.combined.compile(
-                optimizer=Adam(0.0002, beta_1=0.5),
-                loss=[
-                    self.lsgan_loss,           # For validity_fake
-                    self.l1_perceptual_loss,  # For fake_pet
-                    self.kl_divergence_loss,  # For kl_loss_real
-                    self.kl_divergence_loss   # For kl_loss_fake
-                ],
-                loss_weights=[1, self.lambda1, self.lambda2, self.lambda2]
-            )
+        # Compile the combined model
+        self.combined.compile(
+            optimizer=Adam(0.0002, beta_1=0.5),
+            loss=[
+                self.lsgan_loss,           # For validity_fake
+                self.l1_perceptual_loss,  # For fake_pet
+                self.kl_divergence_loss,  # For kl_loss_real
+                self.kl_divergence_loss   # For kl_loss_fake
+            ],
+            loss_weights=[1, self.lambda1, self.lambda2, self.lambda2]
+        )
 
     def train(self, mri_images, pet_images, epochs, batch_size):
         real_labels = np.ones((batch_size,) + (8, 8, 8, 1))  # Adjusted for patch-level output
@@ -360,22 +348,19 @@ class BMGAN:
             real_mri_tensor = tf.convert_to_tensor(real_mri, dtype=tf.float32)
             real_pet_tensor = tf.convert_to_tensor(real_pet, dtype=tf.float32)
 
-            # Generate synthetic PET images using generator on GPU:0
-            with tf.device('/GPU:0'):
-                generated_pet = self.generator.predict_on_batch(real_mri_tensor)
+            # Generate synthetic PET images
+            generated_pet = self.generator.predict_on_batch(real_mri_tensor)
 
-            # Train Discriminator on GPU:1
-            with tf.device('/GPU:1'):
-                d_loss_real = self.discriminator.train_on_batch(real_pet, real_labels)
-                d_loss_fake = self.discriminator.train_on_batch(generated_pet, fake_labels)
-                d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
+            # Train Discriminator
+            d_loss_real = self.discriminator.train_on_batch(real_pet, real_labels)
+            d_loss_fake = self.discriminator.train_on_batch(generated_pet, fake_labels)
+            d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
 
-            # Train Generator (Combined Model) on GPU:1
-            with tf.device('/GPU:1'):
-                g_loss = self.combined.train_on_batch(
-                    [real_mri, real_pet],
-                    [real_labels, real_pet, np.zeros((batch_size,)), np.zeros((batch_size,))]
-                )
+            # Train Generator (Combined Model)
+            g_loss = self.combined.train_on_batch(
+                [real_mri, real_pet],
+                [real_labels, real_pet, np.zeros((batch_size,)), np.zeros((batch_size,))]
+            )
 
             # Print losses
             print(f"Epoch {epoch+1}/{epochs}, D loss: {d_loss[0]:.4f}, "
@@ -470,23 +455,20 @@ if __name__ == '__main__':
 
     input_shape = (128, 128, 128, 1)
 
-    # Initialize generator on GPU:0
-    with tf.device('/GPU:0'):
-        print("Initializing Generator on GPU:0")
-        generator = DenseUNetGenerator(input_shape).model
-        generator.summary()
+    # Initialize generator
+    print("Initializing Generator")
+    generator = DenseUNetGenerator(input_shape).model
+    generator.summary()
 
-    # Initialize discriminator on GPU:1
-    with tf.device('/GPU:1'):
-        print("Initializing Discriminator on GPU:1")
-        discriminator = Discriminator(input_shape).model
-        discriminator.summary()
+    # Initialize discriminator
+    print("Initializing Discriminator")
+    discriminator = Discriminator(input_shape).model
+    discriminator.summary()
 
-    # Initialize encoder on GPU:2
-    with tf.device('/GPU:2'):
-        print("Initializing Encoder on GPU:2")
-        encoder = ResNetEncoder(input_shape).model
-        encoder.summary()
+    # Initialize encoder
+    print("Initializing Encoder")
+    encoder = ResNetEncoder(input_shape).model
+    encoder.summary()
 
     # Initialize BMGAN model
     print("Building BMGAN model...")
@@ -504,10 +486,9 @@ if __name__ == '__main__':
     os.makedirs(output_dir_pet, exist_ok=True)
     print(f"Created directories: {output_dir_mri}, {output_dir_pet}")
 
-    # Predict PET images for the test MRI data on GPU:0
-    with tf.device('/GPU:0'):
-        print("Generating PET images for the test set...")
-        generated_pet_images = generator.predict(mri_gen)
+    # Predict PET images for the test MRI data
+    print("Generating PET images for the test set...")
+    generated_pet_images = generator.predict(mri_gen)
 
     # Save the test MRI data and the generated PET images in their respective folders
     print("Saving generated PET images and corresponding MRI scans...")
