@@ -494,7 +494,7 @@ if __name__ == '__main__':
 
     # Train the model
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=250, batch_size=1)
+    bmgan.train(mri_train, pet_train, epochs=20, batch_size=1)
 
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
