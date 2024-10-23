@@ -87,6 +87,36 @@ class DataLoader:
             augmented_X.append(img_aug)
         return np.array(augmented_X)
 
+
+class ClassToken(tf.keras.layers.Layer):
+    def build(self, input_shape):
+        self.cls_token = self.add_weight(
+                shape=(1, 1, input_shape[-1]),
+                initializer='random_normal',
+                trainable=True,
+                name='cls_token'
+            )
+        super().build(input_shape)
+
+    def call(self, inputs):
+        batch_size = tf.shape(inputs)[0]
+        cls_tokens = tf.broadcast_to(self.cls_token, [batch_size, 1, inputs.shape[-1]])
+        return tf.concat([cls_tokens, inputs], axis=1)
+
+    # Custom Layer for Positional Embeddings
+class AddPositionEmbs(tf.keras.layers.Layer):
+    def build(self, input_shape):
+        self.pos_emb = self.add_weight(
+                shape=(1, input_shape[1], input_shape[2]),
+                initializer='random_normal',
+                trainable=True,
+                name='pos_embedding'
+            )
+        super().build(input_shape)
+
+    def call(self, inputs):
+        return inputs + self.pos_emb
+
 class ViTModelBuilder:
     """Class to build the Vision Transformer model."""
 
@@ -101,35 +131,7 @@ class ViTModelBuilder:
         self.num_layers = num_layers
         self.dropout_rate = dropout_rate
 
-    # Custom Layer for Class Token
-    class ClassToken(tf.keras.layers.Layer):
-        def build(self, input_shape):
-            self.cls_token = self.add_weight(
-                shape=(1, 1, input_shape[-1]),
-                initializer='random_normal',
-                trainable=True,
-                name='cls_token'
-            )
-            super().build(input_shape)
-
-        def call(self, inputs):
-            batch_size = tf.shape(inputs)[0]
-            cls_tokens = tf.broadcast_to(self.cls_token, [batch_size, 1, inputs.shape[-1]])
-            return tf.concat([cls_tokens, inputs], axis=1)
-
-    # Custom Layer for Positional Embeddings
-    class AddPositionEmbs(tf.keras.layers.Layer):
-        def build(self, input_shape):
-            self.pos_emb = self.add_weight(
-                shape=(1, input_shape[1], input_shape[2]),
-                initializer='random_normal',
-                trainable=True,
-                name='pos_embedding'
-            )
-            super().build(input_shape)
-
-        def call(self, inputs):
-            return inputs + self.pos_emb
+    # Custom Layer for Class Toke
 
     # Transformer block adapted for ViT
     def transformer_block(self, inputs):
@@ -184,8 +186,8 @@ class ViTModelBuilder:
         x = patch_embedding_model(inputs)
 
         # Add class token and positional embeddings
-        x = self.ClassToken()(x)
-        x = self.AddPositionEmbs()(x)
+        x = ClassToken()(x)
+        x = AddPositionEmbs()(x)
 
         # Transformer layers
         for _ in range(self.num_layers):
