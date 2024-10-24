@@ -218,7 +218,7 @@ class Trainer:
         dropout_rate = hp.Float('dropout_rate', 0.0, 0.5, step=0.1)
         num_layers = hp.Int('num_layers', min_value=4, max_value=8, step=2)
         d_model = hp.Choice('d_model', [64, 128, 256])
-        num_heads = hp.Choice('num_heads', [4, 8])
+        num_heads = hp.Choice('num_heads', [ 8, 10])
         d_ff = hp.Choice('d_ff', [128, 256])
         patch_size_value = hp.Choice('patch_size', [8, 16])
         patch_size = (patch_size_value, patch_size_value, patch_size_value)
@@ -256,7 +256,19 @@ class Trainer:
         fold_results = []
         best_hyperparameters = []
 
-        callbacks = [
+        for fold, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1)), 1):
+            print(f"\nStarting fold {fold}/{n_splits}")
+            X_train, X_val = X[train_idx], X[val_idx]
+            Y_train, Y_val = Y[train_idx], Y[val_idx]
+            X_train_augmented = DataLoader.augment_data(
+                X_train, 
+                flip_prob=0.3, 
+                rotate_prob=0.3
+            )
+            tuner_dir = os.path.join('keras_tuner_dir', task, modality, info, f"fold_{fold}")
+            os.makedirs(tuner_dir, exist_ok=True)
+
+            callbacks = [
             EarlyStopping(
                 monitor='val_loss',
                 patience=50,
@@ -271,20 +283,7 @@ class Trainer:
                 mode='min',
                 verbose=1
             )
-        ]
-
-        for fold, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1)), 1):
-            print(f"\nStarting fold {fold}/{n_splits}")
-            X_train, X_val = X[train_idx], X[val_idx]
-            Y_train, Y_val = Y[train_idx], Y[val_idx]
-            X_train_augmented = DataLoader.augment_data(
-                X_train, 
-                flip_prob=0.3, 
-                rotate_prob=0.3
-            )
-            tuner_dir = os.path.join('keras_tuner_dir', task, modality, info, f"fold_{fold}")
-            os.makedirs(tuner_dir, exist_ok=True)
-
+                ]
             tuner = kt.RandomSearch(
                 hypermodel=Trainer.build_model,
                 objective=kt.Objective("val_auc", direction="max"),
@@ -348,7 +347,7 @@ class Trainer:
 def main():
     task = 'dm'  # Update as per your task
     modality = 'MRI'  # 'MRI' or 'PET'
-    info = 'vit_model_final5'  # Additional info for saving results
+    info = 'vit_model_final6'  # Additional info for saving results
 
     # Load your data
     train_data, train_label, original_imgs = DataLoader.loading_mask_3d(task, modality)
@@ -367,5 +366,3 @@ if __name__ == '__main__':
     np.random.seed(seed)
     random.seed(seed)
     main()
-
-
