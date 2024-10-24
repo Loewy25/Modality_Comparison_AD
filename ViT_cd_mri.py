@@ -256,7 +256,19 @@ class Trainer:
         fold_results = []
         best_hyperparameters = []
 
-        callbacks = [
+        for fold, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1)), 1):
+            print(f"\nStarting fold {fold}/{n_splits}")
+            X_train, X_val = X[train_idx], X[val_idx]
+            Y_train, Y_val = Y[train_idx], Y[val_idx]
+            X_train_augmented = DataLoader.augment_data(
+                X_train, 
+                flip_prob=0.3, 
+                rotate_prob=0.3
+            )
+            tuner_dir = os.path.join('keras_tuner_dir', task, modality, info, f"fold_{fold}")
+            os.makedirs(tuner_dir, exist_ok=True)
+
+            callbacks = [
             EarlyStopping(
                 monitor='val_loss',
                 patience=50,
@@ -271,20 +283,7 @@ class Trainer:
                 mode='min',
                 verbose=1
             )
-        ]
-
-        for fold, (train_idx, val_idx) in enumerate(stratified_kfold.split(X, Y.argmax(axis=1)), 1):
-            print(f"\nStarting fold {fold}/{n_splits}")
-            X_train, X_val = X[train_idx], X[val_idx]
-            Y_train, Y_val = Y[train_idx], Y[val_idx]
-            X_train_augmented = DataLoader.augment_data(
-                X_train, 
-                flip_prob=0.3, 
-                rotate_prob=0.3
-            )
-            tuner_dir = os.path.join('keras_tuner_dir', task, modality, info, f"fold_{fold}")
-            os.makedirs(tuner_dir, exist_ok=True)
-
+                ]
             tuner = kt.RandomSearch(
                 hypermodel=Trainer.build_model,
                 objective=kt.Objective("val_auc", direction="max"),
