@@ -298,7 +298,7 @@ class Trainer:
             tuner.search(
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
-                epochs=80,
+                epochs=5,
                 batch_size=5,
                 callbacks=callbacks,
                 verbose=1,
@@ -322,7 +322,7 @@ class Trainer:
             history = final_model.fit(
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
-                epochs=250,
+                epochs=5,
                 batch_size=5,
                 callbacks=callbacks,
                 verbose=1
