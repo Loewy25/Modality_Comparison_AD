@@ -218,7 +218,7 @@ class Trainer:
         dropout_rate = hp.Float('dropout_rate', 0.0, 0.5, step=0.1)
         num_layers = hp.Int('num_layers', min_value=4, max_value=8, step=2)
         d_model = hp.Choice('d_model', [64, 128, 256])
-        num_heads = hp.Choice('num_heads', [4, 8])
+        num_heads = hp.Choice('num_heads', [ 8, 10])
         d_ff = hp.Choice('d_ff', [128, 256])
         patch_size_value = hp.Choice('patch_size', [8, 16])
         patch_size = (patch_size_value, patch_size_value, patch_size_value)
@@ -298,7 +298,7 @@ class Trainer:
             tuner.search(
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
-                epochs=5,
+                epochs=80,
                 batch_size=5,
                 callbacks=callbacks,
                 verbose=1,
@@ -322,7 +322,7 @@ class Trainer:
             history = final_model.fit(
                 X_train_augmented, Y_train,
                 validation_data=(X_val, Y_val),
-                epochs=5,
+                epochs=250,
                 batch_size=5,
                 callbacks=callbacks,
                 verbose=1
