@@ -1,0 +1,74 @@
+2024-10-23 20:28:28.828895: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-10-23 20:28:28.986687: I tensorflow/core/util/port.cc:104] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-10-23 20:28:30.090288: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer.so.7'; dlerror: libnvinfer.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /export/cudnn/cudnn-8.1.1/lib64:/export/cuda/cuda-11.3/extras/CUPTI/lib64:/export/cuda/cuda-11.3/lib64
+2024-10-23 20:28:30.090489: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer_plugin.so.7'; dlerror: libnvinfer_plugin.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /export/cudnn/cudnn-8.1.1/lib64:/export/cuda/cuda-11.3/extras/CUPTI/lib64:/export/cuda/cuda-11.3/lib64
+2024-10-23 20:28:30.090500: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+/home/l.peiwang/liuenv/lib/python3.10/site-packages/nilearn/input_data/__init__.py:23: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+2024-10-23 20:32:51.063300: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+Traceback (most recent call last):
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras_tuner/src/engine/tuner.py", line 404, in _deepcopy_callbacks
+    callbacks = copy.deepcopy(callbacks)
+  File "/export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/copy.py", line 146, in deepcopy
+    y = copier(x, memo)
+  File "/export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/copy.py", line 206, in _deepcopy_list
+    append(deepcopy(a, memo))
+  File "/export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/copy.py", line 172, in deepcopy
+    y = _reconstruct(x, memo, *rv)
+  File "/export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/copy.py", line 271, in _reconstruct
+    state = deepcopy(state, memo)
+  File "/export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/copy.py", line 146, in deepcopy
+    y = copier(x, memo)
+  File "/export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/copy.py", line 231, in _deepcopy_dict
+    y[deepcopy(key, memo)] = deepcopy(value, memo)
+  File "/export/anaconda/anaconda3/anaconda3-2023.03/lib/python3.10/copy.py", line 153, in deepcopy
+    y = copier(memo)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/engine/training.py", line 381, in __deepcopy__
+    new = pickle_utils.deserialize_model_from_bytecode(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/saving/pickle_utils.py", line 48, in deserialize_model_from_bytecode
+    raise e
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/saving/pickle_utils.py", line 46, in deserialize_model_from_bytecode
+    model = saving_lib.load_model(filepath)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/saving/experimental/saving_lib.py", line 196, in load_model
+    raise e
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/saving/experimental/saving_lib.py", line 183, in load_model
+    model = deserialize_keras_object(config_dict, custom_objects)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/saving/experimental/serialization_lib.py", line 318, in deserialize_keras_object
+    return cls.from_config(inner_config)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/engine/training.py", line 3114, in from_config
+    inputs, outputs, layers = functional.reconstruct_from_config(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/engine/functional.py", line 1470, in reconstruct_from_config
+    process_layer(layer_data)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/engine/functional.py", line 1451, in process_layer
+    layer = deserialize_layer(layer_data, custom_objects=custom_objects)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/layers/serialization.py", line 252, in deserialize
+    return serialization.deserialize_keras_object(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/saving/legacy/serialization.py", line 500, in deserialize_keras_object
+    (cls, cls_config) = class_and_config_for_serialized_keras_object(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras/saving/legacy/serialization.py", line 385, in class_and_config_for_serialized_keras_object
+    raise ValueError(
+ValueError: Unknown layer: 'ClassToken'. Please ensure you are using a `keras.utils.custom_object_scope` and that this object is included in the scope. See https://www.tensorflow.org/guide/keras/save_and_serialize#registering_the_custom_object for details.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/ViT_cd_pet.py", line 369, in <module>
+    main()
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/ViT_cd_pet.py", line 360, in main
+    average_auc = Trainer.tune_model_nested_cv(X, Y, task, modality, info)
+  File "/ceph/chpc/home-nfs/l.peiwang/Modality_Comparison_AD/ViT_cd_pet.py", line 299, in tune_model_nested_cv
+    tuner.search(
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras_tuner/src/engine/base_tuner.py", line 233, in search
+    self._try_run_and_update_trial(trial, *fit_args, **fit_kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras_tuner/src/engine/base_tuner.py", line 278, in _try_run_and_update_trial
+    raise e
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras_tuner/src/engine/base_tuner.py", line 273, in _try_run_and_update_trial
+    self._run_and_update_trial(trial, *fit_args, **fit_kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras_tuner/src/engine/base_tuner.py", line 238, in _run_and_update_trial
+    results = self.run_trial(trial, *fit_args, **fit_kwargs)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras_tuner/src/engine/tuner.py", line 308, in run_trial
+    callbacks = self._deepcopy_callbacks(original_callbacks)
+  File "/home/l.peiwang/liuenv/lib/python3.10/site-packages/keras_tuner/src/engine/tuner.py", line 406, in _deepcopy_callbacks
+    raise errors.FatalValueError(
+keras_tuner.src.errors.FatalValueError: All callbacks used during a search should be deep-copyable (since they are reused across trials). It is not possible to do `copy.deepcopy([<keras.callbacks.EarlyStopping object at 0x14827fb7f670>, <keras.callbacks.ReduceLROnPlateau object at 0x14827fb7fa60>])`
