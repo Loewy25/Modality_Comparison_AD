@@ -331,70 +331,114 @@ class BMGAN:
         return self.mse_loss(y_pred, y_true)
 
     def train(self, mri_images, pet_images, epochs, batch_size):
-        dataset = CustomDataset(mri_images, pet_images)
-        dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
-
+        # Split data into training and validation sets (80% training, 20% validation)
+        mri_train, mri_val, pet_train, pet_val = train_test_split(mri_images, pet_images, test_size=0.2, random_state=42)
+        
+        # Create DataLoaders for training and validation
+        train_dataset = CustomDataset(mri_train, pet_train)
+        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+        
+        val_dataset = CustomDataset(mri_val, pet_val)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+        
         real_label = 1.0
         fake_label = 0.0
-
+    
         for epoch in range(epochs):
-            for i, (real_mri, real_pet) in enumerate(dataloader):
+            # Set models to training mode
+            self.generator.train()
+            self.discriminator.train()
+            self.encoder.train()
+    
+            total_d_loss = 0
+            total_g_loss = 0
+    
+            # Training Loop
+            for i, (real_mri, real_pet) in enumerate(train_loader):
                 real_mri = real_mri.to(device)
                 real_pet = real_pet.to(device)
-
                 batch_size = real_mri.size(0)
-
+    
                 # ---------------------
                 #  Train Discriminator
                 # ---------------------
                 self.discriminator.zero_grad()
-
+    
                 # Real PET images
                 output_real = self.discriminator(real_pet)
                 label_real = torch.full(output_real.size(), real_label, device=real_pet.device)
                 d_loss_real = self.lsgan_loss(output_real, label_real)
                 d_loss_real.backward()
-
+    
                 # Fake PET images
                 fake_pet = self.generator(real_mri)
                 output_fake = self.discriminator(fake_pet.detach())
                 label_fake = torch.full(output_fake.size(), fake_label, device=real_pet.device)
                 d_loss_fake = self.lsgan_loss(output_fake, label_fake)
                 d_loss_fake.backward()
-
+    
                 d_loss = d_loss_real + d_loss_fake
                 self.optimizer_D.step()
-
+    
                 # -----------------
-                #  Train Generator
+                #  Train Generator and Encoder
                 # -----------------
                 self.generator.zero_grad()
                 self.encoder.zero_grad()
-
+    
                 # GAN loss
                 output_fake = self.discriminator(fake_pet)
                 label_real = torch.full(output_fake.size(), real_label, device=real_pet.device)
                 g_gan_loss = self.lsgan_loss(output_fake, label_real)
-
+    
                 # L1 and Perceptual loss
                 l1_perc_loss = self.l1_perceptual_loss(real_pet, fake_pet)
-
-                # KL divergence loss for real and fake PET
+    
+                # KL divergence loss
                 z_mean_real, z_log_var_real = self.encoder(real_pet)
                 z_mean_fake, z_log_var_fake = self.encoder(fake_pet)
                 kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
                 kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
                 kl_loss = kl_loss_real + kl_loss_fake
-
+    
                 # Total Generator loss
                 g_loss = g_gan_loss + self.lambda1 * l1_perc_loss + self.lambda2 * kl_loss
                 g_loss.backward()
                 self.optimizer_G.step()
                 self.optimizer_E.step()
+    
+                # Accumulate losses for printing
+                total_d_loss += d_loss.item()
+                total_g_loss += g_loss.item()
+    
+            # Average losses per epoch
+            avg_d_loss = total_d_loss / len(train_loader)
+            avg_g_loss = total_g_loss / len(train_loader)
+            
+            print(f"Epoch [{epoch+1}/{epochs}] Training D Loss: {avg_d_loss:.4f}, G Loss: {avg_g_loss:.4f}")
+    
+            # ---------------------------
+            # Validation Step (no gradients)
+            # ---------------------------
+            self.generator.eval()  # Set generator to evaluation mode
+            self.discriminator.eval()
+            validation_loss = 0
+            with torch.no_grad():  # No gradient calculation for validation
+                for real_mri, real_pet in val_loader:
+                    real_mri = real_mri.to(device)
+                    real_pet = real_pet.to(device)
+                    
+                    # Generate fake PET images
+                    fake_pet = self.generator(real_mri)
+                    
+                    # Calculate validation loss (L1 Perceptual Loss)
+                    val_loss = self.l1_perceptual_loss(real_pet, fake_pet)
+                    validation_loss += val_loss.item()
+    
+            # Average validation loss per epoch
+            validation_loss /= len(val_loader)
+            print(f"Epoch [{epoch+1}/{epochs}] Validation Loss: {validation_loss:.4f}")
 
-                # Print losses
-                print(f"Epoch [{epoch+1}/{epochs}] Batch [{i+1}/{len(dataloader)}] "
-                      f"D Loss: {d_loss.item():.4f} G Loss: {g_loss.item():.4f}")
 
 # ------------------------------------------------------------
 # Data Loading and Preprocessing Functions
@@ -502,7 +546,7 @@ if __name__ == '__main__':
 
     # Train the model
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=5, batch_size=1)
+    bmgan.train(mri_train, pet_train, epochs=200, batch_size=1)
 
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
