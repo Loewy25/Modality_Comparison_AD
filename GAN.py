@@ -1,370 +1,393 @@
 import os
 import numpy as np
 import nibabel as nib
-import tensorflow as tf
-from tensorflow.keras.layers import (Conv3D, ReLU, Add, Concatenate,
-                                     Conv3DTranspose, GlobalAveragePooling3D, LeakyReLU,
-                                     Dense, AveragePooling3D, MaxPooling3D, BatchNormalization)
-from tensorflow.keras.models import Model
-from tensorflow.keras.optimizers import Adam
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import Dataset, DataLoader
+from torch.nn.functional import interpolate
+from torchvision import models
 from sklearn.model_selection import train_test_split
 from scipy.stats import zscore
 from scipy.ndimage import zoom
-from tensorflow.keras.applications import VGG16
-from tensorflow.keras import mixed_precision
 
 # Import data loading functions (Ensure these are correctly implemented)
 from data_loading import generate_data_path_less, generate, binarylabel
 
 # ------------------------------------------------------------
-# Custom InstanceNormalization Layer
+# Custom Dataset Class for Data Loading
 # ------------------------------------------------------------
-class InstanceNormalization(tf.keras.layers.Layer):
-    def __init__(self, epsilon=1e-5, **kwargs):
-        super(InstanceNormalization, self).__init__(**kwargs)
-        self.epsilon = epsilon
+class CustomDataset(Dataset):
+    def __init__(self, mri_images, pet_images):
+        self.mri_images = mri_images
+        self.pet_images = pet_images
 
-    def build(self, input_shape):
-        # Create scale and offset parameters
-        self.scale = self.add_weight(
-            shape=(input_shape[-1],),
-            initializer='ones',
-            trainable=True,
-            name='scale'
-        )
-        self.offset = self.add_weight(
-            shape=(input_shape[-1],),
-            initializer='zeros',
-            trainable=True,
-            name='offset'
-        )
-        super(InstanceNormalization, self).build(input_shape)
+    def __len__(self):
+        return len(self.mri_images)
 
-    def call(self, inputs):
-        # Compute mean and variance across spatial dimensions (excluding batch and channels)
-        mean, variance = tf.nn.moments(inputs, axes=[1,2,3], keepdims=True)
-        # Normalize
-        inv = tf.math.rsqrt(variance + self.epsilon)
-        normalized = (inputs - mean) * inv
-        return self.scale * normalized + self.offset
-
-    def get_config(self):
-        config = super(InstanceNormalization, self).get_config()
-        config.update({"epsilon": self.epsilon})
-        return config
+    def __getitem__(self, idx):
+        mri = self.mri_images[idx]
+        pet = self.pet_images[idx]
+        return torch.FloatTensor(mri), torch.FloatTensor(pet)
 
 # ------------------------------------------------------------
 # DenseUNetGenerator Class
 # ------------------------------------------------------------
-class DenseUNetGenerator:
-    """Class for the DenseU-Net based Generator with Dense Blocks and Transition Layers."""
+class DenseUNetGenerator(nn.Module):
+    def __init__(self, input_channels=1, output_channels=1, num_layers_per_block=2):
+        super(DenseUNetGenerator, self).__init__()
+        self.input_channels = input_channels
+        self.output_channels = output_channels
+        self.num_layers_per_block = num_layers_per_block
 
-    def __init__(self, input_shape=(128, 128, 128, 1)):
-        self.input_shape = input_shape
-        self.model = self.build_generator()
+        # Initial convolution block
+        self.initial_conv = self.convolution_block(self.input_channels, 64)
 
-    def convolution_block(self, x, filters, kernel_size=(3, 3, 3), strides=(1, 1, 1)):
-        x = Conv3D(filters, kernel_size, strides=strides, padding='same')(x)
-        x = InstanceNormalization()(x)
-        x = LeakyReLU(alpha=0.2)(x)
-        return x
+        # Downsampling path
+        self.down_dense_blocks = nn.ModuleList()
+        self.down_transition_layers = nn.ModuleList()
+        self.filters_list = [64, 128, 256, 512, 512, 512]
 
-    def dense_block(self, x, filters, num_layers=2):
-        concatenated_features = [x]  # Start with the input feature map
-        for _ in range(num_layers):
-            x = self.convolution_block(x, filters)
-            concatenated_features.append(x)  # Append each convolution output to the list
-            x = Concatenate()(concatenated_features)  # Concatenate all feature maps so far
-        return x
+        in_channels = 64
+        for filters in self.filters_list:
+            # Dense Block
+            dense_block = self.dense_block(in_channels, filters, num_layers_per_block)
+            self.down_dense_blocks.append(dense_block)
+            # Transition Layer
+            out_channels = filters  # Output channels after transition layer
+            transition = self.transition_layer(in_channels + num_layers_per_block * filters, out_channels)
+            self.down_transition_layers.append(transition)
+            in_channels = out_channels
 
-    def transition_layer(self, x, filters):
-        x = Conv3D(filters, kernel_size=(1, 1, 1), padding='same')(x)
-        x = InstanceNormalization()(x)
-        x = MaxPooling3D(pool_size=(2, 2, 2))(x)
-        return x
+        # Bottleneck dense block
+        self.bottleneck_dense_block = self.dense_block(in_channels, 512, num_layers_per_block)
+        in_channels = in_channels + num_layers_per_block * 512
 
-    def upsampling_block(self, x, skip, filters):
-        x = Conv3DTranspose(filters, kernel_size=(3, 3, 3), strides=(2, 2, 2), padding='same')(x)
-        x = Concatenate()([x, skip])  # Skip connection concatenation
-        x = InstanceNormalization()(x)
-        x = LeakyReLU(alpha=0.2)(x)
-        return x
+        # Upsampling path
+        self.up_upsampling_blocks = nn.ModuleList()
+        self.up_dense_blocks = nn.ModuleList()
+        for filters in reversed(self.filters_list):
+            # Upsampling block
+            up_block = self.upsampling_block(in_channels, filters)
+            self.up_upsampling_blocks.append(up_block)
+            # Dense Block
+            in_channels = filters * 2  # After concatenation with skip connection
+            dense_block = self.dense_block(in_channels, filters, num_layers_per_block)
+            self.up_dense_blocks.append(dense_block)
+            in_channels = in_channels + num_layers_per_block * filters
 
-    def build_generator(self):
-        input_img = tf.keras.Input(shape=self.input_shape)
+        # Final Convolution
+        self.final_conv = nn.Conv3d(in_channels, self.output_channels, kernel_size=1)
+        self.activation = nn.Tanh()
+
+    def convolution_block(self, in_channels, out_channels, kernel_size=3, stride=1):
+        layers = [
+            nn.Conv3d(in_channels, out_channels, kernel_size, stride=stride, padding=kernel_size//2),
+            nn.InstanceNorm3d(out_channels),
+            nn.LeakyReLU(0.2, inplace=True)
+        ]
+        return nn.Sequential(*layers)
+
+    def dense_block(self, in_channels, filters, num_layers=2):
+        layers = nn.ModuleList()
+        for i in range(num_layers):
+            layers.append(self.convolution_block(in_channels + i * filters, filters))
+        return layers
+
+    def transition_layer(self, in_channels, out_channels):
+        layers = [
+            nn.Conv3d(in_channels, out_channels, kernel_size=1, padding=0),
+            nn.InstanceNorm3d(out_channels),
+            nn.MaxPool3d(kernel_size=2, stride=2)
+        ]
+        return nn.Sequential(*layers)
+
+    def upsampling_block(self, in_channels, out_channels):
+        layers = [
+            nn.ConvTranspose3d(in_channels, out_channels, kernel_size=2, stride=2),
+            nn.InstanceNorm3d(out_channels),
+            nn.LeakyReLU(0.2, inplace=True)
+        ]
+        return nn.Sequential(*layers)
+
+    def forward(self, x):
         skips = []
-        filters_list = [64, 128, 256, 512, 512, 512]  # Adjusted to match desired depth
+        x = self.initial_conv(x)
 
-        # Downsampling Path with Dense Blocks and Transition Layers
-        x = self.convolution_block(input_img, 64)
-        for filters in filters_list:
-            x = self.dense_block(x, filters)
+        # Downsampling Path
+        for dense_block, transition in zip(self.down_dense_blocks, self.down_transition_layers):
+            # Dense Block
+            features = [x]
+            for layer in dense_block:
+                out = layer(torch.cat(features, dim=1))
+                features.append(out)
+            x = torch.cat(features, dim=1)
             skips.append(x)
-            x = self.transition_layer(x, filters)
+            # Transition Layer
+            x = transition(x)
 
         # Bottleneck Dense Block
-        x = self.dense_block(x, 512)
+        dense_block = self.bottleneck_dense_block
+        features = [x]
+        for layer in dense_block:
+            out = layer(torch.cat(features, dim=1))
+            features.append(out)
+        x = torch.cat(features, dim=1)
 
-        # Upsampling Path with Upsampling Blocks and Dense Blocks
-        for filters in reversed(filters_list):
-            x = self.upsampling_block(x, skips.pop(), filters)
-            x = self.dense_block(x, filters)  # Dense block after each upsampling
+        # Upsampling Path
+        for up_block, dense_block in zip(self.up_upsampling_blocks, self.up_dense_blocks):
+            skip = skips.pop()
+            x = up_block(x)
+            x = torch.cat([x, skip], dim=1)
+            features = [x]
+            for layer in dense_block:
+                out = layer(torch.cat(features, dim=1))
+                features.append(out)
+            x = torch.cat(features, dim=1)
 
-        # Final convolution to output PET image with Tanh activation
-        output = Conv3D(1, kernel_size=(1, 1, 1), activation='tanh')(x)
-        return Model(inputs=input_img, outputs=output)
+        # Final Convolution
+        x = self.final_conv(x)
+        x = self.activation(x)
+        return x
 
 # ------------------------------------------------------------
 # ResNetEncoder Class with KL-Divergence Constraint
 # ------------------------------------------------------------
-class ResNetEncoder:
-    """Class for the ResNet-34 Encoder Network with KL-Divergence constraint."""
+class ResBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, stride=1, downsample=False):
+        super(ResBlock, self).__init__()
+        self.conv1 = nn.Conv3d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1)
+        self.bn1 = nn.BatchNorm3d(out_channels)
+        self.relu = nn.ReLU(inplace=True)
+        self.conv2 = nn.Conv3d(out_channels, out_channels, kernel_size=3, padding=1)
+        self.bn2 = nn.BatchNorm3d(out_channels)
+        self.downsample = downsample
+        if downsample or stride != 1 or in_channels != out_channels:
+            self.shortcut = nn.Sequential(
+                nn.Conv3d(in_channels, out_channels, kernel_size=1, stride=stride),
+                nn.BatchNorm3d(out_channels)
+            )
+        else:
+            self.shortcut = nn.Identity()
 
-    def __init__(self, input_shape=(128, 128, 128, 1), latent_dim=512):
-        self.input_shape = input_shape
+    def forward(self, x):
+        identity = self.shortcut(x) if self.downsample else x
+        out = self.conv1(x)
+        out = self.bn1(out)
+        out = self.relu(out)
+        out = self.conv2(out)
+        out = self.bn2(out)
+        out += identity
+        out = self.relu(out)
+        return out
+
+class ResNetEncoder(nn.Module):
+    def __init__(self, input_channels=1, latent_dim=512):
+        super(ResNetEncoder, self).__init__()
+        self.input_channels = input_channels
         self.latent_dim = latent_dim
-        self.model = self.build_encoder()
 
-    def residual_block(self, x, filters, strides=(1, 1, 1), downsample=False):
-        shortcut = x
-        if downsample:
-            # Adjust the shortcut path when downsampling
-            shortcut = Conv3D(filters, kernel_size=(1, 1, 1), strides=strides, padding='same')(x)
-            shortcut = BatchNormalization()(shortcut)
+        self.conv1 = nn.Conv3d(self.input_channels, 64, kernel_size=7, stride=2, padding=3)
+        self.bn1 = nn.BatchNorm3d(64)
+        self.relu = nn.ReLU(inplace=True)
+        self.maxpool = nn.MaxPool3d(kernel_size=3, stride=2, padding=1)
 
-        # First convolutional layer
-        x = Conv3D(filters, kernel_size=(3, 3, 3), strides=strides, padding='same')(x)
-        x = BatchNormalization()(x)
-        x = ReLU()(x)
+        # ResNet-34 layers
+        self.layer1 = self._make_layer(64, 64, blocks=3)
+        self.layer2 = self._make_layer(64, 128, blocks=4, stride=2)
+        self.layer3 = self._make_layer(128, 256, blocks=6, stride=2)
+        self.layer4 = self._make_layer(256, 512, blocks=3, stride=2)
 
-        # Second convolutional layer
-        x = Conv3D(filters, kernel_size=(3, 3, 3), padding='same')(x)
-        x = BatchNormalization()(x)
+        self.avgpool = nn.AdaptiveAvgPool3d((1, 1, 1))
+        self.fc_mean = nn.Linear(512, self.latent_dim)
+        self.fc_logvar = nn.Linear(512, self.latent_dim)
 
-        # Add the shortcut connection
-        x = Add()([shortcut, x])
-        x = ReLU()(x)
-        return x
+    def _make_layer(self, in_channels, out_channels, blocks, stride=1):
+        layers = []
+        layers.append(ResBlock(in_channels, out_channels, stride, downsample=True))
+        for _ in range(1, blocks):
+            layers.append(ResBlock(out_channels, out_channels))
+        return nn.Sequential(*layers)
 
-    def build_encoder(self):
-        input_img = tf.keras.Input(shape=self.input_shape)
-        x = Conv3D(64, kernel_size=(7, 7, 7), strides=(2, 2, 2), padding='same')(input_img)
-        x = BatchNormalization()(x)
-        x = ReLU()(x)
-        x = MaxPooling3D(pool_size=(3, 3, 3), strides=(2, 2, 2), padding='same')(x)
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+        x = self.maxpool(x)
 
-        # Residual Blocks for ResNet-34
-        # Stage 1: 3 Blocks, 64 Filters
-        for _ in range(3):
-            x = self.residual_block(x, 64)
+        # Pass through ResNet layers
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
 
-        # Stage 2: 4 Blocks, 128 Filters, Downsample on first block
-        x = self.residual_block(x, 128, strides=(2, 2, 2), downsample=True)
-        for _ in range(3):
-            x = self.residual_block(x, 128)
-
-        # Stage 3: 6 Blocks, 256 Filters, Downsample on first block
-        x = self.residual_block(x, 256, strides=(2, 2, 2), downsample=True)
-        for _ in range(5):
-            x = self.residual_block(x, 256)
-
-        # Stage 4: 3 Blocks, 512 Filters, Downsample on first block
-        x = self.residual_block(x, 512, strides=(2, 2, 2), downsample=True)
-        for _ in range(2):
-            x = self.residual_block(x, 512)
-
-        x = GlobalAveragePooling3D()(x)
-
-        # Output mean and log variance for KL-divergence
-        z_mean = Dense(self.latent_dim)(x)
-        z_log_var = Dense(self.latent_dim)(x)
-
-        return Model(inputs=input_img, outputs=[z_mean, z_log_var])
+        x = self.avgpool(x)
+        x = x.view(x.size(0), -1)
+        z_mean = self.fc_mean(x)
+        z_log_var = self.fc_logvar(x)
+        return z_mean, z_log_var
 
 # ------------------------------------------------------------
 # Discriminator Class with Patch-Level Discrimination
 # ------------------------------------------------------------
-class Discriminator:
-    """Class for the Discriminator network with patch-level discrimination."""
+class Discriminator(nn.Module):
+    def __init__(self, input_channels=1):
+        super(Discriminator, self).__init__()
+        self.conv_block1 = self.convolution_block(input_channels, 32)
+        self.conv_block2 = self.convolution_block(32, 64)
+        self.conv_block3 = self.convolution_block(64, 128)
+        self.conv_block4 = self.convolution_block(128, 256)
+        self.final_conv = nn.Conv3d(256, 1, kernel_size=3, padding=1)
+        self.sigmoid = nn.Sigmoid()
 
-    def __init__(self, input_shape=(128, 128, 128, 1)):
-        self.input_shape = input_shape
-        self.model = self.build_discriminator()
+    def convolution_block(self, in_channels, out_channels):
+        layers = [
+            nn.Conv3d(in_channels, out_channels, kernel_size=3, padding=1),
+            nn.BatchNorm3d(out_channels),
+            nn.ReLU(inplace=True),
+            nn.MaxPool3d(kernel_size=2, stride=2)
+        ]
+        return nn.Sequential(*layers)
 
-    def convolution_block(self, x, filters, kernel_size=(3, 3, 3)):
-        x = Conv3D(filters, kernel_size, padding='same')(x)
-        x = BatchNormalization()(x)
-        x = ReLU()(x)
-        x = MaxPooling3D(pool_size=(2, 2, 2))(x)
+    def forward(self, x):
+        x = self.conv_block1(x)
+        x = self.conv_block2(x)
+        x = self.conv_block3(x)
+        x = self.conv_block4(x)
+        x = self.final_conv(x)
+        x = self.sigmoid(x)
         return x
-
-    def build_discriminator(self):
-        input_img = tf.keras.Input(shape=self.input_shape)
-        x = self.convolution_block(input_img, 32)
-        x = self.convolution_block(x, 64)
-        x = self.convolution_block(x, 128)
-        x = self.convolution_block(x, 256)
-
-        # Patch-level output
-        x = Conv3D(1, kernel_size=(3, 3, 3), padding='same', activation='sigmoid')(x)
-        return Model(inputs=input_img, outputs=x)
 
 # ------------------------------------------------------------
 # BMGAN Class with Integrated Loss Functions
 # ------------------------------------------------------------
 class BMGAN:
-    def __init__(self, generator, discriminator, encoder, input_shape=(128, 128, 128, 1), lambda1=10.0, lambda2=0.5):
-        self.generator = generator
-        self.discriminator = discriminator
-        self.encoder = encoder
+    def __init__(self, generator, discriminator, encoder, lambda1=10.0, lambda2=0.5):
+        self.generator = generator.cuda()
+        self.discriminator = discriminator.cuda()
+        self.encoder = encoder.cuda()
         self.lambda1 = lambda1  # Weight for L1 Loss
         self.lambda2 = lambda2  # Weight for Perceptual Loss
-        self.input_shape = input_shape
-        self.vgg_model = self.get_vgg_model()  # Load pretrained VGG model for perceptual loss
-        self.build_bmgan()
+
+        self.vgg_model = self.get_vgg_model().cuda()
+
+        # Define optimizers
+        self.optimizer_G = optim.Adam(self.generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+        self.optimizer_D = optim.Adam(self.discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+        self.optimizer_E = optim.Adam(self.encoder.parameters(), lr=0.0002, betas=(0.5, 0.999))
+
+        # Define loss functions
+        self.mse_loss = nn.MSELoss()
+        self.l1_loss = nn.L1Loss()
 
     def get_vgg_model(self):
-        # Load the VGG16 model with ImageNet weights (pretrained)
-        vgg = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
-
-        # Extract features from an intermediate layer (before the second max-pooling operation)
-        output = vgg.get_layer('block2_pool').output  # Adjust layer as needed
-
-        # Create the feature extraction model
-        model = Model(inputs=vgg.input, outputs=output)
-        model.trainable = False  # Freeze the VGG model
-
+        # Load the VGG16 model
+        vgg = models.vgg16(pretrained=True)
+        # Extract features from an intermediate layer
+        model = nn.Sequential(*list(vgg.features.children())[:9])  # Up to 'block2_pool'
+        for param in model.parameters():
+            param.requires_grad = False
         return model
 
     def perceptual_loss(self, y_true, y_pred):
-        """
-        Compute the perceptual loss using VGG features by processing all slices in a batched manner.
-        Args:
-            y_true (Tensor): Ground truth images, shape (batch_size, depth, height, width, channels)
-            y_pred (Tensor): Generated images, shape (batch_size, depth, height, width, channels)
-        Returns:
-            Tensor: Scalar perceptual loss value
-        """
-        # Get the shape parameters
-        batch_size = tf.shape(y_true)[0]
-        depth = tf.shape(y_true)[1]
-        height = tf.shape(y_true)[2]
-        width = tf.shape(y_true)[3]
-        channels = tf.shape(y_true)[4]
-
-        # Reshape to combine batch and depth dimensions
-        # New shape: (batch_size * depth, height, width, channels)
-        y_true_reshaped = tf.reshape(y_true, [batch_size * depth, height, width, channels])
-        y_pred_reshaped = tf.reshape(y_pred, [batch_size * depth, height, width, channels])
+        batch_size, channels, depth, height, width = y_true.size()
+        y_true = y_true.permute(0, 2, 1, 3, 4).contiguous().view(batch_size * depth, channels, height, width)
+        y_pred = y_pred.permute(0, 2, 1, 3, 4).contiguous().view(batch_size * depth, channels, height, width)
 
         # Resize to VGG16 input size (224x224)
-        y_true_resized = tf.image.resize(y_true_reshaped, [224, 224])
-        y_pred_resized = tf.image.resize(y_pred_reshaped, [224, 224])
+        y_true = interpolate(y_true, size=(224, 224), mode='bilinear', align_corners=False)
+        y_pred = interpolate(y_pred, size=(224, 224), mode='bilinear', align_corners=False)
 
         # Convert grayscale to RGB by repeating channels
-        y_true_rgb = tf.image.grayscale_to_rgb(y_true_resized)
-        y_pred_rgb = tf.image.grayscale_to_rgb(y_pred_resized)
+        y_true = y_true.repeat(1, 3, 1, 1)
+        y_pred = y_pred.repeat(1, 3, 1, 1)
 
         # Pass through VGG model to extract features
-        y_true_features = self.vgg_model(y_true_rgb)
-        y_pred_features = self.vgg_model(y_pred_rgb)
+        y_true_features = self.vgg_model(y_true)
+        y_pred_features = self.vgg_model(y_pred)
 
         # Compute the mean absolute error between the features
-        perceptual_loss = tf.reduce_mean(tf.abs(y_true_features - y_pred_features))
+        perceptual_loss = self.l1_loss(y_pred_features, y_true_features)
 
         return perceptual_loss
 
     def l1_perceptual_loss(self, y_true, y_pred):
-        # L1 Loss
-        l1_loss = tf.reduce_mean(tf.abs(y_true - y_pred))
-        # Perceptual Loss using VGG16
+        l1_loss = self.l1_loss(y_pred, y_true)
         perceptual_loss = self.perceptual_loss(y_true, y_pred)
         return l1_loss + self.lambda2 * perceptual_loss
 
-    def kl_divergence_loss(self, y_true, y_pred):
-        # y_pred is the kl_loss computed during model building
-        return y_pred
+    def kl_divergence_loss(self, z_mean, z_log_var):
+        kl_loss = -0.5 * torch.mean(1 + z_log_var - z_mean.pow(2) - z_log_var.exp())
+        return kl_loss
 
-    def lsgan_loss(self, y_true, y_pred):
-        return tf.reduce_mean(tf.square(y_pred - y_true))
-
-    def build_bmgan(self):
-        # Compile the discriminator
-        self.discriminator.compile(
-            optimizer=Adam(0.0002, beta_1=0.5),
-            loss='mse',
-            metrics=['accuracy']
-        )
-
-        # Input images
-        real_mri = tf.keras.Input(shape=self.input_shape)
-        fake_pet = self.generator(real_mri)  # Generator is on default device
-
-        # Encoder outputs
-        real_pet = tf.keras.Input(shape=self.input_shape)
-        z_mean_real_pet, z_log_var_real_pet = self.encoder(real_pet)
-        z_mean_fake_pet, z_log_var_fake_pet = self.encoder(fake_pet)
-
-        # Discriminator output for generated images (fake PET)
-        validity_fake = self.discriminator(fake_pet)
-
-        # Compute KL-divergence loss
-        kl_loss_real = -0.5 * tf.reduce_mean(
-            1 + z_log_var_real_pet - tf.square(z_mean_real_pet) - tf.exp(z_log_var_real_pet)
-        )
-        kl_loss_fake = -0.5 * tf.reduce_mean(
-            1 + z_log_var_fake_pet - tf.square(z_mean_fake_pet) - tf.exp(z_log_var_fake_pet)
-        )
-
-        # Define the combined model
-        self.combined = Model(
-            inputs=[real_mri, real_pet],
-            outputs=[validity_fake, fake_pet, kl_loss_real, kl_loss_fake]
-        )
-
-        # Compile the combined model
-        self.combined.compile(
-            optimizer=Adam(0.0002, beta_1=0.5),
-            loss=[
-                self.lsgan_loss,           # For validity_fake
-                self.l1_perceptual_loss,  # For fake_pet
-                self.kl_divergence_loss,  # For kl_loss_real
-                self.kl_divergence_loss   # For kl_loss_fake
-            ],
-            loss_weights=[1, self.lambda1, self.lambda2, self.lambda2]
-        )
+    def lsgan_loss(self, y_pred, y_true):
+        return self.mse_loss(y_pred, y_true)
 
     def train(self, mri_images, pet_images, epochs, batch_size):
-        real_labels = np.ones((batch_size,) + (8, 8, 8, 1))  # Adjusted for patch-level output
-        fake_labels = np.zeros((batch_size,) + (8, 8, 8, 1))
+        dataset = CustomDataset(mri_images, pet_images)
+        dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+
+        real_label = 1.0
+        fake_label = 0.0
 
         for epoch in range(epochs):
-            # Select random batch for training
-            idx = np.random.randint(0, mri_images.shape[0], batch_size)
-            real_mri = mri_images[idx]
-            real_pet = pet_images[idx]
+            for i, (real_mri, real_pet) in enumerate(dataloader):
+                real_mri = real_mri.cuda()
+                real_pet = real_pet.cuda()
 
-            # Convert data to tensors
-            real_mri_tensor = tf.convert_to_tensor(real_mri, dtype=tf.float32)
-            real_pet_tensor = tf.convert_to_tensor(real_pet, dtype=tf.float32)
+                batch_size = real_mri.size(0)
 
-            # Generate synthetic PET images
-            generated_pet = self.generator.predict_on_batch(real_mri_tensor)
+                # ---------------------
+                #  Train Discriminator
+                # ---------------------
+                self.discriminator.zero_grad()
 
-            # Train Discriminator
-            d_loss_real = self.discriminator.train_on_batch(real_pet, real_labels)
-            d_loss_fake = self.discriminator.train_on_batch(generated_pet, fake_labels)
-            d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
+                # Real PET images
+                output_real = self.discriminator(real_pet)
+                label_real = torch.full(output_real.size(), real_label, device=real_pet.device)
+                d_loss_real = self.lsgan_loss(output_real, label_real)
+                d_loss_real.backward()
 
-            # Train Generator (Combined Model)
-            g_loss = self.combined.train_on_batch(
-                [real_mri, real_pet],
-                [real_labels, real_pet, np.zeros((batch_size,)), np.zeros((batch_size,))]
-            )
+                # Fake PET images
+                fake_pet = self.generator(real_mri)
+                output_fake = self.discriminator(fake_pet.detach())
+                label_fake = torch.full(output_fake.size(), fake_label, device=real_pet.device)
+                d_loss_fake = self.lsgan_loss(output_fake, label_fake)
+                d_loss_fake.backward()
 
-            # Print losses
-            print(f"Epoch {epoch+1}/{epochs}, D loss: {d_loss[0]:.4f}, "
-                  f"D acc.: {d_loss[1]*100:.2f}%, G loss: {g_loss[0]:.4f}")
+                d_loss = d_loss_real + d_loss_fake
+                self.optimizer_D.step()
+
+                # -----------------
+                #  Train Generator
+                # -----------------
+                self.generator.zero_grad()
+                self.encoder.zero_grad()
+
+                # GAN loss
+                output_fake = self.discriminator(fake_pet)
+                label_real = torch.full(output_fake.size(), real_label, device=real_pet.device)
+                g_gan_loss = self.lsgan_loss(output_fake, label_real)
+
+                # L1 and Perceptual loss
+                l1_perc_loss = self.l1_perceptual_loss(real_pet, fake_pet)
+
+                # KL divergence loss for real and fake PET
+                z_mean_real, z_log_var_real = self.encoder(real_pet)
+                z_mean_fake, z_log_var_fake = self.encoder(fake_pet)
+                kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
+                kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
+                kl_loss = kl_loss_real + kl_loss_fake
+
+                # Total Generator loss
+                g_loss = g_gan_loss + self.lambda1 * l1_perc_loss + self.lambda2 * kl_loss
+                g_loss.backward()
+                self.optimizer_G.step()
+                self.optimizer_E.step()
+
+                # Print losses
+                print(f"Epoch [{epoch+1}/{epochs}] Batch [{i+1}/{len(dataloader)}] "
+                      f"D Loss: {d_loss.item():.4f} G Loss: {g_loss.item():.4f}")
 
 # ------------------------------------------------------------
 # Data Loading and Preprocessing Functions
@@ -392,7 +415,7 @@ def load_mri_pet_data(task):
         mri_resized.append(resize_image(mri_img, (128, 128, 128)))
         pet_resized.append(resize_image(pet_img, (128, 128, 128)))
 
-    return np.expand_dims(np.array(mri_resized), -1), np.expand_dims(np.array(pet_resized), -1)
+    return np.expand_dims(np.array(mri_resized), 1), np.expand_dims(np.array(pet_resized), 1)
 
 def resize_image(image, target_shape):
     """
@@ -423,18 +446,13 @@ def save_images(image, file_path):
 # ------------------------------------------------------------
 if __name__ == '__main__':
 
-    # List available GPUs
-    physical_gpus = tf.config.list_physical_devices('GPU')
-    print("Available GPUs:", physical_gpus)
-
-    if physical_gpus:
-        try:
-            # Enable memory growth for each GPU
-            for gpu in physical_gpus:
-                tf.config.experimental.set_memory_growth(gpu, True)
-            print("Enabled memory growth for all GPUs.")
-        except RuntimeError as e:
-            print(e)
+    # Check for available GPUs
+    if torch.cuda.is_available():
+        device = torch.device('cuda')
+        print("Using GPU:", torch.cuda.get_device_name(0))
+    else:
+        device = torch.device('cpu')
+        print("Using CPU")
 
     # Define task and experiment info
     task = 'cd'
@@ -453,26 +471,27 @@ if __name__ == '__main__':
     print(f"Training set: {mri_train.shape[0]} samples")
     print(f"Testing set: {mri_gen.shape[0]} samples")
 
-    input_shape = (128, 128, 128, 1)
-
     # Initialize generator
     print("Initializing Generator")
-    generator = DenseUNetGenerator(input_shape).model
-    generator.summary()
+    generator = DenseUNetGenerator(input_channels=1, output_channels=1)
+    generator.cuda()
+    print(generator)
 
     # Initialize discriminator
     print("Initializing Discriminator")
-    discriminator = Discriminator(input_shape).model
-    discriminator.summary()
+    discriminator = Discriminator(input_channels=1)
+    discriminator.cuda()
+    print(discriminator)
 
     # Initialize encoder
     print("Initializing Encoder")
-    encoder = ResNetEncoder(input_shape).model
-    encoder.summary()
+    encoder = ResNetEncoder(input_channels=1, latent_dim=512)
+    encoder.cuda()
+    print(encoder)
 
     # Initialize BMGAN model
     print("Building BMGAN model...")
-    bmgan = BMGAN(generator, discriminator, encoder, input_shape)
+    bmgan = BMGAN(generator, discriminator, encoder)
 
     # Train the model
     print("Starting training...")
@@ -488,7 +507,14 @@ if __name__ == '__main__':
 
     # Predict PET images for the test MRI data
     print("Generating PET images for the test set...")
-    generated_pet_images = generator.predict(mri_gen)
+    generator.eval()
+    with torch.no_grad():
+        generated_pet_images = []
+        for mri in mri_gen:
+            mri_tensor = torch.FloatTensor(mri).unsqueeze(0).cuda()
+            generated_pet = generator(mri_tensor)
+            generated_pet = generated_pet.cpu().numpy()
+            generated_pet_images.append(generated_pet[0])
 
     # Save the test MRI data and the generated PET images in their respective folders
     print("Saving generated PET images and corresponding MRI scans...")
@@ -497,10 +523,11 @@ if __name__ == '__main__':
         pet_file_path = os.path.join(output_dir_pet, f'generated_pet_{i}.nii.gz')
 
         # Save MRI and generated PET images
-        save_images(mri_gen[i, :, :, :, 0], mri_file_path)  # Save MRI
-        save_images(generated_pet_images[i, :, :, :, 0], pet_file_path)  # Save generated PET
+        save_images(mri_gen[i][0], mri_file_path)  # Save MRI
+        save_images(generated_pet_images[i][0], pet_file_path)  # Save generated PET
 
     # Print confirmation
     print(f"Saved {len(mri_gen)} MRI and corresponding generated PET images in 'gan/{task}/{info}'")
+
 
 
