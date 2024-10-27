@@ -18,13 +18,13 @@
 #SBATCH --error=slurm-%A_%a.err 
 
 module load python
-module load cuda/12.1
+module load cuda/11.3
 module load cudnn/8.1.1
 
 source ~/liuenv/bin/activate
 pip uninstall torch torchvision torchaudio
 
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu113
 
 
 
