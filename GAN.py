@@ -17,7 +17,22 @@ from data_loading import generate_data_path_less, generate, binarylabel
 # ------------------------------------------------------------
 # Custom Dataset Class for Data Loading
 # ------------------------------------------------------------
+class CustomDataset(Dataset):
+    def __init__(self, mri_images, pet_images):
+        self.mri_images = mri_images
+        self.pet_images = pet_images
+
+    def __len__(self):
+        return len(self.mri_images)
+
+    def __getitem__(self, idx):
+        mri = self.mri_images[idx]
+        pet = self.pet_images[idx]
+        return torch.FloatTensor(mri), torch.FloatTensor(pet)
+
+# ------------------------------------------------------------
 # Corrected DenseUNetGenerator Class
+# ------------------------------------------------------------
 class DenseUNetGenerator(nn.Module):
     def __init__(self, input_channels=1, output_channels=1, num_layers_per_block=2):
         super(DenseUNetGenerator, self).__init__()
@@ -142,7 +157,6 @@ class DenseUNetGenerator(nn.Module):
         x = self.activation(x)
         return x
 
-
 # ------------------------------------------------------------
 # ResNetEncoder Class with KL-Divergence Constraint
 # ------------------------------------------------------------
@@ -256,13 +270,13 @@ class Discriminator(nn.Module):
 # ------------------------------------------------------------
 class BMGAN:
     def __init__(self, generator, discriminator, encoder, lambda1=10.0, lambda2=0.5):
-        self.generator = generator.cuda()
-        self.discriminator = discriminator.cuda()
-        self.encoder = encoder.cuda()
+        self.generator = generator.to(device)
+        self.discriminator = discriminator.to(device)
+        self.encoder = encoder.to(device)
         self.lambda1 = lambda1  # Weight for L1 Loss
         self.lambda2 = lambda2  # Weight for Perceptual Loss
 
-        self.vgg_model = self.get_vgg_model().cuda()
+        self.vgg_model = self.get_vgg_model().to(device)
 
         # Define optimizers
         self.optimizer_G = optim.Adam(self.generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
@@ -325,8 +339,8 @@ class BMGAN:
 
         for epoch in range(epochs):
             for i, (real_mri, real_pet) in enumerate(dataloader):
-                real_mri = real_mri.cuda()
-                real_pet = real_pet.cuda()
+                real_mri = real_mri.to(device)
+                real_pet = real_pet.to(device)
 
                 batch_size = real_mri.size(0)
 
@@ -521,5 +535,6 @@ if __name__ == '__main__':
 
     # Print confirmation
     print(f"Saved {len(mri_gen)} MRI and corresponding generated PET images in 'gan/{task}/{info}'")
+
 
 
