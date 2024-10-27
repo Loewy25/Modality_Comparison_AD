@@ -31,7 +31,7 @@ class CustomDataset(Dataset):
         return torch.FloatTensor(mri), torch.FloatTensor(pet)
 
 # ------------------------------------------------------------
-# DenseUNetGenerator Class
+# Corrected DenseUNetGenerator Class
 # ------------------------------------------------------------
 class DenseUNetGenerator(nn.Module):
     def __init__(self, input_channels=1, output_channels=1, num_layers_per_block=2):
@@ -46,7 +46,7 @@ class DenseUNetGenerator(nn.Module):
         # Downsampling path
         self.down_dense_blocks = nn.ModuleList()
         self.down_transition_layers = nn.ModuleList()
-        self.filters_list = [64, 128, 256, 512, 512, 512]
+        self.filters_list = [64, 128, 256, 512]
 
         in_channels = 64
         for filters in self.filters_list:
@@ -60,13 +60,12 @@ class DenseUNetGenerator(nn.Module):
             in_channels = out_channels
 
         # Bottleneck dense block
-        self.bottleneck_dense_block = self.dense_block(in_channels, 512, num_layers_per_block)
-        in_channels = in_channels + num_layers_per_block * 512
+        self.bottleneck_dense_block = self.dense_block(in_channels, in_channels, num_layers_per_block)
 
         # Upsampling path
         self.up_upsampling_blocks = nn.ModuleList()
         self.up_dense_blocks = nn.ModuleList()
-        for filters in reversed(self.filters_list):
+        for idx, filters in enumerate(reversed(self.filters_list)):
             # Upsampling block
             up_block = self.upsampling_block(in_channels, filters)
             self.up_upsampling_blocks.append(up_block)
@@ -74,7 +73,7 @@ class DenseUNetGenerator(nn.Module):
             in_channels = filters * 2  # After concatenation with skip connection
             dense_block = self.dense_block(in_channels, filters, num_layers_per_block)
             self.up_dense_blocks.append(dense_block)
-            in_channels = in_channels + num_layers_per_block * filters
+            in_channels = filters + num_layers_per_block * filters  # Update for next iteration
 
         # Final Convolution
         self.final_conv = nn.Conv3d(in_channels, self.output_channels, kernel_size=1)
@@ -88,17 +87,25 @@ class DenseUNetGenerator(nn.Module):
         ]
         return nn.Sequential(*layers)
 
-    def dense_block(self, in_channels, filters, num_layers=2):
+    def dense_block(self, in_channels, growth_rate, num_layers=2):
         layers = nn.ModuleList()
         for i in range(num_layers):
-            layers.append(self.convolution_block(in_channels + i * filters, filters))
+            layers.append(self.single_dense_layer(in_channels + i * growth_rate, growth_rate))
+        return layers
+
+    def single_dense_layer(self, in_channels, growth_rate):
+        layers = nn.Sequential(
+            nn.Conv3d(in_channels, growth_rate, kernel_size=3, padding=1),
+            nn.InstanceNorm3d(growth_rate),
+            nn.LeakyReLU(0.2, inplace=True)
+        )
         return layers
 
     def transition_layer(self, in_channels, out_channels):
         layers = [
             nn.Conv3d(in_channels, out_channels, kernel_size=1, padding=0),
             nn.InstanceNorm3d(out_channels),
-            nn.MaxPool3d(kernel_size=2, stride=2)
+            nn.AvgPool3d(kernel_size=2, stride=2)
         ]
         return nn.Sequential(*layers)
 
@@ -117,33 +124,26 @@ class DenseUNetGenerator(nn.Module):
         # Downsampling Path
         for dense_block, transition in zip(self.down_dense_blocks, self.down_transition_layers):
             # Dense Block
-            features = [x]
             for layer in dense_block:
-                out = layer(torch.cat(features, dim=1))
-                features.append(out)
-            x = torch.cat(features, dim=1)
+                out = layer(x)
+                x = torch.cat([x, out], dim=1)
             skips.append(x)
             # Transition Layer
             x = transition(x)
 
         # Bottleneck Dense Block
-        dense_block = self.bottleneck_dense_block
-        features = [x]
-        for layer in dense_block:
-            out = layer(torch.cat(features, dim=1))
-            features.append(out)
-        x = torch.cat(features, dim=1)
+        for layer in self.bottleneck_dense_block:
+            out = layer(x)
+            x = torch.cat([x, out], dim=1)
 
         # Upsampling Path
         for up_block, dense_block in zip(self.up_upsampling_blocks, self.up_dense_blocks):
             skip = skips.pop()
             x = up_block(x)
             x = torch.cat([x, skip], dim=1)
-            features = [x]
             for layer in dense_block:
-                out = layer(torch.cat(features, dim=1))
-                features.append(out)
-            x = torch.cat(features, dim=1)
+                out = layer(x)
+                x = torch.cat([x, out], dim=1)
 
         # Final Convolution
         x = self.final_conv(x)
@@ -192,7 +192,7 @@ class ResNetEncoder(nn.Module):
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool3d(kernel_size=3, stride=2, padding=1)
 
-        # ResNet-34 layers
+        # ResNet layers
         self.layer1 = self._make_layer(64, 64, blocks=3)
         self.layer2 = self._make_layer(64, 128, blocks=4, stride=2)
         self.layer3 = self._make_layer(128, 256, blocks=6, stride=2)
@@ -244,7 +244,7 @@ class Discriminator(nn.Module):
         layers = [
             nn.Conv3d(in_channels, out_channels, kernel_size=3, padding=1),
             nn.BatchNorm3d(out_channels),
-            nn.ReLU(inplace=True),
+            nn.LeakyReLU(0.2, inplace=True),
             nn.MaxPool3d(kernel_size=2, stride=2)
         ]
         return nn.Sequential(*layers)
@@ -282,7 +282,7 @@ class BMGAN:
 
     def get_vgg_model(self):
         # Load the VGG16 model
-        vgg = models.vgg16(pretrained=True)
+        vgg = models.vgg16(weights=models.VGG16_Weights.IMAGENET1K_V1)
         # Extract features from an intermediate layer
         model = nn.Sequential(*list(vgg.features.children())[:9])  # Up to 'block2_pool'
         for param in model.parameters():
@@ -474,19 +474,19 @@ if __name__ == '__main__':
     # Initialize generator
     print("Initializing Generator")
     generator = DenseUNetGenerator(input_channels=1, output_channels=1)
-    generator.cuda()
+    generator.to(device)
     print(generator)
 
     # Initialize discriminator
     print("Initializing Discriminator")
     discriminator = Discriminator(input_channels=1)
-    discriminator.cuda()
+    discriminator.to(device)
     print(discriminator)
 
     # Initialize encoder
     print("Initializing Encoder")
     encoder = ResNetEncoder(input_channels=1, latent_dim=512)
-    encoder.cuda()
+    encoder.to(device)
     print(encoder)
 
     # Initialize BMGAN model
@@ -511,7 +511,7 @@ if __name__ == '__main__':
     with torch.no_grad():
         generated_pet_images = []
         for mri in mri_gen:
-            mri_tensor = torch.FloatTensor(mri).unsqueeze(0).cuda()
+            mri_tensor = torch.FloatTensor(mri).unsqueeze(0).to(device)
             generated_pet = generator(mri_tensor)
             generated_pet = generated_pet.cpu().numpy()
             generated_pet_images.append(generated_pet[0])
@@ -528,6 +528,5 @@ if __name__ == '__main__':
 
     # Print confirmation
     print(f"Saved {len(mri_gen)} MRI and corresponding generated PET images in 'gan/{task}/{info}'")
-
 
 
