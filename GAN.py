@@ -17,22 +17,7 @@ from data_loading import generate_data_path_less, generate, binarylabel
 # ------------------------------------------------------------
 # Custom Dataset Class for Data Loading
 # ------------------------------------------------------------
-class CustomDataset(Dataset):
-    def __init__(self, mri_images, pet_images):
-        self.mri_images = mri_images
-        self.pet_images = pet_images
-
-    def __len__(self):
-        return len(self.mri_images)
-
-    def __getitem__(self, idx):
-        mri = self.mri_images[idx]
-        pet = self.pet_images[idx]
-        return torch.FloatTensor(mri), torch.FloatTensor(pet)
-
-# ------------------------------------------------------------
 # Corrected DenseUNetGenerator Class
-# ------------------------------------------------------------
 class DenseUNetGenerator(nn.Module):
     def __init__(self, input_channels=1, output_channels=1, num_layers_per_block=2):
         super(DenseUNetGenerator, self).__init__()
@@ -49,31 +34,38 @@ class DenseUNetGenerator(nn.Module):
         self.filters_list = [64, 128, 256, 512]
 
         in_channels = 64
+        skip_channels = []
         for filters in self.filters_list:
             # Dense Block
             dense_block = self.dense_block(in_channels, filters, num_layers_per_block)
             self.down_dense_blocks.append(dense_block)
+            # Update in_channels after dense block
+            in_channels = in_channels + num_layers_per_block * filters
+            skip_channels.append(in_channels)
             # Transition Layer
-            out_channels = filters  # Output channels after transition layer
-            transition = self.transition_layer(in_channels + num_layers_per_block * filters, out_channels)
+            transition = self.transition_layer(in_channels, filters)
             self.down_transition_layers.append(transition)
-            in_channels = out_channels
+            in_channels = filters  # Reset in_channels to filters after transition
 
         # Bottleneck dense block
         self.bottleneck_dense_block = self.dense_block(in_channels, in_channels, num_layers_per_block)
+        in_channels = in_channels + num_layers_per_block * in_channels
 
         # Upsampling path
         self.up_upsampling_blocks = nn.ModuleList()
         self.up_dense_blocks = nn.ModuleList()
         for idx, filters in enumerate(reversed(self.filters_list)):
+            skip_in_channels = skip_channels[-(idx+1)]
             # Upsampling block
             up_block = self.upsampling_block(in_channels, filters)
             self.up_upsampling_blocks.append(up_block)
+            # After concatenation, in_channels becomes filters + skip_in_channels
+            in_channels = filters + skip_in_channels
             # Dense Block
-            in_channels = filters * 2  # After concatenation with skip connection
             dense_block = self.dense_block(in_channels, filters, num_layers_per_block)
             self.up_dense_blocks.append(dense_block)
-            in_channels = filters + num_layers_per_block * filters  # Update for next iteration
+            # Update in_channels after dense block
+            in_channels = in_channels + num_layers_per_block * filters
 
         # Final Convolution
         self.final_conv = nn.Conv3d(in_channels, self.output_channels, kernel_size=1)
@@ -137,7 +129,7 @@ class DenseUNetGenerator(nn.Module):
             x = torch.cat([x, out], dim=1)
 
         # Upsampling Path
-        for up_block, dense_block in zip(self.up_upsampling_blocks, self.up_dense_blocks):
+        for idx, (up_block, dense_block) in enumerate(zip(self.up_upsampling_blocks, self.up_dense_blocks)):
             skip = skips.pop()
             x = up_block(x)
             x = torch.cat([x, skip], dim=1)
@@ -149,6 +141,7 @@ class DenseUNetGenerator(nn.Module):
         x = self.final_conv(x)
         x = self.activation(x)
         return x
+
 
 # ------------------------------------------------------------
 # ResNetEncoder Class with KL-Divergence Constraint
