@@ -507,7 +507,7 @@ if __name__ == '__main__':
 
     # Define task and experiment info
     task = 'cd'
-    info = 'experiment1'  # New parameter for the subfolder
+    info = 'experiment2'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
@@ -546,7 +546,7 @@ if __name__ == '__main__':
 
     # Train the model
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=200, batch_size=1)
+    bmgan.train(mri_train, pet_train, epochs=5, batch_size=1)
 
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
