@@ -240,30 +240,33 @@ class ResNetEncoder(nn.Module):
 class Discriminator(nn.Module):
     def __init__(self, input_channels=1):
         super(Discriminator, self).__init__()
-        self.conv_block1 = self.convolution_block(input_channels, 32)
-        self.conv_block2 = self.convolution_block(32, 64)
-        self.conv_block3 = self.convolution_block(64, 128)
-        self.conv_block4 = self.convolution_block(128, 256)
+        # Convolutional blocks without pooling
+        self.conv_block1 = self.convolution_block(input_channels, 32, use_pool=False)
+        self.conv_block2 = self.convolution_block(32, 64, use_pool=True)
+        self.conv_block3 = self.convolution_block(64, 128, use_pool=True)
+        self.conv_block4 = self.convolution_block(128, 256, use_pool=False)
         self.final_conv = nn.Conv3d(256, 1, kernel_size=3, padding=1)
         self.sigmoid = nn.Sigmoid()
 
-    def convolution_block(self, in_channels, out_channels):
+    def convolution_block(self, in_channels, out_channels, use_pool):
         layers = [
             nn.Conv3d(in_channels, out_channels, kernel_size=3, padding=1),
             nn.BatchNorm3d(out_channels),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.MaxPool3d(kernel_size=2, stride=2)
         ]
+        if use_pool:
+            layers.append(nn.MaxPool3d(kernel_size=2, stride=2))
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        x = self.conv_block1(x)
-        x = self.conv_block2(x)
-        x = self.conv_block3(x)
-        x = self.conv_block4(x)
+        x = self.conv_block1(x)  # No pooling
+        x = self.conv_block2(x)  # Pooling
+        x = self.conv_block3(x)  # Pooling
+        x = self.conv_block4(x)  # No pooling
         x = self.final_conv(x)
         x = self.sigmoid(x)
         return x
+
 
 # ------------------------------------------------------------
 # BMGAN Class with Integrated Loss Functions
@@ -364,20 +367,20 @@ class BMGAN:
                 # ---------------------
                 self.discriminator.zero_grad()
     
-                # Real PET images
+                # For real images
                 output_real = self.discriminator(real_pet)
-                label_real = torch.full(output_real.size(), real_label, device=real_pet.device)
+                label_real = torch.ones_like(output_real, device=real_pet.device)
                 d_loss_real = self.lsgan_loss(output_real, label_real)
-                d_loss_real.backward()
-    
-                # Fake PET images
+                
+                # For fake images
                 fake_pet = self.generator(real_mri)
                 output_fake = self.discriminator(fake_pet.detach())
-                label_fake = torch.full(output_fake.size(), fake_label, device=real_pet.device)
+                label_fake = torch.zeros_like(output_fake, device=real_pet.device)
                 d_loss_fake = self.lsgan_loss(output_fake, label_fake)
-                d_loss_fake.backward()
-    
-                d_loss = d_loss_real + d_loss_fake
+                
+                # Total discriminator loss
+                d_loss = (d_loss_real + d_loss_fake) * 0.5
+
                 self.optimizer_D.step()
     
                 # -----------------
@@ -388,7 +391,7 @@ class BMGAN:
     
                 # GAN loss
                 output_fake = self.discriminator(fake_pet)
-                label_real = torch.full(output_fake.size(), real_label, device=real_pet.device)
+                label_real = torch.ones_like(output_fake, device=real_pet.device)
                 g_gan_loss = self.lsgan_loss(output_fake, label_real)
     
                 # L1 and Perceptual loss
