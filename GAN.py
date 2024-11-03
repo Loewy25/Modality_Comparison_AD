@@ -211,10 +211,12 @@ class ResNetEncoder(nn.Module):
 
     def _make_layer(self, in_channels, out_channels, blocks, stride=1):
         layers = []
-        layers.append(ResBlock(in_channels, out_channels, stride, downsample=True))
+        downsample = (stride != 1) or (in_channels != out_channels)
+        layers.append(ResBlock(in_channels, out_channels, stride, downsample))
         for _ in range(1, blocks):
             layers.append(ResBlock(out_channels, out_channels))
         return nn.Sequential(*layers)
+
 
     def forward(self, x):
         x = self.conv1(x)
