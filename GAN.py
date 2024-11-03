@@ -33,6 +33,7 @@ class CustomDataset(Dataset):
 # ------------------------------------------------------------
 # Corrected DenseUNetGenerator Class
 # ------------------------------------------------------------
+
 class DenseUNetGenerator(nn.Module):
     def __init__(self, input_channels=1, output_channels=1, num_layers_per_block=2):
         super(DenseUNetGenerator, self).__init__()
@@ -43,33 +44,36 @@ class DenseUNetGenerator(nn.Module):
         # Initial convolution block
         self.initial_conv = self.convolution_block(self.input_channels, 64)
 
+        # Filters for each dense block in the downsampling path
+        self.filters_list = [64, 128, 256, 512, 512, 512, 512]  # 7 dense blocks
+
         # Downsampling path
         self.down_dense_blocks = nn.ModuleList()
         self.down_transition_layers = nn.ModuleList()
-        self.filters_list = [64, 128, 256, 512]
-
         in_channels = 64
         skip_channels = []
-        for filters in self.filters_list:
+        for idx, filters in enumerate(self.filters_list):
             # Dense Block
-            dense_block = self.dense_block(in_channels, filters, num_layers_per_block)
+            dense_block = self.dense_block(in_channels, growth_rate=filters, num_layers=num_layers_per_block)
             self.down_dense_blocks.append(dense_block)
             # Update in_channels after dense block
             in_channels = in_channels + num_layers_per_block * filters
             skip_channels.append(in_channels)
-            # Transition Layer
-            transition = self.transition_layer(in_channels, filters)
-            self.down_transition_layers.append(transition)
-            in_channels = filters  # Reset in_channels to filters after transition
+            # Transition Layer (except after the last dense block)
+            if idx < len(self.filters_list) - 1:
+                transition = self.transition_layer(in_channels, out_channels=filters)
+                self.down_transition_layers.append(transition)
+                in_channels = filters  # Reset in_channels to filters after transition
 
-        # Bottleneck dense block
-        self.bottleneck_dense_block = self.dense_block(in_channels, in_channels, num_layers_per_block)
-        in_channels = in_channels + num_layers_per_block * in_channels
+        # Bottleneck dense block (Dense Block 7)
+        self.bottleneck_dense_block = self.dense_block(in_channels, growth_rate=512, num_layers=num_layers_per_block)
+        in_channels = in_channels + num_layers_per_block * 512
 
         # Upsampling path
         self.up_upsampling_blocks = nn.ModuleList()
         self.up_dense_blocks = nn.ModuleList()
-        for idx, filters in enumerate(reversed(self.filters_list)):
+        reversed_filters_list = self.filters_list[::-1]
+        for idx, filters in enumerate(reversed_filters_list):
             skip_in_channels = skip_channels[-(idx+1)]
             # Upsampling block
             up_block = self.upsampling_block(in_channels, filters)
@@ -77,7 +81,7 @@ class DenseUNetGenerator(nn.Module):
             # After concatenation, in_channels becomes filters + skip_in_channels
             in_channels = filters + skip_in_channels
             # Dense Block
-            dense_block = self.dense_block(in_channels, filters, num_layers_per_block)
+            dense_block = self.dense_block(in_channels, growth_rate=filters, num_layers=num_layers_per_block)
             self.up_dense_blocks.append(dense_block)
             # Update in_channels after dense block
             in_channels = in_channels + num_layers_per_block * filters
@@ -112,7 +116,7 @@ class DenseUNetGenerator(nn.Module):
         layers = [
             nn.Conv3d(in_channels, out_channels, kernel_size=1, padding=0),
             nn.InstanceNorm3d(out_channels),
-            nn.AvgPool3d(kernel_size=2, stride=2)
+            nn.MaxPool3d(kernel_size=2, stride=2)  # Changed to MaxPool3d
         ]
         return nn.Sequential(*layers)
 
@@ -129,14 +133,15 @@ class DenseUNetGenerator(nn.Module):
         x = self.initial_conv(x)
 
         # Downsampling Path
-        for dense_block, transition in zip(self.down_dense_blocks, self.down_transition_layers):
+        for idx, dense_block in enumerate(self.down_dense_blocks):
             # Dense Block
             for layer in dense_block:
                 out = layer(x)
                 x = torch.cat([x, out], dim=1)
             skips.append(x)
-            # Transition Layer
-            x = transition(x)
+            # Transition Layer (except after the last dense block)
+            if idx < len(self.down_transition_layers):
+                x = self.down_transition_layers[idx](x)
 
         # Bottleneck Dense Block
         for layer in self.bottleneck_dense_block:
@@ -156,6 +161,7 @@ class DenseUNetGenerator(nn.Module):
         x = self.final_conv(x)
         x = self.activation(x)
         return x
+
 
 # ------------------------------------------------------------
 # ResNetEncoder Class with KL-Divergence Constraint
