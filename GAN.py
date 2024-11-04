@@ -563,10 +563,12 @@ if __name__ == '__main__':
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
     output_dir_pet = f'gan/{task}/{info}/pet'
+    output_dir_real_pet = f'gan/{task}/{info}/real_pet'  # New directory for real PET images
 
     os.makedirs(output_dir_mri, exist_ok=True)
     os.makedirs(output_dir_pet, exist_ok=True)
-    print(f"Created directories: {output_dir_mri}, {output_dir_pet}")
+    os.makedirs(output_dir_real_pet, exist_ok=True)  # Create directory for real PET images
+    print(f"Created directories: {output_dir_mri}, {output_dir_pet}, {output_dir_real_pet}")
 
     # Predict PET images for the test MRI data
     print("Generating PET images for the test set...")
@@ -579,18 +581,17 @@ if __name__ == '__main__':
             generated_pet = generated_pet.cpu().numpy()
             generated_pet_images.append(generated_pet[0])
 
-    # Save the test MRI data and the generated PET images in their respective folders
-    print("Saving generated PET images and corresponding MRI scans...")
+    # Save the test MRI data, real PET images, and the generated PET images in their respective folders
+    print("Saving generated PET images, real PET images, and corresponding MRI scans...")
     for i in range(len(mri_gen)):
         mri_file_path = os.path.join(output_dir_mri, f'mri_{i}.nii.gz')
         pet_file_path = os.path.join(output_dir_pet, f'generated_pet_{i}.nii.gz')
+        real_pet_file_path = os.path.join(output_dir_real_pet, f'real_pet_{i}.nii.gz')  # Path for real PET image
 
-        # Save MRI and generated PET images
-        save_images(mri_gen[i][0], mri_file_path)  # Save MRI
-        save_images(generated_pet_images[i][0], pet_file_path)  # Save generated PET
+        # Save MRI, generated PET images, and real PET images
+        save_images(mri_gen[i][0], mri_file_path)              # Save MRI
+        save_images(generated_pet_images[i][0], pet_file_path) # Save generated PET
+        save_images(pet_gen[i][0], real_pet_file_path)         # Save real PET
 
     # Print confirmation
-    print(f"Saved {len(mri_gen)} MRI and corresponding generated PET images in 'gan/{task}/{info}'")
-
-
-
+    print(f"Saved {len(mri_gen)} MRI scans, generated PET images, and real PET images in 'gan/{task}/{info}'")
