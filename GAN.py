@@ -133,29 +133,38 @@ class DenseUNetGenerator(nn.Module):
     def forward(self, x):
         skips = []
         x = self.initial_conv(x)
-
+        print(f"Initial Conv Output Shape: {x.shape}")
+    
         # Downsampling Path
         for idx, block in enumerate(self.down_blocks):
             x = block(x)
+            print(f"After Block {idx} (Downsampling) Output Shape: {x.shape}")
             if isinstance(block, nn.Sequential) and idx % 2 == 0:  # If it's a dense block
                 skips.append(x)
-
+                print(f"Saved Skip Connection at Block {idx} with Shape: {x.shape}")
+    
         # Bottleneck
         x = self.bottleneck(x)
-
+        print(f"Bottleneck Output Shape: {x.shape}")
+    
         # Upsampling Path
         for idx, block in enumerate(self.up_blocks):
             if idx % 2 == 0:  # Upsampling block
                 x = block(x)
                 skip = skips.pop()
+                print(f"Upsampling Block {idx}, x Shape: {x.shape}, Skip Shape: {skip.shape}")
                 x = torch.cat([x, skip], dim=1)
+                print(f"After Concatenation, x Shape: {x.shape}")
             else:  # Dense block
                 x = block(x)
-
+                print(f"After Block {idx} (Upsampling) Output Shape: {x.shape}")
+    
         # Final Convolution
         x = self.final_conv(x)
         x = self.activation(x)
+        print(f"Final Output Shape: {x.shape}")
         return x
+
 
 
 # ------------------------------------------------------------
