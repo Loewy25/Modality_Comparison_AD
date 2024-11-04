@@ -34,7 +34,6 @@ class CustomDataset(Dataset):
 # Corrected DenseUNetGenerator Class
 # ------------------------------------------------------------
 
-
 class DenseUNetGenerator(nn.Module):
     def __init__(self, input_channels=1, output_channels=1, num_layers_per_block=2):
         super(DenseUNetGenerator, self).__init__()
@@ -161,9 +160,6 @@ class DenseUNetGenerator(nn.Module):
         x = self.activation(x)
         return x
 
-
-
-
 # ------------------------------------------------------------
 # ResNetEncoder Class with KL-Divergence Constraint
 # ------------------------------------------------------------
@@ -224,7 +220,6 @@ class ResNetEncoder(nn.Module):
             layers.append(ResBlock(out_channels, out_channels))
         return nn.Sequential(*layers)
 
-
     def forward(self, x):
         x = self.conv1(x)
         x = self.bn1(x)
@@ -276,12 +271,11 @@ class Discriminator(nn.Module):
         x = self.sigmoid(x)
         return x
 
-
 # ------------------------------------------------------------
 # BMGAN Class with Integrated Loss Functions
 # ------------------------------------------------------------
 class BMGAN:
-    def __init__(self, generator, discriminator, encoder, lambda1=10.0, lambda2=0.5):
+    def __init__(self, generator, discriminator, encoder, lambda1=10.0, lambda2=10.0):
         self.generator = generator.to(device)
         self.discriminator = discriminator.to(device)
         self.encoder = encoder.to(device)
@@ -330,11 +324,6 @@ class BMGAN:
 
         return perceptual_loss
 
-    def l1_perceptual_loss(self, y_true, y_pred):
-        l1_loss = self.l1_loss(y_pred, y_true)
-        perceptual_loss = self.perceptual_loss(y_true, y_pred)
-        return l1_loss + self.lambda2 * perceptual_loss
-
     def kl_divergence_loss(self, z_mean, z_log_var):
         kl_loss = -0.5 * torch.mean(1 + z_log_var - z_mean.pow(2) - z_log_var.exp())
         return kl_loss
@@ -353,9 +342,6 @@ class BMGAN:
         val_dataset = CustomDataset(mri_val, pet_val)
         val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
         
-        real_label = 1.0
-        fake_label = 0.0
-    
         for epoch in range(epochs):
             # Set models to training mode
             self.generator.train()
@@ -389,34 +375,46 @@ class BMGAN:
                 
                 # Total discriminator loss
                 d_loss = (d_loss_real + d_loss_fake) * 0.5
-
+                d_loss.backward()
                 self.optimizer_D.step()
     
                 # -----------------
-                #  Train Generator and Encoder
+                #  Train Generator
                 # -----------------
                 self.generator.zero_grad()
-                self.encoder.zero_grad()
     
                 # GAN loss
                 output_fake = self.discriminator(fake_pet)
                 label_real = torch.ones_like(output_fake, device=real_pet.device)
                 g_gan_loss = self.lsgan_loss(output_fake, label_real)
     
-                # L1 and Perceptual loss
-                l1_perc_loss = self.l1_perceptual_loss(real_pet, fake_pet)
+                # L1 loss
+                l1_loss = self.l1_loss(fake_pet, real_pet)
     
-                # KL divergence loss
-                z_mean_real, z_log_var_real = self.encoder(real_pet)
-                z_mean_fake, z_log_var_fake = self.encoder(fake_pet)
-                kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
-                kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
-                kl_loss = kl_loss_real + kl_loss_fake
+                # Perceptual loss
+                perceptual_loss = self.perceptual_loss(real_pet, fake_pet)
     
                 # Total Generator loss
-                g_loss = g_gan_loss + self.lambda1 * l1_perc_loss + self.lambda2 * kl_loss
+                g_loss = g_gan_loss + self.lambda1 * l1_loss + self.lambda2 * perceptual_loss
                 g_loss.backward()
                 self.optimizer_G.step()
+    
+                # -----------------
+                #  Train Encoder
+                # -----------------
+                self.encoder.zero_grad()
+    
+                # KL divergence loss for real PET images (forward mapping)
+                z_mean_real, z_log_var_real = self.encoder(real_pet)
+                kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
+    
+                # KL divergence loss for generated PET images (backward mapping)
+                z_mean_fake, z_log_var_fake = self.encoder(fake_pet.detach())
+                kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
+    
+                # Total KL divergence loss
+                kl_loss = kl_loss_real + kl_loss_fake
+                kl_loss.backward()
                 self.optimizer_E.step()
     
                 # Accumulate losses for printing
@@ -443,14 +441,16 @@ class BMGAN:
                     # Generate fake PET images
                     fake_pet = self.generator(real_mri)
                     
-                    # Calculate validation loss (L1 Perceptual Loss)
-                    val_loss = self.l1_perceptual_loss(real_pet, fake_pet)
+                    # Calculate validation loss (L1 Loss and Perceptual Loss)
+                    l1_loss = self.l1_loss(fake_pet, real_pet)
+                    perceptual_loss = self.perceptual_loss(real_pet, fake_pet)
+                    val_loss = l1_loss + self.lambda2 * perceptual_loss  # Validation loss does not include GAN loss
+                    
                     validation_loss += val_loss.item()
     
             # Average validation loss per epoch
             validation_loss /= len(val_loader)
             print(f"Epoch [{epoch+1}/{epochs}] Validation Loss: {validation_loss:.4f}")
-
 
 # ------------------------------------------------------------
 # Data Loading and Preprocessing Functions
@@ -558,7 +558,7 @@ if __name__ == '__main__':
 
     # Train the model
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=500, batch_size=1)
+    bmgan.train(mri_train, pet_train, epochs=3, batch_size=1)
 
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
