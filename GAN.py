@@ -10,6 +10,12 @@ from torchvision import models
 from sklearn.model_selection import train_test_split
 from scipy.stats import zscore
 from scipy.ndimage import zoom
+from skimage.metrics import structural_similarity as ssim
+from math import log10
+import torchvision.transforms as transforms
+from torchvision.utils import save_image
+import tempfile
+from pytorch_fid import fid_score
 
 # Import data loading functions (Ensure these are correctly implemented)
 from data_loading import generate_data_path_less, generate, binarylabel
@@ -272,7 +278,7 @@ class Discriminator(nn.Module):
         return x
 
 # ------------------------------------------------------------
-# BMGAN Class with Integrated Loss Functions
+# BMGAN Class with Integrated Loss Functions and Evaluation Metrics
 # ------------------------------------------------------------
 class BMGAN:
     def __init__(self, generator, discriminator, encoder, lambda1=10.0, lambda2=10.0):
@@ -330,6 +336,57 @@ class BMGAN:
 
     def lsgan_loss(self, y_pred, y_true):
         return self.mse_loss(y_pred, y_true)
+
+    # Evaluation Metrics as per the paper's description
+    def compute_mae(self, real_pet, fake_pet):
+        """
+        Mean Absolute Error (MAE)
+        MAE = (1/N) * sum_{i=1}^N |R_PET(i) - S_PET(i)|
+        """
+        mae = torch.mean(torch.abs(real_pet - fake_pet)).item()
+        return mae
+
+    def compute_psnr(self, real_pet, fake_pet):
+        """
+        Peak Signal-to-Noise Ratio (PSNR)
+        PSNR = 10 * log10 (MAX_I^2 / MSE)
+        Where MAX_I is the maximum possible pixel value (assuming 20 as in the paper)
+        """
+        mse = self.mse_loss(real_pet, fake_pet).item()
+        if mse == 0:
+            return float('inf')
+        max_I = 20.0  # As per the paper's formula
+        psnr = 10 * log10((max_I ** 2) / mse)
+        return psnr
+
+    def compute_ms_ssim(self, real_pet, fake_pet):
+        """
+        Multi-Scale Structural Similarity Index (MS-SSIM)
+        """
+        # Convert tensors to numpy arrays
+        real_pet_np = real_pet.squeeze().cpu().numpy()
+        fake_pet_np = fake_pet.squeeze().cpu().numpy()
+
+        # Normalize images to [0, 1]
+        real_pet_np = (real_pet_np - real_pet_np.min()) / (real_pet_np.max() - real_pet_np.min())
+        fake_pet_np = (fake_pet_np - fake_pet_np.min()) / (fake_pet_np.max() - fake_pet_np.min())
+
+        # Compute MS-SSIM over the 3D volume
+        ms_ssim_value = ssim(real_pet_np, fake_pet_np, data_range=1.0, multichannel=False, gaussian_weights=True, use_sample_covariance=False)
+        return ms_ssim_value
+
+    def save_images_for_fid(self, images, directory):
+        os.makedirs(directory, exist_ok=True)
+        transform = transforms.Compose([
+            transforms.Normalize(mean=[-1], std=[2]),  # Convert from [-1,1] to [0,1]
+        ])
+        for idx, img in enumerate(images):
+            img = transform(img.squeeze(0))  # Remove batch dimension and normalize
+            # Save each slice as an image
+            num_slices = img.size(0)
+            for slice_idx in range(num_slices):
+                slice_img = img[slice_idx, :, :].unsqueeze(0)  # Add channel dimension
+                save_image(slice_img, os.path.join(directory, f"{idx}_{slice_idx}.png"))
 
     def train(self, mri_images, pet_images, epochs, batch_size):
         # Split data into training and validation sets (80% training, 20% validation)
@@ -433,6 +490,14 @@ class BMGAN:
             self.generator.eval()  # Set generator to evaluation mode
             self.discriminator.eval()
             validation_loss = 0
+            total_mae = 0
+            total_psnr = 0
+            total_ms_ssim = 0
+            num_batches = 0
+
+            real_images_list = []
+            fake_images_list = []
+
             with torch.no_grad():  # No gradient calculation for validation
                 for real_mri, real_pet in val_loader:
                     real_mri = real_mri.to(device)
@@ -447,10 +512,55 @@ class BMGAN:
                     val_loss = l1_loss + self.lambda2 * perceptual_loss  # Validation loss does not include GAN loss
                     
                     validation_loss += val_loss.item()
-    
-            # Average validation loss per epoch
-            validation_loss /= len(val_loader)
-            print(f"Epoch [{epoch+1}/{epochs}] Validation Loss: {validation_loss:.4f}")
+
+                    # Compute MAE
+                    mae = self.compute_mae(real_pet, fake_pet)
+                    total_mae += mae
+
+                    # Compute PSNR
+                    psnr = self.compute_psnr(real_pet, fake_pet)
+                    total_psnr += psnr
+
+                    # Compute MS-SSIM
+                    ms_ssim_value = self.compute_ms_ssim(real_pet, fake_pet)
+                    total_ms_ssim += ms_ssim_value
+
+                    num_batches += 1
+
+                    # Collect images for FID computation
+                    real_images_list.append(real_pet)
+                    fake_images_list.append(fake_pet)
+
+            # Average validation metrics per epoch
+            validation_loss /= num_batches
+            avg_mae = total_mae / num_batches
+            avg_psnr = total_psnr / num_batches
+            avg_ms_ssim = total_ms_ssim / num_batches
+
+            print(f"Epoch [{epoch+1}/{epochs}] Validation Loss: {validation_loss:.4f}, MAE: {avg_mae:.4f}, PSNR: {avg_psnr:.2f} dB, MS-SSIM: {avg_ms_ssim:.4f}")
+
+            # ---------------------------
+            # Compute FID
+            # ---------------------------
+            # Save images to temporary directories
+            real_images_dir = os.path.join(tempfile.gettempdir(), f'real_images_epoch_{epoch+1}')
+            fake_images_dir = os.path.join(tempfile.gettempdir(), f'fake_images_epoch_{epoch+1}')
+
+            # Flatten the lists
+            real_images_flat = [img for batch in real_images_list for img in batch]
+            fake_images_flat = [img for batch in fake_images_list for img in batch]
+
+            # Save images
+            self.save_images_for_fid(real_images_flat, real_images_dir)
+            self.save_images_for_fid(fake_images_flat, fake_images_dir)
+
+            # Compute FID
+            fid_value = fid_score.calculate_fid_given_paths([real_images_dir, fake_images_dir], batch_size, device, dims=2048)
+
+            print(f"Epoch [{epoch+1}/{epochs}] FID: {fid_value:.4f}")
+
+            # Clean up temporary directories if needed
+            # You may choose to remove the directories after computing FID to save space
 
 # ------------------------------------------------------------
 # Data Loading and Preprocessing Functions
