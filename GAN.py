@@ -41,90 +41,85 @@ class CustomDataset(Dataset):
 # ------------------------------------------------------------
 
 class DenseUNetGenerator(nn.Module):
-    def __init__(self, input_channels=1, output_channels=1, num_layers_per_block=2):
+    def __init__(self, input_channels=1, output_channels=1):
         super(DenseUNetGenerator, self).__init__()
         self.input_channels = input_channels
         self.output_channels = output_channels
-        self.num_layers_per_block = num_layers_per_block
 
         # Initial convolution block
         self.initial_conv = self.convolution_block(self.input_channels, 64)
 
-        # Filters for each block in the downsampling path
-        self.filters_list = [64, 128, 256, 512, 512, 512, 512]  # 7 blocks
+        # Filters for each block
+        self.filters_list = [64, 128, 256, 512, 512, 512, 512]
 
         # Downsampling path
-        self.down_blocks = nn.ModuleList()
-        in_channels = 64  # After initial_conv
+        self.down_dense_blocks = nn.ModuleList()
+        self.down_transition_layers = nn.ModuleList()
+        in_channels = 64
         skip_channels = []
         for idx, filters in enumerate(self.filters_list):
             # Dense Block
-            dense_block = self.dense_block(in_channels, filters, self.num_layers_per_block)
-            self.down_blocks.append(dense_block)
-            skip_channels.append(filters)  # We will use 'filters' for skip connections
+            dense_block = self.dense_block(in_channels, filters)
+            self.down_dense_blocks.append(dense_block)
+            skip_channels.append(filters)
 
-            # Transition Layer (except after the last block)
+            # Transition Layer (except after the last dense block)
             if idx < len(self.filters_list) - 1:
-                transition = self.transition_layer(filters, self.filters_list[idx + 1])
-                self.down_blocks.append(transition)
-                in_channels = self.filters_list[idx + 1]  # Update in_channels for next block
+                transition = self.transition_layer(filters)
+                self.down_transition_layers.append(transition)
+                in_channels = filters  # Update in_channels for next block
 
         # Bottleneck dense block
-        self.bottleneck = self.dense_block(in_channels, in_channels, self.num_layers_per_block)
+        self.bottleneck_dense_block = self.dense_block(in_channels, in_channels)
 
         # Upsampling path
-        self.up_blocks = nn.ModuleList()
+        self.up_upsampling_layers = nn.ModuleList()
+        self.up_dense_blocks = nn.ModuleList()
         reversed_filters_list = self.filters_list[::-1]
         for idx, filters in enumerate(reversed_filters_list):
-            # Upsampling block
-            up_block = self.upsampling_block(in_channels, filters)
-            self.up_blocks.append(up_block)
+            # Upsampling Layer
+            upsample = self.upsampling_layer(in_channels, filters)
+            self.up_upsampling_layers.append(upsample)
             in_channels = filters * 2  # After concatenation with skip connection
 
             # Dense Block
-            dense_block = self.dense_block(in_channels, filters, self.num_layers_per_block)
-            self.up_blocks.append(dense_block)
-            in_channels = filters  # Update in_channels for next block
+            dense_block = self.dense_block(in_channels, filters)
+            self.up_dense_blocks.append(dense_block)
+            in_channels = filters  # Update in_channels for next layer
 
         # Final Convolution
         self.final_conv = nn.Conv3d(in_channels, self.output_channels, kernel_size=1)
         self.activation = nn.Tanh()
 
-    def convolution_block(self, in_channels, out_channels, kernel_size=3, stride=1):
+    def convolution_block(self, in_channels, out_channels, kernel_size=3):
         layers = [
-            nn.Conv3d(in_channels, out_channels, kernel_size, stride=stride, padding=kernel_size // 2),
+            nn.Conv3d(in_channels, out_channels, kernel_size, padding=kernel_size // 2),
             nn.InstanceNorm3d(out_channels),
             nn.LeakyReLU(0.2, inplace=True)
         ]
         return nn.Sequential(*layers)
 
-    def dense_block(self, in_channels, filters, num_layers=2):
+    def dense_block(self, in_channels, filters):
         layers = nn.ModuleList()
-        for _ in range(num_layers):
-            layers.append(self.single_dense_layer(in_channels, filters))
-            in_channels = filters  # Keep in_channels constant
+        for _ in range(2):  # Each dense block includes two convolutional layers
+            layers.append(self.convolution_block(in_channels, filters))
+            in_channels = filters  # Keep in_channels constant within the block
         return nn.Sequential(*layers)
 
-    def single_dense_layer(self, in_channels, filters):
-        layers = nn.Sequential(
-            nn.Conv3d(in_channels, filters, kernel_size=3, padding=1),
-            nn.InstanceNorm3d(filters),
-            nn.LeakyReLU(0.2, inplace=True)
-        )
-        return layers
-
-    def transition_layer(self, in_channels, out_channels):
+    def transition_layer(self, in_channels):
         layers = [
-            nn.Conv3d(in_channels, out_channels, kernel_size=1),
-            nn.InstanceNorm3d(out_channels),
+            nn.Conv3d(in_channels, in_channels, kernel_size=1),
+            nn.InstanceNorm3d(in_channels),
             nn.LeakyReLU(0.2, inplace=True),
             nn.MaxPool3d(kernel_size=2, stride=2)
         ]
         return nn.Sequential(*layers)
 
-    def upsampling_block(self, in_channels, out_channels):
+    def upsampling_layer(self, in_channels, out_channels):
         layers = [
-            nn.ConvTranspose3d(in_channels, out_channels, kernel_size=2, stride=2),
+            nn.ConvTranspose3d(
+                in_channels, out_channels, kernel_size=2, stride=2
+            ),
             nn.InstanceNorm3d(out_channels),
             nn.LeakyReLU(0.2, inplace=True)
         ]
@@ -133,36 +128,27 @@ class DenseUNetGenerator(nn.Module):
     def forward(self, x):
         skips = []
         x = self.initial_conv(x)
-        print(f"Initial Conv Output Shape: {x.shape}")
-    
+
         # Downsampling Path
-        for idx, block in enumerate(self.down_blocks):
-            x = block(x)
-            print(f"After Block {idx} (Downsampling) Output Shape: {x.shape}")
-            if isinstance(block, nn.Sequential) and idx % 2 == 0:  # If it's a dense block
-                skips.append(x)
-                print(f"Saved Skip Connection at Block {idx} with Shape: {x.shape}")
-    
+        for idx, dense_block in enumerate(self.down_dense_blocks):
+            x = dense_block(x)
+            skips.append(x)
+            if idx < len(self.down_transition_layers):
+                x = self.down_transition_layers[idx](x)
+
         # Bottleneck
-        x = self.bottleneck(x)
-        print(f"Bottleneck Output Shape: {x.shape}")
-    
+        x = self.bottleneck_dense_block(x)
+
         # Upsampling Path
-        for idx, block in enumerate(self.up_blocks):
-            if idx % 2 == 0:  # Upsampling block
-                x = block(x)
-                skip = skips.pop()
-                print(f"Upsampling Block {idx}, x Shape: {x.shape}, Skip Shape: {skip.shape}")
-                x = torch.cat([x, skip], dim=1)
-                print(f"After Concatenation, x Shape: {x.shape}")
-            else:  # Dense block
-                x = block(x)
-                print(f"After Block {idx} (Upsampling) Output Shape: {x.shape}")
-    
+        for idx in range(len(self.up_upsampling_layers)):
+            x = self.up_upsampling_layers[idx](x)
+            skip = skips.pop()
+            x = torch.cat([x, skip], dim=1)
+            x = self.up_dense_blocks[idx](x)
+
         # Final Convolution
         x = self.final_conv(x)
         x = self.activation(x)
-        print(f"Final Output Shape: {x.shape}")
         return x
 
 
