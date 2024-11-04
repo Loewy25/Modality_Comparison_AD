@@ -562,6 +562,81 @@ class BMGAN:
             # Clean up temporary directories if needed
             # You may choose to remove the directories after computing FID to save space
 
+    # Add the evaluate method
+    def evaluate(self, mri_images, pet_images, batch_size):
+        # Create DataLoader for the test set
+        test_dataset = CustomDataset(mri_images, pet_images)
+        test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+        self.generator.eval()  # Set generator to evaluation mode
+        total_mae = 0
+        total_psnr = 0
+        total_ms_ssim = 0
+        num_batches = 0
+
+        real_images_list = []
+        fake_images_list = []
+
+        with torch.no_grad():
+            for real_mri, real_pet in test_loader:
+                real_mri = real_mri.to(device)
+                real_pet = real_pet.to(device)
+
+                # Generate fake PET images
+                fake_pet = self.generator(real_mri)
+
+                # Compute MAE
+                mae = self.compute_mae(real_pet, fake_pet)
+                total_mae += mae
+
+                # Compute PSNR
+                psnr = self.compute_psnr(real_pet, fake_pet)
+                total_psnr += psnr
+
+                # Compute MS-SSIM
+                ms_ssim_value = self.compute_ms_ssim(real_pet, fake_pet)
+                total_ms_ssim += ms_ssim_value
+
+                num_batches += 1
+
+                # Collect images for FID computation
+                real_images_list.append(real_pet)
+                fake_images_list.append(fake_pet)
+
+        # Average metrics over the test set
+        avg_mae = total_mae / num_batches
+        avg_psnr = total_psnr / num_batches
+        avg_ms_ssim = total_ms_ssim / num_batches
+
+        print(f"\nTest Set Evaluation Metrics:")
+        print(f"MAE: {avg_mae:.4f}")
+        print(f"PSNR: {avg_psnr:.2f} dB")
+        print(f"MS-SSIM: {avg_ms_ssim:.4f}")
+
+        # Compute FID
+        real_images_dir = os.path.join(tempfile.gettempdir(), 'real_images_test')
+        fake_images_dir = os.path.join(tempfile.gettempdir(), 'fake_images_test')
+
+        # Flatten the lists
+        real_images_flat = [img for batch in real_images_list for img in batch]
+        fake_images_flat = [img for batch in fake_images_list for img in batch]
+
+        # Save images
+        self.save_images_for_fid(real_images_flat, real_images_dir)
+        self.save_images_for_fid(fake_images_flat, fake_images_dir)
+
+        # Compute FID
+        fid_value = fid_score.calculate_fid_given_paths(
+            [real_images_dir, fake_images_dir], batch_size, device, dims=2048
+        )
+
+        print(f"FID: {fid_value:.4f}")
+
+        # Optionally, clean up the temporary directories
+        # import shutil
+        # shutil.rmtree(real_images_dir)
+        # shutil.rmtree(fake_images_dir)
+
 # ------------------------------------------------------------
 # Data Loading and Preprocessing Functions
 # ------------------------------------------------------------
@@ -669,6 +744,10 @@ if __name__ == '__main__':
     # Train the model
     print("Starting training...")
     bmgan.train(mri_train, pet_train, epochs=3, batch_size=1)
+
+    # Evaluate the model on the test set
+    print("\nEvaluating the model on the test set...")
+    bmgan.evaluate(mri_gen, pet_gen, batch_size=1)
 
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
