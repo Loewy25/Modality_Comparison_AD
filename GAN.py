@@ -50,26 +50,24 @@ class DenseUNetGenerator(nn.Module):
         self.initial_conv = self.convolution_block(self.input_channels, 64)
 
         # Filters for each block
-        self.filters_list = [64, 128, 256, 512, 512, 512, 512]
+        self.filters_list = [64, 128, 256, 512, 512, 512]  # 6 downsampling dense blocks
 
         # Downsampling path
         self.down_dense_blocks = nn.ModuleList()
         self.down_transition_layers = nn.ModuleList()
         in_channels = 64
-        skip_channels = []
         for idx, filters in enumerate(self.filters_list):
             # Dense Block
             dense_block = self.dense_block(in_channels, filters)
             self.down_dense_blocks.append(dense_block)
-            skip_channels.append(filters)
+            in_channels = filters
 
             # Transition Layer (except after the last dense block)
             if idx < len(self.filters_list) - 1:
                 transition = self.transition_layer(filters)
                 self.down_transition_layers.append(transition)
-                in_channels = filters  # Update in_channels for next block
 
-        # Bottleneck dense block
+        # Bottleneck dense block (Dense Block 7)
         self.bottleneck_dense_block = self.dense_block(in_channels, in_channels)
 
         # Upsampling path
@@ -85,7 +83,7 @@ class DenseUNetGenerator(nn.Module):
             # Dense Block
             dense_block = self.dense_block(in_channels, filters)
             self.up_dense_blocks.append(dense_block)
-            in_channels = filters  # Update in_channels for next layer
+            in_channels = filters
 
         # Final Convolution
         self.final_conv = nn.Conv3d(in_channels, self.output_channels, kernel_size=1)
@@ -100,11 +98,11 @@ class DenseUNetGenerator(nn.Module):
         return nn.Sequential(*layers)
 
     def dense_block(self, in_channels, filters):
-        layers = nn.ModuleList()
-        for _ in range(2):  # Each dense block includes two convolutional layers
-            layers.append(self.convolution_block(in_channels, filters))
-            in_channels = filters  # Keep in_channels constant within the block
-        return nn.Sequential(*layers)
+        layers = nn.Sequential(
+            self.convolution_block(in_channels, filters),
+            self.convolution_block(filters, filters)
+        )
+        return layers
 
     def transition_layer(self, in_channels):
         layers = [
@@ -117,9 +115,7 @@ class DenseUNetGenerator(nn.Module):
 
     def upsampling_layer(self, in_channels, out_channels):
         layers = [
-            nn.ConvTranspose3d(
-                in_channels, out_channels, kernel_size=2, stride=2
-            ),
+            nn.ConvTranspose3d(in_channels, out_channels, kernel_size=2, stride=2),
             nn.InstanceNorm3d(out_channels),
             nn.LeakyReLU(0.2, inplace=True)
         ]
@@ -128,28 +124,38 @@ class DenseUNetGenerator(nn.Module):
     def forward(self, x):
         skips = []
         x = self.initial_conv(x)
+        print(f"Initial Conv Output Shape: {x.shape}")
 
         # Downsampling Path
         for idx, dense_block in enumerate(self.down_dense_blocks):
             x = dense_block(x)
+            print(f"After Dense Block {idx} Output Shape: {x.shape}")
             skips.append(x)
             if idx < len(self.down_transition_layers):
                 x = self.down_transition_layers[idx](x)
+                print(f"After Transition Layer {idx} Output Shape: {x.shape}")
 
         # Bottleneck
         x = self.bottleneck_dense_block(x)
+        print(f"Bottleneck Output Shape: {x.shape}")
 
         # Upsampling Path
         for idx in range(len(self.up_upsampling_layers)):
             x = self.up_upsampling_layers[idx](x)
+            print(f"After Upsampling Layer {idx} Output Shape: {x.shape}")
             skip = skips.pop()
+            print(f"Skip Connection Shape: {skip.shape}")
             x = torch.cat([x, skip], dim=1)
+            print(f"After Concatenation {idx} Output Shape: {x.shape}")
             x = self.up_dense_blocks[idx](x)
+            print(f"After Up Dense Block {idx} Output Shape: {x.shape}")
 
         # Final Convolution
         x = self.final_conv(x)
         x = self.activation(x)
+        print(f"Final Output Shape: {x.shape}")
         return x
+
 
 
 
