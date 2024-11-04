@@ -24,8 +24,9 @@ module load cudnn/8.1.1
 
 source ~/liuenv/bin/activate
 
-pip install scikit-image
 
+
+pip install pytorch-fid
 
 #python ViT_dm_mri.py
 #python keras_u-net_dm_mri.py
