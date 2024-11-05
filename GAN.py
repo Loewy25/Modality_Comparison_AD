@@ -70,14 +70,16 @@ class DenseBlock(nn.Module):
 class TransitionLayer(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(TransitionLayer, self).__init__()
-        self.layer = nn.Sequential(
-            nn.Conv3d(in_channels, out_channels, kernel_size=1),
-            nn.InstanceNorm3d(out_channels),
-            nn.MaxPool3d(kernel_size=2, stride=2)
-        )
+        self.conv = nn.Conv3d(in_channels, out_channels, kernel_size=1)
+        self.norm = nn.InstanceNorm3d(out_channels)
+        self.pool = nn.MaxPool3d(kernel_size=2, stride=2)
 
     def forward(self, x):
-        return self.layer(x)
+        x = self.conv(x)
+        norm_out = self.norm(x)  # Output from InstanceNorm3d layer
+        x = self.pool(norm_out)
+        return x, norm_out  # Return both pooled and unpooled output
+
 
 class UpsampleLayer(nn.Module):
     def __init__(self, in_channels, out_channels):
@@ -90,7 +92,7 @@ class UpsampleLayer(nn.Module):
 class DenseUNetGenerator(nn.Module):
     def __init__(self, in_channels=1, out_channels=1):
         super(DenseUNetGenerator, self).__init__()
-
+        
         # Initial convolution layers
         self.init_conv = nn.Sequential(
             nn.Conv3d(in_channels, 64, kernel_size=3, padding=1),
@@ -109,44 +111,38 @@ class DenseUNetGenerator(nn.Module):
         )
         
         # Encoder path with DenseNet-style connectivity in each dense block
-        self.encoder1 = DenseBlock(64, 128, num_layers=2)    # 64 → 128
+        self.encoder1 = DenseBlock(64, 128, num_layers=2)
         self.trans1 = TransitionLayer(320, 128)
         
-        self.encoder2 = DenseBlock(128, 256, num_layers=2)  # 128 → 256
+        self.encoder2 = DenseBlock(128, 256, num_layers=2)
         self.trans2 = TransitionLayer(640, 256)
         
-        self.encoder3 = DenseBlock(256, 512, num_layers=2)  # 256 → 512
+        self.encoder3 = DenseBlock(256, 512, num_layers=2)
         self.trans3 = TransitionLayer(1280, 512)
         
-        self.encoder4 = DenseBlock(512, 512, num_layers=2)  # Stable at 512
+        self.encoder4 = DenseBlock(512, 512, num_layers=2)
         self.trans4 = TransitionLayer(1536, 512)
         
-        self.encoder5 = DenseBlock(512, 512, num_layers=2)  # Stable at 512
+        self.encoder5 = DenseBlock(512, 512, num_layers=2)
         self.trans5 = TransitionLayer(1536, 512)
         
-        #self.encoder6 = DenseBlock(512, 256, num_layers=2)  # Stable at 512
-        #self.trans6 = TransitionLayer(1024, 512)
-
         # Bottleneck
-        self.bottleneck = DenseBlock(512, 512, num_layers=2) # Stable at 512
+        self.bottleneck = DenseBlock(512, 512, num_layers=2)
 
         # Decoder path
-        #self.up1 = UpsampleLayer(1024, 512)    # 512 → 512
-        #self.decoder1 = DenseBlock(1024, 256, num_layers=2)  # Stable at 512
+        self.up1 = UpsampleLayer(1536, 512)
+        self.decoder1 = DenseBlock(1024, 512, num_layers=2)
         
-        self.up1 = UpsampleLayer(1536, 512)    # 512 → 512
-        self.decoder1 = DenseBlock(1024, 512, num_layers=2)  # Stable at 512
-        
-        self.up2 = UpsampleLayer(2048, 512)    # 512 → 256
+        self.up2 = UpsampleLayer(2048, 512)
         self.decoder2 = DenseBlock(1024, 512, num_layers=2)
         
-        self.up3 = UpsampleLayer(2048, 256)     # 256 → 128
+        self.up3 = UpsampleLayer(2048, 256)
         self.decoder3 = DenseBlock(512, 256, num_layers=2)
         
-        self.up4 = UpsampleLayer(1024, 128)     # 128 → 64
+        self.up4 = UpsampleLayer(1024, 128)
         self.decoder4 = DenseBlock(256, 128, num_layers=2)
         
-        self.up5 = UpsampleLayer(512, 64)      # 64 → out_channels
+        self.up5 = UpsampleLayer(512, 64)
         self.decoder5 = DenseBlock(128, 64, num_layers=2)
 
         # Final convolution layer
@@ -164,28 +160,19 @@ class DenseUNetGenerator(nn.Module):
 
         # Encoder path (store skip connections before each transition layer)
         x2 = self.encoder1(x1)
-        skip1 = x2
-        x2 = self.trans1(x2)
+        x2, skip1 = self.trans1(x2)  # Take norm_out as skip
 
         x3 = self.encoder2(x2)
-        skip2 = x3
-        x3 = self.trans2(x3)
+        x3, skip2 = self.trans2(x3)
 
         x4 = self.encoder3(x3)
-        skip3 = x4
-        x4 = self.trans3(x4)
+        x4, skip3 = self.trans3(x4)
 
         x5 = self.encoder4(x4)
-        skip4 = x5
-        x5 = self.trans4(x5)
+        x5, skip4 = self.trans4(x5)
 
         x6 = self.encoder5(x5)
-        skip5 = x6
-        x6 = self.trans5(x6)
-
-        #x7 = self.encoder6(x6)
-        #skip6 = x7
-        #x7 = self.trans6(x7)
+        x6, skip5 = self.trans5(x6)
 
         # Bottleneck
         x_bottleneck = self.bottleneck(x6)
@@ -209,11 +196,7 @@ class DenseUNetGenerator(nn.Module):
 
         x11 = self.up5(x10)
         x11 = torch.cat([x11, skip1], dim=1)
-        x11 = self.decoder5(x1)
-
-        #x13 = self.up6(x12)
-        #x13 = torch.cat([x13, skip1], dim=1)
-        #x13 = self.decoder6(x13)
+        x11 = self.decoder5(x11)
 
         # Final output layer
         out = self.final_conv(torch.cat([x11, x1], dim=1))
