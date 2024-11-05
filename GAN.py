@@ -256,9 +256,9 @@ class ResBlock(nn.Module):
         return out
 
 class ResNetEncoder(nn.Module):
-    def __init__(self, input_channels=1, latent_dim=512):
+    def __init__(self, in_channels=1, latent_dim=512):
         super(ResNetEncoder, self).__init__()
-        self.input_channels = input_channels
+        self.input_channels = in_channels
         self.latent_dim = latent_dim
 
         self.conv1 = nn.Conv3d(self.input_channels, 64, kernel_size=7, stride=2, padding=3)
@@ -306,10 +306,10 @@ class ResNetEncoder(nn.Module):
 # Discriminator Class with Patch-Level Discrimination
 # ------------------------------------------------------------
 class Discriminator(nn.Module):
-    def __init__(self, input_channels=1):
+    def __init__(self, in_channels=1):
         super(Discriminator, self).__init__()
         # Convolutional blocks without pooling
-        self.conv_block1 = self.convolution_block(input_channels, 32, use_pool=False)
+        self.conv_block1 = self.convolution_block(in_channels, 32, use_pool=False)
         self.conv_block2 = self.convolution_block(32, 64, use_pool=True)
         self.conv_block3 = self.convolution_block(64, 128, use_pool=True)
         self.conv_block4 = self.convolution_block(128, 256, use_pool=False)
