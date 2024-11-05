@@ -109,44 +109,44 @@ class DenseUNetGenerator(nn.Module):
         )
         
         # Encoder path with DenseNet-style connectivity in each dense block
-        self.encoder1 = DenseBlock(64, 64, num_layers=2)    # 64 → 128
-        self.trans1 = TransitionLayer(192, 128)
+        self.encoder1 = DenseBlock(64, 128, num_layers=2)    # 64 → 128
+        self.trans1 = TransitionLayer(320, 128)
         
-        self.encoder2 = DenseBlock(128, 128, num_layers=2)  # 128 → 256
-        self.trans2 = TransitionLayer(384, 256)
+        self.encoder2 = DenseBlock(128, 256, num_layers=2)  # 128 → 256
+        self.trans2 = TransitionLayer(640, 256)
         
-        self.encoder3 = DenseBlock(256, 256, num_layers=2)  # 256 → 512
-        self.trans3 = TransitionLayer(768, 512)
+        self.encoder3 = DenseBlock(256, 512, num_layers=2)  # 256 → 512
+        self.trans3 = TransitionLayer(1280, 512)
         
-        self.encoder4 = DenseBlock(512, 256, num_layers=2)  # Stable at 512
-        self.trans4 = TransitionLayer(1024, 512)
+        self.encoder4 = DenseBlock(512, 512, num_layers=2)  # Stable at 512
+        self.trans4 = TransitionLayer(1536, 512)
         
-        self.encoder5 = DenseBlock(512, 256, num_layers=2)  # Stable at 512
-        self.trans5 = TransitionLayer(1024, 512)
+        self.encoder5 = DenseBlock(512, 512, num_layers=2)  # Stable at 512
+        self.trans5 = TransitionLayer(1536, 512)
         
         #self.encoder6 = DenseBlock(512, 256, num_layers=2)  # Stable at 512
         #self.trans6 = TransitionLayer(1024, 512)
 
         # Bottleneck
-        self.bottleneck = DenseBlock(512, 256, num_layers=2) # Stable at 512
+        self.bottleneck = DenseBlock(512, 512, num_layers=2) # Stable at 512
 
         # Decoder path
         #self.up1 = UpsampleLayer(1024, 512)    # 512 → 512
         #self.decoder1 = DenseBlock(1024, 256, num_layers=2)  # Stable at 512
         
-        self.up1 = UpsampleLayer(1024, 512)    # 512 → 512
-        self.decoder1 = DenseBlock(1024, 256, num_layers=2)  # Stable at 512
+        self.up1 = UpsampleLayer(1536, 512)    # 512 → 512
+        self.decoder1 = DenseBlock(1024, 512, num_layers=2)  # Stable at 512
         
-        self.up2 = UpsampleLayer(1024, 512)    # 512 → 256
-        self.decoder2 = DenseBlock(768, 128, num_layers=2)
+        self.up2 = UpsampleLayer(2048, 512)    # 512 → 256
+        self.decoder2 = DenseBlock(1024, 512, num_layers=2)
         
-        self.up3 = UpsampleLayer(512, 256)     # 256 → 128
-        self.decoder3 = DenseBlock(384, 128, num_layers=2)
+        self.up3 = UpsampleLayer(2048, 256)     # 256 → 128
+        self.decoder3 = DenseBlock(512, 256, num_layers=2)
         
-        self.up4 = UpsampleLayer(256, 128)     # 128 → 64
-        self.decoder4 = DenseBlock(192, 64, num_layers=2)
+        self.up4 = UpsampleLayer(1024, 128)     # 128 → 64
+        self.decoder4 = DenseBlock(256, 128, num_layers=2)
         
-        self.up5 = UpsampleLayer(128, 64)      # 64 → out_channels
+        self.up5 = UpsampleLayer(512, 64)      # 64 → out_channels
         self.decoder5 = DenseBlock(128, 64, num_layers=2)
 
         # Final convolution layer
