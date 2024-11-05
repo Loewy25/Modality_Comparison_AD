@@ -40,121 +40,186 @@ class CustomDataset(Dataset):
 # Corrected DenseUNetGenerator Class
 # ------------------------------------------------------------
 
-class DenseUNetGenerator(nn.Module):
-    def __init__(self, input_channels=1, output_channels=1):
-        super(DenseUNetGenerator, self).__init__()
-        self.input_channels = input_channels
-        self.output_channels = output_channels
+import torch
+import torch.nn as nn
 
-        # Initial convolution block
-        self.initial_conv = self.convolution_block(self.input_channels, 64)
+class DenseBlock(nn.Module):
+    def __init__(self, in_channels, growth_rate, num_layers=2):
+        super(DenseBlock, self).__init__()
+        self.layers = nn.ModuleList()
+        
+        # Create each convolution layer with DenseNet-style connectivity
+        for i in range(num_layers):
+            layer_in_channels = in_channels + i * growth_rate
+            self.layers.append(self._make_layer(layer_in_channels, growth_rate))
 
-        # Filters for each block
-        self.filters_list = [64, 128, 256, 512, 512, 512]  # 6 downsampling dense blocks
-
-        # Downsampling path
-        self.down_dense_blocks = nn.ModuleList()
-        self.down_transition_layers = nn.ModuleList()
-        in_channels = 64
-        for idx, filters in enumerate(self.filters_list):
-            # Dense Block
-            dense_block = self.dense_block(in_channels, filters)
-            self.down_dense_blocks.append(dense_block)
-            in_channels = filters
-
-            # Transition Layer (except after the last dense block)
-            if idx < len(self.filters_list) - 1:
-                transition = self.transition_layer(filters)
-                self.down_transition_layers.append(transition)
-
-        # Bottleneck dense block (Dense Block 7)
-        self.bottleneck_dense_block = self.dense_block(in_channels, in_channels)
-
-        # Upsampling path
-        self.up_upsampling_layers = nn.ModuleList()
-        self.up_dense_blocks = nn.ModuleList()
-        reversed_filters_list = self.filters_list[::-1]
-        for idx, filters in enumerate(reversed_filters_list):
-            # Upsampling Layer
-            upsample = self.upsampling_layer(in_channels, filters)
-            self.up_upsampling_layers.append(upsample)
-            in_channels = filters * 2  # After concatenation with skip connection
-
-            # Dense Block
-            dense_block = self.dense_block(in_channels, filters)
-            self.up_dense_blocks.append(dense_block)
-            in_channels = filters
-
-        # Final Convolution
-        self.final_conv = nn.Conv3d(in_channels, self.output_channels, kernel_size=1)
-        self.activation = nn.Tanh()
-
-    def convolution_block(self, in_channels, out_channels, kernel_size=3):
-        layers = [
-            nn.Conv3d(in_channels, out_channels, kernel_size, padding=kernel_size // 2),
+    def _make_layer(self, in_channels, out_channels):
+        return nn.Sequential(
+            nn.Conv3d(in_channels, out_channels, kernel_size=3, padding=1),
             nn.InstanceNorm3d(out_channels),
             nn.LeakyReLU(0.2, inplace=True)
-        ]
-        return nn.Sequential(*layers)
-
-    def dense_block(self, in_channels, filters):
-        layers = nn.Sequential(
-            self.convolution_block(in_channels, filters),
-            self.convolution_block(filters, filters)
         )
-        return layers
-
-    def transition_layer(self, in_channels):
-        layers = [
-            nn.Conv3d(in_channels, in_channels, kernel_size=1),
-            nn.InstanceNorm3d(in_channels),
-            nn.LeakyReLU(0.2, inplace=True),
-            nn.MaxPool3d(kernel_size=2, stride=2)
-        ]
-        return nn.Sequential(*layers)
-
-    def upsampling_layer(self, in_channels, out_channels):
-        layers = [
-            nn.ConvTranspose3d(in_channels, out_channels, kernel_size=2, stride=2),
-            nn.InstanceNorm3d(out_channels),
-            nn.LeakyReLU(0.2, inplace=True)
-        ]
-        return nn.Sequential(*layers)
 
     def forward(self, x):
-        skips = []
-        x = self.initial_conv(x)
-        print(f"Initial Conv Output Shape: {x.shape}")
+        outputs = [x]  # To store outputs of each layer in the block for concatenation
+        for layer in self.layers:
+            out = layer(torch.cat(outputs, dim=1))  # Concatenate all previous outputs as input
+            outputs.append(out)
+        return torch.cat(outputs, dim=1)  # Final concatenated output of all layers
 
-        # Downsampling Path
-        for idx, dense_block in enumerate(self.down_dense_blocks):
-            x = dense_block(x)
-            print(f"After Dense Block {idx} Output Shape: {x.shape}")
-            skips.append(x)
-            if idx < len(self.down_transition_layers):
-                x = self.down_transition_layers[idx](x)
-                print(f"After Transition Layer {idx} Output Shape: {x.shape}")
+class TransitionLayer(nn.Module):
+    def __init__(self, in_channels, out_channels):
+        super(TransitionLayer, self).__init__()
+        self.layer = nn.Sequential(
+            nn.Conv3d(in_channels, out_channels, kernel_size=1),
+            nn.InstanceNorm3d(out_channels),
+            nn.MaxPool3d(kernel_size=2, stride=2)
+        )
+
+    def forward(self, x):
+        return self.layer(x)
+
+class UpsampleLayer(nn.Module):
+    def __init__(self, in_channels, out_channels):
+        super(UpsampleLayer, self).__init__()
+        self.layer = nn.ConvTranspose3d(in_channels, out_channels, kernel_size=2, stride=2)
+
+    def forward(self, x):
+        return self.layer(x)
+
+class DenseUNetGenerator(nn.Module):
+    def __init__(self, in_channels=1, out_channels=1):
+        super(DenseUNetGenerator, self).__init__()
+
+        # Initial convolution layers
+        self.init_conv = nn.Sequential(
+            nn.Conv3d(in_channels, 64, kernel_size=3, padding=1),
+            nn.InstanceNorm3d(64),
+            nn.LeakyReLU(0.2, inplace=True),
+            nn.Conv3d(64, 64, kernel_size=3, padding=1),
+            nn.InstanceNorm3d(64),
+            nn.LeakyReLU(0.2, inplace=True)
+        )
+
+        # Initial transition layer
+        self.init_transition = nn.Sequential(
+            nn.Conv3d(64, 64, kernel_size=1),
+            nn.InstanceNorm3d(64),
+            nn.MaxPool3d(kernel_size=2, stride=2)
+        )
+        
+        # Encoder path with DenseNet-style connectivity in each dense block
+        self.encoder1 = DenseBlock(64, 64, num_layers=2)    # 64 → 128
+        self.trans1 = TransitionLayer(192, 128)
+        
+        self.encoder2 = DenseBlock(128, 128, num_layers=2)  # 128 → 256
+        self.trans2 = TransitionLayer(384, 256)
+        
+        self.encoder3 = DenseBlock(256, 256, num_layers=2)  # 256 → 512
+        self.trans3 = TransitionLayer(768, 512)
+        
+        self.encoder4 = DenseBlock(512, 256, num_layers=2)  # Stable at 512
+        self.trans4 = TransitionLayer(1024, 512)
+        
+        self.encoder5 = DenseBlock(512, 256, num_layers=2)  # Stable at 512
+        self.trans5 = TransitionLayer(1024, 512)
+        
+        self.encoder6 = DenseBlock(512, 256, num_layers=2)  # Stable at 512
+        self.trans6 = TransitionLayer(1024, 512)
 
         # Bottleneck
-        x = self.bottleneck_dense_block(x)
-        print(f"Bottleneck Output Shape: {x.shape}")
+        self.bottleneck = DenseBlock(512, 256, num_layers=2) # Stable at 512
 
-        # Upsampling Path
-        for idx in range(len(self.up_upsampling_layers)):
-            x = self.up_upsampling_layers[idx](x)
-            print(f"After Upsampling Layer {idx} Output Shape: {x.shape}")
-            skip = skips.pop()
-            print(f"Skip Connection Shape: {skip.shape}")
-            x = torch.cat([x, skip], dim=1)
-            print(f"After Concatenation {idx} Output Shape: {x.shape}")
-            x = self.up_dense_blocks[idx](x)
-            print(f"After Up Dense Block {idx} Output Shape: {x.shape}")
+        # Decoder path
+        self.up1 = UpsampleLayer(1024, 512)    # 512 → 512
+        self.decoder1 = DenseBlock(1024, 256, num_layers=2)  # Stable at 512
+        
+        self.up2 = UpsampleLayer(1024, 512)    # 512 → 512
+        self.decoder2 = DenseBlock(1024, 256, num_layers=2)  # Stable at 512
+        
+        self.up3 = UpsampleLayer(1024, 512)    # 512 → 256
+        self.decoder3 = DenseBlock(768, 128, num_layers=2)
+        
+        self.up4 = UpsampleLayer(512, 256)     # 256 → 128
+        self.decoder4 = DenseBlock(384, 128, num_layers=2)
+        
+        self.up5 = UpsampleLayer(256, 128)     # 128 → 64
+        self.decoder5 = DenseBlock(192, 64, num_layers=2)
+        
+        self.up6 = UpsampleLayer(128, 64)      # 64 → out_channels
+        self.decoder6 = DenseBlock(128, 64, num_layers=2)
 
-        # Final Convolution
-        x = self.final_conv(x)
-        x = self.activation(x)
-        print(f"Final Output Shape: {x.shape}")
-        return x
+        # Final convolution layer
+        self.final_conv = nn.Sequential(
+            nn.Conv3d(128, out_channels, kernel_size=3, padding=1),
+            nn.Tanh()
+        )
+
+    def forward(self, x):
+        # Initial convolution layers
+        x1 = self.init_conv(x)
+        
+        # Initial transition layer
+        x1 = self.init_transition(x1)
+
+        # Encoder path (store skip connections before each transition layer)
+        x2 = self.encoder1(x1)
+        skip1 = x2
+        x2 = self.trans1(x2)
+
+        x3 = self.encoder2(x2)
+        skip2 = x3
+        x3 = self.trans2(x3)
+
+        x4 = self.encoder3(x3)
+        skip3 = x4
+        x4 = self.trans3(x4)
+
+        x5 = self.encoder4(x4)
+        skip4 = x5
+        x5 = self.trans4(x5)
+
+        x6 = self.encoder5(x5)
+        skip5 = x6
+        x6 = self.trans5(x6)
+
+        x7 = self.encoder6(x6)
+        skip6 = x7
+        x7 = self.trans6(x7)
+
+        # Bottleneck
+        x_bottleneck = self.bottleneck(x7)
+
+        # Decoder path with skip connections applied after each upsampling layer
+        x8 = self.up1(x_bottleneck)
+        x8 = torch.cat([x8, skip6], dim=1)
+        x8 = self.decoder1(x8)
+
+        x9 = self.up2(x8)
+        x9 = torch.cat([x9, skip5], dim=1)
+        x9 = self.decoder2(x9)
+
+        x10 = self.up3(x9)
+        x10 = torch.cat([x10, skip4], dim=1)
+        x10 = self.decoder3(x10)
+
+        x11 = self.up4(x10)
+        x11 = torch.cat([x11, skip3], dim=1)
+        x11 = self.decoder4(x11)
+
+        x12 = self.up5(x11)
+        x12 = torch.cat([x12, skip2], dim=1)
+        x12 = self.decoder5(x12)
+
+        x13 = self.up6(x12)
+        x13 = torch.cat([x13, skip1], dim=1)
+        x13 = self.decoder6(x13)
+
+        # Final output layer
+        out = self.final_conv(torch.cat([x13, x1], dim=1))
+        
+        return out
+
 
 
 
