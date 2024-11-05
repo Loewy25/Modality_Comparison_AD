@@ -776,22 +776,21 @@ if __name__ == '__main__':
     )
     print(f"Training set: {mri_train.shape[0]} samples")
     print(f"Testing set: {mri_gen.shape[0]} samples")
-
     # Initialize generator
     print("Initializing Generator")
-    generator = DenseUNetGenerator(input_channels=1, output_channels=1)
+    generator = DenseUNetGenerator(in_channels=1, out_channels=1)
     generator.to(device)
     print(generator)
-
+    
     # Initialize discriminator
     print("Initializing Discriminator")
-    discriminator = Discriminator(input_channels=1)
+    discriminator = Discriminator(in_channels=1)
     discriminator.to(device)
     print(discriminator)
-
+    
     # Initialize encoder
     print("Initializing Encoder")
-    encoder = ResNetEncoder(input_channels=1, latent_dim=512)
+    encoder = ResNetEncoder(in_channels=1, latent_dim=512)
     encoder.to(device)
     print(encoder)
 
