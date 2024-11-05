@@ -124,30 +124,30 @@ class DenseUNetGenerator(nn.Module):
         self.encoder5 = DenseBlock(512, 256, num_layers=2)  # Stable at 512
         self.trans5 = TransitionLayer(1024, 512)
         
-        self.encoder6 = DenseBlock(512, 256, num_layers=2)  # Stable at 512
-        self.trans6 = TransitionLayer(1024, 512)
+        #self.encoder6 = DenseBlock(512, 256, num_layers=2)  # Stable at 512
+        #self.trans6 = TransitionLayer(1024, 512)
 
         # Bottleneck
         self.bottleneck = DenseBlock(512, 256, num_layers=2) # Stable at 512
 
         # Decoder path
+        #self.up1 = UpsampleLayer(1024, 512)    # 512 → 512
+        #self.decoder1 = DenseBlock(1024, 256, num_layers=2)  # Stable at 512
+        
         self.up1 = UpsampleLayer(1024, 512)    # 512 → 512
         self.decoder1 = DenseBlock(1024, 256, num_layers=2)  # Stable at 512
         
-        self.up2 = UpsampleLayer(1024, 512)    # 512 → 512
-        self.decoder2 = DenseBlock(1024, 256, num_layers=2)  # Stable at 512
+        self.up2 = UpsampleLayer(1024, 512)    # 512 → 256
+        self.decoder2 = DenseBlock(768, 128, num_layers=2)
         
-        self.up3 = UpsampleLayer(1024, 512)    # 512 → 256
-        self.decoder3 = DenseBlock(768, 128, num_layers=2)
+        self.up3 = UpsampleLayer(512, 256)     # 256 → 128
+        self.decoder3 = DenseBlock(384, 128, num_layers=2)
         
-        self.up4 = UpsampleLayer(512, 256)     # 256 → 128
-        self.decoder4 = DenseBlock(384, 128, num_layers=2)
+        self.up4 = UpsampleLayer(256, 128)     # 128 → 64
+        self.decoder4 = DenseBlock(192, 64, num_layers=2)
         
-        self.up5 = UpsampleLayer(256, 128)     # 128 → 64
-        self.decoder5 = DenseBlock(192, 64, num_layers=2)
-        
-        self.up6 = UpsampleLayer(128, 64)      # 64 → out_channels
-        self.decoder6 = DenseBlock(128, 64, num_layers=2)
+        self.up5 = UpsampleLayer(128, 64)      # 64 → out_channels
+        self.decoder5 = DenseBlock(128, 64, num_layers=2)
 
         # Final convolution layer
         self.final_conv = nn.Sequential(
@@ -183,40 +183,40 @@ class DenseUNetGenerator(nn.Module):
         skip5 = x6
         x6 = self.trans5(x6)
 
-        x7 = self.encoder6(x6)
-        skip6 = x7
-        x7 = self.trans6(x7)
+        #x7 = self.encoder6(x6)
+        #skip6 = x7
+        #x7 = self.trans6(x7)
 
         # Bottleneck
-        x_bottleneck = self.bottleneck(x7)
+        x_bottleneck = self.bottleneck(x6)
 
         # Decoder path with skip connections applied after each upsampling layer
-        x8 = self.up1(x_bottleneck)
-        x8 = torch.cat([x8, skip6], dim=1)
-        x8 = self.decoder1(x8)
+        x7 = self.up1(x_bottleneck)
+        x7 = torch.cat([x7, skip5], dim=1)
+        x7 = self.decoder1(x7)
 
-        x9 = self.up2(x8)
-        x9 = torch.cat([x9, skip5], dim=1)
-        x9 = self.decoder2(x9)
+        x8 = self.up2(x7)
+        x8 = torch.cat([x8, skip4], dim=1)
+        x8 = self.decoder2(x8)
 
-        x10 = self.up3(x9)
-        x10 = torch.cat([x10, skip4], dim=1)
-        x10 = self.decoder3(x10)
+        x9 = self.up3(x8)
+        x9 = torch.cat([x9, skip3], dim=1)
+        x9 = self.decoder3(x9)
 
-        x11 = self.up4(x10)
-        x11 = torch.cat([x11, skip3], dim=1)
-        x11 = self.decoder4(x11)
+        x10 = self.up4(x9)
+        x10 = torch.cat([x10, skip2], dim=1)
+        x10 = self.decoder4(x10)
 
-        x12 = self.up5(x11)
-        x12 = torch.cat([x12, skip2], dim=1)
-        x12 = self.decoder5(x12)
+        x11 = self.up5(x10)
+        x11 = torch.cat([x11, skip1], dim=1)
+        x11 = self.decoder5(x1)
 
-        x13 = self.up6(x12)
-        x13 = torch.cat([x13, skip1], dim=1)
-        x13 = self.decoder6(x13)
+        #x13 = self.up6(x12)
+        #x13 = torch.cat([x13, skip1], dim=1)
+        #x13 = self.decoder6(x13)
 
         # Final output layer
-        out = self.final_conv(torch.cat([x13, x1], dim=1))
+        out = self.final_conv(torch.cat([x11, x1], dim=1))
         
         return out
 
