@@ -11,7 +11,7 @@
 #SBATCH --gres=gpu:nvidia_a100_80:1
 #SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
-#SBATCH --exclude=gpua803,gpua804
+
 
 ##SBATCH --array=0-7              # Array of 8 tasks (0 to 7)
 
