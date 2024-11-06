@@ -103,12 +103,9 @@ class DenseUNetGenerator(nn.Module):
             nn.LeakyReLU(0.2, inplace=True)
         )
 
-        # Initial transition layer
-        self.init_transition = nn.Sequential(
-            nn.Conv3d(64, 64, kernel_size=1),
-            nn.InstanceNorm3d(64),
-            nn.MaxPool3d(kernel_size=2, stride=2)
-        )
+        self.conv_ini = nn.Conv3d(64, 64, kernel_size=1)
+        self.norm_ini = nn.InstanceNorm3d(64)
+        self.pool_ini = nn.MaxPool3d(kernel_size=2, stride=2)
         
         # Encoder path with DenseNet-style connectivity in each dense block
         self.encoder1 = DenseBlock(64, 128, num_layers=2)
@@ -136,18 +133,21 @@ class DenseUNetGenerator(nn.Module):
         self.up2 = UpsampleLayer(2048, 512)
         self.decoder2 = DenseBlock(1024, 512, num_layers=2)
         
-        self.up3 = UpsampleLayer(2048, 256)
-        self.decoder3 = DenseBlock(512, 256, num_layers=2)
+        self.up3 = UpsampleLayer(2048, 512)
+        self.decoder3 = DenseBlock(1024,512, num_layers=2)
         
-        self.up4 = UpsampleLayer(1024, 128)
-        self.decoder4 = DenseBlock(256, 128, num_layers=2)
+        self.up4 = UpsampleLayer(2048,256)
+        self.decoder4 = DenseBlock(512,256, num_layers=2)
         
-        self.up5 = UpsampleLayer(512, 64)
-        self.decoder5 = DenseBlock(128, 64, num_layers=2)
+        self.up5 = UpsampleLayer(1024, 128)
+        self.decoder5 = DenseBlock(256, 128, num_layers=2)\
+
+        self.up6 = UpsampleLayer(512,64)
 
         # Final convolution layer
         self.final_conv = nn.Sequential(
-            nn.Conv3d(128, out_channels, kernel_size=3, padding=1),
+            nn.Conc3d(128, out_channels, kernel_size=3, padding =1)
+            nn.Conv3d(64, out_channels, kernel_size=3, padding=1),
             nn.Tanh()
         )
 
@@ -156,7 +156,9 @@ class DenseUNetGenerator(nn.Module):
         x1 = self.init_conv(x)
         
         # Initial transition layer
-        x1 = self.init_transition(x1)
+        x1 = self.conv_ini(x1)
+        x1_ini = self.norm_ini(x1)
+        x1 = self.pool_ini(x1_ini)
 
         # Encoder path (store skip connections before each transition layer)
         x2 = self.encoder1(x1)
@@ -198,8 +200,9 @@ class DenseUNetGenerator(nn.Module):
         x11 = torch.cat([x11, skip1], dim=1)
         x11 = self.decoder5(x11)
 
-        # Final output layer
-        out = self.final_conv(torch.cat([x11, x1], dim=1))
+        # Final output layerp
+        x11 = self.up6(x11)
+        out = self.final_conv(torch.cat([x11, x1_ini], dim=1))
         
         return out
 
