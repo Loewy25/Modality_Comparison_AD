@@ -8,7 +8,7 @@
 #SBATCH -t 30:50:00             # Set maximum time
 
 ##SBATCH --gres=gpu:1
-#SBATCH --gres=gpu:tesla_v100S:1
+#SBATCH --gres=gpu:nvidia_a100_80:1
 #SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
 
