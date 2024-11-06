@@ -146,7 +146,7 @@ class DenseUNetGenerator(nn.Module):
 
         # Final convolution layer
         self.final_conv = nn.Sequential(
-            nn.Conc3d(128, out_channels, kernel_size=3, padding =1),
+            nn.Conv3d(128, out_channels, kernel_size=3, padding =1),
             nn.Conv3d(64, out_channels, kernel_size=3, padding=1),
             nn.Tanh()
         )
