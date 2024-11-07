@@ -748,7 +748,7 @@ if __name__ == '__main__':
 
     # Define task and experiment info
     task = 'cd'
-    info = 'experiment4'  # New parameter for the subfolder
+    info = 'trying1'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
@@ -786,7 +786,7 @@ if __name__ == '__main__':
 
     # Train the model
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=3, batch_size=1)
+    bmgan.train(mri_train, pet_train, epochs=200, batch_size=1)
 
     # Evaluate the model on the test set
     print("\nEvaluating the model on the test set...")
