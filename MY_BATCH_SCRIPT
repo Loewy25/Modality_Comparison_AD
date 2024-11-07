@@ -21,8 +21,8 @@
 #SBATCH --error=slurm-%A_%a.err 
 
 
-module load cuda/11.3
-module load cudnn/8.1.1
+#module load cuda/11.3
+#module load cudnn/8.1.1
 
 source ~/liuenv/bin/activate
 
