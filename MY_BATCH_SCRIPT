@@ -24,11 +24,10 @@
 source /home/l.peiwang/miniconda3/etc/profile.d/conda.sh
 
 conda activate myenv
-module avail cuda
-module avail cudnn
 
-#module load cuda/11.3
-#module load cudnn/8.1.1
+
+module load cuda
+module load cudnn
 
 
 #python ViT_dm_mri.py
