@@ -28,7 +28,6 @@ conda activate myenv
 
 module load cuda
 module load cudnn
-pip install statsmodels
 
 
 
