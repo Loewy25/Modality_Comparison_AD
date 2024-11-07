@@ -7,11 +7,11 @@
 #SBATCH --mem=50G               # Request 400GB memory
 #SBATCH -t 30:50:00             # Set maximum time
 
-#SBATCH --gres=gpu:1
-##SBATCH --gres=gpu:tesla_v100S:1
+##SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:tesla_v100S:1
 #SBATCH --partition=tier2_gpu
 #SBATCH --account=aristeidis_sotiras
-#SBATCH --exclude=gpu03
+#SBATCH --exclude=gpu02
 
 
 ##SBATCH --array=0-7              # Array of 8 tasks (0 to 7)
