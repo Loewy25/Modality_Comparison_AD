@@ -28,7 +28,8 @@ conda activate myenv
 
 module load cuda
 module load cudnn
-pip install nilearn
+pip install statsmodels
+
 
 
 #python ViT_dm_mri.py
