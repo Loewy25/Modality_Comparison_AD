@@ -295,7 +295,7 @@ class Discriminator(nn.Module):
     def __init__(self, in_channels=1):
         super(Discriminator, self).__init__()
         # Convolutional blocks without pooling
-        self.conv_block1 = self.convolution_block(in_channels, 32, use_pool=False)
+        self.conv_block1 = self.convolution_block(in_channels, 32, use_pool=True)
         self.conv_block2 = self.convolution_block(32, 64, use_pool=True)
         self.conv_block3 = self.convolution_block(64, 128, use_pool=True)
         self.conv_block4 = self.convolution_block(128, 256, use_pool=False)
@@ -407,17 +407,13 @@ class BMGAN:
         """
         Multi-Scale Structural Similarity Index (MS-SSIM)
         """
-        # Convert tensors to numpy arrays
-        real_pet_np = real_pet.squeeze().cpu().numpy()
-        fake_pet_np = fake_pet.squeeze().cpu().numpy()
-
         # Normalize images to [0, 1]
-        real_pet_np = (real_pet_np - real_pet_np.min()) / (real_pet_np.max() - real_pet_np.min())
-        fake_pet_np = (fake_pet_np - fake_pet_np.min()) / (fake_pet_np.max() - fake_pet_np.min())
-
-        # Compute MS-SSIM over the 3D volume
-        ms_ssim_value = ssim(real_pet_np, fake_pet_np, data_range=1.0, multichannel=False, gaussian_weights=True, use_sample_covariance=False)
-        return ms_ssim_value
+        real_pet = (real_pet - real_pet.min()) / (real_pet.max() - real_pet.min())
+        fake_pet = (fake_pet - fake_pet.min()) / (fake_pet.max() - fake_pet.min())
+    
+        # Compute MS-SSIM
+        ms_ssim_value = ms_ssim(real_pet, fake_pet, data_range=1.0)
+        return ms_ssim_value.item()
 
     def save_images_for_fid(self, images, directory):
         os.makedirs(directory, exist_ok=True)
