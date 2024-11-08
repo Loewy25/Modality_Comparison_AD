@@ -24,7 +24,7 @@
 source /home/l.peiwang/miniconda3/etc/profile.d/conda.sh
 
 conda activate myenv
-
+pip install pytorch-msssim
 
 module load cuda
 module load cudnn
