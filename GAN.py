@@ -447,9 +447,6 @@ class BMGAN:
         return psnr
 
     def compute_ms_ssim(self, real_pet, fake_pet):
-    """
-        Multi-Scale Structural Similarity Index (MS-SSIM)
-        """
         # Normalize images to [0, 1]
         real_pet = (real_pet - real_pet.min()) / (real_pet.max() - real_pet.min())
         fake_pet = (fake_pet - fake_pet.min()) / (fake_pet.max() - fake_pet.min())
