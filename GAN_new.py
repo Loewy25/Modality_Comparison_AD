@@ -10,6 +10,11 @@ from torchvision import models
 from sklearn.model_selection import train_test_split
 from scipy.stats import zscore
 from scipy.ndimage import zoom
+from math import log10
+import torchvision.transforms as transforms
+from torchvision.utils import save_image
+import tempfile
+from pytorch_fid import fid_score
 
 # Import data loading functions (Ensure these are correctly implemented)
 from data_loading import generate_data_path_less, generate, binarylabel
@@ -33,129 +38,171 @@ class CustomDataset(Dataset):
 # ------------------------------------------------------------
 # Corrected DenseUNetGenerator Class
 # ------------------------------------------------------------
-class DenseUNetGenerator(nn.Module):
-    def __init__(self, input_channels=1, output_channels=1, num_layers_per_block=2):
-        super(DenseUNetGenerator, self).__init__()
-        self.input_channels = input_channels
-        self.output_channels = output_channels
-        self.num_layers_per_block = num_layers_per_block
 
-        # Initial convolution block
-        self.initial_conv = self.convolution_block(self.input_channels, 64)
+import torch
+import torch.nn as nn
 
-        # Downsampling path
-        self.down_dense_blocks = nn.ModuleList()
-        self.down_transition_layers = nn.ModuleList()
-        self.filters_list = [64, 128, 256, 512]
-
-        in_channels = 64
-        skip_channels = []
-        for filters in self.filters_list:
-            # Dense Block
-            dense_block = self.dense_block(in_channels, filters, num_layers_per_block)
-            self.down_dense_blocks.append(dense_block)
-            # Update in_channels after dense block
-            in_channels = in_channels + num_layers_per_block * filters
-            skip_channels.append(in_channels)
-            # Transition Layer
-            transition = self.transition_layer(in_channels, filters)
-            self.down_transition_layers.append(transition)
-            in_channels = filters  # Reset in_channels to filters after transition
-
-        # Bottleneck dense block
-        self.bottleneck_dense_block = self.dense_block(in_channels, in_channels, num_layers_per_block)
-        in_channels = in_channels + num_layers_per_block * in_channels
-
-        # Upsampling path
-        self.up_upsampling_blocks = nn.ModuleList()
-        self.up_dense_blocks = nn.ModuleList()
-        for idx, filters in enumerate(reversed(self.filters_list)):
-            skip_in_channels = skip_channels[-(idx+1)]
-            # Upsampling block
-            up_block = self.upsampling_block(in_channels, filters)
-            self.up_upsampling_blocks.append(up_block)
-            # After concatenation, in_channels becomes filters + skip_in_channels
-            in_channels = filters + skip_in_channels
-            # Dense Block
-            dense_block = self.dense_block(in_channels, filters, num_layers_per_block)
-            self.up_dense_blocks.append(dense_block)
-            # Update in_channels after dense block
-            in_channels = in_channels + num_layers_per_block * filters
-
-        # Final Convolution
-        self.final_conv = nn.Conv3d(in_channels, self.output_channels, kernel_size=1)
-        self.activation = nn.Tanh()
-
-    def convolution_block(self, in_channels, out_channels, kernel_size=3, stride=1):
-        layers = [
-            nn.Conv3d(in_channels, out_channels, kernel_size, stride=stride, padding=kernel_size//2),
-            nn.InstanceNorm3d(out_channels),
-            nn.LeakyReLU(0.2, inplace=True)
-        ]
-        return nn.Sequential(*layers)
-
-    def dense_block(self, in_channels, growth_rate, num_layers=2):
-        layers = nn.ModuleList()
+class DenseBlock(nn.Module):
+    def __init__(self, in_channels, growth_rate, num_layers=2):
+        super(DenseBlock, self).__init__()
+        self.layers = nn.ModuleList()
+        
+        # Create each convolution layer with DenseNet-style connectivity
         for i in range(num_layers):
-            layers.append(self.single_dense_layer(in_channels + i * growth_rate, growth_rate))
-        return layers
+            layer_in_channels = in_channels + i * growth_rate
+            self.layers.append(self._make_layer(layer_in_channels, growth_rate))
 
-    def single_dense_layer(self, in_channels, growth_rate):
-        layers = nn.Sequential(
-            nn.Conv3d(in_channels, growth_rate, kernel_size=3, padding=1),
-            nn.InstanceNorm3d(growth_rate),
+    def _make_layer(self, in_channels, out_channels):
+        return nn.Sequential(
+            nn.Conv3d(in_channels, out_channels, kernel_size=3, padding=1),
+            nn.InstanceNorm3d(out_channels),
             nn.LeakyReLU(0.2, inplace=True)
         )
-        return layers
-
-    def transition_layer(self, in_channels, out_channels):
-        layers = [
-            nn.Conv3d(in_channels, out_channels, kernel_size=1, padding=0),
-            nn.InstanceNorm3d(out_channels),
-            nn.AvgPool3d(kernel_size=2, stride=2)
-        ]
-        return nn.Sequential(*layers)
-
-    def upsampling_block(self, in_channels, out_channels):
-        layers = [
-            nn.ConvTranspose3d(in_channels, out_channels, kernel_size=2, stride=2),
-            nn.InstanceNorm3d(out_channels),
-            nn.LeakyReLU(0.2, inplace=True)
-        ]
-        return nn.Sequential(*layers)
 
     def forward(self, x):
-        skips = []
-        x = self.initial_conv(x)
+        outputs = [x]  # To store outputs of each layer in the block for concatenation
+        for layer in self.layers:
+            out = layer(torch.cat(outputs, dim=1))  # Concatenate all previous outputs as input
+            outputs.append(out)
+        return torch.cat(outputs, dim=1)  # Final concatenated output of all layers
 
-        # Downsampling Path
-        for dense_block, transition in zip(self.down_dense_blocks, self.down_transition_layers):
-            # Dense Block
-            for layer in dense_block:
-                out = layer(x)
-                x = torch.cat([x, out], dim=1)
-            skips.append(x)
-            # Transition Layer
-            x = transition(x)
+class TransitionLayer(nn.Module):
+    def __init__(self, in_channels, out_channels):
+        super(TransitionLayer, self).__init__()
+        self.conv = nn.Conv3d(in_channels, out_channels, kernel_size=1)
+        self.norm = nn.InstanceNorm3d(out_channels)
+        self.pool = nn.MaxPool3d(kernel_size=2, stride=2)
 
-        # Bottleneck Dense Block
-        for layer in self.bottleneck_dense_block:
-            out = layer(x)
-            x = torch.cat([x, out], dim=1)
+    def forward(self, x):
+        x = self.conv(x)
+        norm_out = self.norm(x)  # Output from InstanceNorm3d layer
+        x = self.pool(norm_out)
+        return x, norm_out  # Return both pooled and unpooled output
 
-        # Upsampling Path
-        for idx, (up_block, dense_block) in enumerate(zip(self.up_upsampling_blocks, self.up_dense_blocks)):
-            skip = skips.pop()
-            x = up_block(x)
-            x = torch.cat([x, skip], dim=1)
-            for layer in dense_block:
-                out = layer(x)
-                x = torch.cat([x, out], dim=1)
+class UpsampleLayer(nn.Module):
+    def __init__(self, in_channels, out_channels):
+        super(UpsampleLayer, self).__init__()
+        self.layer = nn.ConvTranspose3d(in_channels, out_channels, kernel_size=2, stride=2)
 
-        # Final Convolution
-        x = self.final_conv(x)
-        x = self.activation(x)
-        return x
+    def forward(self, x):
+        return self.layer(x)
+
+class DenseUNetGenerator(nn.Module):
+    def __init__(self, in_channels=1, out_channels=1):
+        super(DenseUNetGenerator, self).__init__()
+        
+        # Initial convolution layers
+        self.init_conv = nn.Sequential(
+            nn.Conv3d(in_channels, 64, kernel_size=3, padding=1),
+            nn.InstanceNorm3d(64),
+            nn.LeakyReLU(0.2, inplace=True),
+            nn.Conv3d(64, 64, kernel_size=3, padding=1),
+            nn.InstanceNorm3d(64),
+            nn.LeakyReLU(0.2, inplace=True)
+        )
+
+        self.conv_ini = nn.Conv3d(64, 64, kernel_size=1)
+        self.norm_ini = nn.InstanceNorm3d(64)
+        self.pool_ini = nn.MaxPool3d(kernel_size=2, stride=2)
+        
+        # Encoder path with DenseNet-style connectivity in each dense block
+        self.encoder1 = DenseBlock(64, 128, num_layers=2)
+        self.trans1 = TransitionLayer(320, 128)
+        
+        self.encoder2 = DenseBlock(128, 256, num_layers=2)
+        self.trans2 = TransitionLayer(640, 256)
+        
+        self.encoder3 = DenseBlock(256, 512, num_layers=2)
+        self.trans3 = TransitionLayer(1280, 512)
+        
+        self.encoder4 = DenseBlock(512, 512, num_layers=2)
+        self.trans4 = TransitionLayer(1536, 512)
+        
+        self.encoder5 = DenseBlock(512, 512, num_layers=2)
+        self.trans5 = TransitionLayer(1536, 512)
+        
+        # Bottleneck
+        self.bottleneck = DenseBlock(512, 512, num_layers=2)
+
+        # Decoder path
+        self.up1 = UpsampleLayer(1536, 512)
+        self.decoder1 = DenseBlock(1024, 512, num_layers=2)
+        
+        self.up2 = UpsampleLayer(2048, 512)
+        self.decoder2 = DenseBlock(1024, 512, num_layers=2)
+        
+        self.up3 = UpsampleLayer(2048, 512)
+        self.decoder3 = DenseBlock(1024,512, num_layers=2)
+        
+        self.up4 = UpsampleLayer(2048,256)
+        self.decoder4 = DenseBlock(512,256, num_layers=2)
+        
+        self.up5 = UpsampleLayer(1024, 128)
+        self.decoder5 = DenseBlock(256, 128, num_layers=2)
+
+        self.up6 = UpsampleLayer(512,64)
+
+        # Final convolution layer
+        self.final_conv = nn.Sequential(
+            nn.Conv3d(128, 64, kernel_size=3, padding =1),
+            nn.Conv3d(64, out_channels, kernel_size=3, padding=1),
+            nn.Tanh()
+        )
+
+    def forward(self, x):
+        # Initial convolution layers
+        x1 = self.init_conv(x)
+        
+        # Initial transition layer
+        x1 = self.conv_ini(x1)
+        x1_ini = self.norm_ini(x1)
+        x1 = self.pool_ini(x1_ini)
+
+        # Encoder path (store skip connections before each transition layer)
+        x2 = self.encoder1(x1)
+        x2, skip1 = self.trans1(x2)  # Take norm_out as skip
+
+        x3 = self.encoder2(x2)
+        x3, skip2 = self.trans2(x3)
+
+        x4 = self.encoder3(x3)
+        x4, skip3 = self.trans3(x4)
+
+        x5 = self.encoder4(x4)
+        x5, skip4 = self.trans4(x5)
+
+        x6 = self.encoder5(x5)
+        x6, skip5 = self.trans5(x6)
+
+        # Bottleneck
+        x_bottleneck = self.bottleneck(x6)
+
+        # Decoder path with skip connections applied after each upsampling layer
+        x7 = self.up1(x_bottleneck)
+        x7 = torch.cat([x7, skip5], dim=1)
+        x7 = self.decoder1(x7)
+
+        x8 = self.up2(x7)
+        x8 = torch.cat([x8, skip4], dim=1)
+        x8 = self.decoder2(x8)
+
+        x9 = self.up3(x8)
+        x9 = torch.cat([x9, skip3], dim=1)
+        x9 = self.decoder3(x9)
+
+        x10 = self.up4(x9)
+        x10 = torch.cat([x10, skip2], dim=1)
+        x10 = self.decoder4(x10)
+
+        x11 = self.up5(x10)
+        x11 = torch.cat([x11, skip1], dim=1)
+        x11 = self.decoder5(x11)
+
+        # Final output layer
+        x11 = self.up6(x11)
+        out = self.final_conv(torch.cat([x11, x1_ini], dim=1))
+        
+        return out
 
 # ------------------------------------------------------------
 # ResNetEncoder Class with KL-Divergence Constraint
@@ -189,9 +236,9 @@ class ResBlock(nn.Module):
         return out
 
 class ResNetEncoder(nn.Module):
-    def __init__(self, input_channels=1, latent_dim=512):
+    def __init__(self, in_channels=1, latent_dim=512):
         super(ResNetEncoder, self).__init__()
-        self.input_channels = input_channels
+        self.input_channels = in_channels
         self.latent_dim = latent_dim
 
         self.conv1 = nn.Conv3d(self.input_channels, 64, kernel_size=7, stride=2, padding=3)
@@ -211,7 +258,8 @@ class ResNetEncoder(nn.Module):
 
     def _make_layer(self, in_channels, out_channels, blocks, stride=1):
         layers = []
-        layers.append(ResBlock(in_channels, out_channels, stride, downsample=True))
+        downsample = (stride != 1) or (in_channels != out_channels)
+        layers.append(ResBlock(in_channels, out_channels, stride, downsample))
         for _ in range(1, blocks):
             layers.append(ResBlock(out_channels, out_channels))
         return nn.Sequential(*layers)
@@ -238,38 +286,54 @@ class ResNetEncoder(nn.Module):
 # Discriminator Class with Patch-Level Discrimination
 # ------------------------------------------------------------
 class Discriminator(nn.Module):
-    def __init__(self, input_channels=1):
+    def __init__(self, in_channels=1):
         super(Discriminator, self).__init__()
-        self.conv_block1 = self.convolution_block(input_channels, 32)
-        self.conv_block2 = self.convolution_block(32, 64)
-        self.conv_block3 = self.convolution_block(64, 128)
-        self.conv_block4 = self.convolution_block(128, 256)
+        # Convolutional blocks without pooling
+        self.conv_block1 = self.convolution_block(in_channels, 32, use_pool=True)
+        self.conv_block2 = self.convolution_block(32, 64, use_pool=True)
+        self.conv_block3 = self.convolution_block(64, 128, use_pool=True)
+        self.conv_block4 = self.convolution_block(128, 256, use_pool=False)
         self.final_conv = nn.Conv3d(256, 1, kernel_size=3, padding=1)
         self.sigmoid = nn.Sigmoid()
 
-    def convolution_block(self, in_channels, out_channels):
+    def convolution_block(self, in_channels, out_channels, use_pool):
         layers = [
             nn.Conv3d(in_channels, out_channels, kernel_size=3, padding=1),
             nn.BatchNorm3d(out_channels),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.MaxPool3d(kernel_size=2, stride=2)
         ]
+        if use_pool:
+            layers.append(nn.MaxPool3d(kernel_size=2, stride=2))
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        x = self.conv_block1(x)
-        x = self.conv_block2(x)
-        x = self.conv_block3(x)
-        x = self.conv_block4(x)
+        x = self.conv_block1(x)  # No pooling
+        x = self.conv_block2(x)  # Pooling
+        x = self.conv_block3(x)  # Pooling
+        x = self.conv_block4(x)  # No pooling
         x = self.final_conv(x)
         x = self.sigmoid(x)
         return x
 
 # ------------------------------------------------------------
-# BMGAN Class with Integrated Loss Functions
+# BMGAN Class with Integrated Loss Functions and Evaluation Metrics
 # ------------------------------------------------------------
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader
+from torchvision import models, transforms
+from torchvision.utils import save_image
+from torch.nn.functional import interpolate
+import os
+import tempfile
+from math import log10
+from sklearn.model_selection import train_test_split
+# Removed: from pytorch_msssim import ms_ssim  # Ensure you have this installed
+# Assume fid_score and CustomDataset are properly imported or defined elsewhere
+
 class BMGAN:
-    def __init__(self, generator, discriminator, encoder, lambda1=10.0, lambda2=0.5):
+    def __init__(self, generator, discriminator, encoder, lambda1=10.0, lambda2=1.0):
         self.generator = generator.to(device)
         self.discriminator = discriminator.to(device)
         self.encoder = encoder.to(device)
@@ -287,6 +351,9 @@ class BMGAN:
         self.mse_loss = nn.MSELoss()
         self.l1_loss = nn.L1Loss()
 
+        # **Added: Define Patch Size for the Patch-Based Discriminator**
+        self.patch_size = 32  # 32x32x32 patches
+
     def get_vgg_model(self):
         # Load the VGG16 model
         vgg = models.vgg16(weights=models.VGG16_Weights.IMAGENET1K_V1)
@@ -295,6 +362,32 @@ class BMGAN:
         for param in model.parameters():
             param.requires_grad = False
         return model
+
+    # **Added: Method to Extract Non-Overlapping 32x32x32 Patches**
+    def extract_patches(self, tensor, patch_size=32):
+        """
+        Extract non-overlapping patches from a 5D tensor.
+        Args:
+            tensor (torch.Tensor): Input tensor of shape [batch, channels, depth, height, width]
+            patch_size (int): Size of each patch (assumed cubic)
+        Returns:
+            patches (torch.Tensor): Extracted patches of shape [num_patches_total, channels, patch_size, patch_size, patch_size]
+        """
+        # Calculate the number of patches along each dimension
+        _, _, D, H, W = tensor.size()
+        num_patches_d = D // patch_size
+        num_patches_h = H // patch_size
+        num_patches_w = W // patch_size
+
+        # Use unfold to extract patches
+        patches = tensor.unfold(2, patch_size, patch_size)  # Depth
+        patches = patches.unfold(3, patch_size, patch_size)  # Height
+        patches = patches.unfold(4, patch_size, patch_size)  # Width
+
+        # Rearrange patches to [batch * num_patches_d * num_patches_h * num_patches_w, channels, patch_size, patch_size, patch_size]
+        patches = patches.contiguous().view(-1, tensor.size(1), patch_size, patch_size, patch_size)
+
+        return patches
 
     def perceptual_loss(self, y_true, y_pred):
         batch_size, channels, depth, height, width = y_true.size()
@@ -318,11 +411,6 @@ class BMGAN:
 
         return perceptual_loss
 
-    def l1_perceptual_loss(self, y_true, y_pred):
-        l1_loss = self.l1_loss(y_pred, y_true)
-        perceptual_loss = self.perceptual_loss(y_true, y_pred)
-        return l1_loss + self.lambda2 * perceptual_loss
-
     def kl_divergence_loss(self, z_mean, z_log_var):
         kl_loss = -0.5 * torch.mean(1 + z_log_var - z_mean.pow(2) - z_log_var.exp())
         return kl_loss
@@ -330,71 +418,290 @@ class BMGAN:
     def lsgan_loss(self, y_pred, y_true):
         return self.mse_loss(y_pred, y_true)
 
-    def train(self, mri_images, pet_images, epochs, batch_size):
-        dataset = CustomDataset(mri_images, pet_images)
-        dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    # Evaluation Metrics as per the paper's description
+    def compute_mae(self, real_pet, fake_pet):
+        """
+        Mean Absolute Error (MAE)
+        MAE = (1/N) * sum_{i=1}^N |R_PET(i) - S_PET(i)|
+        """
+        mae = torch.mean(torch.abs(real_pet - fake_pet)).item()
+        return mae
 
-        real_label = 1.0
-        fake_label = 0.0
+    def compute_psnr(self, real_pet, fake_pet):
+        """
+        Peak Signal-to-Noise Ratio (PSNR)
+        PSNR = 10 * log10 (MAX_I^2 / MSE)
+        Where MAX_I is the maximum possible pixel value (assuming 20 as in the paper)
+        """
+        mse = self.mse_loss(real_pet, fake_pet).item()
+        if mse == 0:
+            return float('inf')
+        max_I = 20.0  # As per the paper's formula
+        psnr = 10 * log10((max_I ** 2) / mse)
+        return psnr
+
+    
+    def save_images_for_fid(self, images, directory):
+        os.makedirs(directory, exist_ok=True)
+        transform = transforms.Compose([
+            transforms.Normalize(mean=[-1], std=[2]),  # Convert from [-1,1] to [0,1]
+        ])
+        for idx, img in enumerate(images):
+            img = transform(img.squeeze(0))  # Remove batch dimension and normalize
+            # Save each slice as an image
+            num_slices = img.size(0)
+            for slice_idx in range(num_slices):
+                slice_img = img[slice_idx, :, :].unsqueeze(0)  # Add channel dimension
+                save_image(slice_img, os.path.join(directory, f"{idx}_{slice_idx}.png"))
+
+    def train(self, mri_images, pet_images, epochs, batch_size):
+        # Split data into training and validation sets (80% training, 20% validation)
+        mri_train, mri_val, pet_train, pet_val = train_test_split(mri_images, pet_images, test_size=0.2, random_state=42)
+
+        # Create DataLoaders for training and validation
+        train_dataset = CustomDataset(mri_train, pet_train)
+        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+
+        val_dataset = CustomDataset(mri_val, pet_val)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
         for epoch in range(epochs):
-            for i, (real_mri, real_pet) in enumerate(dataloader):
+            # Set models to training mode
+            self.generator.train()
+            self.discriminator.train()
+            self.encoder.train()
+
+            total_d_loss = 0
+            total_g_loss = 0
+
+            # Training Loop
+            for i, (real_mri, real_pet) in enumerate(train_loader):
                 real_mri = real_mri.to(device)
                 real_pet = real_pet.to(device)
-
-                batch_size = real_mri.size(0)
+                current_batch_size = real_mri.size(0)
 
                 # ---------------------
                 #  Train Discriminator
                 # ---------------------
                 self.discriminator.zero_grad()
 
-                # Real PET images
-                output_real = self.discriminator(real_pet)
-                label_real = torch.full(output_real.size(), real_label, device=real_pet.device)
+                # **Modified: Extract Patches for Real Images**
+                real_patches = self.extract_patches(real_pet)  # Shape: [num_patches, channels, 32, 32, 32]
+                output_real = self.discriminator(real_patches)
+                label_real = torch.ones_like(output_real, device=real_pet.device)
                 d_loss_real = self.lsgan_loss(output_real, label_real)
-                d_loss_real.backward()
 
-                # Fake PET images
+                # **Modified: Extract Patches for Fake Images**
                 fake_pet = self.generator(real_mri)
-                output_fake = self.discriminator(fake_pet.detach())
-                label_fake = torch.full(output_fake.size(), fake_label, device=real_pet.device)
+                fake_patches = self.extract_patches(fake_pet.detach())
+                output_fake = self.discriminator(fake_patches)
+                label_fake = torch.zeros_like(output_fake, device=real_pet.device)
                 d_loss_fake = self.lsgan_loss(output_fake, label_fake)
-                d_loss_fake.backward()
 
-                d_loss = d_loss_real + d_loss_fake
+                # Total discriminator loss
+                d_loss = (d_loss_real + d_loss_fake) * 0.5
+                d_loss.backward()
                 self.optimizer_D.step()
 
                 # -----------------
                 #  Train Generator
                 # -----------------
                 self.generator.zero_grad()
-                self.encoder.zero_grad()
 
-                # GAN loss
-                output_fake = self.discriminator(fake_pet)
-                label_real = torch.full(output_fake.size(), real_label, device=real_pet.device)
-                g_gan_loss = self.lsgan_loss(output_fake, label_real)
+                # **Modified: Extract Patches for Fake Images (Again for Generator Training)**
+                # Note: Detach is not used here because we want gradients to flow through the generator
+                fake_pet = self.generator(real_mri)
+                fake_patches = self.extract_patches(fake_pet)
+                output_fake = self.discriminator(fake_patches)
+                label_real_gen = torch.ones_like(output_fake, device=real_pet.device)
+                g_gan_loss = self.lsgan_loss(output_fake, label_real_gen)
 
-                # L1 and Perceptual loss
-                l1_perc_loss = self.l1_perceptual_loss(real_pet, fake_pet)
+                # L1 loss
+                l1_loss = self.l1_loss(fake_pet, real_pet)
 
-                # KL divergence loss for real and fake PET
-                z_mean_real, z_log_var_real = self.encoder(real_pet)
-                z_mean_fake, z_log_var_fake = self.encoder(fake_pet)
-                kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
-                kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
-                kl_loss = kl_loss_real + kl_loss_fake
+                # Perceptual loss
+                perceptual_loss = self.perceptual_loss(real_pet, fake_pet)
 
                 # Total Generator loss
-                g_loss = g_gan_loss + self.lambda1 * l1_perc_loss + self.lambda2 * kl_loss
+                g_loss = g_gan_loss + self.lambda1 * l1_loss + self.lambda2 * perceptual_loss
                 g_loss.backward()
                 self.optimizer_G.step()
+
+                # -----------------
+                #  Train Encoder
+                # -----------------
+                self.encoder.zero_grad()
+
+                # KL divergence loss for real PET images (forward mapping)
+                z_mean_real, z_log_var_real = self.encoder(real_pet)
+                kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
+
+                # KL divergence loss for generated PET images (backward mapping)
+                z_mean_fake, z_log_var_fake = self.encoder(fake_pet.detach())
+                kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
+
+                # Total KL divergence loss
+                kl_loss = kl_loss_real*0.5 + kl_loss_fake*0.5
+                kl_loss.backward()
                 self.optimizer_E.step()
 
-                # Print losses
-                print(f"Epoch [{epoch+1}/{epochs}] Batch [{i+1}/{len(dataloader)}] "
-                      f"D Loss: {d_loss.item():.4f} G Loss: {g_loss.item():.4f}")
+                # Accumulate losses for printing
+                total_d_loss += d_loss.item()
+                total_g_loss += g_loss.item()
+
+            # Average losses per epoch
+            avg_d_loss = total_d_loss / len(train_loader)
+            avg_g_loss = total_g_loss / len(train_loader)
+
+            print(f"Epoch [{epoch+1}/{epochs}] Training D Loss: {avg_d_loss:.4f}, G Loss: {avg_g_loss:.4f}")
+
+            # ---------------------------
+            # Validation Step (no gradients)
+            # ---------------------------
+            self.generator.eval()  # Set generator to evaluation mode
+            self.discriminator.eval()
+            validation_loss = 0
+            total_mae = 0
+            total_psnr = 0
+            num_batches = 0
+
+            real_images_list = []
+            fake_images_list = []
+
+            with torch.no_grad():  # No gradient calculation for validation
+                for real_mri, real_pet in val_loader:
+                    real_mri = real_mri.to(device)
+                    real_pet = real_pet.to(device)
+
+                    # Generate fake PET images
+                    fake_pet = self.generator(real_mri)
+
+                    # **Modified: Extract Patches for Validation Loss Calculation**
+                    fake_patches = self.extract_patches(fake_pet)
+                    real_patches = self.extract_patches(real_pet)
+
+                    # Calculate validation loss (L1 Loss and Perceptual Loss)
+                    # Note: GAN loss is excluded during validation
+                    l1_loss = self.l1_loss(fake_pet, real_pet)
+                    perceptual_loss = self.perceptual_loss(real_pet, fake_pet)
+                    val_loss = self.lambda1*l1_loss + self.lambda2 * perceptual_loss  # Validation loss does not include GAN loss
+
+                    validation_loss += val_loss.item()
+
+                    # Compute MAE
+                    mae = self.compute_mae(real_pet, fake_pet)
+                    total_mae += mae
+
+                    # Compute PSNR
+                    psnr = self.compute_psnr(real_pet, fake_pet)
+                    total_psnr += psnr
+
+                    num_batches += 1
+
+                    # Collect images for FID computation
+                    real_images_list.append(real_pet)
+                    fake_images_list.append(fake_pet)
+
+            # Average validation metrics per epoch
+            validation_loss /= num_batches
+            avg_mae = total_mae / num_batches
+            avg_psnr = total_psnr / num_batches
+
+            print(f"Epoch [{epoch+1}/{epochs}] Validation Loss: {validation_loss:.4f}, MAE: {avg_mae:.4f}, PSNR: {avg_psnr:.2f} dB")
+
+            # ---------------------------
+            # Compute FID
+            # ---------------------------
+            # Save images to temporary directories
+            real_images_dir = os.path.join(tempfile.gettempdir(), f'real_images_epoch_{epoch+1}')
+            fake_images_dir = os.path.join(tempfile.gettempdir(), f'fake_images_epoch_{epoch+1}')
+
+            # Flatten the lists
+            real_images_flat = [img for batch in real_images_list for img in batch]
+            fake_images_flat = [img for batch in fake_images_list for img in batch]
+
+            # Save images
+            self.save_images_for_fid(real_images_flat, real_images_dir)
+            self.save_images_for_fid(fake_images_flat, fake_images_dir)
+
+            # Compute FID
+            fid_value = fid_score.calculate_fid_given_paths([real_images_dir, fake_images_dir], batch_size, device, dims=2048)
+
+            print(f"Epoch [{epoch+1}/{epochs}] FID: {fid_value:.4f}")
+
+            # **Optional: Clean up temporary directories to save space**
+            # import shutil
+            # shutil.rmtree(real_images_dir)
+            # shutil.rmtree(fake_images_dir)
+
+    # Add the evaluate method
+    def evaluate(self, mri_images, pet_images, batch_size):
+        # Create DataLoader for the test set
+        test_dataset = CustomDataset(mri_images, pet_images)
+        test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+        self.generator.eval()  # Set generator to evaluation mode
+        total_mae = 0
+        total_psnr = 0
+        num_batches = 0
+
+        real_images_list = []
+        fake_images_list = []
+
+        with torch.no_grad():
+            for real_mri, real_pet in test_loader:
+                real_mri = real_mri.to(device)
+                real_pet = real_pet.to(device)
+
+                # Generate fake PET images
+                fake_pet = self.generator(real_mri)
+
+                # Compute MAE
+                mae = self.compute_mae(real_pet, fake_pet)
+                total_mae += mae
+
+                # Compute PSNR
+                psnr = self.compute_psnr(real_pet, fake_pet)
+                total_psnr += psnr
+
+                num_batches += 1
+
+                # Collect images for FID computation
+                real_images_list.append(real_pet)
+                fake_images_list.append(fake_pet)
+
+        # Average metrics over the test set
+        avg_mae = total_mae / num_batches
+        avg_psnr = total_psnr / num_batches
+
+        print(f"\nTest Set Evaluation Metrics:")
+        print(f"MAE: {avg_mae:.4f}")
+        print(f"PSNR: {avg_psnr:.2f} dB")
+
+        # Compute FID
+        real_images_dir = os.path.join(tempfile.gettempdir(), 'real_images_test')
+        fake_images_dir = os.path.join(tempfile.gettempdir(), 'fake_images_test')
+
+        # Flatten the lists
+        real_images_flat = [img for batch in real_images_list for img in batch]
+        fake_images_flat = [img for batch in fake_images_list for img in batch]
+
+        # Save images
+        self.save_images_for_fid(real_images_flat, real_images_dir)
+        self.save_images_for_fid(fake_images_flat, fake_images_dir)
+
+        # Compute FID
+        fid_value = fid_score.calculate_fid_given_paths(
+            [real_images_dir, fake_images_dir], batch_size, device, dims=2048
+        )
+
+        print(f"FID: {fid_value:.4f}")
+
+
+        # Optionally, clean up the temporary directories
+        # import shutil
+        # shutil.rmtree(real_images_dir)
+        # shutil.rmtree(fake_images_dir)
 
 # ------------------------------------------------------------
 # Data Loading and Preprocessing Functions
@@ -463,7 +770,7 @@ if __name__ == '__main__':
 
     # Define task and experiment info
     task = 'cd'
-    info = 'experiment1'  # New parameter for the subfolder
+    info = 'trying2'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
@@ -477,22 +784,21 @@ if __name__ == '__main__':
     )
     print(f"Training set: {mri_train.shape[0]} samples")
     print(f"Testing set: {mri_gen.shape[0]} samples")
-
     # Initialize generator
     print("Initializing Generator")
-    generator = DenseUNetGenerator(input_channels=1, output_channels=1)
+    generator = DenseUNetGenerator(in_channels=1, out_channels=1)
     generator.to(device)
     print(generator)
-
+    
     # Initialize discriminator
     print("Initializing Discriminator")
-    discriminator = Discriminator(input_channels=1)
+    discriminator = Discriminator(in_channels=1)
     discriminator.to(device)
     print(discriminator)
-
+    
     # Initialize encoder
     print("Initializing Encoder")
-    encoder = ResNetEncoder(input_channels=1, latent_dim=512)
+    encoder = ResNetEncoder(in_channels=1, latent_dim=512)
     encoder.to(device)
     print(encoder)
 
@@ -502,15 +808,21 @@ if __name__ == '__main__':
 
     # Train the model
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=5, batch_size=1)
+    bmgan.train(mri_train, pet_train, epochs=250, batch_size=1)
+
+    # Evaluate the model on the test set
+    print("\nEvaluating the model on the test set...")
+    bmgan.evaluate(mri_gen, pet_gen, batch_size=1)
 
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
     output_dir_pet = f'gan/{task}/{info}/pet'
+    output_dir_real_pet = f'gan/{task}/{info}/real_pet'  # New directory for real PET images
 
     os.makedirs(output_dir_mri, exist_ok=True)
     os.makedirs(output_dir_pet, exist_ok=True)
-    print(f"Created directories: {output_dir_mri}, {output_dir_pet}")
+    os.makedirs(output_dir_real_pet, exist_ok=True)  # Create directory for real PET images
+    print(f"Created directories: {output_dir_mri}, {output_dir_pet}, {output_dir_real_pet}")
 
     # Predict PET images for the test MRI data
     print("Generating PET images for the test set...")
@@ -523,17 +835,17 @@ if __name__ == '__main__':
             generated_pet = generated_pet.cpu().numpy()
             generated_pet_images.append(generated_pet[0])
 
-    # Save the test MRI data and the generated PET images in their respective folders
-    print("Saving generated PET images and corresponding MRI scans...")
+    # Save the test MRI data, real PET images, and the generated PET images in their respective folders
+    print("Saving generated PET images, real PET images, and corresponding MRI scans...")
     for i in range(len(mri_gen)):
         mri_file_path = os.path.join(output_dir_mri, f'mri_{i}.nii.gz')
         pet_file_path = os.path.join(output_dir_pet, f'generated_pet_{i}.nii.gz')
+        real_pet_file_path = os.path.join(output_dir_real_pet, f'real_pet_{i}.nii.gz')  # Path for real PET image
 
-        # Save MRI and generated PET images
-        save_images(mri_gen[i][0], mri_file_path)  # Save MRI
-        save_images(generated_pet_images[i][0], pet_file_path)  # Save generated PET
+        # Save MRI, generated PET images, and real PET images
+        save_images(mri_gen[i][0], mri_file_path)              # Save MRI
+        save_images(generated_pet_images[i][0], pet_file_path) # Save generated PET
+        save_images(pet_gen[i][0], real_pet_file_path)         # Save real PET
 
     # Print confirmation
-    print(f"Saved {len(mri_gen)} MRI and corresponding generated PET images in 'gan/{task}/{info}'")
-
-
+    print(f"Saved {len(mri_gen)} MRI scans, generated PET images, and real PET images in 'gan/{task}/{info}'")
