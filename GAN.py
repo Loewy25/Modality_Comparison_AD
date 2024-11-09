@@ -447,16 +447,31 @@ class BMGAN:
         return psnr
 
     def compute_ms_ssim(self, real_pet, fake_pet):
-        """
+    """
         Multi-Scale Structural Similarity Index (MS-SSIM)
         """
         # Normalize images to [0, 1]
         real_pet = (real_pet - real_pet.min()) / (real_pet.max() - real_pet.min())
         fake_pet = (fake_pet - fake_pet.min()) / (fake_pet.max() - fake_pet.min())
-
+    
+        # Print shapes for debugging
+        print(f"Real PET shape: {real_pet.shape}")
+        print(f"Fake PET shape: {fake_pet.shape}")
+    
+        # Check if image size meets minimum requirement
+        min_size = 160
+        if real_pet.shape[-1] < min_size or real_pet.shape[-2] < min_size:
+            print(f"Error: Image size is too small for MS-SSIM calculation. Minimum size required is {min_size}.")
+            return None  # or handle the error as needed
+        
         # Compute MS-SSIM
-        ms_ssim_value = ms_ssim(real_pet, fake_pet, data_range=1.0)
-        return ms_ssim_value.item()
+        try:
+            ms_ssim_value = ms_ssim(real_pet, fake_pet, data_range=1.0)
+            return ms_ssim_value.item()
+        except AssertionError as e:
+            print("AssertionError encountered in ms_ssim calculation:", e)
+            return None
+
 
     def save_images_for_fid(self, images, directory):
         os.makedirs(directory, exist_ok=True)
