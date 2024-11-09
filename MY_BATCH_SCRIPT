@@ -4,7 +4,7 @@
 #SBATCH --job-name=test #Assign a descriptive job name
 
 #SBATCH -N 1                    # Request 1 node
-#SBATCH --mem=50G               # Request 400GB memory
+#SBATCH --mem=70G               # Request 400GB memory
 #SBATCH -t 30:50:00             # Set maximum time
 
 ##SBATCH --gres=gpu:1
@@ -24,7 +24,6 @@
 source /home/l.peiwang/miniconda3/etc/profile.d/conda.sh
 
 conda activate myenv
-pip install pytorch-msssim
 
 module load cuda
 module load cudnn
