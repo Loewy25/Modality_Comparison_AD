@@ -360,19 +360,6 @@ class BMGAN:
         # **Added: Define Patch Size for the Patch-Based Discriminator**
         self.patch_size = 32  # 32x32x32 patches
 
-        # Verify Discriminator parameters are on device
-        for name, param in self.discriminator.named_parameters():
-            print(f"Discriminator parameter '{name}' is on device: {param.device}")
-
-        # Run a dummy input test
-        dummy_input = torch.randn(1, 1, 32, 32, 32).to(device)
-        try:
-            dummy_output = self.discriminator(dummy_input)
-            print(f"Discriminator dummy output shape: {dummy_output.shape}")
-        except Exception as e:
-            print(f"Discriminator dummy input failed: {e}")
-            raise e
-
     def get_vgg_model(self):
         # Load the VGG16 model
         vgg = models.vgg16(weights=models.VGG16_Weights.IMAGENET1K_V1)
@@ -405,9 +392,6 @@ class BMGAN:
 
         # Rearrange patches to [batch * num_patches_d * num_patches_h * num_patches_w, channels, patch_size, patch_size, patch_size]
         patches = patches.contiguous().view(-1, tensor.size(1), patch_size, patch_size, patch_size)
-
-        # Debugging: Print patches shape
-        print(f"Extracted patches shape: {patches.shape}")
 
         return patches
 
@@ -480,9 +464,7 @@ class BMGAN:
             transforms.Normalize(mean=[-1], std=[2]),  # Convert from [-1,1] to [0,1]
         ])
         for idx, img in enumerate(images):
-            img = img.cpu()  # Ensure the image is on the CPU
             img = transform(img.squeeze(0))  # Remove batch dimension and normalize
-            img = img.clamp(0, 1)  # Ensure the values are within [0,1]
             # Save each slice as an image
             num_slices = img.size(0)
             for slice_idx in range(num_slices):
@@ -520,27 +502,17 @@ class BMGAN:
                 # ---------------------
                 self.discriminator.zero_grad()
 
-                # **Modified: Extract Patches for Real Images and Move to Device**
-                real_patches = self.extract_patches(real_pet).to(device)  # Shape: [num_patches, channels, 32, 32, 32]
-                print(f"Discriminator input device: {real_patches.device}, dtype: {real_patches.dtype}, shape: {real_patches.shape}")
-                try:
-                    output_real = self.discriminator(real_patches)
-                except Exception as e:
-                    print(f"Error during discriminator forward pass on real_patches: {e}")
-                    raise e
-                label_real = torch.ones_like(output_real, device=device)
+                # **Modified: Extract Patches for Real Images**
+                real_patches = self.extract_patches(real_pet)  # Shape: [num_patches, channels, 32, 32, 32]
+                output_real = self.discriminator(real_patches)
+                label_real = torch.ones_like(output_real, device=real_pet.device)
                 d_loss_real = self.lsgan_loss(output_real, label_real)
 
-                # **Modified: Extract Patches for Fake Images and Move to Device**
+                # **Modified: Extract Patches for Fake Images**
                 fake_pet = self.generator(real_mri)
-                fake_patches = self.extract_patches(fake_pet.detach()).to(device)
-                print(f"Discriminator fake_patches device: {fake_patches.device}, dtype: {fake_patches.dtype}, shape: {fake_patches.shape}")
-                try:
-                    output_fake = self.discriminator(fake_patches)
-                except Exception as e:
-                    print(f"Error during discriminator forward pass on fake_patches: {e}")
-                    raise e
-                label_fake = torch.zeros_like(output_fake, device=device)
+                fake_patches = self.extract_patches(fake_pet.detach())
+                output_fake = self.discriminator(fake_patches)
+                label_fake = torch.zeros_like(output_fake, device=real_pet.device)
                 d_loss_fake = self.lsgan_loss(output_fake, label_fake)
 
                 # Total discriminator loss
@@ -553,17 +525,13 @@ class BMGAN:
                 # -----------------
                 self.generator.zero_grad()
 
-                # **Modified: Extract Patches for Fake Images (Again for Generator Training) and Move to Device**
+                # **Modified: Extract Patches for Fake Images (Again for Generator Training)**
+                # Note: Detach is not used here because we want gradients to flow through the generator
                 fake_pet = self.generator(real_mri)
-                fake_patches = self.extract_patches(fake_pet).to(device)
-                print(f"Generator training fake_patches device: {fake_patches.device}, dtype: {fake_patches.dtype}, shape: {fake_patches.shape}")
-                try:
-                    output_fake_gen = self.discriminator(fake_patches)
-                except Exception as e:
-                    print(f"Error during discriminator forward pass on fake_patches (generator training): {e}")
-                    raise e
-                label_real_gen = torch.ones_like(output_fake_gen, device=device)
-                g_gan_loss = self.lsgan_loss(output_fake_gen, label_real_gen)
+                fake_patches = self.extract_patches(fake_pet)
+                output_fake = self.discriminator(fake_patches)
+                label_real_gen = torch.ones_like(output_fake, device=real_pet.device)
+                g_gan_loss = self.lsgan_loss(output_fake, label_real_gen)
 
                 # L1 loss
                 l1_loss = self.l1_loss(fake_pet, real_pet)
@@ -589,8 +557,8 @@ class BMGAN:
                 z_mean_fake, z_log_var_fake = self.encoder(fake_pet.detach())
                 kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
 
-                # Total KL divergence loss with scaling
-                kl_loss = kl_loss_real * 0.5 + kl_loss_fake * 0.5
+                # Total KL divergence loss
+                kl_loss = kl_loss_real*0.5 + kl_loss_fake*0.5
                 kl_loss.backward()
                 self.optimizer_E.step()
 
@@ -619,42 +587,42 @@ class BMGAN:
             fake_images_list = []
 
             with torch.no_grad():  # No gradient calculation for validation
-                for real_mri_val, real_pet_val in val_loader:
-                    real_mri_val = real_mri_val.to(device)
-                    real_pet_val = real_pet_val.to(device)
+                for real_mri, real_pet in val_loader:
+                    real_mri = real_mri.to(device)
+                    real_pet = real_pet.to(device)
 
                     # Generate fake PET images
-                    fake_pet_val = self.generator(real_mri_val)
+                    fake_pet = self.generator(real_mri)
 
-                    # **Modified: Extract Patches for Validation Loss Calculation and Move to Device**
-                    fake_patches_val = self.extract_patches(fake_pet_val).to(device)
-                    real_patches_val = self.extract_patches(real_pet_val).to(device)
+                    # **Modified: Extract Patches for Validation Loss Calculation**
+                    fake_patches = self.extract_patches(fake_pet)
+                    real_patches = self.extract_patches(real_pet)
 
                     # Calculate validation loss (L1 Loss and Perceptual Loss)
                     # Note: GAN loss is excluded during validation
-                    l1_loss_val = self.l1_loss(fake_pet_val, real_pet_val)
-                    perceptual_loss_val = self.perceptual_loss(real_pet_val, fake_pet_val)
-                    val_loss = self.lambda1 * l1_loss_val + self.lambda2 * perceptual_loss_val  # Validation loss does not include GAN loss
+                    l1_loss = self.l1_loss(fake_pet, real_pet)
+                    perceptual_loss = self.perceptual_loss(real_pet, fake_pet)
+                    val_loss = self.lambda1*l1_loss + self.lambda2 * perceptual_loss  # Validation loss does not include GAN loss
 
                     validation_loss += val_loss.item()
 
                     # Compute MAE
-                    mae = self.compute_mae(real_pet_val, fake_pet_val)
+                    mae = self.compute_mae(real_pet, fake_pet)
                     total_mae += mae
 
                     # Compute PSNR
-                    psnr = self.compute_psnr(real_pet_val, fake_pet_val)
+                    psnr = self.compute_psnr(real_pet, fake_pet)
                     total_psnr += psnr
 
                     # Compute MS-SSIM
-                    ms_ssim_value = self.compute_ms_ssim(real_pet_val, fake_pet_val)
+                    ms_ssim_value = self.compute_ms_ssim(real_pet, fake_pet)
                     total_ms_ssim += ms_ssim_value
 
                     num_batches += 1
 
-                    # Collect images for FID computation (ensure on CPU)
-                    real_images_list.append(real_pet_val.cpu())
-                    fake_images_list.append(fake_pet_val.cpu())
+                    # Collect images for FID computation
+                    real_images_list.append(real_pet)
+                    fake_images_list.append(fake_pet)
 
             # Average validation metrics per epoch
             validation_loss /= num_batches
@@ -680,17 +648,14 @@ class BMGAN:
             self.save_images_for_fid(fake_images_flat, fake_images_dir)
 
             # Compute FID
-            try:
-                fid_value = fid_score.calculate_fid_given_paths([real_images_dir, fake_images_dir], batch_size, device, dims=2048)
-                print(f"Epoch [{epoch+1}/{epochs}] FID: {fid_value:.4f}")
-            except Exception as e:
-                print(f"Error computing FID: {e}")
+            fid_value = fid_score.calculate_fid_given_paths([real_images_dir, fake_images_dir], batch_size, device, dims=2048)
+
+            print(f"Epoch [{epoch+1}/{epochs}] FID: {fid_value:.4f}")
 
             # **Optional: Clean up temporary directories to save space**
             # import shutil
             # shutil.rmtree(real_images_dir)
             # shutil.rmtree(fake_images_dir)
-
 
     # Add the evaluate method
     def evaluate(self, mri_images, pet_images, batch_size):
