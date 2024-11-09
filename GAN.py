@@ -472,106 +472,105 @@ class BMGAN:
                 save_image(slice_img, os.path.join(directory, f"{idx}_{slice_idx}.png"))
 
     def train(self, mri_images, pet_images, epochs, batch_size):
-        # Split data into training and validation sets (80% training, 20% validation)
+    # Split data into training and validation sets (80% training, 20% validation)
         mri_train, mri_val, pet_train, pet_val = train_test_split(mri_images, pet_images, test_size=0.2, random_state=42)
-
+    
         # Create DataLoaders for training and validation
         train_dataset = CustomDataset(mri_train, pet_train)
         train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-
+    
         val_dataset = CustomDataset(mri_val, pet_val)
         val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-
+    
         for epoch in range(epochs):
             # Set models to training mode
             self.generator.train()
             self.discriminator.train()
             self.encoder.train()
-
+    
             total_d_loss = 0
             total_g_loss = 0
-
+    
             # Training Loop
             for i, (real_mri, real_pet) in enumerate(train_loader):
                 real_mri = real_mri.to(device)
                 real_pet = real_pet.to(device)
                 current_batch_size = real_mri.size(0)
-
+    
                 # ---------------------
                 #  Train Discriminator
                 # ---------------------
                 self.discriminator.zero_grad()
-
-                # **Modified: Extract Patches for Real Images**
-                real_patches = self.extract_patches(real_pet)  # Shape: [num_patches, channels, 32, 32, 32]
+    
+                # **Modified: Extract Patches for Real Images and Move to Device**
+                real_patches = self.extract_patches(real_pet).to(device)  # Shape: [num_patches, channels, 32, 32, 32]
                 output_real = self.discriminator(real_patches)
-                label_real = torch.ones_like(output_real, device=real_pet.device)
+                label_real = torch.ones_like(output_real, device=device)
                 d_loss_real = self.lsgan_loss(output_real, label_real)
-
-                # **Modified: Extract Patches for Fake Images**
+    
+                # **Modified: Extract Patches for Fake Images and Move to Device**
                 fake_pet = self.generator(real_mri)
-                fake_patches = self.extract_patches(fake_pet.detach())
+                fake_patches = self.extract_patches(fake_pet.detach()).to(device)
                 output_fake = self.discriminator(fake_patches)
-                label_fake = torch.zeros_like(output_fake, device=real_pet.device)
+                label_fake = torch.zeros_like(output_fake, device=device)
                 d_loss_fake = self.lsgan_loss(output_fake, label_fake)
-
+    
                 # Total discriminator loss
                 d_loss = (d_loss_real + d_loss_fake) * 0.5
                 d_loss.backward()
                 self.optimizer_D.step()
-
+    
                 # -----------------
                 #  Train Generator
                 # -----------------
                 self.generator.zero_grad()
-
-                # **Modified: Extract Patches for Fake Images (Again for Generator Training)**
-                # Note: Detach is not used here because we want gradients to flow through the generator
+    
+                # **Modified: Extract Patches for Fake Images (Again for Generator Training) and Move to Device**
                 fake_pet = self.generator(real_mri)
-                fake_patches = self.extract_patches(fake_pet)
+                fake_patches = self.extract_patches(fake_pet).to(device)
                 output_fake = self.discriminator(fake_patches)
-                label_real_gen = torch.ones_like(output_fake, device=real_pet.device)
+                label_real_gen = torch.ones_like(output_fake, device=device)
                 g_gan_loss = self.lsgan_loss(output_fake, label_real_gen)
-
+    
                 # L1 loss
                 l1_loss = self.l1_loss(fake_pet, real_pet)
-
+    
                 # Perceptual loss
                 perceptual_loss = self.perceptual_loss(real_pet, fake_pet)
-
+    
                 # Total Generator loss
                 g_loss = g_gan_loss + self.lambda1 * l1_loss + self.lambda2 * perceptual_loss
                 g_loss.backward()
                 self.optimizer_G.step()
-
+    
                 # -----------------
                 #  Train Encoder
                 # -----------------
                 self.encoder.zero_grad()
-
+    
                 # KL divergence loss for real PET images (forward mapping)
                 z_mean_real, z_log_var_real = self.encoder(real_pet)
                 kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
-
+    
                 # KL divergence loss for generated PET images (backward mapping)
                 z_mean_fake, z_log_var_fake = self.encoder(fake_pet.detach())
                 kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
-
-                # Total KL divergence loss
-                kl_loss = kl_loss_real*0.5 + kl_loss_fake*0.5
+    
+                # Total KL divergence loss with scaling
+                kl_loss = kl_loss_real * 0.5 + kl_loss_fake * 0.5
                 kl_loss.backward()
                 self.optimizer_E.step()
-
+    
                 # Accumulate losses for printing
                 total_d_loss += d_loss.item()
                 total_g_loss += g_loss.item()
-
+    
             # Average losses per epoch
             avg_d_loss = total_d_loss / len(train_loader)
             avg_g_loss = total_g_loss / len(train_loader)
-
+    
             print(f"Epoch [{epoch+1}/{epochs}] Training D Loss: {avg_d_loss:.4f}, G Loss: {avg_g_loss:.4f}")
-
+    
             # ---------------------------
             # Validation Step (no gradients)
             # ---------------------------
@@ -582,76 +581,76 @@ class BMGAN:
             total_psnr = 0
             total_ms_ssim = 0
             num_batches = 0
-
+    
             real_images_list = []
             fake_images_list = []
-
+    
             with torch.no_grad():  # No gradient calculation for validation
                 for real_mri, real_pet in val_loader:
                     real_mri = real_mri.to(device)
                     real_pet = real_pet.to(device)
-
+    
                     # Generate fake PET images
                     fake_pet = self.generator(real_mri)
-
-                    # **Modified: Extract Patches for Validation Loss Calculation**
-                    fake_patches = self.extract_patches(fake_pet)
-                    real_patches = self.extract_patches(real_pet)
-
+    
+                    # **Modified: Extract Patches for Validation Loss Calculation and Move to Device**
+                    fake_patches = self.extract_patches(fake_pet).to(device)
+                    real_patches = self.extract_patches(real_pet).to(device)
+    
                     # Calculate validation loss (L1 Loss and Perceptual Loss)
                     # Note: GAN loss is excluded during validation
                     l1_loss = self.l1_loss(fake_pet, real_pet)
                     perceptual_loss = self.perceptual_loss(real_pet, fake_pet)
-                    val_loss = self.lambda1*l1_loss + self.lambda2 * perceptual_loss  # Validation loss does not include GAN loss
-
+                    val_loss = self.lambda1 * l1_loss + self.lambda2 * perceptual_loss  # Validation loss does not include GAN loss
+    
                     validation_loss += val_loss.item()
-
+    
                     # Compute MAE
                     mae = self.compute_mae(real_pet, fake_pet)
                     total_mae += mae
-
+    
                     # Compute PSNR
                     psnr = self.compute_psnr(real_pet, fake_pet)
                     total_psnr += psnr
-
+    
                     # Compute MS-SSIM
                     ms_ssim_value = self.compute_ms_ssim(real_pet, fake_pet)
                     total_ms_ssim += ms_ssim_value
-
+    
                     num_batches += 1
-
-                    # Collect images for FID computation
-                    real_images_list.append(real_pet)
-                    fake_images_list.append(fake_pet)
-
+    
+                    # Collect images for FID computation (ensure on CPU)
+                    real_images_list.append(real_pet.cpu())
+                    fake_images_list.append(fake_pet.cpu())
+    
             # Average validation metrics per epoch
             validation_loss /= num_batches
             avg_mae = total_mae / num_batches
             avg_psnr = total_psnr / num_batches
             avg_ms_ssim = total_ms_ssim / num_batches
-
+    
             print(f"Epoch [{epoch+1}/{epochs}] Validation Loss: {validation_loss:.4f}, MAE: {avg_mae:.4f}, PSNR: {avg_psnr:.2f} dB, MS-SSIM: {avg_ms_ssim:.4f}")
-
+    
             # ---------------------------
             # Compute FID
             # ---------------------------
             # Save images to temporary directories
             real_images_dir = os.path.join(tempfile.gettempdir(), f'real_images_epoch_{epoch+1}')
             fake_images_dir = os.path.join(tempfile.gettempdir(), f'fake_images_epoch_{epoch+1}')
-
+    
             # Flatten the lists
             real_images_flat = [img for batch in real_images_list for img in batch]
             fake_images_flat = [img for batch in fake_images_list for img in batch]
-
+    
             # Save images
             self.save_images_for_fid(real_images_flat, real_images_dir)
             self.save_images_for_fid(fake_images_flat, fake_images_dir)
-
+    
             # Compute FID
             fid_value = fid_score.calculate_fid_given_paths([real_images_dir, fake_images_dir], batch_size, device, dims=2048)
-
+    
             print(f"Epoch [{epoch+1}/{epochs}] FID: {fid_value:.4f}")
-
+    
             # **Optional: Clean up temporary directories to save space**
             # import shutil
             # shutil.rmtree(real_images_dir)
