@@ -47,7 +47,7 @@ def match_mri_labels(original_mri_data, original_labels, gan_mri_paths, masker):
     assigned_labels = []
     for gan_mri_path in gan_mri_paths:
         # Load and preprocess the GAN-saved MRI image
-        gan_img = nib.load(gan_mri_path).get_fdata()
+        gan_img = nib.load(gan_mri_path)
         gan_masked = masker.transform(gan_img).flatten()
         
         # Find the index where the original MRI data matches the GAN MRI data
