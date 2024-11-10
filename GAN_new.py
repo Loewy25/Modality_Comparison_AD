@@ -15,6 +15,7 @@ import torchvision.transforms as transforms
 from torchvision.utils import save_image
 import tempfile
 from pytorch_fid import fid_score
+import matplotlib.pyplot as plt  # Added for plotting
 
 # Import data loading functions (Ensure these are correctly implemented)
 from data_loading import generate_data_path_less, generate, binarylabel
@@ -294,7 +295,8 @@ class Discriminator(nn.Module):
         self.conv_block3 = self.convolution_block(64, 128, use_pool=True)
         self.conv_block4 = self.convolution_block(128, 256, use_pool=False)
         self.final_conv = nn.Conv3d(256, 1, kernel_size=3, padding=1)
-        self.sigmoid = nn.Sigmoid()
+        # Removed the sigmoid activation for LSGAN
+        # self.sigmoid = nn.Sigmoid()
 
     def convolution_block(self, in_channels, out_channels, use_pool):
         layers = [
@@ -312,7 +314,8 @@ class Discriminator(nn.Module):
         x = self.conv_block3(x)  # Pooling
         x = self.conv_block4(x)  # No pooling
         x = self.final_conv(x)
-        x = self.sigmoid(x)
+        # Removed the sigmoid activation
+        # x = self.sigmoid(x)
         return x
 
 # ------------------------------------------------------------
@@ -329,11 +332,9 @@ import os
 import tempfile
 from math import log10
 from sklearn.model_selection import train_test_split
-# Removed: from pytorch_msssim import ms_ssim  # Ensure you have this installed
-# Assume fid_score and CustomDataset are properly imported or defined elsewhere
 
 class BMGAN:
-    def __init__(self, generator, discriminator, encoder, lambda1=10.0, lambda2=1.0):
+    def __init__(self, generator, discriminator, encoder, lambda1=5.0, lambda2=1.0):
         self.generator = generator.to(device)
         self.discriminator = discriminator.to(device)
         self.encoder = encoder.to(device)
@@ -344,14 +345,14 @@ class BMGAN:
 
         # Define optimizers
         self.optimizer_G = optim.Adam(self.generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
-        self.optimizer_D = optim.Adam(self.discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+        self.optimizer_D = optim.Adam(self.discriminator.parameters(), lr=0.00005, betas=(0.5, 0.999))
         self.optimizer_E = optim.Adam(self.encoder.parameters(), lr=0.0002, betas=(0.5, 0.999))
 
         # Define loss functions
         self.mse_loss = nn.MSELoss()
         self.l1_loss = nn.L1Loss()
 
-        # **Added: Define Patch Size for the Patch-Based Discriminator**
+        # Define Patch Size for the Patch-Based Discriminator
         self.patch_size = 32  # 32x32x32 patches
 
     def get_vgg_model(self):
@@ -363,7 +364,7 @@ class BMGAN:
             param.requires_grad = False
         return model
 
-    # **Added: Method to Extract Non-Overlapping 32x32x32 Patches**
+    # Method to Extract Non-Overlapping 32x32x32 Patches
     def extract_patches(self, tensor, patch_size=32):
         """
         Extract non-overlapping patches from a 5D tensor.
@@ -440,7 +441,6 @@ class BMGAN:
         psnr = 10 * log10((max_I ** 2) / mse)
         return psnr
 
-    
     def save_images_for_fid(self, images, directory):
         os.makedirs(directory, exist_ok=True)
         transform = transforms.Compose([
@@ -454,7 +454,15 @@ class BMGAN:
                 slice_img = img[slice_idx, :, :].unsqueeze(0)  # Add channel dimension
                 save_image(slice_img, os.path.join(directory, f"{idx}_{slice_idx}.png"))
 
-    def train(self, mri_images, pet_images, epochs, batch_size):
+    def train(self, mri_images, pet_images, epochs, batch_size, output_dir):
+        # Early stopping parameters
+        best_validation_loss = float('inf')
+        epochs_no_improve = 0
+        patience = 10  # Number of epochs to wait for improvement
+        training_losses = []
+        validation_losses = []
+        best_generator_state_dict = None
+
         # Split data into training and validation sets (80% training, 20% validation)
         mri_train, mri_val, pet_train, pet_val = train_test_split(mri_images, pet_images, test_size=0.2, random_state=42)
 
@@ -485,17 +493,17 @@ class BMGAN:
                 # ---------------------
                 self.discriminator.zero_grad()
 
-                # **Modified: Extract Patches for Real Images**
+                # Extract Patches for Real Images
                 real_patches = self.extract_patches(real_pet)  # Shape: [num_patches, channels, 32, 32, 32]
                 output_real = self.discriminator(real_patches)
-                label_real = torch.ones_like(output_real, device=real_pet.device)
+                label_real = torch.full_like(output_real, 0.9, device=real_pet.device)  # Label smoothing
                 d_loss_real = self.lsgan_loss(output_real, label_real)
 
-                # **Modified: Extract Patches for Fake Images**
+                # Extract Patches for Fake Images
                 fake_pet = self.generator(real_mri)
                 fake_patches = self.extract_patches(fake_pet.detach())
                 output_fake = self.discriminator(fake_patches)
-                label_fake = torch.zeros_like(output_fake, device=real_pet.device)
+                label_fake = torch.full_like(output_fake, 0.1, device=real_pet.device)  # Label smoothing
                 d_loss_fake = self.lsgan_loss(output_fake, label_fake)
 
                 # Total discriminator loss
@@ -508,12 +516,11 @@ class BMGAN:
                 # -----------------
                 self.generator.zero_grad()
 
-                # **Modified: Extract Patches for Fake Images (Again for Generator Training)**
-                # Note: Detach is not used here because we want gradients to flow through the generator
+                # Extract Patches for Fake Images (Again for Generator Training)
                 fake_pet = self.generator(real_mri)
                 fake_patches = self.extract_patches(fake_pet)
                 output_fake = self.discriminator(fake_patches)
-                label_real_gen = torch.ones_like(output_fake, device=real_pet.device)
+                label_real_gen = torch.full_like(output_fake, 0.9, device=real_pet.device)  # Label smoothing
                 g_gan_loss = self.lsgan_loss(output_fake, label_real_gen)
 
                 # L1 loss
@@ -552,6 +559,7 @@ class BMGAN:
             # Average losses per epoch
             avg_d_loss = total_d_loss / len(train_loader)
             avg_g_loss = total_g_loss / len(train_loader)
+            training_losses.append(avg_g_loss)  # Record training loss
 
             print(f"Epoch [{epoch+1}/{epochs}] Training D Loss: {avg_d_loss:.4f}, G Loss: {avg_g_loss:.4f}")
 
@@ -576,12 +584,7 @@ class BMGAN:
                     # Generate fake PET images
                     fake_pet = self.generator(real_mri)
 
-                    # **Modified: Extract Patches for Validation Loss Calculation**
-                    fake_patches = self.extract_patches(fake_pet)
-                    real_patches = self.extract_patches(real_pet)
-
                     # Calculate validation loss (L1 Loss and Perceptual Loss)
-                    # Note: GAN loss is excluded during validation
                     l1_loss = self.l1_loss(fake_pet, real_pet)
                     perceptual_loss = self.perceptual_loss(real_pet, fake_pet)
                     val_loss = self.lambda1*l1_loss + self.lambda2 * perceptual_loss  # Validation loss does not include GAN loss
@@ -604,10 +607,23 @@ class BMGAN:
 
             # Average validation metrics per epoch
             validation_loss /= num_batches
+            validation_losses.append(validation_loss)  # Record validation loss
             avg_mae = total_mae / num_batches
             avg_psnr = total_psnr / num_batches
 
             print(f"Epoch [{epoch+1}/{epochs}] Validation Loss: {validation_loss:.4f}, MAE: {avg_mae:.4f}, PSNR: {avg_psnr:.2f} dB")
+
+            # Early Stopping Check
+            if validation_loss < best_validation_loss:
+                best_validation_loss = validation_loss
+                epochs_no_improve = 0
+                # Save the best model weights
+                best_generator_state_dict = self.generator.state_dict()
+            else:
+                epochs_no_improve += 1
+                if epochs_no_improve >= patience:
+                    print("Early stopping triggered")
+                    break  # Exit the training loop
 
             # ---------------------------
             # Compute FID
@@ -629,10 +645,21 @@ class BMGAN:
 
             print(f"Epoch [{epoch+1}/{epochs}] FID: {fid_value:.4f}")
 
-            # **Optional: Clean up temporary directories to save space**
-            # import shutil
-            # shutil.rmtree(real_images_dir)
-            # shutil.rmtree(fake_images_dir)
+        # Load the best model weights after training
+        if best_generator_state_dict is not None:
+            self.generator.load_state_dict(best_generator_state_dict)
+            print("Loaded best model weights based on validation loss.")
+
+        # Plot and save the training and validation loss curves
+        plt.figure()
+        plt.plot(training_losses, label='Training Loss')
+        plt.plot(validation_losses, label='Validation Loss')
+        plt.xlabel('Epochs')
+        plt.ylabel('Loss')
+        plt.legend()
+        plt.title('Training and Validation Losses over Epochs')
+        plt.savefig(os.path.join(output_dir, 'loss_curve.png'))
+        plt.close()
 
     # Add the evaluate method
     def evaluate(self, mri_images, pet_images, batch_size):
@@ -660,192 +687,5 @@ class BMGAN:
                 mae = self.compute_mae(real_pet, fake_pet)
                 total_mae += mae
 
-                # Compute PSNR
-                psnr = self.compute_psnr(real_pet, fake_pet)
-                total_psnr += psnr
+                #
 
-                num_batches += 1
-
-                # Collect images for FID computation
-                real_images_list.append(real_pet)
-                fake_images_list.append(fake_pet)
-
-        # Average metrics over the test set
-        avg_mae = total_mae / num_batches
-        avg_psnr = total_psnr / num_batches
-
-        print(f"\nTest Set Evaluation Metrics:")
-        print(f"MAE: {avg_mae:.4f}")
-        print(f"PSNR: {avg_psnr:.2f} dB")
-
-        # Compute FID
-        real_images_dir = os.path.join(tempfile.gettempdir(), 'real_images_test')
-        fake_images_dir = os.path.join(tempfile.gettempdir(), 'fake_images_test')
-
-        # Flatten the lists
-        real_images_flat = [img for batch in real_images_list for img in batch]
-        fake_images_flat = [img for batch in fake_images_list for img in batch]
-
-        # Save images
-        self.save_images_for_fid(real_images_flat, real_images_dir)
-        self.save_images_for_fid(fake_images_flat, fake_images_dir)
-
-        # Compute FID
-        fid_value = fid_score.calculate_fid_given_paths(
-            [real_images_dir, fake_images_dir], batch_size, device, dims=2048
-        )
-
-        print(f"FID: {fid_value:.4f}")
-
-
-        # Optionally, clean up the temporary directories
-        # import shutil
-        # shutil.rmtree(real_images_dir)
-        # shutil.rmtree(fake_images_dir)
-
-# ------------------------------------------------------------
-# Data Loading and Preprocessing Functions
-# ------------------------------------------------------------
-def load_mri_pet_data(task):
-    """
-    Load and preprocess MRI and PET data.
-    Args:
-        task (str): Task identifier.
-    Returns:
-        Tuple of numpy arrays: (mri_data, pet_data)
-    """
-    images_pet, images_mri, labels = generate_data_path_less()
-    pet_data, label = generate(images_pet, labels, task)
-    mri_data, label = generate(images_mri, labels, task)
-
-    mri_resized = []
-    pet_resized = []
-
-    for mri_path, pet_path in zip(mri_data, pet_data):
-        mri_img = nib.load(mri_path).get_fdata()
-        pet_img = nib.load(pet_path).get_fdata()
-        mri_img = zscore(mri_img, axis=None)
-        pet_img = zscore(pet_img, axis=None)
-        mri_resized.append(resize_image(mri_img, (128, 128, 128)))
-        pet_resized.append(resize_image(pet_img, (128, 128, 128)))
-
-    return np.expand_dims(np.array(mri_resized), 1), np.expand_dims(np.array(pet_resized), 1)
-
-def resize_image(image, target_shape):
-    """
-    Resize a 3D image to the target shape using zoom.
-    Args:
-        image (numpy.ndarray): 3D image.
-        target_shape (tuple): Desired shape.
-    Returns:
-        numpy.ndarray: Resized image.
-    """
-    zoom_factors = [target_shape[i] / image.shape[i] for i in range(3)]
-    return zoom(image, zoom_factors, order=1)
-
-# ------------------------------------------------------------
-# Utility Function to Save Images
-# ------------------------------------------------------------
-def save_images(image, file_path):
-    """
-    Save a 3D image as a NIfTI file.
-    Args:
-        image (numpy.ndarray): 3D image.
-        file_path (str): Destination file path.
-    """
-    nib.save(nib.Nifti1Image(image, np.eye(4)), file_path)
-
-# ------------------------------------------------------------
-# Main Function
-# ------------------------------------------------------------
-if __name__ == '__main__':
-
-    # Check for available GPUs
-    if torch.cuda.is_available():
-        device = torch.device('cuda')
-        print("Using GPU:", torch.cuda.get_device_name(0))
-    else:
-        device = torch.device('cpu')
-        print("Using CPU")
-
-    # Define task and experiment info
-    task = 'cd'
-    info = 'trying2'  # New parameter for the subfolder
-
-    # Load MRI and PET data
-    print("Loading MRI and PET data...")
-    mri_data, pet_data = load_mri_pet_data(task)
-    print(f"Loaded {mri_data.shape[0]} MRI and PET image pairs.")
-
-    # Split data into training (2/3) and test (1/3)
-    print("Splitting data into training and testing sets...")
-    mri_train, mri_gen, pet_train, pet_gen = train_test_split(
-        mri_data, pet_data, test_size=0.33, random_state=42
-    )
-    print(f"Training set: {mri_train.shape[0]} samples")
-    print(f"Testing set: {mri_gen.shape[0]} samples")
-    # Initialize generator
-    print("Initializing Generator")
-    generator = DenseUNetGenerator(in_channels=1, out_channels=1)
-    generator.to(device)
-    print(generator)
-    
-    # Initialize discriminator
-    print("Initializing Discriminator")
-    discriminator = Discriminator(in_channels=1)
-    discriminator.to(device)
-    print(discriminator)
-    
-    # Initialize encoder
-    print("Initializing Encoder")
-    encoder = ResNetEncoder(in_channels=1, latent_dim=512)
-    encoder.to(device)
-    print(encoder)
-
-    # Initialize BMGAN model
-    print("Building BMGAN model...")
-    bmgan = BMGAN(generator, discriminator, encoder)
-
-    # Train the model
-    print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=250, batch_size=1)
-
-    # Evaluate the model on the test set
-    print("\nEvaluating the model on the test set...")
-    bmgan.evaluate(mri_gen, pet_gen, batch_size=1)
-
-    # Create directories to store the results
-    output_dir_mri = f'gan/{task}/{info}/mri'
-    output_dir_pet = f'gan/{task}/{info}/pet'
-    output_dir_real_pet = f'gan/{task}/{info}/real_pet'  # New directory for real PET images
-
-    os.makedirs(output_dir_mri, exist_ok=True)
-    os.makedirs(output_dir_pet, exist_ok=True)
-    os.makedirs(output_dir_real_pet, exist_ok=True)  # Create directory for real PET images
-    print(f"Created directories: {output_dir_mri}, {output_dir_pet}, {output_dir_real_pet}")
-
-    # Predict PET images for the test MRI data
-    print("Generating PET images for the test set...")
-    generator.eval()
-    with torch.no_grad():
-        generated_pet_images = []
-        for mri in mri_gen:
-            mri_tensor = torch.FloatTensor(mri).unsqueeze(0).to(device)
-            generated_pet = generator(mri_tensor)
-            generated_pet = generated_pet.cpu().numpy()
-            generated_pet_images.append(generated_pet[0])
-
-    # Save the test MRI data, real PET images, and the generated PET images in their respective folders
-    print("Saving generated PET images, real PET images, and corresponding MRI scans...")
-    for i in range(len(mri_gen)):
-        mri_file_path = os.path.join(output_dir_mri, f'mri_{i}.nii.gz')
-        pet_file_path = os.path.join(output_dir_pet, f'generated_pet_{i}.nii.gz')
-        real_pet_file_path = os.path.join(output_dir_real_pet, f'real_pet_{i}.nii.gz')  # Path for real PET image
-
-        # Save MRI, generated PET images, and real PET images
-        save_images(mri_gen[i][0], mri_file_path)              # Save MRI
-        save_images(generated_pet_images[i][0], pet_file_path) # Save generated PET
-        save_images(pet_gen[i][0], real_pet_file_path)         # Save real PET
-
-    # Print confirmation
-    print(f"Saved {len(mri_gen)} MRI scans, generated PET images, and real PET images in 'gan/{task}/{info}'")
