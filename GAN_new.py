@@ -791,7 +791,7 @@ if __name__ == '__main__':
 
     # Define task and experiment info
     task = 'cd'
-    info = 'puretest'  # New parameter for the subfolder
+    info = 'batch2'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
