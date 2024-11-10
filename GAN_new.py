@@ -687,5 +687,188 @@ class BMGAN:
                 mae = self.compute_mae(real_pet, fake_pet)
                 total_mae += mae
 
-                #
+                # Compute PSNR
+                psnr = self.compute_psnr(real_pet, fake_pet)
+                total_psnr += psnr
 
+                num_batches += 1
+
+                # Collect images for FID computation
+                real_images_list.append(real_pet)
+                fake_images_list.append(fake_pet)
+
+        # Average metrics over the test set
+        avg_mae = total_mae / num_batches
+        avg_psnr = total_psnr / num_batches
+
+        print(f"\nTest Set Evaluation Metrics:")
+        print(f"MAE: {avg_mae:.4f}")
+        print(f"PSNR: {avg_psnr:.2f} dB")
+
+        # Compute FID
+        real_images_dir = os.path.join(tempfile.gettempdir(), 'real_images_test')
+        fake_images_dir = os.path.join(tempfile.gettempdir(), 'fake_images_test')
+
+        # Flatten the lists
+        real_images_flat = [img for batch in real_images_list for img in batch]
+        fake_images_flat = [img for batch in fake_images_list for img in batch]
+
+        # Save images
+        self.save_images_for_fid(real_images_flat, real_images_dir)
+        self.save_images_for_fid(fake_images_flat, fake_images_dir)
+
+        # Compute FID
+        fid_value = fid_score.calculate_fid_given_paths(
+            [real_images_dir, fake_images_dir], batch_size, device, dims=2048
+        )
+
+        print(f"FID: {fid_value:.4f}")
+
+# ------------------------------------------------------------
+# Data Loading and Preprocessing Functions
+# ------------------------------------------------------------
+def load_mri_pet_data(task):
+    """
+    Load and preprocess MRI and PET data.
+    Args:
+        task (str): Task identifier.
+    Returns:
+        Tuple of numpy arrays: (mri_data, pet_data)
+    """
+    images_pet, images_mri, labels = generate_data_path_less()
+    pet_data, label = generate(images_pet, labels, task)
+    mri_data, label = generate(images_mri, labels, task)
+
+    mri_resized = []
+    pet_resized = []
+
+    for mri_path, pet_path in zip(mri_data, pet_data):
+        mri_img = nib.load(mri_path).get_fdata()
+        pet_img = nib.load(pet_path).get_fdata()
+        mri_img = zscore(mri_img, axis=None)
+        pet_img = zscore(pet_img, axis=None)
+        mri_resized.append(resize_image(mri_img, (128, 128, 128)))
+        pet_resized.append(resize_image(pet_img, (128, 128, 128)))
+
+    return np.expand_dims(np.array(mri_resized), 1), np.expand_dims(np.array(pet_resized), 1)
+
+def resize_image(image, target_shape):
+    """
+    Resize a 3D image to the target shape using zoom.
+    Args:
+        image (numpy.ndarray): 3D image.
+        target_shape (tuple): Desired shape.
+    Returns:
+        numpy.ndarray: Resized image.
+    """
+    zoom_factors = [target_shape[i] / image.shape[i] for i in range(3)]
+    return zoom(image, zoom_factors, order=1)
+
+# ------------------------------------------------------------
+# Utility Function to Save Images
+# ------------------------------------------------------------
+def save_images(image, file_path):
+    """
+    Save a 3D image as a NIfTI file.
+    Args:
+        image (numpy.ndarray): 3D image.
+        file_path (str): Destination file path.
+    """
+    nib.save(nib.Nifti1Image(image, np.eye(4)), file_path)
+
+# ------------------------------------------------------------
+# Main Function
+# ------------------------------------------------------------
+if __name__ == '__main__':
+
+    # Check for available GPUs
+    if torch.cuda.is_available():
+        device = torch.device('cuda')
+        print("Using GPU:", torch.cuda.get_device_name(0))
+    else:
+        device = torch.device('cpu')
+        print("Using CPU")
+
+    # Define task and experiment info
+    task = 'cd'
+    info = 'trying2'  # New parameter for the subfolder
+
+    # Load MRI and PET data
+    print("Loading MRI and PET data...")
+    mri_data, pet_data = load_mri_pet_data(task)
+    print(f"Loaded {mri_data.shape[0]} MRI and PET image pairs.")
+
+    # Split data into training (2/3) and test (1/3)
+    print("Splitting data into training and testing sets...")
+    mri_train, mri_gen, pet_train, pet_gen = train_test_split(
+        mri_data, pet_data, test_size=0.33, random_state=42
+    )
+    print(f"Training set: {mri_train.shape[0]} samples")
+    print(f"Testing set: {mri_gen.shape[0]} samples")
+    # Initialize generator
+    print("Initializing Generator")
+    generator = DenseUNetGenerator(in_channels=1, out_channels=1)
+    generator.to(device)
+    print(generator)
+    
+    # Initialize discriminator
+    print("Initializing Discriminator")
+    discriminator = Discriminator(in_channels=1)
+    discriminator.to(device)
+    print(discriminator)
+    
+    # Initialize encoder
+    print("Initializing Encoder")
+    encoder = ResNetEncoder(in_channels=1, latent_dim=512)
+    encoder.to(device)
+    print(encoder)
+
+    # Initialize BMGAN model
+    print("Building BMGAN model...")
+    bmgan = BMGAN(generator, discriminator, encoder)
+
+    # Create directories to store the results
+    output_dir_mri = f'gan/{task}/{info}/mri'
+    output_dir_pet = f'gan/{task}/{info}/pet'
+    output_dir_real_pet = f'gan/{task}/{info}/real_pet'  # New directory for real PET images
+    output_dir = f'gan/{task}/{info}'  # Directory to save loss figures
+
+    os.makedirs(output_dir_mri, exist_ok=True)
+    os.makedirs(output_dir_pet, exist_ok=True)
+    os.makedirs(output_dir_real_pet, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)  # Ensure output directory exists
+    print(f"Created directories: {output_dir_mri}, {output_dir_pet}, {output_dir_real_pet}")
+
+    # Train the model
+    print("Starting training...")
+    bmgan.train(mri_train, pet_train, epochs=250, batch_size=2, output_dir=output_dir)
+
+    # Evaluate the model on the test set
+    print("\nEvaluating the model on the test set...")
+    bmgan.evaluate(mri_gen, pet_gen, batch_size=1)
+
+    # Predict PET images for the test MRI data
+    print("Generating PET images for the test set...")
+    generator.eval()
+    with torch.no_grad():
+        generated_pet_images = []
+        for mri in mri_gen:
+            mri_tensor = torch.FloatTensor(mri).unsqueeze(0).to(device)
+            generated_pet = generator(mri_tensor)
+            generated_pet = generated_pet.cpu().numpy()
+            generated_pet_images.append(generated_pet[0])
+
+    # Save the test MRI data, real PET images, and the generated PET images in their respective folders
+    print("Saving generated PET images, real PET images, and corresponding MRI scans...")
+    for i in range(len(mri_gen)):
+        mri_file_path = os.path.join(output_dir_mri, f'mri_{i}.nii.gz')
+        pet_file_path = os.path.join(output_dir_pet, f'generated_pet_{i}.nii.gz')
+        real_pet_file_path = os.path.join(output_dir_real_pet, f'real_pet_{i}.nii.gz')  # Path for real PET image
+
+        # Save MRI, generated PET images, and real PET images
+        save_images(mri_gen[i][0], mri_file_path)              # Save MRI
+        save_images(generated_pet_images[i][0], pet_file_path) # Save generated PET
+        save_images(pet_gen[i][0], real_pet_file_path)         # Save real PET
+
+    # Print confirmation
+    print(f"Saved {len(mri_gen)} MRI scans, generated PET images, and real PET images in 'gan/{task}/{info}'")
