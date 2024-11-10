@@ -334,7 +334,7 @@ from math import log10
 from sklearn.model_selection import train_test_split
 
 class BMGAN:
-    def __init__(self, generator, discriminator, encoder, lambda1=5.0, lambda2=1.0):
+    def __init__(self, generator, discriminator, encoder, lambda1=10.0, lambda2=1.0):
         self.generator = generator.to(device)
         self.discriminator = discriminator.to(device)
         self.encoder = encoder.to(device)
@@ -345,7 +345,7 @@ class BMGAN:
 
         # Define optimizers
         self.optimizer_G = optim.Adam(self.generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
-        self.optimizer_D = optim.Adam(self.discriminator.parameters(), lr=0.00005, betas=(0.5, 0.999))
+        self.optimizer_D = optim.Adam(self.discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
         self.optimizer_E = optim.Adam(self.encoder.parameters(), lr=0.0002, betas=(0.5, 0.999))
 
         # Define loss functions
