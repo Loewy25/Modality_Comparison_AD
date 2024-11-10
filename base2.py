@@ -4,6 +4,7 @@ import nibabel as nib
 from nilearn.maskers import NiftiMasker
 import time
 from data_loading import loading_mask
+from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
 
 
 def load_gan_saved_data(task, info):
