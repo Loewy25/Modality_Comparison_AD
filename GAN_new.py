@@ -458,7 +458,7 @@ class BMGAN:
         # Early stopping parameters
         best_validation_loss = float('inf')
         epochs_no_improve = 0
-        patience = 10  # Number of epochs to wait for improvement
+        patience = 30  # Number of epochs to wait for improvement
         training_losses = []
         validation_losses = []
         best_generator_state_dict = None
@@ -791,7 +791,7 @@ if __name__ == '__main__':
 
     # Define task and experiment info
     task = 'cd'
-    info = 'trying2'  # New parameter for the subfolder
+    info = 'puretest'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
