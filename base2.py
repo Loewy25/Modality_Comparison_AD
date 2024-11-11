@@ -6,18 +6,11 @@ import time
 import hashlib
 from data_loading import generate_data_path_less, generate, binarylabel
 
-# Assuming these functions are defined elsewhere
 from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
 
 def compute_image_hash(image_path):
     """
     Compute a hash for the image data array at the given path.
-    
-    Args:
-        image_path (str): Path to the image file.
-        
-    Returns:
-        str: Hash value of the image data.
     """
     img = nib.load(image_path)
     data_array = img.get_fdata()
@@ -34,7 +27,9 @@ def loading_mask(task, modality):
     else:
         raise ValueError("Invalid modality specified")
     
-    masker = NiftiMasker(mask_img='/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
+    # Load a mask image that has the same affine as your images
+    mask_img = nib.load('/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
+    masker = NiftiMasker(mask_img=mask_img)
     
     # Apply binary labels
     train_label = binarylabel(train_label, task)
@@ -44,28 +39,33 @@ def loading_mask(task, modality):
 def load_mri_data(mri_paths, masker):
     """
     Load and preprocess MRI images.
-    
-    Args:
-        mri_paths (list): List of MRI image file paths.
-        masker (NiftiMasker): Masker used for preprocessing.
-    
-    Returns:
-        numpy.ndarray: Flattened MRI data.
     """
     print("Fitting masker and transforming MRI data...")
     mri_data = masker.fit_transform(mri_paths)
     return mri_data
 
+def load_gan_saved_data(task, info):
+    """
+    Load file paths for saved GAN MRI, real PET, and generated PET images.
+    """
+    base_dir = 'gan'  # Replace with the actual base directory of your GAN outputs
+    gan_mri_dir = os.path.join(base_dir, f'{task}/{info}/mri')
+    real_pet_dir = os.path.join(base_dir, f'{task}/{info}/real_pet')
+    generated_pet_dir = os.path.join(base_dir, f'{task}/{info}/pet')
+    
+    gan_mri_files = sorted([f for f in os.listdir(gan_mri_dir) if f.endswith('.nii.gz')])
+    real_pet_files = sorted([f for f in os.listdir(real_pet_dir) if f.endswith('.nii.gz')])
+    generated_pet_files = sorted([f for f in os.listdir(generated_pet_dir) if f.endswith('.nii.gz')])
+    
+    gan_mri_paths = [os.path.join(gan_mri_dir, f) for f in gan_mri_files]
+    real_pet_paths = [os.path.join(real_pet_dir, f) for f in real_pet_files]
+    generated_pet_paths = [os.path.join(generated_pet_dir, f) for f in generated_pet_files]
+    
+    return gan_mri_paths, real_pet_paths, generated_pet_paths
+
 def match_mri_hashes_and_labels(original_mri_paths, original_labels):
     """
     Create a mapping from MRI data hashes to their labels.
-    
-    Args:
-        original_mri_paths (list): List of file paths to original MRI images.
-        original_labels (numpy.ndarray): Corresponding labels.
-    
-    Returns:
-        dict: Mapping from image data hashes to labels.
     """
     label_mapping = {}
     print("Creating label mapping for original MRI images using data hashes...")
@@ -77,13 +77,6 @@ def match_mri_hashes_and_labels(original_mri_paths, original_labels):
 def assign_labels_to_gan_mri_by_hash(gan_mri_paths, original_mri_hash_mapping):
     """
     Assign labels to GAN-saved MRI images by matching data hashes.
-    
-    Args:
-        gan_mri_paths (list): Paths to GAN-saved MRI images.
-        original_mri_hash_mapping (dict): Mapping from image data hashes to labels.
-    
-    Returns:
-        list: Assigned labels for GAN-saved MRI images.
     """
     assigned_labels = []
     for gan_path in gan_mri_paths:
@@ -99,31 +92,14 @@ def assign_labels_to_gan_mri_by_hash(gan_mri_paths, original_mri_hash_mapping):
 def assign_labels_to_pets(real_pet_paths, generated_pet_paths, gan_labels):
     """
     Assign labels to real PET and generated PET images based on GAN-saved MRI labels.
-    
-    Args:
-        real_pet_paths (list): Paths to real PET images.
-        generated_pet_paths (list): Paths to generated PET images.
-        gan_labels (list): Assigned labels for GAN-saved MRI images.
-    
-    Returns:
-        Tuple: (real_pet_labels, generated_pet_labels)
     """
-    # Assuming the order of real_pet_paths and generated_pet_paths matches gan_mri_paths
     real_pet_labels = gan_labels.copy()
     generated_pet_labels = gan_labels.copy()
-    
     return real_pet_labels, generated_pet_labels
 
 def load_pet_data(pet_paths, masker):
     """
     Load and preprocess PET images.
-    
-    Args:
-        pet_paths (list): List of PET image file paths.
-        masker (NiftiMasker): Masker used for preprocessing.
-    
-    Returns:
-        numpy.ndarray: Flattened PET data.
     """
     print("Transforming PET data using fitted masker...")
     pet_data = masker.transform(pet_paths)
@@ -163,7 +139,7 @@ def main():
     unmatched = [i for i, label in enumerate(gan_labels) if label == -1]
     if unmatched:
         print(f"Number of unmatched GAN-saved MRI images: {len(unmatched)}")
-        # Optionally, remove unmatched entries
+        # Remove unmatched entries
         gan_mri_paths = [path for i, path in enumerate(gan_mri_paths) if gan_labels[i] != -1]
         real_pet_paths = [path for i, path in enumerate(real_pet_paths) if gan_labels[i] != -1]
         generated_pet_paths = [path for i, path in enumerate(generated_pet_paths) if gan_labels[i] != -1]
@@ -190,30 +166,27 @@ def main():
     # Step 7: Perform classification comparisons using nested_crossvalidation
     print("Performing classification on real PET data...")
     start_time = time.time()
-    performance_real_pet, all_y_test_real_pet, all_y_prob_real_pet, all_predictions_real_pet = nested_crossvalidation(
+    performance_real_pet, _, _, _ = nested_crossvalidation(
         processed_real_pet, real_pet_labels, 'Real_PET_z', task
     )
     end_time = time.time()
-    elapsed_time = end_time - start_time
-    print(f"Real PET classification took {elapsed_time:.2f} seconds.")
+    print(f"Real PET classification took {end_time - start_time:.2f} seconds.")
     
     print("\nPerforming classification on generated PET data...")
     start_time = time.time()
-    performance_generated_pet, all_y_test_generated_pet, all_y_prob_generated_pet, all_predictions_generated_pet = nested_crossvalidation(
+    performance_generated_pet, _, _, _ = nested_crossvalidation(
         processed_generated_pet, generated_pet_labels, 'Generated_PET_z', task
     )
     end_time = time.time()
-    elapsed_time = end_time - start_time
-    print(f"Generated PET classification took {elapsed_time:.2f} seconds.")
+    print(f"Generated PET classification took {end_time - start_time:.2f} seconds.")
   
     print("\nPerforming classification on original MRI data...")
     start_time = time.time()
-    performance_mri, all_y_test_mri, all_y_prob_mri, all_predictions_mri  = nested_crossvalidation(
+    performance_mri, _, _, _ = nested_crossvalidation(
         processed_original_mri, original_labels, 'MRI', task
     )
     end_time = time.time()
-    elapsed_time = end_time - start_time
-    print(f"Original MRI classification took {elapsed_time:.2f} seconds.")
+    print(f"Original MRI classification took {end_time - start_time:.2f} seconds.")
   
     # Optional: Print performance metrics
     print("\nClassification Performance on Real PET Data:")
