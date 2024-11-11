@@ -797,7 +797,7 @@ if __name__ == '__main__':
         print("Using CPU")
 
     # Define task and experiment info
-    task = 'cd'
+    task = 'dm'
     info = 'real_nopool_batch1'  # New parameter for the subfolder
 
     # Load MRI and PET data
