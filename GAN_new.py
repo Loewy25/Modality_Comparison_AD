@@ -75,10 +75,10 @@ class TransitionLayer(nn.Module):
         self.pool = nn.MaxPool3d(kernel_size=2, stride=2)
 
     def forward(self, x):
-        x = self.conv(x)
-        norm_out = self.norm(x)  # Output from InstanceNorm3d layer
+        norm_in = self.conv(x)
+        norm_out = self.norm(norm_in)  # Output from InstanceNorm3d layer
         x = self.pool(norm_out)
-        return x, norm_out  # Return both pooled and unpooled output gan
+        return x, norm_in  # Return both pooled and unpooled output gan
 
 
 class UpsampleLayer(nn.Module):
@@ -796,7 +796,7 @@ if __name__ == '__main__':
 
     # Define task and experiment info
     task = 'cd'
-    info = 'exp_batch1_pool_withnrom'  # New parameter for the subfolder
+    info = 'exp_batch1_pool_withoutnrom'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
