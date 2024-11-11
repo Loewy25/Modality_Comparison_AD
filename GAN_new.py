@@ -70,17 +70,15 @@ class DenseBlock(nn.Module):
 class TransitionLayer(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(TransitionLayer, self).__init__()
-        self.conv1x1 = nn.Conv3d(in_channels, out_channels, kernel_size=1, stride=1)
+        self.conv = nn.Conv3d(in_channels, out_channels, kernel_size=1)
         self.norm = nn.InstanceNorm3d(out_channels)
-        # Replace MaxPool3d with Conv3d with stride=2
-        self.conv_down = nn.Conv3d(out_channels, out_channels, kernel_size=3, stride=2, padding=1)
+        self.pool = nn.MaxPool3d(kernel_size=2, stride=2)
 
     def forward(self, x):
-        norm_in = self.conv1x1(x)
-        norm_out = self.norm(norm_in)
-        # Downsample using convolution with stride=2
-        x = self.conv_down(norm_out)
-        return x, norm_out  # Return both downsampled output and normalized output
+        x = self.conv(x)
+        norm_out = self.norm(x)  # Output from InstanceNorm3d layer
+        x = self.pool(norm_out)
+        return x, norm_out  # Return both pooled and unpooled output gan
 
 
 
@@ -799,7 +797,7 @@ if __name__ == '__main__':
 
     # Define task and experiment info
     task = 'cd'
-    info = 'exp_batch1_conv_withnrom'  # New parameter for the subfolder
+    info = 'exp_batch1_pool_withnrom'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
