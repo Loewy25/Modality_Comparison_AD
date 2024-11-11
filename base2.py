@@ -6,6 +6,7 @@ from nilearn.maskers import NiftiMasker
 import time
 from data_loading import loading_mask
 from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
+from data_loading import generate, generate_data_path_less,binarylabel
 
 def loading_mask(task, modality):
     """
