@@ -1,41 +1,11 @@
-
 import os
 import numpy as np
 import nibabel as nib
 from nilearn.maskers import NiftiMasker
 import time
-from data_loading import loading_mask
+from data_loading import loading_mask  # Ensure this imports the updated loading_mask
 from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
-from data_loading import generate, generate_data_path_less,binarylabel
 
-def loading_mask(task, modality):
-    """
-    Loading and generating data paths based on modality.
-    
-    Args:
-        task (str): Task identifier.
-        modality (str): 'PET' or 'MRI'.
-    
-    Returns:
-        Tuple: (data_paths, labels, masker)
-    """
-    # Replace this with your actual data path generation logic
-    images_pet, images_mri, labels = generate_data_path_less()
-    
-    if modality == 'PET':
-        data_paths = generate(images_pet, labels, task)
-    elif modality == 'MRI':
-        data_paths = generate(images_mri, labels, task)
-    else:
-        raise ValueError("Modality must be 'PET' or 'MRI'")
-    
-    masker = NiftiMasker(mask_img='/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
-    
-    # Labels processing
-    train_label = binarylabel(labels, task)
-    
-    return data_paths, train_label, masker
-    
 def load_gan_saved_data(task, info):
     """
     Load file paths for saved GAN MRI, real PET, and generated PET images.
@@ -63,47 +33,39 @@ def load_gan_saved_data(task, info):
 
 def match_mri_labels(original_mri_paths, original_labels):
     """
-    Match each GAN-saved MRI image with the original MRI images to assign labels based on raw data.
+    Create a mapping from original MRI filenames to their labels.
     
     Args:
         original_mri_paths (list): List of file paths to original MRI images.
         original_labels (numpy.ndarray): Corresponding labels.
     
     Returns:
-        dict: Mapping from original MRI file names to labels.
+        dict: Mapping from original MRI filenames to labels.
     """
     label_mapping = {}
-    # Load all original MRI data into memory for faster access
-    print("Loading original MRI data for label mapping...")
-    original_mri_data = {}
+    print("Creating label mapping for original MRI images...")
     for path, label in zip(original_mri_paths, original_labels):
-        img = nib.load(path).get_fdata()
-        # Convert to a tuple or another hashable type for comparison
-        original_mri_data[os.path.basename(path)] = (img, label)
-    
-    return original_mri_data
+        filename = os.path.basename(path)
+        label_mapping[filename] = label
+    return label_mapping
 
-def assign_labels_to_gan_mri(gan_mri_paths, original_mri_data):
+def assign_labels_to_gan_mri(gan_mri_paths, original_mri_mapping):
     """
-    Assign labels to GAN-saved MRI images by matching with original MRI images.
+    Assign labels to GAN-saved MRI images by matching filenames.
     
     Args:
         gan_mri_paths (list): Paths to GAN-saved MRI images.
-        original_mri_data (dict): Mapping from original MRI file names to (data, label).
+        original_mri_mapping (dict): Mapping from original MRI filenames to labels.
     
     Returns:
         list: Assigned labels for GAN-saved MRI images.
     """
     assigned_labels = []
     for gan_path in gan_mri_paths:
-        gan_img = nib.load(gan_path).get_fdata()
         gan_filename = os.path.basename(gan_path)
-        # Assuming GAN-saved MRI filenames match original MRI filenames
-        if gan_filename in original_mri_data:
-            label = original_mri_data[gan_filename][1]
+        if gan_filename in original_mri_mapping:
+            label = original_mri_mapping[gan_filename]
         else:
-            # If filenames don't match, implement a more robust matching strategy
-            # For example, using similarity metrics
             label = -1  # Assign -1 if no match found
             print(f"No match found for {gan_path}")
         assigned_labels.append(label)
@@ -150,18 +112,23 @@ def main():
     task = 'cd'       # Example task identifier
     info = 'trying2'  # Example subfolder identifier
     
-    # Step 1: Load original MRI data with labels
-    print("Loading original MRI data with labels...")
-    # Modify loading_mask to return original MRI paths instead of preprocessed data
-    # Assuming loading_mask returns paths; adjust accordingly
-    original_mri_data, original_labels, masker = loading_mask(task=task, modality='MRI')
-    # If loading_mask returns preprocessed data, adjust to retrieve raw paths
-    # For this example, assume original_mri_data are file paths
-    original_mri_paths = original_mri_data  # Adjust based on actual return
+    # Step 1: Load original MRI data with labels and file paths
+    print("Loading original MRI data with labels and file paths...")
+    original_mri_paths, original_labels, masker, processed_original_mri = loading_mask(task=task, modality='MRI')
+    
+    # Debug: Verify original MRI paths
+    print(f"Number of original MRI paths: {len(original_mri_paths)}")
+    if len(original_mri_paths) > 0:
+        print(f"First 5 original MRI paths: {original_mri_paths[:5]}")
     
     # Step 2: Load GAN-saved MRI, real PET, and generated PET image paths
     print("Loading GAN-saved MRI, real PET, and generated PET image paths...")
     gan_mri_paths, real_pet_paths, generated_pet_paths = load_gan_saved_data(task=task, info=info)
+    
+    # Debug: Verify GAN-saved MRI paths
+    print(f"Number of GAN-saved MRI paths: {len(gan_mri_paths)}")
+    if len(gan_mri_paths) > 0:
+        print(f"First 5 GAN-saved MRI paths: {gan_mri_paths[:5]}")
     
     # Step 3: Match GAN-saved MRI images with original MRI images to assign labels
     print("Matching GAN-saved MRI images with original MRI images to assign labels...")
@@ -188,11 +155,6 @@ def main():
     
     print("Loading and preprocessing generated PET images...")
     processed_generated_pet = load_pet_data(generated_pet_paths, masker)
-    
-    # Also preprocess original MRI data
-    print("Loading and preprocessing original MRI images...")
-    original_mri_imgs = [nib.load(path) for path in original_mri_paths]
-    processed_original_mri = masker.transform(original_mri_imgs)  # Shape: [N, Features]
     
     # Now, you have:
     # - processed_real_pet: numpy array of real PET data
@@ -227,7 +189,26 @@ def main():
     )
     end_time = time.time()
     elapsed_time = end_time - start_time
-
+    print(f"Original MRI classification took {elapsed_time:.2f} seconds.")
+  
+    # Optional: Print performance metrics
+    print("\nClassification Performance on Real PET Data:")
+    print(performance_real_pet)
+    
+    print("\nClassification Performance on Generated PET Data:")
+    print(performance_generated_pet)
+    
+    print("\nClassification Performance on Original MRI Data:")
+    print(performance_mri)
+    
+    # Optional: Save the processed data and labels for future use
+    np.save('processed_real_pet.npy', processed_real_pet)
+    np.save('processed_generated_pet.npy', processed_generated_pet)
+    np.save('processed_original_mri.npy', processed_original_mri)
+    np.save('labels_real_pet.npy', np.array(real_pet_labels))
+    np.save('labels_generated_pet.npy', np.array(generated_pet_labels))
+    np.save('labels_original_mri.npy', np.array(original_labels))
+    
     print("\nAll steps completed successfully.")
 
 if __name__ == "__main__":
