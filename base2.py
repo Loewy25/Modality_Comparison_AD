@@ -52,12 +52,9 @@ def load_mri_data(mri_paths, masker):
     Returns:
         numpy.ndarray: Flattened MRI data.
     """
-    mri_data = []
-    for mri_path in mri_paths:
-        img = nib.load(mri_path)
-        masked_img = masker.transform(img)
-        mri_data.append(masked_img.flatten())
-    return np.array(mri_data)
+    print("Fitting masker and transforming MRI data...")
+    mri_data = masker.fit_transform(mri_paths)
+    return mri_data
 
 def match_mri_hashes_and_labels(original_mri_paths, original_labels):
     """
@@ -128,13 +125,9 @@ def load_pet_data(pet_paths, masker):
     Returns:
         numpy.ndarray: Flattened PET data.
     """
-    pet_data = []
-    for pet_path in pet_paths:
-        img = nib.load(pet_path)
-        masked_img = masker.transform(img)
-        pet_data.append(masked_img.flatten())
-    
-    return np.array(pet_data)
+    print("Transforming PET data using fitted masker...")
+    pet_data = masker.transform(pet_paths)
+    return pet_data
 
 def main():
     task = 'cd'       # Example task identifier
@@ -143,6 +136,8 @@ def main():
     # Step 1: Load original MRI data with labels and file paths
     print("Loading original MRI data with labels and file paths...")
     original_mri_paths, original_labels, masker = loading_mask(task=task, modality='MRI')
+    
+    # Step 2: Load and preprocess original MRI data
     processed_original_mri = load_mri_data(original_mri_paths, masker)
     
     # Debug: Verify original MRI paths
@@ -150,7 +145,7 @@ def main():
     if len(original_mri_paths) > 0:
         print(f"First 5 original MRI paths: {original_mri_paths[:5]}")
     
-    # Step 2: Load GAN-saved MRI, real PET, and generated PET image paths
+    # Step 3: Load GAN-saved MRI, real PET, and generated PET image paths
     print("Loading GAN-saved MRI, real PET, and generated PET image paths...")
     gan_mri_paths, real_pet_paths, generated_pet_paths = load_gan_saved_data(task=task, info=info)
     
@@ -159,7 +154,7 @@ def main():
     if len(gan_mri_paths) > 0:
         print(f"First 5 GAN-saved MRI paths: {gan_mri_paths[:5]}")
     
-    # Step 3: Match GAN-saved MRI images with original MRI images to assign labels
+    # Step 4: Match GAN-saved MRI images with original MRI images to assign labels
     print("Matching GAN-saved MRI images with original MRI images to assign labels...")
     original_mri_hash_mapping = match_mri_hashes_and_labels(original_mri_paths, original_labels)
     gan_labels = assign_labels_to_gan_mri_by_hash(gan_mri_paths, original_mri_hash_mapping)
@@ -174,11 +169,11 @@ def main():
         generated_pet_paths = [path for i, path in enumerate(generated_pet_paths) if gan_labels[i] != -1]
         gan_labels = [label for label in gan_labels if label != -1]
     
-    # Step 4: Assign labels to real PET and generated PET images
+    # Step 5: Assign labels to real PET and generated PET images
     print("Assigning labels to real PET and generated PET images...")
     real_pet_labels, generated_pet_labels = assign_labels_to_pets(real_pet_paths, generated_pet_paths, gan_labels)
     
-    # Step 5: Load and preprocess real PET and generated PET images
+    # Step 6: Load and preprocess real PET and generated PET images
     print("Loading and preprocessing real PET images...")
     processed_real_pet = load_pet_data(real_pet_paths, masker)
     
@@ -192,7 +187,7 @@ def main():
     # - real_pet_labels: list of labels for real PET data
     # - generated_pet_labels: list of labels for generated PET data
     
-    # Step 6: Perform classification comparisons using nested_crossvalidation
+    # Step 7: Perform classification comparisons using nested_crossvalidation
     print("Performing classification on real PET data...")
     start_time = time.time()
     performance_real_pet, all_y_test_real_pet, all_y_prob_real_pet, all_predictions_real_pet = nested_crossvalidation(
