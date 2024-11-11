@@ -76,11 +76,11 @@ class TransitionLayer(nn.Module):
         self.conv_down = nn.Conv3d(out_channels, out_channels, kernel_size=3, stride=2, padding=1)
 
     def forward(self, x):
-        x = self.conv1x1(x)
-        norm_out = self.norm(x)
+        norm_in = self.conv1x1(x)
+        norm_out = self.norm(norm_in)
         # Downsample using convolution with stride=2
         x = self.conv_down(norm_out)
-        return x, norm_out  # Return both downsampled output and normalized output
+        return x, norm_in  # Return both downsampled output and normalized output
 
 
 
@@ -799,7 +799,7 @@ if __name__ == '__main__':
 
     # Define task and experiment info
     task = 'cd'
-    info = 'exp_batch1_conv_withnrom'  # New parameter for the subfolder
+    info = 'exp_batch1_conv_withoutnrom'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
