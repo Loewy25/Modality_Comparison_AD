@@ -461,7 +461,7 @@ class BMGAN:
         # Early stopping parameters
         best_validation_loss = float('inf')
         epochs_no_improve = 0
-        patience = 30  # Number of epochs to wait for improvement
+        patience = 100  # Number of epochs to wait for improvement
         training_generator_losses = []  # Record generator training loss
         training_discriminator_losses = []  # Record discriminator training loss
         validation_losses = []
@@ -797,8 +797,8 @@ if __name__ == '__main__':
         print("Using CPU")
 
     # Define task and experiment info
-    task = 'dm'
-    info = 'real_nopool_batch1'  # New parameter for the subfolder
+    task = 'cd'
+    info = 'exp_batch1_conv_withnrom'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
@@ -848,7 +848,7 @@ if __name__ == '__main__':
 
     # Train the model
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=250, batch_size=1, output_dir=output_dir)
+    bmgan.train(mri_train, pet_train, epochs=700, batch_size=1, output_dir=output_dir)
 
     # Evaluate the model on the test set
     print("\nEvaluating the model on the test set...")
