@@ -845,7 +845,7 @@ if __name__ == '__main__':
 
     # Train the model
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=250, batch_size=1, output_dir=output_dir)
+    bmgan.train(mri_train, pet_train, epochs=250, batch_size=2, output_dir=output_dir)
 
     # Evaluate the model on the test set
     print("\nEvaluating the model on the test set...")
