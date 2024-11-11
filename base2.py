@@ -3,68 +3,95 @@ import numpy as np
 import nibabel as nib
 from nilearn.maskers import NiftiMasker
 import time
-from data_loading import loading_mask  # Ensure this imports the updated loading_mask
+import hashlib
+
+# Assuming these functions are defined elsewhere
 from main import nested_crossvalidation_multi_kernel, nested_crossvalidation
 
-def load_gan_saved_data(task, info):
+def compute_image_hash(image_path):
     """
-    Load file paths for saved GAN MRI, real PET, and generated PET images.
+    Compute a hash for the image data array at the given path.
     
     Args:
-        task (str): Task identifier (e.g., 'cd').
-        info (str): Subfolder identifier used during GAN training (e.g., 'trying2').
+        image_path (str): Path to the image file.
+        
+    Returns:
+        str: Hash value of the image data.
+    """
+    img = nib.load(image_path)
+    data_array = img.get_fdata()
+    data_bytes = data_array.tobytes()
+    return hashlib.md5(data_bytes).hexdigest()
+
+def loading_mask(task, modality):
+    # Loading and generating data
+    images_pet, images_mri, labels = generate_data_path_less()
+    if modality == 'PET':
+        data_train, train_label = generate(images_pet, labels, task)
+    elif modality == 'MRI':
+        data_train, train_label = generate(images_mri, labels, task)
+    else:
+        raise ValueError("Invalid modality specified")
+    
+    masker = NiftiMasker(mask_img='/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
+    
+    # Apply binary labels
+    train_label = binarylabel(train_label, task)
+    
+    return data_train, train_label, masker
+
+def load_mri_data(mri_paths, masker):
+    """
+    Load and preprocess MRI images.
+    
+    Args:
+        mri_paths (list): List of MRI image file paths.
+        masker (NiftiMasker): Masker used for preprocessing.
     
     Returns:
-        Tuple: (gan_mri_paths, real_pet_paths, generated_pet_paths)
+        numpy.ndarray: Flattened MRI data.
     """
-    gan_mri_dir = f'gan/{task}/{info}/mri'
-    real_pet_dir = f'gan/{task}/{info}/real_pet'
-    generated_pet_dir = f'gan/{task}/{info}/pet'
-    
-    gan_mri_files = sorted([f for f in os.listdir(gan_mri_dir) if f.endswith('.nii.gz')])
-    real_pet_files = sorted([f for f in os.listdir(real_pet_dir) if f.endswith('.nii.gz')])
-    generated_pet_files = sorted([f for f in os.listdir(generated_pet_dir) if f.endswith('.nii.gz')])
-    
-    gan_mri_paths = [os.path.join(gan_mri_dir, f) for f in gan_mri_files]
-    real_pet_paths = [os.path.join(real_pet_dir, f) for f in real_pet_files]
-    generated_pet_paths = [os.path.join(generated_pet_dir, f) for f in generated_pet_files]
-    
-    return gan_mri_paths, real_pet_paths, generated_pet_paths
+    mri_data = []
+    for mri_path in mri_paths:
+        img = nib.load(mri_path)
+        masked_img = masker.transform(img)
+        mri_data.append(masked_img.flatten())
+    return np.array(mri_data)
 
-def match_mri_labels(original_mri_paths, original_labels):
+def match_mri_hashes_and_labels(original_mri_paths, original_labels):
     """
-    Create a mapping from original MRI filenames to their labels.
+    Create a mapping from MRI data hashes to their labels.
     
     Args:
         original_mri_paths (list): List of file paths to original MRI images.
         original_labels (numpy.ndarray): Corresponding labels.
     
     Returns:
-        dict: Mapping from original MRI filenames to labels.
+        dict: Mapping from image data hashes to labels.
     """
     label_mapping = {}
-    print("Creating label mapping for original MRI images...")
+    print("Creating label mapping for original MRI images using data hashes...")
     for path, label in zip(original_mri_paths, original_labels):
-        filename = os.path.basename(path)
-        label_mapping[filename] = label
+        image_hash = compute_image_hash(path)
+        label_mapping[image_hash] = label
     return label_mapping
 
-def assign_labels_to_gan_mri(gan_mri_paths, original_mri_mapping):
+def assign_labels_to_gan_mri_by_hash(gan_mri_paths, original_mri_hash_mapping):
     """
-    Assign labels to GAN-saved MRI images by matching filenames.
+    Assign labels to GAN-saved MRI images by matching data hashes.
     
     Args:
         gan_mri_paths (list): Paths to GAN-saved MRI images.
-        original_mri_mapping (dict): Mapping from original MRI filenames to labels.
+        original_mri_hash_mapping (dict): Mapping from image data hashes to labels.
     
     Returns:
         list: Assigned labels for GAN-saved MRI images.
     """
     assigned_labels = []
     for gan_path in gan_mri_paths:
-        gan_filename = os.path.basename(gan_path)
-        if gan_filename in original_mri_mapping:
-            label = original_mri_mapping[gan_filename]
+        image_hash = compute_image_hash(gan_path)
+        if image_hash in original_mri_hash_mapping:
+            label = original_mri_hash_mapping[image_hash]
         else:
             label = -1  # Assign -1 if no match found
             print(f"No match found for {gan_path}")
@@ -103,10 +130,10 @@ def load_pet_data(pet_paths, masker):
     pet_data = []
     for pet_path in pet_paths:
         img = nib.load(pet_path)
-        masked_img = masker.transform(img)  # transform expects a Nifti1Image
+        masked_img = masker.transform(img)
         pet_data.append(masked_img.flatten())
     
-    return np.array(pet_data)  # Shape: [N, Features]
+    return np.array(pet_data)
 
 def main():
     task = 'cd'       # Example task identifier
@@ -114,7 +141,8 @@ def main():
     
     # Step 1: Load original MRI data with labels and file paths
     print("Loading original MRI data with labels and file paths...")
-    original_mri_paths, original_labels, masker, processed_original_mri = loading_mask(task=task, modality='MRI')
+    original_mri_paths, original_labels, masker = loading_mask(task=task, modality='MRI')
+    processed_original_mri = load_mri_data(original_mri_paths, masker)
     
     # Debug: Verify original MRI paths
     print(f"Number of original MRI paths: {len(original_mri_paths)}")
@@ -132,8 +160,8 @@ def main():
     
     # Step 3: Match GAN-saved MRI images with original MRI images to assign labels
     print("Matching GAN-saved MRI images with original MRI images to assign labels...")
-    original_mri_mapping = match_mri_labels(original_mri_paths, original_labels)
-    gan_labels = assign_labels_to_gan_mri(gan_mri_paths, original_mri_mapping)
+    original_mri_hash_mapping = match_mri_hashes_and_labels(original_mri_paths, original_labels)
+    gan_labels = assign_labels_to_gan_mri_by_hash(gan_mri_paths, original_mri_hash_mapping)
     
     # Check for unmatched images
     unmatched = [i for i, label in enumerate(gan_labels) if label == -1]
@@ -167,7 +195,7 @@ def main():
     print("Performing classification on real PET data...")
     start_time = time.time()
     performance_real_pet, all_y_test_real_pet, all_y_prob_real_pet, all_predictions_real_pet = nested_crossvalidation(
-        processed_real_pet, real_pet_labels, 'Real_PET_z', 'cd'
+        processed_real_pet, real_pet_labels, 'Real_PET_z', task
     )
     end_time = time.time()
     elapsed_time = end_time - start_time
@@ -176,7 +204,7 @@ def main():
     print("\nPerforming classification on generated PET data...")
     start_time = time.time()
     performance_generated_pet, all_y_test_generated_pet, all_y_prob_generated_pet, all_predictions_generated_pet = nested_crossvalidation(
-        processed_generated_pet, generated_pet_labels, 'Generated_PET_z', 'cd'
+        processed_generated_pet, generated_pet_labels, 'Generated_PET_z', task
     )
     end_time = time.time()
     elapsed_time = end_time - start_time
@@ -185,7 +213,7 @@ def main():
     print("\nPerforming classification on original MRI data...")
     start_time = time.time()
     performance_mri, all_y_test_mri, all_y_prob_mri, all_predictions_mri  = nested_crossvalidation(
-        processed_original_mri, original_labels, 'mri', 'cd'
+        processed_original_mri, original_labels, 'MRI', task
     )
     end_time = time.time()
     elapsed_time = end_time - start_time
