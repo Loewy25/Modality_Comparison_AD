@@ -70,15 +70,18 @@ class DenseBlock(nn.Module):
 class TransitionLayer(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(TransitionLayer, self).__init__()
-        self.conv = nn.Conv3d(in_channels, out_channels, kernel_size=1)
+        self.conv1x1 = nn.Conv3d(in_channels, out_channels, kernel_size=1, stride=1)
         self.norm = nn.InstanceNorm3d(out_channels)
-        self.pool = nn.MaxPool3d(kernel_size=2, stride=2)
+        # Replace MaxPool3d with Conv3d with stride=2
+        self.conv_down = nn.Conv3d(out_channels, out_channels, kernel_size=3, stride=2, padding=1)
 
     def forward(self, x):
-        x = self.conv(x)
-        norm_out = self.norm(x)  # Output from InstanceNorm3d layer
-        x = self.pool(norm_out)
-        return x, norm_out  # Return both pooled and unpooled output
+        x = self.conv1x1(x)
+        norm_out = self.norm(x)
+        # Downsample using convolution with stride=2
+        x = self.conv_down(norm_out)
+        return x, norm_out  # Return both downsampled output and normalized output
+
 
 class UpsampleLayer(nn.Module):
     def __init__(self, in_channels, out_channels):
@@ -794,8 +797,8 @@ if __name__ == '__main__':
         print("Using CPU")
 
     # Define task and experiment info
-    task = 'dm'
-    info = 'real_batch2'  # New parameter for the subfolder
+    task = 'cd'
+    info = 'real_nopool_batch1'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
@@ -845,7 +848,7 @@ if __name__ == '__main__':
 
     # Train the model
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=250, batch_size=2, output_dir=output_dir)
+    bmgan.train(mri_train, pet_train, epochs=250, batch_size=1, output_dir=output_dir)
 
     # Evaluate the model on the test set
     print("\nEvaluating the model on the test set...")
