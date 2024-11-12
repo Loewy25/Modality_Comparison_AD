@@ -336,7 +336,7 @@ from math import log10
 from sklearn.model_selection import train_test_split
 
 class BMGAN:
-    def __init__(self, generator, discriminator, encoder, lambda1=10.0, lambda2=1.0):
+    def __init__(self, generator, discriminator, encoder, lambda1=0.9, lambda2=0.1):
         self.generator = generator.to(device)
         self.discriminator = discriminator.to(device)
         self.encoder = encoder.to(device)
@@ -797,7 +797,7 @@ if __name__ == '__main__':
 
     # Define task and experiment info
     task = 'cd'
-    info = 'exp_batch1_pool_withnrom'  # New parameter for the subfolder
+    info = 'exp_batch1_pool_withnrom_l1-0.9_l2-0.1'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
