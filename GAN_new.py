@@ -336,7 +336,7 @@ from math import log10
 from sklearn.model_selection import train_test_split
 
 class BMGAN:
-    def __init__(self, generator, discriminator, encoder, lambda1=0.9, lambda2=0.1):
+    def __init__(self, generator, discriminator, encoder, lambda1=20, lambda2=8):
         self.generator = generator.to(device)
         self.discriminator = discriminator.to(device)
         self.encoder = encoder.to(device)
@@ -499,14 +499,14 @@ class BMGAN:
                 # Extract Patches for Real Images
                 real_patches = self.extract_patches(real_pet)  # Shape: [num_patches, channels, 32, 32, 32]
                 output_real = self.discriminator(real_patches)
-                label_real = torch.full_like(output_real, 0.9, device=real_pet.device)  # Label smoothing
+                label_real = torch.full_like(output_real, 1, device=real_pet.device)  # Label smoothing
                 d_loss_real = self.lsgan_loss(output_real, label_real)
     
                 # Extract Patches for Fake Images
                 fake_pet = self.generator(real_mri)
                 fake_patches = self.extract_patches(fake_pet.detach())
                 output_fake = self.discriminator(fake_patches)
-                label_fake = torch.full_like(output_fake, 0.1, device=real_pet.device)  # Label smoothing
+                label_fake = torch.full_like(output_fake, 0, device=real_pet.device)  # Label smoothing
                 d_loss_fake = self.lsgan_loss(output_fake, label_fake)
     
                 # Total discriminator loss
@@ -797,7 +797,7 @@ if __name__ == '__main__':
 
     # Define task and experiment info
     task = 'cd'
-    info = 'exp_batch1_pool_withnrom_l1-0.9_l2-0.1'  # New parameter for the subfolder
+    info = 'exp_batch1_pool_withnrom_l1-20_l2-8'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
@@ -847,7 +847,7 @@ if __name__ == '__main__':
 
     # Train the model
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=700, batch_size=1, output_dir=output_dir)
+    bmgan.train(mri_train, pet_train, epochs=400, batch_size=1, output_dir=output_dir)
 
     # Evaluate the model on the test set
     print("\nEvaluating the model on the test set...")
