@@ -758,6 +758,9 @@ def load_mri_pet_data(task):
 
     return np.expand_dims(np.array(mri_resized), 1), np.expand_dims(np.array(pet_resized), 1)
 
+def count_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+
 def resize_image(image, target_shape):
     """
     Resize a 3D image to the target shape using zoom.
@@ -816,18 +819,21 @@ if __name__ == '__main__':
     generator = DenseUNetGenerator(in_channels=1, out_channels=1)
     generator.to(device)
     print(generator)
+    print(f"Generator Parameters: {count_parameters(generator):,}")  # Print parameter count
     
     # Initialize discriminator
     print("Initializing Discriminator")
     discriminator = Discriminator(in_channels=1)
     discriminator.to(device)
     print(discriminator)
+    print(f"Discriminator Parameters: {count_parameters(discriminator):,}")  # Print parameter count
     
     # Initialize encoder
     print("Initializing Encoder")
     encoder = ResNetEncoder(in_channels=1, latent_dim=512)
     encoder.to(device)
     print(encoder)
+    print(f"Encoder Parameters: {count_parameters(encoder):,}")  # Print parameter count
 
     # Initialize BMGAN model
     print("Building BMGAN model...")
