@@ -538,7 +538,7 @@ class BMGAN:
                 # GAN Loss for Generator
                 fake_patches = self.extract_patches(synthetic_pet)
                 output_fake = self.discriminator(fake_patches)
-                label_real_gen = torch.full_like(output_fake, 0.9, device=real_pet.device)  # Label smoothing
+                label_real_gen = torch.full_like(output_fake, 1, device=real_pet.device)  # Label smoothing
                 g_gan_loss = self.lsgan_loss(output_fake, label_real_gen)
             
                 # L1 loss and perceptual loss
@@ -549,7 +549,7 @@ class BMGAN:
                 kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
             
                 # Total generator loss
-                g_loss = g_gan_loss + self.lambda1 * l1_loss + self.lambda2 * perceptual_loss + kl_loss_real
+                g_loss = g_gan_loss + self.lambda1 * l1_loss + self.lambda2 * perceptual_loss
                 g_loss.backward()
                 self.optimizer_G.step()
             
@@ -824,7 +824,7 @@ if __name__ == '__main__':
 
     # Define task and experiment info
     task = 'cd'
-    info = 'exp_new'  # New parameter for the subfolder
+    info = 'exp_new_withinteraction'  # New parameter for the subfolder
 
     # Load MRI and PET data
     print("Loading MRI and PET data...")
