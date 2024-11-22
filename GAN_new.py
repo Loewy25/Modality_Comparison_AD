@@ -456,50 +456,6 @@ class BMGAN:
                 slice_img = img[slice_idx, :, :].unsqueeze(0)  # Add channel dimension
                 save_image(slice_img, os.path.join(directory, f"{idx}_{slice_idx}.png"))
 
-    class BMGAN:
-    def __init__(self, generator, discriminator, encoder, lambda1=20, lambda2=8):
-        self.generator = generator.to(device)
-        self.discriminator = discriminator.to(device)
-        self.encoder = encoder.to(device)
-        self.lambda1 = lambda1  # Weight for L1 Loss
-        self.lambda2 = lambda2  # Weight for Perceptual Loss
-
-        self.vgg_model = self.get_vgg_model().to(device)
-
-        # Define optimizers
-        self.optimizer_G = optim.Adam(self.generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
-        self.optimizer_D = optim.Adam(self.discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
-        self.optimizer_E = optim.Adam(self.encoder.parameters(), lr=0.0002, betas=(0.5, 0.999))
-
-        # Define schedulers for learning rate decay
-        def linear_decay(epoch):
-            start_decay = 200  # Start decaying after 200 epochs
-            total_epochs = 400
-            if epoch < start_decay:
-                return 1.0
-            else:
-                return 1.0 - (epoch - start_decay) / (total_epochs - start_decay)
-
-        self.scheduler_G = torch.optim.lr_scheduler.LambdaLR(self.optimizer_G, lr_lambda=linear_decay)
-        self.scheduler_D = torch.optim.lr_scheduler.LambdaLR(self.optimizer_D, lr_lambda=linear_decay)
-        self.scheduler_E = torch.optim.lr_scheduler.LambdaLR(self.optimizer_E, lr_lambda=linear_decay)
-
-        # Define loss functions
-        self.mse_loss = nn.MSELoss()
-        self.l1_loss = nn.L1Loss()
-
-        # Define Patch Size for the Patch-Based Discriminator
-        self.patch_size = 32  # 32x32x32 patches
-
-    def get_vgg_model(self):
-        # Load the VGG16 model
-        vgg = models.vgg16(weights=models.VGG16_Weights.IMAGENET1K_V1)
-        # Extract features from an intermediate layer
-        model = nn.Sequential(*list(vgg.features.children())[:9])  # Up to 'block2_pool'
-        for param in model.parameters():
-            param.requires_grad = False
-        return model
-
     def train(self, mri_images, pet_images, epochs, batch_size, output_dir):
         # Early stopping parameters
         best_validation_loss = float('inf')
@@ -509,112 +465,107 @@ class BMGAN:
         training_discriminator_losses = []  # Record discriminator training loss
         validation_losses = []
         best_generator_state_dict = None
-
+    
         # Split data into training and validation sets (80% training, 20% validation)
         mri_train, mri_val, pet_train, pet_val = train_test_split(mri_images, pet_images, test_size=0.2, random_state=42)
-
+    
         # Create DataLoaders for training and validation
         train_dataset = CustomDataset(mri_train, pet_train)
         train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-
+    
         val_dataset = CustomDataset(mri_val, pet_val)
         val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-
+    
         for epoch in range(epochs):
             # Set models to training mode
             self.generator.train()
             self.discriminator.train()
             self.encoder.train()
-
+    
             total_d_loss = 0
             total_g_loss = 0
-
+    
             # Training Loop
             for i, (real_mri, real_pet) in enumerate(train_loader):
                 real_mri = real_mri.to(device)
                 real_pet = real_pet.to(device)
                 current_batch_size = real_mri.size(0)
-
+    
                 # ---------------------
                 #  Train Discriminator
                 # ---------------------
                 self.discriminator.zero_grad()
-
+    
                 # Extract Patches for Real Images
                 real_patches = self.extract_patches(real_pet)  # Shape: [num_patches, channels, 32, 32, 32]
                 output_real = self.discriminator(real_patches)
                 label_real = torch.full_like(output_real, 1, device=real_pet.device)  # Label smoothing
                 d_loss_real = self.lsgan_loss(output_real, label_real)
-
+    
                 # Extract Patches for Fake Images
                 fake_pet = self.generator(real_mri)
                 fake_patches = self.extract_patches(fake_pet.detach())
                 output_fake = self.discriminator(fake_patches)
                 label_fake = torch.full_like(output_fake, 0, device=real_pet.device)  # Label smoothing
                 d_loss_fake = self.lsgan_loss(output_fake, label_fake)
-
+    
                 # Total discriminator loss
                 d_loss = (d_loss_real + d_loss_fake) * 0.5
                 d_loss.backward()
                 self.optimizer_D.step()
-
+    
                 # -----------------
                 #  Train Generator
                 # -----------------
                 self.generator.zero_grad()
-
+    
                 # Extract Patches for Fake Images (Again for Generator Training)
                 fake_pet = self.generator(real_mri)
                 fake_patches = self.extract_patches(fake_pet)
                 output_fake = self.discriminator(fake_patches)
                 label_real_gen = torch.full_like(output_fake, 0.9, device=real_pet.device)  # Label smoothing
                 g_gan_loss = self.lsgan_loss(output_fake, label_real_gen)
-
+    
                 # L1 loss
                 l1_loss = self.l1_loss(fake_pet, real_pet)
-
+    
                 # Perceptual loss
                 perceptual_loss = self.perceptual_loss(real_pet, fake_pet)
-
+    
                 # Total Generator loss
                 g_loss = g_gan_loss + self.lambda1 * l1_loss + self.lambda2 * perceptual_loss
                 g_loss.backward()
                 self.optimizer_G.step()
-
+    
                 # -----------------
                 #  Train Encoder
                 # -----------------
                 self.encoder.zero_grad()
-
+    
                 # KL divergence loss for real PET images (forward mapping)
                 z_mean_real, z_log_var_real = self.encoder(real_pet)
                 kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
-
+    
                 # KL divergence loss for generated PET images (backward mapping)
                 z_mean_fake, z_log_var_fake = self.encoder(fake_pet.detach())
                 kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
-
+    
                 # Total KL divergence loss
-                kl_loss = kl_loss_real * 0.5 + kl_loss_fake * 0.5
+                kl_loss = kl_loss_real*0.5 + kl_loss_fake*0.5
                 kl_loss.backward()
                 self.optimizer_E.step()
-
+    
                 # Accumulate losses for printing
                 total_d_loss += d_loss.item()
                 total_g_loss += g_loss.item()
-
+    
             # Average losses per epoch
             avg_d_loss = total_d_loss / len(train_loader)
             avg_g_loss = total_g_loss / len(train_loader)
             training_generator_losses.append(avg_g_loss)  # Record generator training loss
             training_discriminator_losses.append(avg_d_loss)  # Record discriminator training loss
-
+    
             print(f"Epoch [{epoch+1}/{epochs}] Training D Loss: {avg_d_loss:.4f}, G Loss: {avg_g_loss:.4f}")
-
-            # Step learning rate schedulers
-            self.scheduler_G.step()
-            self.scheduler_D.step()
-            self.scheduler_E.step()
     
             # ---------------------------
             # Validation Step (no gradients)
@@ -902,7 +853,7 @@ if __name__ == '__main__':
 
     # Train the model
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=5, batch_size=1, output_dir=output_dir)
+    bmgan.train(mri_train, pet_train, epochs=400, batch_size=1, output_dir=output_dir)
 
     # Evaluate the model on the test set
     print("\nEvaluating the model on the test set...")
