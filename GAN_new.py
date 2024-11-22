@@ -501,77 +501,77 @@ class BMGAN:
             total_g_loss = 0
     
             for i, (real_mri, real_pet) in enumerate(train_loader):
-                        real_mri = real_mri.to(device)
-                        real_pet = real_pet.to(device)
-                        current_batch_size = real_mri.size(0)
+                real_mri = real_mri.to(device)
+                real_pet = real_pet.to(device)
+                current_batch_size = real_mri.size(0)
             
                         # ---------------------
                         # Train Discriminator
                         # ---------------------
-                        self.discriminator.zero_grad()
+                self.discriminator.zero_grad()
             
-                        # Extract Patches for Real Images
-                        real_patches = self.extract_patches(real_pet)  # Shape: [num_patches, channels, 32, 32, 32]
-                        output_real = self.discriminator(real_patches)
-                        label_real = torch.full_like(output_real, 1, device=real_pet.device)  # Label smoothing
-                        d_loss_real = self.lsgan_loss(output_real, label_real)
+                # Extract Patches for Real Images
+                real_patches = self.extract_patches(real_pet)  # Shape: [num_patches, channels, 32, 32, 32]
+                output_real = self.discriminator(real_patches)
+                label_real = torch.full_like(output_real, 1, device=real_pet.device)  # Label smoothing
+                d_loss_real = self.lsgan_loss(output_real, label_real)
             
-                        # Extract Patches for Fake Images
-                        z_mean_real, z_log_var_real = self.encoder(real_pet)
-                        latent_real = z_mean_real + torch.exp(0.5 * z_log_var_real) * torch.randn_like(z_mean_real)
-                        synthetic_pet = self.generator(real_mri, latent_real)
-                        fake_patches = self.extract_patches(synthetic_pet.detach())
-                        output_fake = self.discriminator(fake_patches)
-                        label_fake = torch.full_like(output_fake, 0, device=real_pet.device)  # Label smoothing
-                        d_loss_fake = self.lsgan_loss(output_fake, label_fake)
+                # Extract Patches for Fake Images
+                z_mean_real, z_log_var_real = self.encoder(real_pet)
+                latent_real = z_mean_real + torch.exp(0.5 * z_log_var_real) * torch.randn_like(z_mean_real)
+                synthetic_pet = self.generator(real_mri, latent_real)
+                fake_patches = self.extract_patches(synthetic_pet.detach())
+                output_fake = self.discriminator(fake_patches)
+                label_fake = torch.full_like(output_fake, 0, device=real_pet.device)  # Label smoothing
+                d_loss_fake = self.lsgan_loss(output_fake, label_fake)
             
-                        # Total discriminator loss
-                        d_loss = (d_loss_real + d_loss_fake) * 0.5
-                        d_loss.backward()
-                        self.optimizer_D.step()
+                # Total discriminator loss
+                d_loss = (d_loss_real + d_loss_fake) * 0.5
+                d_loss.backward()
+                self.optimizer_D.step()
             
                         # -----------------
                         # Train Generator
                         # -----------------
-                        self.generator.zero_grad()
+                self.generator.zero_grad()
             
-                        # GAN Loss for Generator
-                        fake_patches = self.extract_patches(synthetic_pet)
-                        output_fake = self.discriminator(fake_patches)
-                        label_real_gen = torch.full_like(output_fake, 0.9, device=real_pet.device)  # Label smoothing
-                        g_gan_loss = self.lsgan_loss(output_fake, label_real_gen)
+                # GAN Loss for Generator
+                fake_patches = self.extract_patches(synthetic_pet)
+                output_fake = self.discriminator(fake_patches)
+                label_real_gen = torch.full_like(output_fake, 0.9, device=real_pet.device)  # Label smoothing
+                g_gan_loss = self.lsgan_loss(output_fake, label_real_gen)
             
-                        # L1 loss and perceptual loss
-                        l1_loss = self.l1_loss(synthetic_pet, real_pet)
-                        perceptual_loss = self.perceptual_loss(real_pet, synthetic_pet)
+                # L1 loss and perceptual loss
+                l1_loss = self.l1_loss(synthetic_pet, real_pet)
+                perceptual_loss = self.perceptual_loss(real_pet, synthetic_pet)
             
-                        # KL divergence for forward mapping
-                        kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
+                # KL divergence for forward mapping
+                kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
             
-                        # Total generator loss
-                        g_loss = g_gan_loss + self.lambda1 * l1_loss + self.lambda2 * perceptual_loss + kl_loss_real
-                        g_loss.backward()
-                        self.optimizer_G.step()
+                # Total generator loss
+                g_loss = g_gan_loss + self.lambda1 * l1_loss + self.lambda2 * perceptual_loss + kl_loss_real
+                g_loss.backward()
+                self.optimizer_G.step()
             
                         # -----------------
                         # Train Encoder
                         # -----------------
-                        self.encoder.zero_grad()
+                self.encoder.zero_grad()
             
-                        # KL divergence for backward mapping
-                        z_sampled = torch.randn(current_batch_size, self.encoder.latent_dim).to(device)
-                        synthetic_pet_back = self.generator(real_mri, z_sampled)
-                        z_mean_fake, z_log_var_fake = self.encoder(synthetic_pet_back)
-                        kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
+                # KL divergence for backward mapping
+                z_sampled = torch.randn(current_batch_size, self.encoder.latent_dim).to(device)
+                synthetic_pet_back = self.generator(real_mri, z_sampled)
+                z_mean_fake, z_log_var_fake = self.encoder(synthetic_pet_back)
+                kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
             
                         # Total KL divergence loss
-                        kl_loss_total = kl_loss_real + kl_loss_fake
-                        kl_loss_total.backward()
-                        self.optimizer_E.step()
+                kl_loss_total = kl_loss_real + kl_loss_fake
+                kl_loss_total.backward()
+                self.optimizer_E.step()
             
                         # Accumulate losses for printing
-                        total_d_loss += d_loss.item()
-                        total_g_loss += g_loss.item()
+                total_d_loss += d_loss.item()
+                total_g_loss += g_loss.item()
     
             # Average losses per epoch
             avg_d_loss = total_d_loss / len(train_loader)
