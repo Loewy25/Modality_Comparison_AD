@@ -854,7 +854,7 @@ if __name__ == '__main__':
     
     # Initialize encoder
     print("Initializing Encoder")
-    encoder = ResNetEncoder(in_channels=1, latent_dim=512)
+    encoder = ResNetEncoder(in_channels=1, latent_dim=8)
     encoder.to(device)
     print(encoder)
     print(f"Encoder Parameters: {count_parameters(encoder):,}")  # Print parameter count
