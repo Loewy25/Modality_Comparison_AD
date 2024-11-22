@@ -872,7 +872,7 @@ if __name__ == '__main__':
 
     # Evaluate the model on the test set
     print("\nEvaluating the model on the test set...")
-    bmgan.evaluate(mri_gen, pet_gen, batch_size=4)
+    bmgan.evaluate(mri_gen, pet_gen, batch_size=1)
 
     # Predict PET images for the test MRI data
     print("Generating PET images for the test set...")
