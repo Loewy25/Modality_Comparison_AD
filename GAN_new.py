@@ -80,8 +80,6 @@ class TransitionLayer(nn.Module):
         x = self.pool(norm_out)
         return x, norm_out  # Return both pooled and unpooled output gan
 
-
-
 class UpsampleLayer(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(UpsampleLayer, self).__init__()
@@ -323,17 +321,7 @@ class Discriminator(nn.Module):
 # ------------------------------------------------------------
 # BMGAN Class with Integrated Loss Functions and Evaluation Metrics
 # ------------------------------------------------------------
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader
-from torchvision import models, transforms
-from torchvision.utils import save_image
-from torch.nn.functional import interpolate
-import os
-import tempfile
-from math import log10
-from sklearn.model_selection import train_test_split
+from torch.optim.lr_scheduler import LambdaLR  # Ensure this import is present
 
 class BMGAN:
     def __init__(self, generator, discriminator, encoder, lambda1=20, lambda2=8):
@@ -345,10 +333,10 @@ class BMGAN:
 
         self.vgg_model = self.get_vgg_model().to(device)
 
-        # Define optimizers
-        self.optimizer_G = optim.Adam(self.generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
-        self.optimizer_D = optim.Adam(self.discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
-        self.optimizer_E = optim.Adam(self.encoder.parameters(), lr=0.0002, betas=(0.5, 0.999))
+        # Define optimizers with initial learning rate of 0.002
+        self.optimizer_G = optim.Adam(self.generator.parameters(), lr=0.002, betas=(0.5, 0.999))
+        self.optimizer_D = optim.Adam(self.discriminator.parameters(), lr=0.002, betas=(0.5, 0.999))
+        self.optimizer_E = optim.Adam(self.encoder.parameters(), lr=0.002, betas=(0.5, 0.999))
 
         # Define loss functions
         self.mse_loss = nn.MSELoss()
@@ -356,6 +344,23 @@ class BMGAN:
 
         # Define Patch Size for the Patch-Based Discriminator
         self.patch_size = 32  # 32x32x32 patches
+
+        # Define learning rate schedule
+        total_epochs = 200  # 100 epochs constant, 100 epochs decay
+
+        # Define lambda function for LambdaLR
+        def lr_lambda(epoch):
+            if epoch < 100:
+                return 1.0  # Keep lr constant
+            elif epoch < 200:
+                return max(0.0, 1.0 - (epoch - 100) / 100)  # Linear decay to 0
+            else:
+                return 0.0  # After 200 epochs, lr is 0
+
+        # Initialize schedulers for each optimizer
+        self.scheduler_G = LambdaLR(self.optimizer_G, lr_lambda=lr_lambda)
+        self.scheduler_D = LambdaLR(self.optimizer_D, lr_lambda=lr_lambda)
+        self.scheduler_E = LambdaLR(self.optimizer_E, lr_lambda=lr_lambda)
 
     def get_vgg_model(self):
         # Load the VGG16 model
@@ -649,6 +654,17 @@ class BMGAN:
     
             print(f"Epoch [{epoch+1}/{epochs}] FID: {fid_value:.4f}")
     
+            # Step the schedulers
+            self.scheduler_G.step()
+            self.scheduler_D.step()
+            self.scheduler_E.step()
+    
+            # Optionally, print the current learning rates for monitoring
+            current_lr_G = self.optimizer_G.param_groups[0]['lr']
+            current_lr_D = self.optimizer_D.param_groups[0]['lr']
+            current_lr_E = self.optimizer_E.param_groups[0]['lr']
+            print(f"Epoch [{epoch+1}/{epochs}] Learning Rates -> G: {current_lr_G:.6f}, D: {current_lr_D:.6f}, E: {current_lr_E:.6f}")
+    
         # Load the best model weights after training
         if best_generator_state_dict is not None:
             self.generator.load_state_dict(best_generator_state_dict)
@@ -665,7 +681,6 @@ class BMGAN:
         plt.title('Training and Validation Losses over Epochs')
         plt.savefig(os.path.join(output_dir, 'loss_curve.png'))
         plt.close()
-
 
     # Add the evaluate method
     def evaluate(self, mri_images, pet_images, batch_size):
@@ -835,9 +850,9 @@ if __name__ == '__main__':
     print(encoder)
     print(f"Encoder Parameters: {count_parameters(encoder):,}")  # Print parameter count
 
-    # Initialize BMGAN model
+    # Initialize BMGAN model with lambda1=20 and lambda2=8
     print("Building BMGAN model...")
-    bmgan = BMGAN(generator, discriminator, encoder)
+    bmgan = BMGAN(generator, discriminator, encoder, lambda1=20, lambda2=8)
 
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
@@ -851,13 +866,13 @@ if __name__ == '__main__':
     os.makedirs(output_dir, exist_ok=True)  # Ensure output directory exists
     print(f"Created directories: {output_dir_mri}, {output_dir_pet}, {output_dir_real_pet}")
 
-    # Train the model
+    # Train the model with updated epochs and batch size
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=400, batch_size=1, output_dir=output_dir)
+    bmgan.train(mri_train, pet_train, epochs=200, batch_size=1, output_dir=output_dir)
 
     # Evaluate the model on the test set
     print("\nEvaluating the model on the test set...")
-    bmgan.evaluate(mri_gen, pet_gen, batch_size=1)
+    bmgan.evaluate(mri_gen, pet_gen, batch_size=4)
 
     # Predict PET images for the test MRI data
     print("Generating PET images for the test set...")
