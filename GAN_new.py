@@ -346,16 +346,18 @@ class BMGAN:
         self.patch_size = 32  # 32x32x32 patches
 
         # Define learning rate schedule
-        total_epochs = 200  # 100 epochs constant, 100 epochs decay
-
-        # Define lambda function for LambdaLR
+        self.decay_start_epoch = 150  # Epoch to start decay
+        self.total_epochs = 200  # Total number of epochs
+        
+        # Define lambda function for LambdaLR that properly handles the learning rate decay
         def lr_lambda(epoch):
-            if epoch < 100:
-                return 1.0  # Keep lr constant
-            elif epoch < 200:
-                return max(0.0, 1.0 - (epoch - 100) / 100)  # Linear decay to 0
+            if epoch < self.decay_start_epoch:
+                return 1.0
             else:
-                return 0.0  # After 200 epochs, lr is 0
+                # Calculate the decay factor based on remaining epochs
+                decay_epochs = self.total_epochs - self.decay_start_epoch
+                current_decay_epoch = epoch - self.decay_start_epoch
+                return 1.0 - (current_decay_epoch / decay_epochs)
 
         # Initialize schedulers for each optimizer
         self.scheduler_G = LambdaLR(self.optimizer_G, lr_lambda=lr_lambda)
@@ -465,7 +467,7 @@ class BMGAN:
         # Early stopping parameters
         best_validation_loss = float('inf')
         epochs_no_improve = 0
-        patience = 100  # Number of epochs to wait for improvement
+        patience = 500  # Number of epochs to wait for improvement
         training_generator_losses = []  # Record generator training loss
         training_discriminator_losses = []  # Record discriminator training loss
         validation_losses = []
