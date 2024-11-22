@@ -89,12 +89,12 @@ class UpsampleLayer(nn.Module):
         return self.layer(x)
 
 class DenseUNetGenerator(nn.Module):
-    def __init__(self, in_channels=1, out_channels=1):
+    def __init__(self, in_channels=1, latent_dim=512, out_channels=1):
         super(DenseUNetGenerator, self).__init__()
         
         # Initial convolution layers
         self.init_conv = nn.Sequential(
-            nn.Conv3d(in_channels, 64, kernel_size=3, padding=1),
+            nn.Conv3d(in_channels + latent_dim, 64, kernel_size=3, padding=1),  # Adjust input channels
             nn.InstanceNorm3d(64),
             nn.LeakyReLU(0.2, inplace=True),
             nn.Conv3d(64, 64, kernel_size=3, padding=1),
@@ -106,7 +106,7 @@ class DenseUNetGenerator(nn.Module):
         self.norm_ini = nn.InstanceNorm3d(64)
         self.pool_ini = nn.MaxPool3d(kernel_size=2, stride=2)
         
-        # Encoder path with DenseNet-style connectivity in each dense block
+        # Encoder path
         self.encoder1 = DenseBlock(64, 128, num_layers=2)
         self.trans1 = TransitionLayer(320, 128)
         
@@ -145,12 +145,19 @@ class DenseUNetGenerator(nn.Module):
 
         # Final convolution layer
         self.final_conv = nn.Sequential(
-            nn.Conv3d(128, 64, kernel_size=3, padding =1),
+            nn.Conv3d(128, 64, kernel_size=3, padding=1),
             nn.Conv3d(64, out_channels, kernel_size=3, padding=1),
             nn.Tanh()
         )
 
-    def forward(self, x):
+    def forward(self, mri, latent_vector):
+        # Expand latent vector spatially to match MRI dimensions
+        latent_expanded = latent_vector.view(latent_vector.size(0), latent_vector.size(1), 1, 1, 1)
+        latent_expanded = latent_expanded.expand(-1, -1, mri.size(2), mri.size(3), mri.size(4))
+        
+        # Concatenate MRI input with latent vector
+        x = torch.cat([mri, latent_expanded], dim=1)
+        
         # Initial convolution layers
         x1 = self.init_conv(x)
         
@@ -161,7 +168,7 @@ class DenseUNetGenerator(nn.Module):
 
         # Encoder path (store skip connections before each transition layer)
         x2 = self.encoder1(x1)
-        x2, skip1 = self.trans1(x2)  # Take norm_out as skip
+        x2, skip1 = self.trans1(x2)
 
         x3 = self.encoder2(x2)
         x3, skip2 = self.trans2(x3)
@@ -204,6 +211,7 @@ class DenseUNetGenerator(nn.Module):
         out = self.final_conv(torch.cat([x11, x1_ini], dim=1))
         
         return out
+
 
 # ------------------------------------------------------------
 # ResNetEncoder Class with KL-Divergence Constraint
@@ -492,79 +500,78 @@ class BMGAN:
             total_d_loss = 0
             total_g_loss = 0
     
-            # Training Loop
             for i, (real_mri, real_pet) in enumerate(train_loader):
-                real_mri = real_mri.to(device)
-                real_pet = real_pet.to(device)
-                current_batch_size = real_mri.size(0)
-    
-                # ---------------------
-                #  Train Discriminator
-                # ---------------------
-                self.discriminator.zero_grad()
-    
-                # Extract Patches for Real Images
-                real_patches = self.extract_patches(real_pet)  # Shape: [num_patches, channels, 32, 32, 32]
-                output_real = self.discriminator(real_patches)
-                label_real = torch.full_like(output_real, 1, device=real_pet.device)  # Label smoothing
-                d_loss_real = self.lsgan_loss(output_real, label_real)
-    
-                # Extract Patches for Fake Images
-                fake_pet = self.generator(real_mri)
-                fake_patches = self.extract_patches(fake_pet.detach())
-                output_fake = self.discriminator(fake_patches)
-                label_fake = torch.full_like(output_fake, 0, device=real_pet.device)  # Label smoothing
-                d_loss_fake = self.lsgan_loss(output_fake, label_fake)
-    
-                # Total discriminator loss
-                d_loss = (d_loss_real + d_loss_fake) * 0.5
-                d_loss.backward()
-                self.optimizer_D.step()
-    
-                # -----------------
-                #  Train Generator
-                # -----------------
-                self.generator.zero_grad()
-    
-                # Extract Patches for Fake Images (Again for Generator Training)
-                fake_pet = self.generator(real_mri)
-                fake_patches = self.extract_patches(fake_pet)
-                output_fake = self.discriminator(fake_patches)
-                label_real_gen = torch.full_like(output_fake, 0.9, device=real_pet.device)  # Label smoothing
-                g_gan_loss = self.lsgan_loss(output_fake, label_real_gen)
-    
-                # L1 loss
-                l1_loss = self.l1_loss(fake_pet, real_pet)
-    
-                # Perceptual loss
-                perceptual_loss = self.perceptual_loss(real_pet, fake_pet)
-    
-                # Total Generator loss
-                g_loss = g_gan_loss + self.lambda1 * l1_loss + self.lambda2 * perceptual_loss
-                g_loss.backward()
-                self.optimizer_G.step()
-    
-                # -----------------
-                #  Train Encoder
-                # -----------------
-                self.encoder.zero_grad()
-    
-                # KL divergence loss for real PET images (forward mapping)
-                z_mean_real, z_log_var_real = self.encoder(real_pet)
-                kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
-    
-                # KL divergence loss for generated PET images (backward mapping)
-                z_mean_fake, z_log_var_fake = self.encoder(fake_pet.detach())
-                kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
-    
-                # Total KL divergence loss
-                kl_loss = kl_loss_real*0.5 + kl_loss_fake*0.5
-                kl_loss.backward()
-                self.optimizer_E.step()
-    
-                # Accumulate losses for printing
-                total_d_loss += d_loss.item()
-                total_g_loss += g_loss.item()
+                        real_mri = real_mri.to(device)
+                        real_pet = real_pet.to(device)
+                        current_batch_size = real_mri.size(0)
+            
+                        # ---------------------
+                        # Train Discriminator
+                        # ---------------------
+                        self.discriminator.zero_grad()
+            
+                        # Extract Patches for Real Images
+                        real_patches = self.extract_patches(real_pet)  # Shape: [num_patches, channels, 32, 32, 32]
+                        output_real = self.discriminator(real_patches)
+                        label_real = torch.full_like(output_real, 1, device=real_pet.device)  # Label smoothing
+                        d_loss_real = self.lsgan_loss(output_real, label_real)
+            
+                        # Extract Patches for Fake Images
+                        z_mean_real, z_log_var_real = self.encoder(real_pet)
+                        latent_real = z_mean_real + torch.exp(0.5 * z_log_var_real) * torch.randn_like(z_mean_real)
+                        synthetic_pet = self.generator(real_mri, latent_real)
+                        fake_patches = self.extract_patches(synthetic_pet.detach())
+                        output_fake = self.discriminator(fake_patches)
+                        label_fake = torch.full_like(output_fake, 0, device=real_pet.device)  # Label smoothing
+                        d_loss_fake = self.lsgan_loss(output_fake, label_fake)
+            
+                        # Total discriminator loss
+                        d_loss = (d_loss_real + d_loss_fake) * 0.5
+                        d_loss.backward()
+                        self.optimizer_D.step()
+            
+                        # -----------------
+                        # Train Generator
+                        # -----------------
+                        self.generator.zero_grad()
+            
+                        # GAN Loss for Generator
+                        fake_patches = self.extract_patches(synthetic_pet)
+                        output_fake = self.discriminator(fake_patches)
+                        label_real_gen = torch.full_like(output_fake, 0.9, device=real_pet.device)  # Label smoothing
+                        g_gan_loss = self.lsgan_loss(output_fake, label_real_gen)
+            
+                        # L1 loss and perceptual loss
+                        l1_loss = self.l1_loss(synthetic_pet, real_pet)
+                        perceptual_loss = self.perceptual_loss(real_pet, synthetic_pet)
+            
+                        # KL divergence for forward mapping
+                        kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
+            
+                        # Total generator loss
+                        g_loss = g_gan_loss + self.lambda1 * l1_loss + self.lambda2 * perceptual_loss + kl_loss_real
+                        g_loss.backward()
+                        self.optimizer_G.step()
+            
+                        # -----------------
+                        # Train Encoder
+                        # -----------------
+                        self.encoder.zero_grad()
+            
+                        # KL divergence for backward mapping
+                        z_sampled = torch.randn(current_batch_size, self.encoder.latent_dim).to(device)
+                        synthetic_pet_back = self.generator(real_mri, z_sampled)
+                        z_mean_fake, z_log_var_fake = self.encoder(synthetic_pet_back)
+                        kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
+            
+                        # Total KL divergence loss
+                        kl_loss_total = kl_loss_real + kl_loss_fake
+                        kl_loss_total.backward()
+                        self.optimizer_E.step()
+            
+                        # Accumulate losses for printing
+                        total_d_loss += d_loss.item()
+                        total_g_loss += g_loss.item()
     
             # Average losses per epoch
             avg_d_loss = total_d_loss / len(train_loader)
