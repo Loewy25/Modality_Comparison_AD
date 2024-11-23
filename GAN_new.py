@@ -519,7 +519,7 @@ class BMGAN:
                 # Extract Patches for Fake Images
                 z_mean_real, z_log_var_real = self.encoder(real_pet)
                 latent_real = z_mean_real + torch.exp(0.5 * z_log_var_real) * torch.randn_like(z_mean_real)
-                synthetic_pet = self.generator(real_mri, latent_real)
+                synthetic_pet = self.generator(real_mri, latent_real).detach()
                 fake_patches = self.extract_patches(synthetic_pet.detach())
                 output_fake = self.discriminator(fake_patches)
                 label_fake = torch.full_like(output_fake, 0, device=real_pet.device)  # Label smoothing
