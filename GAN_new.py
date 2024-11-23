@@ -354,7 +354,7 @@ class BMGAN:
         self.patch_size = 32  # 32x32x32 patches
 
         # Define learning rate schedule
-        self.decay_start_epoch = 150  # Epoch to start decay
+        self.decay_start_epoch = 10  # Epoch to start decay
         self.total_epochs = 200  # Total number of epochs
         
         # Define lambda function for LambdaLR that properly handles the learning rate decay
@@ -546,7 +546,6 @@ class BMGAN:
                 perceptual_loss = self.perceptual_loss(real_pet, synthetic_pet)
             
                 # KL divergence for forward mapping
-                kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
             
                 # Total generator loss
                 g_loss = g_gan_loss + self.lambda1 * l1_loss + self.lambda2 * perceptual_loss
@@ -562,6 +561,7 @@ class BMGAN:
                 z_sampled = torch.randn(current_batch_size, self.encoder.latent_dim).to(device)
                 synthetic_pet_back = self.generator(real_mri, z_sampled)
                 z_mean_fake, z_log_var_fake = self.encoder(synthetic_pet_back)
+                kl_loss_real = self.kl_divergence_loss(z_mean_real, z_log_var_real)
                 kl_loss_fake = self.kl_divergence_loss(z_mean_fake, z_log_var_fake)
             
                         # Total KL divergence loss
