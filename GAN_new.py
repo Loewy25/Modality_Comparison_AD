@@ -601,7 +601,10 @@ class BMGAN:
                     real_pet = real_pet.to(device)
     
                     # Generate fake PET images
-                    fake_pet = self.generator(real_mri)
+                    # Sample latent vector from standard normal distribution
+                    latent_vector = torch.randn(real_mri.size(0), self.encoder.latent_dim).to(device)
+                    fake_pet = self.generator(real_mri, latent_vector)
+
     
                     # Calculate validation loss (L1 Loss and Perceptual Loss)
                     l1_loss = self.l1_loss(fake_pet, real_pet)
@@ -712,7 +715,10 @@ class BMGAN:
                 real_pet = real_pet.to(device)
 
                 # Generate fake PET images
-                fake_pet = self.generator(real_mri)
+                # Sample latent vector from standard normal distribution
+                latent_vector = torch.randn(real_mri.size(0), self.encoder.latent_dim).to(device)
+                fake_pet = self.generator(real_mri, latent_vector)
+
 
                 # Compute MAE
                 mae = self.compute_mae(real_pet, fake_pet)
