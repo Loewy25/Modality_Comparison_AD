@@ -10,7 +10,7 @@
 #SBATCH --gres=cpu:1
 ##SBATCH --gres=gpu:nvidia_a100_80:1
 ##SBATCH --partition=tier2_gpu_dev
-SBATCH --partition=tier2_cpu
+#SBATCH --partition=tier2_cpu
 #SBATCH --account=aristeidis_sotiras
 #SBATCH --exclude=gpu02
 
