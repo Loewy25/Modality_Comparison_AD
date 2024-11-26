@@ -872,7 +872,7 @@ if __name__ == '__main__':
 
     # Initialize BMGAN model with lambda1=20 and lambda2=8
     print("Building BMGAN model...")
-    bmgan = BMGAN(generator, discriminator, encoder, lambda1=0.8, lambda2=0.1)
+    bmgan = BMGAN(generator, discriminator, encoder, lambda1=2, lambda2=1)
 
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
