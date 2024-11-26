@@ -537,8 +537,12 @@ class BMGAN:
 
                 # Generate synthetic_pet_back without tracking gradients for the generator
                 with torch.no_grad():
-                    z_sampled = torch.randn(current_batch_size, self.encoder.latent_dim).to(device)
-                    synthetic_pet_back = self.generator(real_mri, z_sampled)
+                    # Use latent vectors derived from real PET images
+                    z_mean_real, z_log_var_real = self.encoder(real_pet)
+                    latent_real = z_mean_real + torch.exp(0.5 * z_log_var_real) * torch.randn_like(z_mean_real)
+                    
+                    # Generate synthetic_pet_back using the generator
+                    synthetic_pet_back = self.generator(real_mri, latent_real)
 
                 # Now compute encoder outputs
                 z_mean_fake, z_log_var_fake = self.encoder(synthetic_pet_back)
@@ -884,11 +888,11 @@ if __name__ == '__main__':
 
     # Train the model with updated epochs and batch size
     print("Starting training...")
-    bmgan.train(mri_train, pet_train, epochs=200, batch_size=1, output_dir=output_dir)
+    bmgan.train(mri_train, pet_train, epochs=200, batch_size=4, output_dir=output_dir)
 
     # Evaluate the model on the test set
     print("\nEvaluating the model on the test set...")
-    bmgan.evaluate(mri_gen, pet_gen, batch_size=1)
+    bmgan.evaluate(mri_gen, pet_gen, batch_size=4)
 
     # Predict PET images for the test MRI data
     print("Generating PET images for the test set...")
@@ -897,7 +901,8 @@ if __name__ == '__main__':
         generated_pet_images = []
         for mri in mri_gen:
             mri_tensor = torch.FloatTensor(mri).unsqueeze(0).to(device)
-            generated_pet = generator(mri_tensor)
+            latent_vector = torch.randn(mri_tensor.size(0), encoder.latent_dim).to(device)
+            generated_pet = generator(mri_tensor，latent_vector)
             generated_pet = generated_pet.cpu().numpy()
             generated_pet_images.append(generated_pet[0])
 
