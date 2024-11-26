@@ -902,7 +902,7 @@ if __name__ == '__main__':
         for mri in mri_gen:
             mri_tensor = torch.FloatTensor(mri).unsqueeze(0).to(device)
             latent_vector = torch.randn(mri_tensor.size(0), encoder.latent_dim).to(device)
-            generated_pet = generator(mri_tensor，latent_vector)
+            generated_pet = generator(mri_tensor,latent_vector)
             generated_pet = generated_pet.cpu().numpy()
             generated_pet_images.append(generated_pet[0])
 
