@@ -25,7 +25,7 @@
 source /home/l.peiwang/miniconda3/etc/profile.d/conda.sh
 
 conda activate myenv
-
+conda install h5py
 module load cuda
 module load cudnn
 
