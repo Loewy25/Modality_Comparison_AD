@@ -89,7 +89,7 @@ class UpsampleLayer(nn.Module):
         return self.layer(x)
 
 class DenseUNetGenerator(nn.Module):
-    def __init__(self, in_channels=1, latent_dim=8, out_channels=1):
+    def __init__(self, in_channels=1, latent_dim=32, out_channels=1):
         super(DenseUNetGenerator, self).__init__()
         
         # Initial convolution layers
@@ -865,7 +865,7 @@ if __name__ == '__main__':
     
     # Initialize encoder
     print("Initializing Encoder")
-    encoder = ResNetEncoder(in_channels=1, latent_dim=8)
+    encoder = ResNetEncoder(in_channels=1, latent_dim=32)
     encoder.to(device)
     print(encoder)
     print(f"Encoder Parameters: {count_parameters(encoder):,}")  # Print parameter count
