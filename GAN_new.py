@@ -342,9 +342,9 @@ class BMGAN:
         self.vgg_model = self.get_vgg_model().to(device)
 
         # Define optimizers with initial learning rate of 0.002
-        self.optimizer_G = optim.Adam(self.generator.parameters(), lr=0.002, betas=(0.5, 0.999))
-        self.optimizer_D = optim.Adam(self.discriminator.parameters(), lr=0.002, betas=(0.5, 0.999))
-        self.optimizer_E = optim.Adam(self.encoder.parameters(), lr=0.002, betas=(0.5, 0.999))
+        self.optimizer_G = optim.Adam(self.generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+        self.optimizer_D = optim.Adam(self.discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+        self.optimizer_E = optim.Adam(self.encoder.parameters(), lr=0.0002, betas=(0.5, 0.999))
 
         # Define loss functions
         self.mse_loss = nn.MSELoss()
@@ -872,7 +872,7 @@ if __name__ == '__main__':
 
     # Initialize BMGAN model with lambda1=20 and lambda2=8
     print("Building BMGAN model...")
-    bmgan = BMGAN(generator, discriminator, encoder, lambda1=2, lambda2=1)
+    bmgan = BMGAN(generator, discriminator, encoder, lambda1=0.3, lambda2=0.1)
 
     # Create directories to store the results
     output_dir_mri = f'gan/{task}/{info}/mri'
