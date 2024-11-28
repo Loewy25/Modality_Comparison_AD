@@ -41,7 +41,17 @@ from sklearn.preprocessing import Binarizer, label_binarize
 from sklearn.svm import LinearSVC, SVC
 
 
-
+def resize_image(image, target_shape):
+    """
+    Resize a 3D image to the target shape using zoom.
+    Args:
+        image (numpy.ndarray): 3D image.
+        target_shape (tuple): Desired shape.
+    Returns:
+        numpy.ndarray: Resized image.
+    """
+    zoom_factors = [target_shape[i] / image.shape[i] for i in range(3)]
+    return zoom(image, zoom_factors, order=1)
 
 def generate(images,labels,task):
     imagesData=[]
