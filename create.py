@@ -313,7 +313,8 @@ def create_hdf5(task="cd"):
             # Add attributes
             group.attrs["DX"] = labels[i]
             group.attrs["RID"] = patient_ids[i]
-            group.attrs["VISCODE"] = visit_codes[i]
+            group.attrs["VISCODE"] = visit_codes[i].encode('ascii', 'ignore')
+
 
         # Add stats for the tabular data
         stats_group = f.create_group("stats")
