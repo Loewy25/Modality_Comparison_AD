@@ -8,9 +8,9 @@
 #SBATCH -t 90:50:00             # Set maximum time
 
 ##SBATCH --gres=cpu:1
-##SBATCH --gres=gpu:nvidia_a100_80:1
-##SBATCH --partition=tier2_gpu_dev
-#SBATCH --partition=tier2_cpu
+#SBATCH --gres=gpu:nvidia_a100_80:1
+#SBATCH --partition=tier2_gpu_dev
+##SBATCH --partition=tier2_cpu
 #SBATCH --account=aristeidis_sotiras
 #SBATCH --exclude=gpu02
 
@@ -36,7 +36,7 @@ module load cudnn
 #python cbam_cd_mri.py
 #python cbam_full_cd_mri.py
 #python base2.py
-python create.py
+python GAN_new.py
 # List of Python scripts you want to run (internal array)
 #scripts=("deep_learning_cd_MRI.py" "deep_learning_cd_PET.py" "deep_learning_cm_MRI.py" "deep_learning_cm_PET.py" "deep_learning_dm_MRI.py" "deep_learning_dm_PET.py" "deep_learning_pc_MRI.py" "deep_learning_pc_PET.py")
 
