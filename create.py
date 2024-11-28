@@ -10,6 +10,7 @@ import glob
 import math
 import nibabel as nib
 import nilearn as nil
+from scipy.ndimage import zoom
 import numpy as np
 import os
 import pandas as pd
