@@ -2,38 +2,62 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-# Self-Attention Module
+# Updated Self-Attention Module
 class SelfAttention3D(nn.Module):
-    def __init__(self, in_dim):
+    def __init__(self, in_dim, use_gamma=False):
         super(SelfAttention3D, self).__init__()
-        self.chanel_in = in_dim
-
-        self.query_conv = nn.Conv3d(in_channels=in_dim, out_channels=in_dim//8, kernel_size=1)
-        self.key_conv = nn.Conv3d(in_channels=in_dim, out_channels=in_dim//8, kernel_size=1)
-        self.value_conv = nn.Conv3d(in_channels=in_dim, out_channels=in_dim, kernel_size=1)
-        self.gamma = nn.Parameter(torch.zeros(1))
-
-        self.softmax = nn.Softmax(dim=-1)
+        self.in_dim = in_dim
+        self.use_gamma = use_gamma
+        # First 1x1x1 convolution (Wf)
+        self.Wf = nn.Conv3d(in_dim, in_dim, kernel_size=1)
+        # Second 1x1x1 convolution (Wφ)
+        self.Wphi = nn.Conv3d(in_dim, in_dim, kernel_size=1)
+        # Wv layer
+        self.Wv = nn.Conv3d(in_dim, in_dim, kernel_size=1)
+        # Sigmoid activation
+        self.sigmoid = nn.Sigmoid()
+        # Optional gamma parameter
+        if self.use_gamma:
+            self.gamma = nn.Parameter(torch.zeros(1))
+        # Softmax over spatial dimensions
+        self.softmax = nn.Softmax(dim=2)  # N = D*H*W
 
     def forward(self, x):
-        """
-            inputs :
-                x : input feature maps (B x C x D x H x W)
-            returns :
-                out : self attention value + input feature
-                attention: B x N x N (N=D*H*W)
-        """
-        m_batchsize, C, depth, height, width = x.size()
-        proj_query = self.query_conv(x).view(m_batchsize, -1, depth*height*width).permute(0, 2, 1)  # B x N x C
-        proj_key = self.key_conv(x).view(m_batchsize, -1, depth*height*width)  # B x C x N
-        energy = torch.bmm(proj_query, proj_key)  # transpose check
-        attention = self.softmax(energy)  # B x N x N
-        proj_value = self.value_conv(x).view(m_batchsize, -1, depth*height*width)  # B x C x N
+        B, C, D, H, W = x.size()
+        N = D * H * W
 
-        out = torch.bmm(proj_value, attention.permute(0, 2, 1))  # B x C x N
-        out = out.view(m_batchsize, C, depth, height, width)
+        # Reshape x to (B, C, N)
+        x_flat = x.view(B, C, N)
 
-        out = self.gamma * out + x
+        # Compute f(x) = Wf x
+        f_x = self.Wf(x).view(B, C, N)
+
+        # Compute attention weights η_j
+        eta = self.softmax(f_x)  # Shape: (B, C, N)
+
+        # Compute φ(x) = Wφ x
+        phi_x = self.Wphi(x).view(B, C, N)
+
+        # Compute weighted sum ∑ η_j ⋅ φ(x_j)
+        weighted_phi = eta * phi_x  # Element-wise multiplication
+        summed_phi = torch.sum(weighted_phi, dim=2, keepdim=True)  # Sum over N
+
+        # Apply Wv: v(x) = Wv x
+        v = self.Wv(summed_phi.view(B, C, 1, 1, 1))
+
+        # Apply sigmoid activation
+        attention_map = self.sigmoid(v)
+
+        # Optionally scale attention map with gamma
+        if self.use_gamma:
+            attention_map = self.gamma * attention_map
+
+        # Expand attention map to match input dimensions
+        attention_map = attention_map.expand_as(x)
+
+        # Apply attention map to input
+        out = attention_map * x
+
         return out
 
 # Pyramid Convolution Block
@@ -108,7 +132,7 @@ class Generator(nn.Module):
         x = self.up1(x3)
         x = self.up2(x)
         x = self.up3(x)
-        # Self-Attention
+        # Apply self-attention after the last up-convolutional block
         x = self.attention(x)
         # Final Convolution
         x = self.final_conv(x)
@@ -208,8 +232,6 @@ def L1_loss(pred, target):
     return F.l1_loss(pred, target)
 
 # SSIM Loss
-# For SSIM Loss, we need to implement it or use an existing implementation.
-# Here, we'll use a simple approximation.
 def ssim_loss(pred, target):
     # Assuming pred and target are normalized between 0 and 1
     C1 = 0.01 ** 2
@@ -225,7 +247,7 @@ def ssim_loss(pred, target):
     ssim_n = (2 * mu_x * mu_y + C1) * (2 * sigma_xy + C2)
     ssim_d = (mu_x ** 2 + mu_y ** 2 + C1) * (sigma_x + sigma_y + C2)
 
-    ssim = ssim_n / ssim_d
+    ssim = ssim_n / (ssim_d + 1e-8)
     loss = torch.clamp((1 - ssim) / 2, 0, 1)
     return loss.mean()
 
@@ -233,12 +255,23 @@ def ssim_loss(pred, target):
 def combined_loss(G, Dstd, Dtask, real_MRI, real_PET, labels, gamma=1.0, lambda_=1.0, zeta=1.0):
     # Generate fake PET from MRI
     fake_PET = G(real_MRI)
-    # GAN Losses
+
+    # Standard Discriminator Loss
     Dstd_real = Dstd(real_PET)
     Dstd_fake = Dstd(fake_PET.detach())
 
-    LG = torch.mean(torch.log(1 - Dstd_fake + 1e-8))
-    LDstd = torch.mean(torch.log(1 - Dstd_real + 1e-8) + torch.log(Dstd_fake + 1e-8))
+    # Labels for real and fake images
+    real_labels = torch.ones_like(Dstd_real)
+    fake_labels = torch.zeros_like(Dstd_fake)
+
+    # Standard Discriminator Loss
+    Dstd_loss_real = F.binary_cross_entropy(Dstd_real, real_labels)
+    Dstd_loss_fake = F.binary_cross_entropy(Dstd_fake, fake_labels)
+    LDstd = Dstd_loss_real + Dstd_loss_fake
+
+    # Generator Loss
+    Dstd_fake_for_G = Dstd(fake_PET)
+    LG = F.binary_cross_entropy(Dstd_fake_for_G, real_labels)
 
     # Task-induced discriminator loss
     Dtask_output = Dtask(fake_PET)
@@ -249,7 +282,7 @@ def combined_loss(G, Dstd, Dtask, real_MRI, real_PET, labels, gamma=1.0, lambda_
     LSSIM = ssim_loss(fake_PET, real_PET)
 
     # Combined Loss
-    L = gamma * (L1 + LSSIM) + lambda_ * (LG + LDstd) + zeta * LDtask
+    L = gamma * (L1 + LSSIM) + lambda_ * LG + zeta * LDtask
     return L, {'L1': L1.item(), 'LSSIM': LSSIM.item(), 'LG': LG.item(), 'LDstd': LDstd.item(), 'LDtask': LDtask.item()}
 
 # Example usage:
@@ -269,21 +302,34 @@ if __name__ == "__main__":
     optimizer_Dstd = torch.optim.Adam(Dstd.parameters(), lr=1e-4)
     optimizer_Dtask = torch.optim.Adam(Dtask.parameters(), lr=1e-4)
 
-    # Forward pass
-    fake_PET = G(real_MRI)
+    # Training loop example
+    for epoch in range(1):  # Replace with actual number of epochs
+        # Zero the parameter gradients
+        optimizer_G.zero_grad()
+        optimizer_Dstd.zero_grad()
+        optimizer_Dtask.zero_grad()
 
-    # Compute losses
-    L, loss_dict = combined_loss(G, Dstd, Dtask, real_MRI, real_PET, labels)
+        # Forward pass
+        fake_PET = G(real_MRI)
 
-    # Backward pass and optimization
-    optimizer_G.zero_grad()
-    L.backward()
-    optimizer_G.step()
+        # Compute losses
+        L, loss_dict = combined_loss(G, Dstd, Dtask, real_MRI, real_PET, labels)
 
-    optimizer_Dstd.zero_grad()
-    optimizer_Dstd.step()
+        # Backward pass and optimization
+        # Update Generator
+        L.backward()
+        optimizer_G.step()
 
-    optimizer_Dtask.zero_grad()
-    optimizer_Dtask.step()
+        # Update Standard Discriminator
+        Dstd_loss = loss_dict['LDstd']
+        Dstd_loss = torch.tensor(Dstd_loss, requires_grad=True)
+        Dstd_loss.backward()
+        optimizer_Dstd.step()
 
-    print(f"Losses: {loss_dict}")
+        # Update Task-Induced Discriminator
+        LDtask = loss_dict['LDtask']
+        LDtask = torch.tensor(LDtask, requires_grad=True)
+        LDtask.backward()
+        optimizer_Dtask.step()
+
+        print(f"Epoch [{epoch+1}], Losses: {loss_dict}")
