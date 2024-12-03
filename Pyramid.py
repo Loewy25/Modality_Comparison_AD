@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-# Updated Self-Attention Module
+# Updated Self-Attention Module remains the same
 class SelfAttention3D(nn.Module):
     def __init__(self, in_dim, use_gamma=False):
         super(SelfAttention3D, self).__init__()
@@ -60,64 +60,88 @@ class SelfAttention3D(nn.Module):
 
         return out
 
-# Pyramid Convolution Block
+# Updated Pyramid Convolution Block without channel reduction
 class PyramidConvBlock(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_sizes):
         super(PyramidConvBlock, self).__init__()
-        self.convs = nn.ModuleList()
+        self.paths = nn.ModuleList()
         for kernel_size in kernel_sizes:
             padding = kernel_size // 2
-            self.convs.append(
-                nn.Conv3d(in_channels, out_channels, kernel_size=kernel_size, padding=padding)
+            path = nn.Sequential(
+                nn.Conv3d(in_channels, out_channels, kernel_size=kernel_size, padding=padding),
+                nn.ReLU(inplace=True),
+                nn.Conv3d(out_channels, out_channels, kernel_size=kernel_size, padding=padding),
+                nn.ReLU(inplace=True)
             )
+            self.paths.append(path)
         self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x):
         outputs = []
-        for conv in self.convs:
-            outputs.append(conv(x))
-        out = sum(outputs) / len(outputs)
+        for path in self.paths:
+            outputs.append(path(x))
+        # Concatenate along the channel dimension
+        out = torch.cat(outputs, dim=1)
         out = self.relu(out)
         return out
 
-# Generator Network
+# Adjusted Generator Network to accommodate increased channels
 class Generator(nn.Module):
-    def __init__(self, in_channels=1, out_channels=1, features=32):
+    def __init__(self, in_channels=1, out_channels=1, base_features=32):
         super(Generator, self).__init__()
         # Contracting path
         self.pool = nn.MaxPool3d(kernel_size=2, stride=2)
-        self.down1 = PyramidConvBlock(in_channels, features, kernel_sizes=[3,5,7])
-        self.down2 = PyramidConvBlock(features, features*2, kernel_sizes=[3,5])
+
+        # First PyramidConvBlock with kernel sizes [3,5,7]
+        self.down1 = PyramidConvBlock(in_channels, base_features, kernel_sizes=[3,5,7])
+        features1 = base_features * len([3,5,7])
+
+        # Second PyramidConvBlock with kernel sizes [3,5]
+        self.down2 = PyramidConvBlock(features1, base_features*2, kernel_sizes=[3,5])
+        features2 = base_features*2 * len([3,5])
+
+        # Third Convolution Block
         self.down3 = nn.Sequential(
-            nn.Conv3d(features*2, features*4, kernel_size=3, padding=1),
+            nn.Conv3d(features2, base_features*4, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv3d(base_features*4, base_features*4, kernel_size=3, padding=1),
             nn.ReLU(inplace=True)
         )
+        features3 = base_features*4
+
         # Expanding path
         self.up1 = nn.Sequential(
             nn.Upsample(scale_factor=2, mode='trilinear', align_corners=True),
-            nn.Conv3d(features*4, features*2, kernel_size=3, padding=1),
+            nn.Conv3d(features3, base_features*2, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
-            nn.Conv3d(features*2, features*2, kernel_size=3, padding=1),
+            nn.Conv3d(base_features*2, base_features*2, kernel_size=3, padding=1),
             nn.ReLU(inplace=True)
         )
+        features_up1 = base_features*2
+
         self.up2 = nn.Sequential(
             nn.Upsample(scale_factor=2, mode='trilinear', align_corners=True),
-            nn.Conv3d(features*2, features, kernel_size=3, padding=1),
+            nn.Conv3d(features_up1, base_features, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
-            nn.Conv3d(features, features, kernel_size=3, padding=1),
+            nn.Conv3d(base_features, base_features, kernel_size=3, padding=1),
             nn.ReLU(inplace=True)
         )
+        features_up2 = base_features
+
         self.up3 = nn.Sequential(
             nn.Upsample(scale_factor=2, mode='trilinear', align_corners=True),
-            nn.Conv3d(features, features, kernel_size=3, padding=1),
+            nn.Conv3d(features_up2, base_features, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
-            nn.Conv3d(features, features, kernel_size=3, padding=1),
+            nn.Conv3d(base_features, base_features, kernel_size=3, padding=1),
             nn.ReLU(inplace=True)
         )
+        features_up3 = base_features
+
         # Self-Attention Module
-        self.attention = SelfAttention3D(features)
+        self.attention = SelfAttention3D(features_up3)
+
         # Final output layer
-        self.final_conv = nn.Conv3d(features, out_channels, kernel_size=1)
+        self.final_conv = nn.Conv3d(features_up3, out_channels, kernel_size=1)
 
     def forward(self, x):
         # Contracting path
@@ -138,7 +162,7 @@ class Generator(nn.Module):
         x = self.final_conv(x)
         return x
 
-# Standard Discriminator
+# Standard Discriminator remains unchanged
 class StandardDiscriminator(nn.Module):
     def __init__(self, in_channels=1, features=[32, 64, 128, 256, 512]):
         super(StandardDiscriminator, self).__init__()
@@ -160,7 +184,7 @@ class StandardDiscriminator(nn.Module):
         x = torch.sigmoid(x)
         return x
 
-# Dense Block for Task-Induced Discriminator
+# Task-Induced Discriminator remains unchanged
 class _DenseLayer(nn.Module):
     def __init__(self, in_channels, growth_rate):
         super(_DenseLayer, self).__init__()
@@ -185,7 +209,6 @@ class _Transition(nn.Module):
         x = self.pool(x)
         return x
 
-# Task-Induced Discriminator
 class TaskInducedDiscriminator(nn.Module):
     def __init__(self, in_channels=1, num_classes=2, growth_rate=32, block_config=(6,12,24,16)):
         super(TaskInducedDiscriminator, self).__init__()
@@ -227,11 +250,10 @@ class TaskInducedDiscriminator(nn.Module):
         out = F.softmax(out, dim=1)
         return out
 
-# L1 Loss
+# Loss functions remain unchanged
 def L1_loss(pred, target):
     return F.l1_loss(pred, target)
 
-# SSIM Loss
 def ssim_loss(pred, target):
     # Assuming pred and target are normalized between 0 and 1
     C1 = 0.01 ** 2
@@ -251,7 +273,6 @@ def ssim_loss(pred, target):
     loss = torch.clamp((1 - ssim) / 2, 0, 1)
     return loss.mean()
 
-# Combined Loss Function
 def combined_loss(G, Dstd, Dtask, real_MRI, real_PET, labels, gamma=1.0, lambda_=1.0, zeta=1.0):
     # Generate fake PET from MRI
     fake_PET = G(real_MRI)
