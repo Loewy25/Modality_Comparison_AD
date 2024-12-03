@@ -2,65 +2,38 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-# Updated Self-Attention Module remains the same
+# Self-Attention Module remains unchanged
 class SelfAttention3D(nn.Module):
     def __init__(self, in_dim, use_gamma=False):
         super(SelfAttention3D, self).__init__()
         self.in_dim = in_dim
         self.use_gamma = use_gamma
-        # First 1x1x1 convolution (Wf)
         self.Wf = nn.Conv3d(in_dim, in_dim, kernel_size=1)
-        # Second 1x1x1 convolution (Wφ)
         self.Wphi = nn.Conv3d(in_dim, in_dim, kernel_size=1)
-        # Wv layer
         self.Wv = nn.Conv3d(in_dim, in_dim, kernel_size=1)
-        # Sigmoid activation
         self.sigmoid = nn.Sigmoid()
-        # Optional gamma parameter
         if self.use_gamma:
             self.gamma = nn.Parameter(torch.zeros(1))
-        # Softmax over spatial dimensions
-        self.softmax = nn.Softmax(dim=2)  # N = D*H*W
+        self.softmax = nn.Softmax(dim=2)
 
     def forward(self, x):
         B, C, D, H, W = x.size()
         N = D * H * W
-
-        # Reshape x to (B, C, N)
         x_flat = x.view(B, C, N)
-
-        # Compute f(x) = Wf x
         f_x = self.Wf(x).view(B, C, N)
-
-        # Compute attention weights η_j
-        eta = self.softmax(f_x)  # Shape: (B, C, N)
-
-        # Compute φ(x) = Wφ x
+        eta = self.softmax(f_x)
         phi_x = self.Wphi(x).view(B, C, N)
-
-        # Compute weighted sum ∑ η_j ⋅ φ(x_j)
-        weighted_phi = eta * phi_x  # Element-wise multiplication
-        summed_phi = torch.sum(weighted_phi, dim=2, keepdim=True)  # Sum over N
-
-        # Apply Wv: v(x) = Wv x
+        weighted_phi = eta * phi_x
+        summed_phi = torch.sum(weighted_phi, dim=2, keepdim=True)
         v = self.Wv(summed_phi.view(B, C, 1, 1, 1))
-
-        # Apply sigmoid activation
         attention_map = self.sigmoid(v)
-
-        # Optionally scale attention map with gamma
         if self.use_gamma:
             attention_map = self.gamma * attention_map
-
-        # Expand attention map to match input dimensions
         attention_map = attention_map.expand_as(x)
-
-        # Apply attention map to input
         out = attention_map * x
-
         return out
 
-# Updated Pyramid Convolution Block without channel reduction
+# Updated Pyramid Convolution Block remains the same as previous (without channel reduction)
 class PyramidConvBlock(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_sizes):
         super(PyramidConvBlock, self).__init__()
@@ -80,12 +53,36 @@ class PyramidConvBlock(nn.Module):
         outputs = []
         for path in self.paths:
             outputs.append(path(x))
-        # Concatenate along the channel dimension
         out = torch.cat(outputs, dim=1)
         out = self.relu(out)
         return out
 
-# Adjusted Generator Network to accommodate increased channels
+# Bottleneck Block with Dense Connections
+class BottleneckBlock(nn.Module):
+    def __init__(self, in_channels, growth_rate, num_layers):
+        super(BottleneckBlock, self).__init__()
+        self.num_layers = num_layers
+        self.layers = nn.ModuleList()
+        for i in range(num_layers):
+            layer = nn.Sequential(
+                nn.Conv3d(in_channels + i * growth_rate, growth_rate, kernel_size=3, padding=1),
+                nn.ReLU(inplace=True),
+                nn.Conv3d(growth_rate, growth_rate, kernel_size=3, padding=1),
+                nn.ReLU(inplace=True)
+            )
+            self.layers.append(layer)
+
+    def forward(self, x):
+        features = [x]
+        for layer in self.layers:
+            x_input = torch.cat(features, dim=1)
+            out = layer(x_input)
+            features.append(out)
+        # Concatenate all features
+        out = torch.cat(features, dim=1)
+        return out
+
+# Updated Generator with Skip Connections and Bottleneck Block
 class Generator(nn.Module):
     def __init__(self, in_channels=1, out_channels=1, base_features=32):
         super(Generator, self).__init__()
@@ -100,7 +97,7 @@ class Generator(nn.Module):
         self.down2 = PyramidConvBlock(features1, base_features*2, kernel_sizes=[3,5])
         features2 = base_features*2 * len([3,5])
 
-        # Third Convolution Block
+        # Third Convolution Block (we can keep it simple)
         self.down3 = nn.Sequential(
             nn.Conv3d(features2, base_features*4, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
@@ -109,42 +106,57 @@ class Generator(nn.Module):
         )
         features3 = base_features*4
 
-        # Expanding path
+        # Bottleneck Block
+        bottleneck_in_channels = features3
+        self.bottleneck_conv1 = nn.Conv3d(bottleneck_in_channels, bottleneck_in_channels, kernel_size=3, padding=1)
+        self.bottleneck_relu1 = nn.ReLU(inplace=True)
+        self.bottleneck_conv2 = nn.Conv3d(bottleneck_in_channels, bottleneck_in_channels, kernel_size=3, padding=1)
+        self.bottleneck_relu2 = nn.ReLU(inplace=True)
+
+        # Six convolutional blocks with dense connections
+        growth_rate = base_features  # You can adjust this value
+        num_bottleneck_layers = 6
+        self.bottleneck_block = BottleneckBlock(bottleneck_in_channels, growth_rate, num_bottleneck_layers)
+
+        # Expanding path with skip connections
         self.up1 = nn.Sequential(
             nn.Upsample(scale_factor=2, mode='trilinear', align_corners=True),
-            nn.Conv3d(features3, base_features*2, kernel_size=3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv3d(base_features*2, base_features*2, kernel_size=3, padding=1),
+            nn.Conv3d(bottleneck_in_channels + growth_rate * num_bottleneck_layers + bottleneck_in_channels, features3, kernel_size=3, padding=1),
             nn.ReLU(inplace=True)
         )
-        features_up1 = base_features*2
+        self.dec_conv1 = nn.Sequential(
+            nn.Conv3d(features3 + features3, features3, kernel_size=3, padding=1),  # Skip connection from down3
+            nn.ReLU(inplace=True)
+        )
 
         self.up2 = nn.Sequential(
             nn.Upsample(scale_factor=2, mode='trilinear', align_corners=True),
-            nn.Conv3d(features_up1, base_features, kernel_size=3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv3d(base_features, base_features, kernel_size=3, padding=1),
+            nn.Conv3d(features3, features2, kernel_size=3, padding=1),
             nn.ReLU(inplace=True)
         )
-        features_up2 = base_features
+        self.dec_conv2 = nn.Sequential(
+            nn.Conv3d(features2 + features2, features2, kernel_size=3, padding=1),  # Skip connection from down2
+            nn.ReLU(inplace=True)
+        )
 
         self.up3 = nn.Sequential(
             nn.Upsample(scale_factor=2, mode='trilinear', align_corners=True),
-            nn.Conv3d(features_up2, base_features, kernel_size=3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv3d(base_features, base_features, kernel_size=3, padding=1),
+            nn.Conv3d(features2, features1, kernel_size=3, padding=1),
             nn.ReLU(inplace=True)
         )
-        features_up3 = base_features
+        self.dec_conv3 = nn.Sequential(
+            nn.Conv3d(features1 + features1, features1, kernel_size=3, padding=1),  # Skip connection from down1
+            nn.ReLU(inplace=True)
+        )
 
         # Self-Attention Module
-        self.attention = SelfAttention3D(features_up3)
+        self.attention = SelfAttention3D(features1)
 
         # Final output layer
-        self.final_conv = nn.Conv3d(features_up3, out_channels, kernel_size=1)
+        self.final_conv = nn.Conv3d(features1, out_channels, kernel_size=1)
 
     def forward(self, x):
-        # Contracting path
+        # Contracting path with skip connections
         x1 = self.down1(x)
         p1 = self.pool(x1)
 
@@ -152,12 +164,32 @@ class Generator(nn.Module):
         p2 = self.pool(x2)
 
         x3 = self.down3(p2)
-        # Expanding path
-        x = self.up1(x3)
+        p3 = self.pool(x3)
+
+        # Bottleneck
+        bottleneck = self.bottleneck_conv1(p3)
+        bottleneck = self.bottleneck_relu1(bottleneck)
+        bottleneck = self.bottleneck_conv2(bottleneck)
+        bottleneck = self.bottleneck_relu2(bottleneck)
+
+        bottleneck = self.bottleneck_block(bottleneck)
+
+        # Expanding path with skip connections
+        x = self.up1(bottleneck)
+        x = torch.cat([x, x3], dim=1)  # Skip connection from down3
+        x = self.dec_conv1(x)
+
         x = self.up2(x)
+        x = torch.cat([x, x2], dim=1)  # Skip connection from down2
+        x = self.dec_conv2(x)
+
         x = self.up3(x)
-        # Apply self-attention after the last up-convolutional block
+        x = torch.cat([x, x1], dim=1)  # Skip connection from down1
+        x = self.dec_conv3(x)
+
+        # Self-Attention
         x = self.attention(x)
+
         # Final Convolution
         x = self.final_conv(x)
         return x
