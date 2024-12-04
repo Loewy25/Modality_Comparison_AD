@@ -5,7 +5,7 @@
 
 #SBATCH -N 1                    # Request 1 node
 #SBATCH --mem=100G               # Request 400GB memory
-#SBATCH -t 90:50:00             # Set maximum time
+#SBATCH -t 30:50:00             # Set maximum time
 
 #SBATCH --gres=gpu:nvidia_a100_80:1
 #SBATCH --partition=tier2_gpu_dev
