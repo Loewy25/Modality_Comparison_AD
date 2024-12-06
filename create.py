@@ -336,7 +336,7 @@ def create_hdf5(task="cd"):
 
     # Write train, val, test files using fixed filenames
     train_file_path = os.path.join(output_dir, "train.h5")
-    val_file_path = os.path.join(output_dir, "val.h5")
+    val_file_path = os.path.join(output_dir, "valid.h5")
     test_file_path = os.path.join(output_dir, "test.h5")
 
     write_hdf5(train_file_path, train_indices)
