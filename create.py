@@ -268,7 +268,8 @@ def resize_image(image, target_shape):
 def create_hdf5(task="cd"):
     """
     Create three separate HDF5 files (train, validation, and test) from MRI and PET data 
-    with random tabular data and store them in the specified scratch directory.
+    with random tabular data and store them in the specified scratch directory,
+    using a nested structure: MRI/T1/data and PET/FDG/data.
     """
     # Load MRI, PET, and labels
     mri_data, pet_data, labels = load_mri_pet_data(task)
@@ -288,8 +289,8 @@ def create_hdf5(task="cd"):
     mean_tabular = np.mean(tabular_data, axis=0)
     std_tabular = np.std(tabular_data, axis=0)
 
-    # Define output directory in scratch
-    output_dir = os.path.join("/scratch/l.peiwang", "datasets")  # Replace with your scratch directory if needed
+    # Define output directory in scratch (adjust as needed)
+    output_dir = os.path.join("/scratch/l.peiwang", "datasets")
     os.makedirs(output_dir, exist_ok=True)
 
     # Split the dataset into train, val, test (70%, 15%, 15%)
@@ -306,21 +307,23 @@ def create_hdf5(task="cd"):
                 image_id = f"ID_{i:03d}"
                 group = f.create_group(image_id)
 
-                # MRI/PET data
+                # MRI group and dataset
                 mri_group = group.create_group("MRI")
-                mri_group.create_dataset("T1", data=mri_data[idx], compression="gzip")
+                t1_group = mri_group.create_group("T1")
+                t1_group.create_dataset("data", data=mri_data[idx], compression="gzip")
 
+                # PET group and dataset
                 pet_group = group.create_group("PET")
-                pet_group.create_dataset("FDG", data=pet_data[idx], compression="gzip")
+                fdg_group = pet_group.create_group("FDG")
+                fdg_group.create_dataset("data", data=pet_data[idx], compression="gzip")
 
                 # Tabular data
                 group.create_dataset("tabular", data=tabular_data[idx])
 
-                # Attributes
-                group.attrs["DX"] = labels[idx]
+                # Attributes (encode strings for HDF5)
+                group.attrs["DX"] = labels[idx].encode('utf-8')
                 group.attrs["RID"] = patient_ids[idx]
                 group.attrs["VISCODE"] = visit_codes[idx].encode('utf-8')
-
 
             # Add stats for the tabular data
             stats_group = f.create_group("stats")
@@ -331,7 +334,7 @@ def create_hdf5(task="cd"):
 
         print(f"HDF5 file created and saved to {file_path} with {len(indices)} subjects.")
 
-    # Write train, val, test files using fixed filenames in the scratch directory
+    # Write train, val, test files using fixed filenames
     train_file_path = os.path.join(output_dir, "train.h5")
     val_file_path = os.path.join(output_dir, "val.h5")
     test_file_path = os.path.join(output_dir, "test.h5")
@@ -343,3 +346,4 @@ def create_hdf5(task="cd"):
 
 # Run the modified function
 create_hdf5(task="cd")
+
