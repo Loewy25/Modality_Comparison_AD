@@ -18,6 +18,7 @@ import random
 import scipy.ndimage as ndi
 import statsmodels.stats.contingency_tables as ct
 import time
+from scipy.ndimage import zoom, rotate
 from collections import Counter
 from matplotlib import pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
