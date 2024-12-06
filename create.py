@@ -10,7 +10,6 @@ import glob
 import math
 import nibabel as nib
 import nilearn as nil
-from scipy.ndimage import zoom
 import numpy as np
 import os
 import pandas as pd
@@ -42,17 +41,7 @@ from sklearn.preprocessing import Binarizer, label_binarize
 from sklearn.svm import LinearSVC, SVC
 
 
-def resize_image(image, target_shape):
-    """
-    Resize a 3D image to the target shape using zoom.
-    Args:
-        image (numpy.ndarray): 3D image.
-        target_shape (tuple): Desired shape.
-    Returns:
-        numpy.ndarray: Resized image.
-    """
-    zoom_factors = [target_shape[i] / image.shape[i] for i in range(3)]
-    return zoom(image, zoom_factors, order=1)
+
 
 def generate(images,labels,task):
     imagesData=[]
@@ -265,9 +254,8 @@ def load_mri_pet_data(task):
 
 def create_hdf5(task="cd"):
     """
-    Create HDF5 file from MRI and PET data with random tabular data and store in the repository.
-    Args:
-        task (str): Task identifier (e.g., "CD" for CN vs Dementia).
+    Create three separate HDF5 files (train, validation, and test) from MRI and PET data 
+    with random tabular data and store them in the specified scratch directory.
     """
     # Load MRI, PET, and labels
     mri_data, pet_data, labels = load_mri_pet_data(task)
@@ -276,7 +264,7 @@ def create_hdf5(task="cd"):
     num_samples = len(labels)
     tabular_data = np.random.rand(num_samples, 6)  # Random values for the tabular data
     tabular_data[:, 0] = np.random.randint(50, 90, size=num_samples)  # Random age
-    tabular_data[:, 1] = np.random.randint(0, 2, size=num_samples)  # Random gender (0 or 1)
+    tabular_data[:, 1] = np.random.randint(0, 2, size=num_samples)    # Random gender (0 or 1)
 
     # Generate random attributes
     patient_ids = np.random.randint(1000, 9999, size=num_samples)  # Random patient IDs
@@ -287,48 +275,57 @@ def create_hdf5(task="cd"):
     mean_tabular = np.mean(tabular_data, axis=0)
     std_tabular = np.std(tabular_data, axis=0)
 
-    # Define output directory and ensure it exists
-    output_dir = "/scratch/l.peiwang"
+    # Define output directory in scratch
+    output_dir = os.path.join("/scratch/l.peiwang", "datasets")  # Replace with your scratch directory if needed
     os.makedirs(output_dir, exist_ok=True)
 
-    # Define file path
-    file_path = os.path.join(output_dir, f"{task}_dataset.h5")
+    # Split the dataset into train, val, test (70%, 15%, 15%)
+    train_end = int(num_samples * 0.7)
+    val_end = int(num_samples * 0.85)
 
-    # Create the HDF5 file
-    with h5py.File(file_path, "w") as f:
-        for i in range(num_samples):
-            image_id = f"ID_{i:03d}"
-            group = f.create_group(image_id)
+    train_indices = np.arange(0, train_end)
+    val_indices = np.arange(train_end, val_end)
+    test_indices = np.arange(val_end, num_samples)
 
-            # Add MRI and PET data
-            mri_group = group.create_group("MRI")
-            mri_group.create_dataset("T1", data=mri_data[i], compression="gzip")
+    def write_hdf5(file_path, indices):
+        with h5py.File(file_path, "w") as f:
+            for i, idx in enumerate(indices):
+                image_id = f"ID_{i:03d}"
+                group = f.create_group(image_id)
 
-            pet_group = group.create_group("PET")
-            pet_group.create_dataset("FDG", data=pet_data[i], compression="gzip")
+                # MRI/PET data
+                mri_group = group.create_group("MRI")
+                mri_group.create_dataset("T1", data=mri_data[idx], compression="gzip")
 
-            # Add tabular data
-            group.create_dataset("tabular", data=tabular_data[i])
+                pet_group = group.create_group("PET")
+                pet_group.create_dataset("FDG", data=pet_data[idx], compression="gzip")
 
-            # Add attributes
-            group.attrs["DX"] = labels[i]
-            group.attrs["RID"] = patient_ids[i]
-            group.attrs["VISCODE"] = visit_codes[i].encode('ascii', 'ignore')
+                # Tabular data
+                group.create_dataset("tabular", data=tabular_data[idx])
+
+                # Attributes
+                group.attrs["DX"] = labels[idx]
+                group.attrs["RID"] = patient_ids[idx]
+                group.attrs["VISCODE"] = visit_codes[idx]
+
+            # Add stats for the tabular data
+            stats_group = f.create_group("stats")
+            tabular_stats = stats_group.create_group("tabular")
+            tabular_stats.create_dataset("columns", data=np.array(columns, dtype='S'))
+            tabular_stats.create_dataset("mean", data=mean_tabular)
+            tabular_stats.create_dataset("stddev", data=std_tabular)
+
+        print(f"HDF5 file created and saved to {file_path} with {len(indices)} subjects.")
+
+    # Write train, val, test files using fixed filenames in the scratch directory
+    train_file_path = os.path.join(output_dir, "train.h5")
+    val_file_path = os.path.join(output_dir, "val.h5")
+    test_file_path = os.path.join(output_dir, "test.h5")
+
+    write_hdf5(train_file_path, train_indices)
+    write_hdf5(val_file_path, val_indices)
+    write_hdf5(test_file_path, test_indices)
 
 
-        # Add stats for the tabular data
-        stats_group = f.create_group("stats")
-        tabular_stats = stats_group.create_group("tabular")
-        tabular_stats.create_dataset("columns", data=np.array(columns, dtype='S'))
-        tabular_stats.create_dataset("mean", data=mean_tabular)
-        tabular_stats.create_dataset("stddev", data=std_tabular)
-
-    print(f"HDF5 file created and saved to {file_path}")
-
-
-# Run the function
+# Run the modified function
 create_hdf5(task="cd")
-
-
-
-
