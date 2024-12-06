@@ -250,7 +250,19 @@ def load_mri_pet_data(task):
 
     return np.expand_dims(np.array(mri_resized), 1), np.expand_dims(np.array(pet_resized), 1), label
 
+def resize_image(image, target_shape):
+    if len(image.shape) == 4:
+            # Assuming the last dimension is the channel dimension
+        spatial_dims = image.shape[:3]
+        zoom_factors = [target_shape[i] / spatial_dims[i] for i in range(3)] + [1]
+    elif len(image.shape) == 3:
+        zoom_factors = [target_shape[i] / image.shape[i] for i in range(3)]
+    else:
+        raise ValueError(f"Unexpected image shape: {image.shape}. Expected 3D or 4D image.")
 
+        # Apply zoom to the image
+    resized_image = zoom(image, zoom_factors, order=1)
+    return resized_image
 
 def create_hdf5(task="cd"):
     """
