@@ -249,7 +249,8 @@ def load_mri_pet_data(task):
         mri_resized.append(resize_image(mri_img, (96, 112, 96)))
         pet_resized.append(resize_image(pet_img, (96, 112, 96)))
 
-    return np.expand_dims(np.array(mri_resized), 1), np.expand_dims(np.array(pet_resized), 1), label
+    return np.array(mri_resized), np.array(pet_resized), label
+
 
 def resize_image(image, target_shape):
     if len(image.shape) == 4:
