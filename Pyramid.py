@@ -585,7 +585,7 @@ if __name__ == '__main__':
     zeta = 0.5
 
     best_val_loss = float('inf')
-    patience = 50
+    patience = 500
     epochs_no_improve = 0
     best_G_state = None
 
