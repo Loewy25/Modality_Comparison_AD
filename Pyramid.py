@@ -628,13 +628,13 @@ if __name__ == '__main__':
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
     # Phase 1: Pre-train GAN (G+Dstd)
-    pretrain_gan(G, Dstd, train_loader, val_loader, device, epochs=2)
+    pretrain_gan(G, Dstd, train_loader, val_loader, device, epochs=50)
 
     # Phase 2: Pre-train Dtask
-    pretrain_dtask(Dtask, train_loader, val_loader, device, epochs=2)
+    pretrain_dtask(Dtask, train_loader, val_loader, device, epochs=50)
 
     # Phase 3: Fine-tune TPA-GAN (G+Dstd with Dtask frozen)
-    fine_tune_tpa_gan(G, Dstd, Dtask, train_loader, val_loader, device, epochs=2)
+    fine_tune_tpa_gan(G, Dstd, Dtask, train_loader, val_loader, device, epochs=80)
 
     # Evaluation on test set
     G.eval()
