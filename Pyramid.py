@@ -388,24 +388,6 @@ import matplotlib.pyplot as plt
 # Assuming generate_data_path_less, generate, binarylabel are defined elsewhere
 from data_loading import generate_data_path_less, generate
 
-# Custom Dataset Class
-class CustomDataset(Dataset):
-    def __init__(self, mri_images, pet_images):
-        self.mri_images = mri_images
-        self.pet_images = pet_images
-
-    def __len__(self):
-        return len(self.mri_images)
-
-    def __getitem__(self, idx):
-        mri = self.mri_images[idx]
-        pet = self.pet_images[idx]
-        return torch.FloatTensor(mri), torch.FloatTensor(pet)
-
-# Assuming the following classes are defined based on previous instructions:
-# Generator (TPA-GAN), StandardDiscriminator (Dstd), TaskInducedDiscriminator (Dtask)
-# L1_loss, ssim_loss defined as before
-# In this example, we will define the training step functions inline.
 
 def L1_loss(pred, target):
     return nn.functional.l1_loss(pred, target)
@@ -467,89 +449,291 @@ def count_parameters(model):
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 # Training step
-def train_step(G, Dstd, Dtask, real_MRI, real_PET, labels,
-               optimizer_G, optimizer_Dstd, optimizer_Dtask,
-               gamma=1.0, lambda_=1.0, zeta=1.0, device='cpu'):
+import os
+import numpy as np
+import nibabel as nib
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import Dataset, DataLoader
+from sklearn.model_selection import train_test_split
+from math import log10
+import torchvision.transforms as transforms
+from torchvision.utils import save_image
+import tempfile
+from pytorch_fid import fid_score
+import matplotlib.pyplot as plt
+from scipy.stats import zscore
+from scipy.ndimage import zoom
+
+# ---------------------
+# Assuming these functions and classes are defined:
+#  - load_mri_pet_data(task)
+#  - generate_data_path_less(), generate() [referenced in code, not shown]
+#  - CustomDataset that now returns (mri, pet, label)
+#  - L1_loss, ssim_loss, compute_mae, compute_psnr, save_images_nii defined
+#  - Generator, StandardDiscriminator, TaskInducedDiscriminator defined as above
+# ---------------------
+
+# Modify CustomDataset to also provide labels
+class CustomDataset(Dataset):
+    def __init__(self, mri_images, pet_images, labels):
+        self.mri_images = mri_images
+        self.pet_images = pet_images
+        self.labels = labels
+
+    def __len__(self):
+        return len(self.mri_images)
+
+    def __getitem__(self, idx):
+        mri = self.mri_images[idx]
+        pet = self.pet_images[idx]
+        label = self.labels[idx]  # Ensure these are integers for classification
+        return torch.FloatTensor(mri), torch.FloatTensor(pet), torch.tensor(label, dtype=torch.long)
+
+def count_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+
+def train_step_gan(G, Dstd, real_MRI, real_PET, optimizer_G, optimizer_Dstd, gamma=1.0, lambda_=0.5):
+    # Train G + Dstd only (no Dtask)
     batch_size = real_MRI.size(0)
+    device = real_MRI.device
     real_labels = torch.ones((batch_size, 1), device=device)
     fake_labels = torch.zeros((batch_size, 1), device=device)
 
     # Generate Fake PET
     fake_PET = G(real_MRI)
 
-    # ---- Update Standard Discriminator (Dstd) ----
+    # Update Dstd
     optimizer_Dstd.zero_grad()
     Dstd_real = Dstd(real_PET)
     Dstd_fake = Dstd(fake_PET.detach())
 
-    real_labels = torch.ones_like(Dstd_real)
-    fake_labels = torch.zeros_like(Dstd_fake)
     Dstd_loss_real = nn.functional.binary_cross_entropy(Dstd_real, real_labels)
     Dstd_loss_fake = nn.functional.binary_cross_entropy(Dstd_fake, fake_labels)
-
     LDstd = Dstd_loss_real + Dstd_loss_fake
     LDstd.backward()
     optimizer_Dstd.step()
 
-    # ---- Update Task-Induced Discriminator (Dtask) ----
-    optimizer_Dtask.zero_grad()
-    Dtask_output = Dtask(fake_PET.detach())
-    LDtask = nn.functional.cross_entropy(Dtask_output, labels)
-    LDtask.backward()
-    optimizer_Dtask.step()
-
-    # ---- Update Generator (G) ----
+    # Update G
     optimizer_G.zero_grad()
-    # Generator wants Dstd to classify fake as real
     Dstd_fake_for_G = Dstd(fake_PET)
     LG = nn.functional.binary_cross_entropy(Dstd_fake_for_G, real_labels)
 
-    # Generator wants Dtask to classify correctly
-    Dtask_output_for_G = Dtask(fake_PET)
-    LDtask_for_G = nn.functional.cross_entropy(Dtask_output_for_G, labels)
-
-    # Pixel-wise losses
     L_1 = L1_loss(fake_PET, real_PET)
     L_SSIM = ssim_loss(fake_PET, real_PET)
-
-    # Combined loss for Generator
-    L_G = gamma * (L_1 + L_SSIM) + lambda_ * LG + zeta * LDtask_for_G
+    L_G = gamma * (L_1 + L_SSIM) + lambda_ * LG  # No Dtask here
     L_G.backward()
     optimizer_G.step()
 
-    loss_dict = {
-        'L1': L_1.item(),
-        'LSSIM': L_SSIM.item(),
-        'LG': LG.item(),
-        'LDstd': LDstd.item(),
-        'LDtask': LDtask.item(),
-        'LDtask_for_G': LDtask_for_G.item()
-    }
+    return L_G.item(), LDstd.item()
 
-    return loss_dict
+def pretrain_gan(G, Dstd, train_loader, val_loader, device, epochs=50, gamma=1.0, lambda_=0.5):
+    optimizer_G = optim.Adam(G.parameters(), lr=1e-4)
+    optimizer_Dstd = optim.Adam(Dstd.parameters(), lr=4e-4)
+
+    best_val_loss = float('inf')
+    best_G_state = None
+
+    for epoch in range(epochs):
+        G.train()
+        Dstd.train()
+        total_g_loss = 0
+        total_d_loss = 0
+
+        for real_mri, real_pet, labels in train_loader:
+            real_mri = real_mri.to(device)
+            real_pet = real_pet.to(device)
+            g_loss, d_loss = train_step_gan(G, Dstd, real_mri, real_pet, optimizer_G, optimizer_Dstd, gamma=gamma, lambda_=lambda_)
+            total_g_loss += g_loss
+            total_d_loss += d_loss
+
+        # Validation (just L1+SSIM)
+        G.eval()
+        val_loss = 0
+        num_val_batches = 0
+        with torch.no_grad():
+            for real_mri, real_pet, labels in val_loader:
+                real_mri = real_mri.to(device)
+                real_pet = real_pet.to(device)
+                fake_pet = G(real_mri)
+                l1_val = L1_loss(fake_pet, real_pet)
+                ssim_val = ssim_loss(fake_pet, real_pet)
+                val_loss += (l1_val + ssim_val).item()
+                num_val_batches += 1
+
+        val_loss /= num_val_batches
+        print(f"Pre-train GAN Epoch [{epoch+1}/{epochs}]: G Loss: {total_g_loss/len(train_loader):.4f}, Dstd Loss: {total_d_loss/len(train_loader):.4f}, Val Loss: {val_loss:.4f}")
+
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            best_G_state = G.state_dict()
+
+    if best_G_state is not None:
+        G.load_state_dict(best_G_state)
+        print("Loaded best pre-trained GAN weights.")
+
+def pretrain_dtask(Dtask, train_loader, val_loader, device, epochs=50):
+    # Train Dtask on real PET + labels
+    optimizer_Dtask = optim.Adam(Dtask.parameters(), lr=1e-4)
+    criterion = nn.CrossEntropyLoss()
+
+    best_val_acc = 0.0
+    best_Dtask_state = None
+
+    for epoch in range(epochs):
+        Dtask.train()
+        correct = 0
+        total = 0
+        for real_mri, real_pet, labels in train_loader:
+            real_pet = real_pet.to(device)
+            labels = labels.to(device)
+
+            optimizer_Dtask.zero_grad()
+            out = Dtask(real_pet)
+            loss = criterion(out, labels)
+            loss.backward()
+            optimizer_Dtask.step()
+
+            _, predicted = torch.max(out, 1)
+            correct += (predicted == labels).sum().item()
+            total += labels.size(0)
+        train_acc = correct / total
+
+        # Val
+        Dtask.eval()
+        correct = 0
+        total = 0
+        with torch.no_grad():
+            for real_mri, real_pet, labels in val_loader:
+                real_pet = real_pet.to(device)
+                labels = labels.to(device)
+                out = Dtask(real_pet)
+                _, predicted = torch.max(out, 1)
+                correct += (predicted == labels).sum().item()
+                total += labels.size(0)
+        val_acc = correct / total
+
+        print(f"Pre-train Dtask Epoch [{epoch+1}/{epochs}]: Train Acc: {train_acc:.4f}, Val Acc: {val_acc:.4f}")
+        if val_acc > best_val_acc:
+            best_val_acc = val_acc
+            best_Dtask_state = Dtask.state_dict()
+
+    if best_Dtask_state is not None:
+        Dtask.load_state_dict(best_Dtask_state)
+        print("Loaded best pre-trained Dtask weights.")
+
+def fine_tune_tpa_gan(G, Dstd, Dtask, train_loader, val_loader, device, epochs=50, gamma=1.0, lambda_=0.5, zeta=0.5):
+    # Freeze Dtask
+    for param in Dtask.parameters():
+        param.requires_grad = False
+
+    optimizer_G = optim.Adam(G.parameters(), lr=1e-4)
+    optimizer_Dstd = optim.Adam(Dstd.parameters(), lr=4e-4)
+
+    criterionCE = nn.CrossEntropyLoss()
+    best_val_loss = float('inf')
+    best_G_state = None
+
+    for epoch in range(epochs):
+        G.train()
+        Dstd.train()
+        Dtask.eval()  # Frozen
+
+        total_g_loss = 0
+        total_d_loss = 0
+
+        for real_mri, real_pet, labels in train_loader:
+            real_mri = real_mri.to(device)
+            real_pet = real_pet.to(device)
+            labels = labels.to(device)
+
+            # Generate Fake PET
+            fake_PET = G(real_mri)
+
+            # Update Dstd
+            optimizer_Dstd.zero_grad()
+            Dstd_real = Dstd(real_pet)
+            Dstd_fake = Dstd(fake_PET.detach())
+            real_labels = torch.ones_like(Dstd_real)
+            fake_labels = torch.zeros_like(Dstd_fake)
+            Dstd_loss_real = nn.functional.binary_cross_entropy(Dstd_real, real_labels)
+            Dstd_loss_fake = nn.functional.binary_cross_entropy(Dstd_fake, fake_labels)
+            LDstd = Dstd_loss_real + Dstd_loss_fake
+            LDstd.backward()
+            optimizer_Dstd.step()
+
+            # Update G
+            optimizer_G.zero_grad()
+            Dstd_fake_for_G = Dstd(fake_PET)
+            LG = nn.functional.binary_cross_entropy(Dstd_fake_for_G, real_labels)
+
+            Dtask_output_for_G = Dtask(fake_PET)
+            LDtask_for_G = criterionCE(Dtask_output_for_G, labels)
+
+            L_1 = L1_loss(fake_PET, real_pet)
+            L_SSIM = ssim_loss(fake_PET, real_pet)
+
+            L_G = gamma * (L_1 + L_SSIM) + lambda_ * LG + zeta * LDtask_for_G
+            L_G.backward()
+            optimizer_G.step()
+
+            total_g_loss += LG.item()
+            total_d_loss += LDstd.item()
+
+        # Validation
+        G.eval()
+        with torch.no_grad():
+            val_loss = 0
+            num_val_batches = 0
+            for real_mri, real_pet, labels in val_loader:
+                real_mri = real_mri.to(device)
+                real_pet = real_pet.to(device)
+                fake_pet = G(real_mri)
+                l1_val = L1_loss(fake_pet, real_pet)
+                ssim_val = ssim_loss(fake_pet, real_pet)
+                val_loss += (l1_val + ssim_val).item()
+                num_val_batches += 1
+
+            val_loss /= num_val_batches
+
+        print(f"Fine-tune Epoch [{epoch+1}/{epochs}]: G Loss: {total_g_loss/len(train_loader):.4f}, Dstd Loss: {total_d_loss/len(train_loader):.4f}, Val Loss: {val_loss:.4f}")
+
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            best_G_state = G.state_dict()
+
+    if best_G_state is not None:
+        G.load_state_dict(best_G_state)
+        print("Loaded best fine-tuned TPA-GAN weights.")
+
+##############################
+# Main script starts here
+##############################
 
 if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print("Using device:", device)
 
     task = 'cd'
-    info = 'Pyramid_1st_250'
+    info = 'my_tpa_gan_run'
 
-    # Load data
-    print("Loading MRI and PET data...")
+    # Load data (must return arrays and labels)
+    # Ensure that load_mri_pet_data(task) returns mri_data, pet_data
     mri_data, pet_data = load_mri_pet_data(task)
-    print(f"Total samples: {mri_data.shape[0]}")
+    # You must have labels_data aligned with these MRI/PET pairs.
+    # labels_data must be a numpy array of same length as mri_data/pet_data, with class labels.
+    # Example (dummy):
+    labels_data = np.ones(len(mri_data), dtype=int)  # Replace with real labels
 
-    # Split into train and test
-    mri_train, mri_test, pet_train, pet_test = train_test_split(mri_data, pet_data, test_size=0.15, random_state=8)
-    print(f"Train set: {mri_train.shape[0]} samples, Test set: {mri_test.shape[0]} samples")
-
-    # Further split train into train/val
-    mri_train, mri_val, pet_train, pet_val = train_test_split(mri_train, pet_train, test_size=0.2, random_state=42)
+    # Split
+    # Adjust test_size and val splits as desired.
+    mri_train, mri_test, pet_train, pet_test, labels_train, labels_test = train_test_split(
+        mri_data, pet_data, labels_data, test_size=0.15, random_state=8)
+    mri_train, mri_val, pet_train, pet_val, labels_train, labels_val = train_test_split(
+        mri_train, pet_train, labels_train, test_size=0.2, random_state=42)
 
     # Initialize models
-    # Ensure that you have defined these classes according to previous instructions:
-    # Generator, StandardDiscriminator, TaskInducedDiscriminator
     G = Generator().to(device)
     Dstd = StandardDiscriminator().to(device)
     Dtask = TaskInducedDiscriminator(num_classes=2).to(device)
@@ -558,162 +742,27 @@ if __name__ == '__main__':
     print("StandardDiscriminator params:", count_parameters(Dstd))
     print("TaskInducedDiscriminator params:", count_parameters(Dtask))
 
-    # Create directories
-    output_dir_mri = f'gan/{task}/{info}/mri'
-    output_dir_pet = f'gan/{task}/{info}/pet'
-    output_dir_real_pet = f'gan/{task}/{info}/real_pet'
     output_dir = f'gan/{task}/{info}'
-
-    os.makedirs(output_dir_mri, exist_ok=True)
-    os.makedirs(output_dir_pet, exist_ok=True)
-    os.makedirs(output_dir_real_pet, exist_ok=True)
     os.makedirs(output_dir, exist_ok=True)
 
-    # Create DataLoaders
-    train_dataset = CustomDataset(mri_train, pet_train)
-    val_dataset = CustomDataset(mri_val, pet_val)
-    test_dataset = CustomDataset(mri_test, pet_test)
+    # Dataloaders with batch size = 2 as per description
+    BATCH_SIZE = 2
+    train_dataset = CustomDataset(mri_train, pet_train, labels_train)
+    val_dataset = CustomDataset(mri_val, pet_val, labels_val)
+    test_dataset = CustomDataset(mri_test, pet_test, labels_test)
 
-    train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=4, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=4, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
-    # Optimizers
-    optimizer_G = optim.Adam(G.parameters(), lr=1e-4)
-    optimizer_Dstd = optim.Adam(Dstd.parameters(), lr=4e-4)
-    optimizer_Dtask = optim.Adam(Dtask.parameters(), lr=1e-4)
+    # Phase 1: Pre-train GAN (G+Dstd)
+    pretrain_gan(G, Dstd, train_loader, val_loader, device, epochs=50)
 
-    # Hyperparameters for losses
-    gamma = 1.0
-    lambda_ = 0.5
-    zeta = 0.5
+    # Phase 2: Pre-train Dtask
+    pretrain_dtask(Dtask, train_loader, val_loader, device, epochs=50)
 
-    best_val_loss = float('inf')
-    patience = 500
-    epochs_no_improve = 0
-    best_G_state = None
-
-    training_generator_losses = []
-    training_discriminator_losses = []
-    validation_losses = []
-
-    epochs = 250
-    for epoch in range(epochs):
-        G.train()
-        Dstd.train()
-        Dtask.train()
-
-        total_g_loss = 0
-        total_d_loss = 0
-
-        for real_mri, real_pet in train_loader:
-            real_mri = real_mri.to(device)
-            real_pet = real_pet.to(device)
-            # Assume binary classification label=1 for AD,
-            # Just use a dummy label for demonstration.
-            # In practice, load the actual labels from your data.
-            labels = torch.ones((real_mri.size(0)), dtype=torch.long, device=device)
-
-            loss_dict = train_step(G, Dstd, Dtask, real_mri, real_pet, labels,
-                                   optimizer_G, optimizer_Dstd, optimizer_Dtask,
-                                   gamma=gamma, lambda_=lambda_, zeta=zeta, device=device)
-            total_g_loss += loss_dict['LG']
-            total_d_loss += loss_dict['LDstd']
-
-        avg_g_loss = total_g_loss / len(train_loader)
-        avg_d_loss = total_d_loss / len(train_loader)
-        training_generator_losses.append(avg_g_loss)
-        training_discriminator_losses.append(avg_d_loss)
-
-        # Validation
-        G.eval()
-        with torch.no_grad():
-            val_loss = 0
-            total_mae = 0
-            total_psnr = 0
-            num_val_batches = 0
-            real_images_list = []
-            fake_images_list = []
-            for real_mri, real_pet in val_loader:
-                real_mri = real_mri.to(device)
-                real_pet = real_pet.to(device)
-                labels = torch.ones((real_mri.size(0)), dtype=torch.long, device=device)
-                fake_pet = G(real_mri)
-
-                # Validation loss: just use L1+SSIM or something similar
-                l1_val = L1_loss(fake_pet, real_pet)
-                ssim_val = ssim_loss(fake_pet, real_pet)
-                # No adversarial or task loss in validation (just a metric)
-                this_val_loss = (l1_val + ssim_val).item()
-                val_loss += this_val_loss
-
-                mae = compute_mae(real_pet, fake_pet)
-                psnr = compute_psnr(real_pet, fake_pet)
-                total_mae += mae
-                total_psnr += psnr
-                num_val_batches += 1
-
-                real_images_list.append(real_pet.cpu())
-                fake_images_list.append(fake_pet.cpu())
-
-            val_loss /= num_val_batches
-            validation_losses.append(val_loss)
-            avg_mae = total_mae / num_val_batches
-            avg_psnr = total_psnr / num_val_batches
-
-        print(f"Epoch [{epoch+1}/{epochs}] Training G Loss: {avg_g_loss:.4f}, D Loss: {avg_d_loss:.4f}, Val Loss: {val_loss:.4f}, MAE: {avg_mae:.4f}, PSNR: {avg_psnr:.2f}")
-
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
-            epochs_no_improve = 0
-            best_G_state = G.state_dict()
-        else:
-            epochs_no_improve += 1
-            if epochs_no_improve > patience:
-                print("Early stopping triggered.")
-                break
-
-        # Compute FID (optional, if you want)
-        real_images_dir = os.path.join(tempfile.gettempdir(), f'real_images_epoch_{epoch+1}')
-        fake_images_dir = os.path.join(tempfile.gettempdir(), f'fake_images_epoch_{epoch+1}')
-        os.makedirs(real_images_dir, exist_ok=True)
-        os.makedirs(fake_images_dir, exist_ok=True)
-        transform = transforms.Normalize(mean=[-1], std=[2]) # If needed, adjust normalization
-
-        def save_for_fid(images_list, directory):
-            os.makedirs(directory, exist_ok=True)
-            for idx, img_tensor in enumerate(images_list):
-                # img_tensor: [B, 1, D, H, W]
-                for b_idx in range(img_tensor.size(0)):
-                    vol = img_tensor[b_idx,0].numpy()
-                    # Save each slice?
-                    # For FID in 3D, typically you adapt. Here we just save slices as PNG
-                    # This is a placeholder: adapt as needed for your evaluation
-                    slice_img = torch.from_numpy(vol[vol.shape[0]//2]) # middle slice
-                    slice_img = slice_img.unsqueeze(0) # [1,H,W]
-                    save_image(slice_img, os.path.join(directory, f"{idx}_{b_idx}.png"))
-
-        save_for_fid(real_images_list, real_images_dir)
-        save_for_fid(fake_images_list, fake_images_dir)
-
-        fid_value = fid_score.calculate_fid_given_paths([real_images_dir, fake_images_dir], batch_size=4, device=device, dims=2048)
-        print(f"Epoch [{epoch+1}/{epochs}] FID: {fid_value:.4f}")
-
-    if best_G_state is not None:
-        G.load_state_dict(best_G_state)
-        print("Loaded best model weights based on validation loss.")
-
-    # Plot losses
-    plt.figure()
-    plt.plot(training_generator_losses, label='Generator Training Loss')
-    plt.plot(training_discriminator_losses, label='Discriminator Training Loss')
-    plt.plot(validation_losses, label='Validation Loss')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
-    plt.legend()
-    plt.title('Loss Curves')
-    plt.savefig(os.path.join(output_dir, 'loss_curve.png'))
-    plt.close()
+    # Phase 3: Fine-tune combined model
+    fine_tune_tpa_gan(G, Dstd, Dtask, train_loader, val_loader, device, epochs=50)
 
     # Evaluation on test set
     G.eval()
@@ -723,10 +772,9 @@ if __name__ == '__main__':
     real_images_list = []
     fake_images_list = []
     with torch.no_grad():
-        for real_mri, real_pet in test_loader:
+        for real_mri, real_pet, labels in test_loader:
             real_mri = real_mri.to(device)
             real_pet = real_pet.to(device)
-            labels = torch.ones((real_mri.size(0)), dtype=torch.long, device=device)
             fake_pet = G(real_mri)
             mae = compute_mae(real_pet, fake_pet)
             psnr = compute_psnr(real_pet, fake_pet)
@@ -740,7 +788,7 @@ if __name__ == '__main__':
     avg_psnr = total_psnr / num_test_batches
     print(f"\nTest MAE: {avg_mae:.4f}, Test PSNR: {avg_psnr:.2f}")
 
-    # Compute FID on test set
+    # (Optional) Compute FID on test set
     real_test_dir = os.path.join(tempfile.gettempdir(), 'real_images_test')
     fake_test_dir = os.path.join(tempfile.gettempdir(), 'fake_images_test')
     os.makedirs(real_test_dir, exist_ok=True)
@@ -760,17 +808,24 @@ if __name__ == '__main__':
     fid_value = fid_score.calculate_fid_given_paths([real_test_dir, fake_test_dir], batch_size=4, device=device, dims=2048)
     print(f"Test FID: {fid_value:.4f}")
 
-    # Generate PET images for the test set and save them
+    # Save final outputs if desired
+    output_dir_mri = f'gan/{task}/{info}/mri'
+    output_dir_pet = f'gan/{task}/{info}/pet'
+    output_dir_real_pet = f'gan/{task}/{info}/real_pet'
+
+    os.makedirs(output_dir_mri, exist_ok=True)
+    os.makedirs(output_dir_pet, exist_ok=True)
+    os.makedirs(output_dir_real_pet, exist_ok=True)
+
     G.eval()
     generated_pet_images = []
     with torch.no_grad():
         for i in range(len(mri_test)):
             mri_tensor = torch.FloatTensor(mri_test[i]).unsqueeze(0).to(device)
-            fake_pet = G(mri_tensor)  # no latent needed if your G doesn't use latent here
+            fake_pet = G(mri_tensor)
             fake_pet = fake_pet.cpu().numpy()
             generated_pet_images.append(fake_pet[0])
 
-    # Save MRI, generated PET, and real PET images
     for i in range(len(mri_test)):
         mri_file_path = os.path.join(output_dir_mri, f'mri_{i}.nii.gz')
         pet_file_path = os.path.join(output_dir_pet, f'generated_pet_{i}.nii.gz')
