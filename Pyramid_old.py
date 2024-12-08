@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from data_loading import binarylabel
 
 class SelfAttention3D(nn.Module):
     def __init__(self, in_dim):
