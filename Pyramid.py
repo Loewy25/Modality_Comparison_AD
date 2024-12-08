@@ -533,7 +533,7 @@ if __name__ == '__main__':
     print("Using device:", device)
 
     task = 'cd'
-    info = 'Pyramid_1st_300'
+    info = 'Pyramid_1st_250'
 
     # Load data
     print("Loading MRI and PET data...")
@@ -597,7 +597,7 @@ if __name__ == '__main__':
     training_discriminator_losses = []
     validation_losses = []
 
-    epochs = 300
+    epochs = 250
     for epoch in range(epochs):
         G.train()
         Dstd.train()
