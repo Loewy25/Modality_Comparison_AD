@@ -147,7 +147,8 @@ class Generator(nn.Module):
         # Attention and final conv
         self.attention = SelfAttention3D(64)  # 64 channels in
         self.conv = nn.Conv3d(64, 64, kernel_size=3, padding=1)
-        self.final_conv = nn.Conv3d(64, out_channels, kernel_size=3)
+        self.final_conv = nn.Conv3d(64, out_channels, kernel_size=3, padding=1)
+
 
     def forward(self, x):
         # Down
@@ -596,7 +597,7 @@ if __name__ == '__main__':
     training_discriminator_losses = []
     validation_losses = []
 
-    epochs = 250
+    epochs = 5
     for epoch in range(epochs):
         G.train()
         Dstd.train()
