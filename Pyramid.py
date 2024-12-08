@@ -533,7 +533,7 @@ if __name__ == '__main__':
     print("Using device:", device)
 
     task = 'cd'
-    info = 'my_tpa_gan_run'
+    info = 'Pyramid_1st_300'
 
     # Load data
     print("Loading MRI and PET data...")
@@ -597,7 +597,7 @@ if __name__ == '__main__':
     training_discriminator_losses = []
     validation_losses = []
 
-    epochs = 5
+    epochs = 300
     for epoch in range(epochs):
         G.train()
         Dstd.train()
