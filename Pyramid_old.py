@@ -211,9 +211,16 @@ class StandardDiscriminator(nn.Module):
 
     def forward(self, x):
         x = self.model(x)
-        x = self.classifier(x)
+        x = self.classifier(x)  # shape [B, 1, D', H', W']
+        # Global pooling to get a single value:
+        x = F.adaptive_avg_pool3d(x, (1,1,1))  # now [B, 1, 1, 1, 1]
+        x = x.view(x.size(0), -1)  # now [B, 1]
+        
+        # Then apply sigmoid if not already done
         x = torch.sigmoid(x)
         return x
+
+
 
 # Task-Induced Discriminator remains unchanged
 import torch
