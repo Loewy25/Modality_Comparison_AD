@@ -541,7 +541,7 @@ if __name__ == '__main__':
     print(f"Total samples: {mri_data.shape[0]}")
 
     # Split into train and test
-    mri_train, mri_test, pet_train, pet_test = train_test_split(mri_data, pet_data, test_size=0.33, random_state=42)
+    mri_train, mri_test, pet_train, pet_test = train_test_split(mri_data, pet_data, test_size=0.15, random_state=8)
     print(f"Train set: {mri_train.shape[0]} samples, Test set: {mri_test.shape[0]} samples")
 
     # Further split train into train/val
