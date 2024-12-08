@@ -481,8 +481,11 @@ def train_step(G, Dstd, Dtask, real_MRI, real_PET, labels,
     Dstd_real = Dstd(real_PET)
     Dstd_fake = Dstd(fake_PET.detach())
 
+    real_labels = torch.ones_like(Dstd_real)
+    fake_labels = torch.zeros_like(Dstd_fake)
     Dstd_loss_real = nn.functional.binary_cross_entropy(Dstd_real, real_labels)
     Dstd_loss_fake = nn.functional.binary_cross_entropy(Dstd_fake, fake_labels)
+
     LDstd = Dstd_loss_real + Dstd_loss_fake
     LDstd.backward()
     optimizer_Dstd.step()
