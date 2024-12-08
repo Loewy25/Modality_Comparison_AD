@@ -593,7 +593,7 @@ if __name__ == '__main__':
     training_discriminator_losses = []
     validation_losses = []
 
-    epochs = 5
+    epochs = 250
     for epoch in range(epochs):
         G.train()
         Dstd.train()
