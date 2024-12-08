@@ -451,11 +451,11 @@ def load_mri_pet_data(task):
     pet_data, label = generate(images_pet, labels, task)
     mri_data, label = generate(images_mri, labels, task)
 
+    # Convert string labels to binary integers using binarylabel function
+    label = binarylabel(label, task)
+
     mri_resized = []
     pet_resized = []
-    # `label` now corresponds to pet_data and mri_data after generate()
-    # Ensure that generate() returns them in the same order.
-
     for mri_path, pet_path in zip(mri_data, pet_data):
         mri_img = nib.load(mri_path).get_fdata()
         pet_img = nib.load(pet_path).get_fdata()
@@ -468,11 +468,9 @@ def load_mri_pet_data(task):
 
     mri_resized = np.expand_dims(np.array(mri_resized), 1)
     pet_resized = np.expand_dims(np.array(pet_resized), 1)
-
-    # Now return the labels as well
-    # Ensure `label` is a NumPy array or something that can be easily indexed.
-    # If it's a list, convert it to a NumPy array:
-    label = np.array(label)
+    
+    # label should now be a list of 0/1
+    label = np.array(label, dtype=np.int64)
 
     return mri_resized, pet_resized, label
 
