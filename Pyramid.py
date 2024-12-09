@@ -62,7 +62,7 @@ class PyramidConvBlock(nn.Module):
         self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x):
-        outputs = [path(x) for x in self.paths]
+        outputs = [path(x) for path in self.paths]
         out = torch.cat(outputs, dim=1)
         out = self.relu(out)
         return out
