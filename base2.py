@@ -89,7 +89,7 @@ def match_mri_by_files(preprocessed_mri_paths, preprocessed_gan_mri_paths, label
 
 def main():
     task = 'cd'       # Example task identifier
-    info = 'exp_new_withinteraction'  # Example subfolder identifier
+    info = 'new_Paramid'  # Example subfolder identifier
 
     # Step 1: Preprocess original MRI data and save as NIfTI files
     print("Preprocessing original MRI data and saving as NIfTI files...")
