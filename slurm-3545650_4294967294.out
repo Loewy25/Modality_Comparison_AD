@@ -1,0 +1,392 @@
+Using device: cuda
+Loading MRI and PET data...
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Total samples: 414
+Train set: 351 samples, Test set: 63 samples
+Generator params: 127497729
+StandardDiscriminator params: 4717825
+TaskInducedDiscriminator params: 257058
+Epoch [1/180] Training G Loss: 4.3602, D Loss: 0.1967, Val Loss: 0.7278, MAE: 0.4028, PSNR: 30.33
+Epoch [1/180] FID: 254.5752
+Epoch [2/180] Training G Loss: 2.7895, D Loss: 0.4991, Val Loss: 0.6807, MAE: 0.3785, PSNR: 31.30
+Epoch [2/180] FID: 252.8307
+Epoch [3/180] Training G Loss: 3.1397, D Loss: 0.3119, Val Loss: 0.6930, MAE: 0.3739, PSNR: 31.54
+Epoch [3/180] FID: 251.7423
+Epoch [4/180] Training G Loss: 3.1758, D Loss: 0.4772, Val Loss: 0.8119, MAE: 0.4663, PSNR: 30.53
+Epoch [4/180] FID: 253.7133
+Epoch [5/180] Training G Loss: 3.1663, D Loss: 0.5108, Val Loss: 0.5272, MAE: 0.2637, PSNR: 34.82
+Epoch [5/180] FID: 251.6565
+Epoch [6/180] Training G Loss: 2.5995, D Loss: 0.7132, Val Loss: 0.4805, MAE: 0.2278, PSNR: 35.56
+Epoch [6/180] FID: 252.4179
+Epoch [7/180] Training G Loss: 2.7166, D Loss: 0.7979, Val Loss: 0.4044, MAE: 0.1838, PSNR: 37.22
+Epoch [7/180] FID: 251.4455
+Epoch [8/180] Training G Loss: 1.9178, D Loss: 1.1550, Val Loss: 0.4755, MAE: 0.2286, PSNR: 35.83
+Epoch [8/180] FID: 251.7657
+Epoch [9/180] Training G Loss: 1.2236, D Loss: 1.4228, Val Loss: 0.3640, MAE: 0.1641, PSNR: 38.22
+Epoch [9/180] FID: 249.4762
+Epoch [10/180] Training G Loss: 0.8392, D Loss: 1.5258, Val Loss: 0.3443, MAE: 0.1620, PSNR: 38.25
+Epoch [10/180] FID: 251.1447
+Epoch [11/180] Training G Loss: 0.8175, D Loss: 1.4832, Val Loss: 0.4695, MAE: 0.2621, PSNR: 33.74
+Epoch [11/180] FID: 253.3795
+Epoch [12/180] Training G Loss: 1.1083, D Loss: 1.3575, Val Loss: 0.4936, MAE: 0.2593, PSNR: 34.15
+Epoch [12/180] FID: 251.9635
+Epoch [13/180] Training G Loss: 1.4222, D Loss: 1.1573, Val Loss: 0.4424, MAE: 0.2173, PSNR: 35.51
+Epoch [13/180] FID: 253.5886
+Epoch [14/180] Training G Loss: 1.0802, D Loss: 1.4346, Val Loss: 0.3630, MAE: 0.1714, PSNR: 37.99
+Epoch [14/180] FID: 253.7429
+Epoch [15/180] Training G Loss: 0.7745, D Loss: 1.4993, Val Loss: 0.3419, MAE: 0.1638, PSNR: 38.10
+Epoch [15/180] FID: 249.0838
+Epoch [16/180] Training G Loss: 0.7793, D Loss: 1.4028, Val Loss: 0.3145, MAE: 0.1508, PSNR: 38.89
+Epoch [16/180] FID: 251.6357
+Epoch [17/180] Training G Loss: 0.7288, D Loss: 1.4394, Val Loss: 0.3017, MAE: 0.1469, PSNR: 39.10
+Epoch [17/180] FID: 252.7999
+Epoch [18/180] Training G Loss: 0.7175, D Loss: 1.4166, Val Loss: 0.2863, MAE: 0.1395, PSNR: 39.54
+Epoch [18/180] FID: 250.6901
+Epoch [19/180] Training G Loss: 0.7211, D Loss: 1.3948, Val Loss: 0.2978, MAE: 0.1491, PSNR: 38.96
+Epoch [19/180] FID: 250.1116
+Epoch [20/180] Training G Loss: 0.7228, D Loss: 1.3950, Val Loss: 0.3054, MAE: 0.1520, PSNR: 38.86
+Epoch [20/180] FID: 250.6704
+Epoch [21/180] Training G Loss: 0.7583, D Loss: 1.3580, Val Loss: 0.3231, MAE: 0.1638, PSNR: 38.41
+Epoch [21/180] FID: 255.7122
+Epoch [22/180] Training G Loss: 0.8381, D Loss: 1.3606, Val Loss: 0.3547, MAE: 0.1834, PSNR: 37.27
+Epoch [22/180] FID: 249.5246
+Epoch [23/180] Training G Loss: 0.9349, D Loss: 1.4003, Val Loss: 0.4378, MAE: 0.2225, PSNR: 35.32
+Epoch [23/180] FID: 253.1510
+Epoch [24/180] Training G Loss: 0.9380, D Loss: 1.3498, Val Loss: 0.3410, MAE: 0.1702, PSNR: 37.78
+Epoch [24/180] FID: 250.7605
+Epoch [25/180] Training G Loss: 0.7611, D Loss: 1.4430, Val Loss: 0.3367, MAE: 0.1684, PSNR: 37.88
+Epoch [25/180] FID: 254.3889
+Epoch [26/180] Training G Loss: 0.7092, D Loss: 1.4592, Val Loss: 0.3240, MAE: 0.1650, PSNR: 38.02
+Epoch [26/180] FID: 256.0489
+Epoch [27/180] Training G Loss: 0.8000, D Loss: 1.3419, Val Loss: 0.3296, MAE: 0.1658, PSNR: 37.96
+Epoch [27/180] FID: 250.5334
+Epoch [28/180] Training G Loss: 1.2435, D Loss: 1.2546, Val Loss: 0.4542, MAE: 0.2410, PSNR: 34.76
+Epoch [28/180] FID: 250.6029
+Epoch [29/180] Training G Loss: 1.0165, D Loss: 1.3433, Val Loss: 0.3465, MAE: 0.1693, PSNR: 37.79
+Epoch [29/180] FID: 251.7332
+Epoch [30/180] Training G Loss: 0.8322, D Loss: 1.4551, Val Loss: 0.3497, MAE: 0.1790, PSNR: 36.74
+Epoch [30/180] FID: 251.7612
+Epoch [31/180] Training G Loss: 0.8587, D Loss: 1.3814, Val Loss: 0.3689, MAE: 0.1875, PSNR: 38.10
+Epoch [31/180] FID: 251.8743
+Epoch [32/180] Training G Loss: 0.9506, D Loss: 1.4186, Val Loss: 0.3741, MAE: 0.1767, PSNR: 37.71
+Epoch [32/180] FID: 253.0573
+Epoch [33/180] Training G Loss: 0.8192, D Loss: 1.4571, Val Loss: 0.3613, MAE: 0.1805, PSNR: 37.13
+Epoch [33/180] FID: 252.5695
+Epoch [34/180] Training G Loss: 0.7117, D Loss: 1.4312, Val Loss: 0.2819, MAE: 0.1392, PSNR: 39.62
+Epoch [34/180] FID: 252.0095
+Epoch [35/180] Training G Loss: 0.7205, D Loss: 1.3907, Val Loss: 0.2892, MAE: 0.1451, PSNR: 39.13
+Epoch [35/180] FID: 251.9728
+Epoch [36/180] Training G Loss: 0.7265, D Loss: 1.3747, Val Loss: 0.2802, MAE: 0.1464, PSNR: 38.84
+Epoch [36/180] FID: 252.2240
+Epoch [37/180] Training G Loss: 0.7975, D Loss: 1.3113, Val Loss: 0.2838, MAE: 0.1384, PSNR: 39.74
+Epoch [37/180] FID: 252.5800
+Epoch [38/180] Training G Loss: 0.8052, D Loss: 1.3758, Val Loss: 0.3516, MAE: 0.1762, PSNR: 37.49
+Epoch [38/180] FID: 249.1116
+Epoch [39/180] Training G Loss: 0.8444, D Loss: 1.3643, Val Loss: 0.3540, MAE: 0.1793, PSNR: 37.24
+Epoch [39/180] FID: 252.3186
+Epoch [40/180] Training G Loss: 0.7315, D Loss: 1.4175, Val Loss: 0.3085, MAE: 0.1615, PSNR: 37.94
+Epoch [40/180] FID: 251.9033
+Epoch [41/180] Training G Loss: 0.7351, D Loss: 1.4004, Val Loss: 0.3061, MAE: 0.1561, PSNR: 38.42
+Epoch [41/180] FID: 248.7949
+Epoch [42/180] Training G Loss: 0.7661, D Loss: 1.3544, Val Loss: 0.3026, MAE: 0.1533, PSNR: 38.96
+Epoch [42/180] FID: 252.3891
+Epoch [43/180] Training G Loss: 0.9233, D Loss: 1.2980, Val Loss: 0.3364, MAE: 0.1674, PSNR: 37.69
+Epoch [43/180] FID: 248.7594
+Epoch [44/180] Training G Loss: 0.8600, D Loss: 1.3844, Val Loss: 0.3349, MAE: 0.1666, PSNR: 38.10
+Epoch [44/180] FID: 250.0233
+Epoch [45/180] Training G Loss: 0.8248, D Loss: 1.4373, Val Loss: 0.3041, MAE: 0.1503, PSNR: 38.97
+Epoch [45/180] FID: 251.3679
+Epoch [46/180] Training G Loss: 0.8784, D Loss: 1.2887, Val Loss: 0.3004, MAE: 0.1512, PSNR: 39.13
+Epoch [46/180] FID: 250.5449
+Epoch [47/180] Training G Loss: 0.8453, D Loss: 1.3775, Val Loss: 0.3537, MAE: 0.1772, PSNR: 37.19
+Epoch [47/180] FID: 252.3906
+Epoch [48/180] Training G Loss: 0.7923, D Loss: 1.4086, Val Loss: 0.3707, MAE: 0.1908, PSNR: 37.14
+Epoch [48/180] FID: 250.9043
+Epoch [49/180] Training G Loss: 0.7009, D Loss: 1.4552, Val Loss: 0.2772, MAE: 0.1391, PSNR: 39.47
+Epoch [49/180] FID: 251.3351
+Epoch [50/180] Training G Loss: 0.7311, D Loss: 1.3812, Val Loss: 0.2634, MAE: 0.1331, PSNR: 39.92
+Epoch [50/180] FID: 250.8817
+Epoch [51/180] Training G Loss: 0.7649, D Loss: 1.3531, Val Loss: 0.3268, MAE: 0.1760, PSNR: 37.52
+Epoch [51/180] FID: 251.9441
+Epoch [52/180] Training G Loss: 0.8445, D Loss: 1.3670, Val Loss: 0.3881, MAE: 0.2033, PSNR: 35.95
+Epoch [52/180] FID: 249.8573
+Epoch [53/180] Training G Loss: 0.8371, D Loss: 1.3767, Val Loss: 0.3317, MAE: 0.1681, PSNR: 37.90
+Epoch [53/180] FID: 253.5476
+Epoch [54/180] Training G Loss: 0.8225, D Loss: 1.3806, Val Loss: 0.3422, MAE: 0.1733, PSNR: 37.62
+Epoch [54/180] FID: 250.5258
+Epoch [55/180] Training G Loss: 1.1086, D Loss: 1.2295, Val Loss: 0.5666, MAE: 0.3027, PSNR: 34.98
+Epoch [55/180] FID: 248.3192
+Epoch [56/180] Training G Loss: 1.2248, D Loss: 1.1606, Val Loss: 0.3377, MAE: 0.1649, PSNR: 38.19
+Epoch [56/180] FID: 251.6824
+Epoch [57/180] Training G Loss: 0.9748, D Loss: 1.4606, Val Loss: 0.3515, MAE: 0.1670, PSNR: 38.44
+Epoch [57/180] FID: 249.2197
+Epoch [58/180] Training G Loss: 1.2666, D Loss: 1.0698, Val Loss: 0.3475, MAE: 0.1739, PSNR: 37.51
+Epoch [58/180] FID: 251.6007
+Epoch [59/180] Training G Loss: 1.2842, D Loss: 1.0919, Val Loss: 0.3446, MAE: 0.1724, PSNR: 37.82
+Epoch [59/180] FID: 252.4541
+Epoch [60/180] Training G Loss: 1.1259, D Loss: 1.1444, Val Loss: 0.3523, MAE: 0.1844, PSNR: 37.94
+Epoch [60/180] FID: 254.0493
+Epoch [61/180] Training G Loss: 1.3098, D Loss: 1.1017, Val Loss: 0.3404, MAE: 0.1641, PSNR: 38.48
+Epoch [61/180] FID: 251.6904
+Epoch [62/180] Training G Loss: 1.3744, D Loss: 1.0781, Val Loss: 0.3923, MAE: 0.1902, PSNR: 36.71
+Epoch [62/180] FID: 252.9442
+Epoch [63/180] Training G Loss: 1.2216, D Loss: 1.0861, Val Loss: 0.3834, MAE: 0.2044, PSNR: 36.10
+Epoch [63/180] FID: 252.1399
+Epoch [64/180] Training G Loss: 1.5374, D Loss: 0.8001, Val Loss: 0.3712, MAE: 0.1729, PSNR: 37.79
+Epoch [64/180] FID: 251.9804
+Epoch [65/180] Training G Loss: 1.4365, D Loss: 0.9363, Val Loss: 0.3265, MAE: 0.1623, PSNR: 38.44
+Epoch [65/180] FID: 250.3953
+Epoch [66/180] Training G Loss: 1.3403, D Loss: 1.0953, Val Loss: 0.3622, MAE: 0.1805, PSNR: 37.04
+Epoch [66/180] FID: 248.3439
+Epoch [67/180] Training G Loss: 1.4478, D Loss: 0.9773, Val Loss: 0.3660, MAE: 0.1852, PSNR: 37.06
+Epoch [67/180] FID: 252.1355
+Epoch [68/180] Training G Loss: 1.3718, D Loss: 0.8942, Val Loss: 0.2957, MAE: 0.1482, PSNR: 39.42
+Epoch [68/180] FID: 248.1282
+Epoch [69/180] Training G Loss: 1.9049, D Loss: 0.8516, Val Loss: 0.3368, MAE: 0.1671, PSNR: 38.02
+Epoch [69/180] FID: 251.9456
+Epoch [70/180] Training G Loss: 1.5858, D Loss: 0.7868, Val Loss: 0.3426, MAE: 0.1666, PSNR: 38.38
+Epoch [70/180] FID: 251.4967
+Epoch [71/180] Training G Loss: 1.6125, D Loss: 0.8533, Val Loss: 0.4675, MAE: 0.2632, PSNR: 34.35
+Epoch [71/180] FID: 252.2557
+Epoch [72/180] Training G Loss: 2.6460, D Loss: 0.6048, Val Loss: 0.4601, MAE: 0.2448, PSNR: 35.55
+Epoch [72/180] FID: 252.4433
+Epoch [73/180] Training G Loss: 1.7875, D Loss: 0.8975, Val Loss: 0.3783, MAE: 0.1866, PSNR: 37.11
+Epoch [73/180] FID: 251.2081
+Epoch [74/180] Training G Loss: 1.4763, D Loss: 0.9735, Val Loss: 0.3515, MAE: 0.1778, PSNR: 37.13
+Epoch [74/180] FID: 251.6829
+Epoch [75/180] Training G Loss: 1.4436, D Loss: 0.8911, Val Loss: 0.3306, MAE: 0.1632, PSNR: 38.15
+Epoch [75/180] FID: 251.9725
+Epoch [76/180] Training G Loss: 1.5944, D Loss: 0.7227, Val Loss: 0.3063, MAE: 0.1497, PSNR: 38.95
+Epoch [76/180] FID: 250.2680
+Epoch [77/180] Training G Loss: 1.7864, D Loss: 0.7951, Val Loss: 0.2972, MAE: 0.1445, PSNR: 39.36
+Epoch [77/180] FID: 255.5020
+Epoch [78/180] Training G Loss: 1.7020, D Loss: 0.8185, Val Loss: 0.3236, MAE: 0.1600, PSNR: 38.41
+Epoch [78/180] FID: 250.3706
+Epoch [79/180] Training G Loss: 1.9185, D Loss: 0.7249, Val Loss: 0.3092, MAE: 0.1541, PSNR: 38.70
+Epoch [79/180] FID: 251.7328
+Epoch [80/180] Training G Loss: 2.1620, D Loss: 0.8348, Val Loss: 1.1100, MAE: 0.8269, PSNR: 20.03
+Epoch [80/180] FID: 251.6012
+Epoch [81/180] Training G Loss: 2.0345, D Loss: 0.9274, Val Loss: 0.3715, MAE: 0.1855, PSNR: 36.76
+Epoch [81/180] FID: 250.4337
+Epoch [82/180] Training G Loss: 1.7649, D Loss: 0.6079, Val Loss: 0.3388, MAE: 0.1673, PSNR: 38.13
+Epoch [82/180] FID: 251.2228
+Epoch [83/180] Training G Loss: 1.7748, D Loss: 0.7523, Val Loss: 0.2993, MAE: 0.1465, PSNR: 39.08
+Epoch [83/180] FID: 250.6326
+Epoch [84/180] Training G Loss: 1.8921, D Loss: 0.6070, Val Loss: 0.3294, MAE: 0.1552, PSNR: 38.87
+Epoch [84/180] FID: 249.8623
+Epoch [85/180] Training G Loss: 1.6565, D Loss: 0.7608, Val Loss: 0.2873, MAE: 0.1385, PSNR: 39.74
+Epoch [85/180] FID: 251.0245
+Epoch [86/180] Training G Loss: 1.8973, D Loss: 0.5337, Val Loss: 0.3503, MAE: 0.1741, PSNR: 38.14
+Epoch [86/180] FID: 251.4336
+Epoch [87/180] Training G Loss: 1.8579, D Loss: 0.7184, Val Loss: 0.3101, MAE: 0.1507, PSNR: 38.97
+Epoch [87/180] FID: 252.6693
+Epoch [88/180] Training G Loss: 2.0708, D Loss: 0.5534, Val Loss: 0.3736, MAE: 0.1868, PSNR: 37.67
+Epoch [88/180] FID: 252.5136
+Epoch [89/180] Training G Loss: 2.3378, D Loss: 0.4554, Val Loss: 0.3476, MAE: 0.1695, PSNR: 37.69
+Epoch [89/180] FID: 248.3475
+Epoch [90/180] Training G Loss: 2.4171, D Loss: 0.4422, Val Loss: 0.3460, MAE: 0.1696, PSNR: 37.73
+Epoch [90/180] FID: 250.1742
+Epoch [91/180] Training G Loss: 2.3564, D Loss: 0.4355, Val Loss: 0.3315, MAE: 0.1608, PSNR: 38.42
+Epoch [91/180] FID: 254.0477
+Epoch [92/180] Training G Loss: 2.8987, D Loss: 0.5782, Val Loss: 0.3639, MAE: 0.1816, PSNR: 37.09
+Epoch [92/180] FID: 250.6648
+Epoch [93/180] Training G Loss: 2.4990, D Loss: 0.6075, Val Loss: 0.4143, MAE: 0.2075, PSNR: 36.50
+Epoch [93/180] FID: 252.1804
+Epoch [94/180] Training G Loss: 2.3311, D Loss: 0.7127, Val Loss: 0.3555, MAE: 0.1666, PSNR: 38.37
+Epoch [94/180] FID: 252.2188
+Epoch [95/180] Training G Loss: 2.5879, D Loss: 0.5389, Val Loss: 0.3321, MAE: 0.1595, PSNR: 38.48
+Epoch [95/180] FID: 252.2887
+Epoch [96/180] Training G Loss: 2.0873, D Loss: 0.6311, Val Loss: 0.3365, MAE: 0.1609, PSNR: 38.39
+Epoch [96/180] FID: 252.4575
+Epoch [97/180] Training G Loss: 2.8814, D Loss: 0.5261, Val Loss: 0.4756, MAE: 0.2412, PSNR: 34.25
+Epoch [97/180] FID: 252.2778
+Epoch [98/180] Training G Loss: 2.2611, D Loss: 0.6962, Val Loss: 0.3336, MAE: 0.1580, PSNR: 38.58
+Epoch [98/180] FID: 253.4146
+Epoch [99/180] Training G Loss: 2.7191, D Loss: 0.4756, Val Loss: 0.3218, MAE: 0.1555, PSNR: 38.69
+Epoch [99/180] FID: 249.9853
+Epoch [100/180] Training G Loss: 2.4943, D Loss: 0.7986, Val Loss: 0.3734, MAE: 0.1776, PSNR: 37.78
+Epoch [100/180] FID: 252.2797
+Epoch [101/180] Training G Loss: 1.9647, D Loss: 1.1926, Val Loss: 0.3389, MAE: 0.1706, PSNR: 38.14
+Epoch [101/180] FID: 250.2544
+Epoch [102/180] Training G Loss: 1.8379, D Loss: 0.9831, Val Loss: 0.3396, MAE: 0.1584, PSNR: 38.43
+Epoch [102/180] FID: 252.4711
+Epoch [103/180] Training G Loss: 2.1977, D Loss: 0.7061, Val Loss: 0.3887, MAE: 0.1879, PSNR: 37.68
+Epoch [103/180] FID: 250.0093
+Epoch [104/180] Training G Loss: 2.8788, D Loss: 0.7297, Val Loss: 0.3999, MAE: 0.1959, PSNR: 36.71
+Epoch [104/180] FID: 252.3764
+Epoch [105/180] Training G Loss: 1.9211, D Loss: 0.8668, Val Loss: 0.3641, MAE: 0.1742, PSNR: 37.92
+Epoch [105/180] FID: 251.8868
+Epoch [106/180] Training G Loss: 2.4865, D Loss: 0.5317, Val Loss: 0.4337, MAE: 0.2157, PSNR: 35.88
+Epoch [106/180] FID: 251.8517
+Epoch [107/180] Training G Loss: 1.9601, D Loss: 0.6848, Val Loss: 0.3426, MAE: 0.1634, PSNR: 38.02
+Epoch [107/180] FID: 251.5068
+Epoch [108/180] Training G Loss: 2.1709, D Loss: 0.3883, Val Loss: 0.4108, MAE: 0.1970, PSNR: 35.47
+Epoch [108/180] FID: 250.8026
+Epoch [109/180] Training G Loss: 2.0623, D Loss: 0.7730, Val Loss: 0.3282, MAE: 0.1586, PSNR: 38.47
+Epoch [109/180] FID: 251.7149
+Epoch [110/180] Training G Loss: 2.3607, D Loss: 0.4481, Val Loss: 0.3660, MAE: 0.1870, PSNR: 37.29
+Epoch [110/180] FID: 251.7107
+Epoch [111/180] Training G Loss: 1.8409, D Loss: 1.1641, Val Loss: 0.3225, MAE: 0.1543, PSNR: 38.88
+Epoch [111/180] FID: 250.5054
+Epoch [112/180] Training G Loss: 1.6859, D Loss: 1.5386, Val Loss: 0.3911, MAE: 0.2027, PSNR: 36.17
+Epoch [112/180] FID: 250.7413
+Epoch [113/180] Training G Loss: 1.8049, D Loss: 1.0941, Val Loss: 0.3653, MAE: 0.1752, PSNR: 37.38
+Epoch [113/180] FID: 252.1182
+Epoch [114/180] Training G Loss: 1.7622, D Loss: 1.3876, Val Loss: 0.3192, MAE: 0.1612, PSNR: 38.48
+Epoch [114/180] FID: 252.6758
+Epoch [115/180] Training G Loss: 0.9956, D Loss: 1.7701, Val Loss: 0.2976, MAE: 0.1451, PSNR: 39.36
+Epoch [115/180] FID: 251.0198
+Epoch [116/180] Training G Loss: 0.9706, D Loss: 1.8458, Val Loss: 0.3033, MAE: 0.1511, PSNR: 38.96
+Epoch [116/180] FID: 250.6941
+Epoch [117/180] Training G Loss: 0.9674, D Loss: 1.5680, Val Loss: 0.2810, MAE: 0.1370, PSNR: 39.76
+Epoch [117/180] FID: 251.5938
+Epoch [118/180] Training G Loss: 0.9453, D Loss: 1.5953, Val Loss: 0.2858, MAE: 0.1420, PSNR: 39.39
+Epoch [118/180] FID: 252.0813
+Epoch [119/180] Training G Loss: 0.8481, D Loss: 1.5502, Val Loss: 0.2929, MAE: 0.1373, PSNR: 39.69
+Epoch [119/180] FID: 249.7061
+Epoch [120/180] Training G Loss: 0.8524, D Loss: 1.5611, Val Loss: 0.3077, MAE: 0.1540, PSNR: 38.62
+Epoch [120/180] FID: 251.0447
+Epoch [121/180] Training G Loss: 0.8546, D Loss: 1.5275, Val Loss: 0.3139, MAE: 0.1559, PSNR: 38.77
+Epoch [121/180] FID: 249.4719
+Epoch [122/180] Training G Loss: 0.8798, D Loss: 1.4785, Val Loss: 0.2915, MAE: 0.1445, PSNR: 39.38
+Epoch [122/180] FID: 250.5465
+Epoch [123/180] Training G Loss: 0.7897, D Loss: 1.5537, Val Loss: 0.2789, MAE: 0.1363, PSNR: 39.76
+Epoch [123/180] FID: 248.5024
+Epoch [124/180] Training G Loss: 0.8007, D Loss: 1.5201, Val Loss: 0.2801, MAE: 0.1365, PSNR: 39.77
+Epoch [124/180] FID: 252.3667
+Epoch [125/180] Training G Loss: 0.7798, D Loss: 1.5001, Val Loss: 0.2728, MAE: 0.1329, PSNR: 40.06
+Epoch [125/180] FID: 251.8952
+Epoch [126/180] Training G Loss: 0.7242, D Loss: 1.5425, Val Loss: 0.2800, MAE: 0.1366, PSNR: 39.88
+Epoch [126/180] FID: 251.6746
+Epoch [127/180] Training G Loss: 0.7248, D Loss: 1.4854, Val Loss: 0.2790, MAE: 0.1383, PSNR: 39.66
+Epoch [127/180] FID: 248.4714
+Epoch [128/180] Training G Loss: 0.7470, D Loss: 1.5408, Val Loss: 0.2727, MAE: 0.1351, PSNR: 39.66
+Epoch [128/180] FID: 252.5899
+Epoch [129/180] Training G Loss: 0.7221, D Loss: 1.4698, Val Loss: 0.2736, MAE: 0.1355, PSNR: 39.77
+Epoch [129/180] FID: 251.8992
+Epoch [130/180] Training G Loss: 0.7693, D Loss: 1.4766, Val Loss: 0.2691, MAE: 0.1318, PSNR: 40.08
+Epoch [130/180] FID: 250.5461
+Epoch [131/180] Training G Loss: 0.7295, D Loss: 1.4762, Val Loss: 0.2596, MAE: 0.1280, PSNR: 40.27
+Epoch [131/180] FID: 253.0512
+Epoch [132/180] Training G Loss: 0.7467, D Loss: 1.4473, Val Loss: 0.2731, MAE: 0.1333, PSNR: 40.09
+Epoch [132/180] FID: 250.7369
+Epoch [133/180] Training G Loss: 0.9051, D Loss: 1.3532, Val Loss: 0.2891, MAE: 0.1464, PSNR: 39.00
+Epoch [133/180] FID: 249.1347
+Epoch [134/180] Training G Loss: 0.7346, D Loss: 1.5691, Val Loss: 0.2966, MAE: 0.1475, PSNR: 39.24
+Epoch [134/180] FID: 253.0294
+Epoch [135/180] Training G Loss: 0.7746, D Loss: 1.4219, Val Loss: 0.2736, MAE: 0.1316, PSNR: 40.13
+Epoch [135/180] FID: 250.0799
+Epoch [136/180] Training G Loss: 0.7332, D Loss: 1.5523, Val Loss: 0.2983, MAE: 0.1475, PSNR: 39.21
+Epoch [136/180] FID: 249.6234
+Epoch [137/180] Training G Loss: 0.8219, D Loss: 1.4487, Val Loss: 0.2668, MAE: 0.1293, PSNR: 40.20
+Epoch [137/180] FID: 249.6022
+Epoch [138/180] Training G Loss: 0.8607, D Loss: 1.4330, Val Loss: 0.2767, MAE: 0.1356, PSNR: 39.83
+Epoch [138/180] FID: 251.3230
+Epoch [139/180] Training G Loss: 0.8240, D Loss: 1.3697, Val Loss: 0.2905, MAE: 0.1482, PSNR: 39.80
+Epoch [139/180] FID: 253.0060
+Epoch [140/180] Training G Loss: 0.8609, D Loss: 1.4277, Val Loss: 0.3004, MAE: 0.1481, PSNR: 39.38
+Epoch [140/180] FID: 248.3704
+Epoch [141/180] Training G Loss: 0.8377, D Loss: 1.4348, Val Loss: 0.3080, MAE: 0.1613, PSNR: 38.20
+Epoch [141/180] FID: 251.3868
+Epoch [142/180] Training G Loss: 0.7900, D Loss: 1.3942, Val Loss: 0.2590, MAE: 0.1282, PSNR: 40.25
+Epoch [142/180] FID: 254.0072
+Epoch [143/180] Training G Loss: 0.8572, D Loss: 1.3989, Val Loss: 0.2874, MAE: 0.1409, PSNR: 39.69
+Epoch [143/180] FID: 253.3172
+Epoch [144/180] Training G Loss: 0.8732, D Loss: 1.3518, Val Loss: 0.2987, MAE: 0.1496, PSNR: 39.14
+Epoch [144/180] FID: 249.0911
+Epoch [145/180] Training G Loss: 0.8332, D Loss: 1.4356, Val Loss: 0.3025, MAE: 0.1463, PSNR: 39.12
+Epoch [145/180] FID: 251.4686
+Epoch [146/180] Training G Loss: 0.7795, D Loss: 1.4854, Val Loss: 0.2731, MAE: 0.1367, PSNR: 39.57
+Epoch [146/180] FID: 247.5184
+Epoch [147/180] Training G Loss: 0.8404, D Loss: 1.4361, Val Loss: 0.2775, MAE: 0.1378, PSNR: 39.66
+Epoch [147/180] FID: 250.4364
+Epoch [148/180] Training G Loss: 0.8461, D Loss: 1.3329, Val Loss: 0.2774, MAE: 0.1377, PSNR: 39.72
+Epoch [148/180] FID: 250.7196
+Epoch [149/180] Training G Loss: 0.8180, D Loss: 1.4314, Val Loss: 0.2903, MAE: 0.1430, PSNR: 39.47
+Epoch [149/180] FID: 252.9818
+Epoch [150/180] Training G Loss: 0.9118, D Loss: 1.4369, Val Loss: 0.2995, MAE: 0.1501, PSNR: 39.01
+Epoch [150/180] FID: 249.0879
+Epoch [151/180] Training G Loss: 0.7819, D Loss: 1.4840, Val Loss: 0.2888, MAE: 0.1515, PSNR: 38.81
+Epoch [151/180] FID: 250.6286
+Epoch [152/180] Training G Loss: 0.7909, D Loss: 1.4547, Val Loss: 0.3039, MAE: 0.1541, PSNR: 38.87
+Epoch [152/180] FID: 250.3422
+Epoch [153/180] Training G Loss: 0.7951, D Loss: 1.4828, Val Loss: 0.2851, MAE: 0.1437, PSNR: 39.35
+Epoch [153/180] FID: 250.2378
+Epoch [154/180] Training G Loss: 0.9565, D Loss: 1.2376, Val Loss: 0.2764, MAE: 0.1353, PSNR: 39.90
+Epoch [154/180] FID: 252.4954
+Epoch [155/180] Training G Loss: 0.9649, D Loss: 1.3335, Val Loss: 0.2783, MAE: 0.1415, PSNR: 39.51
+Epoch [155/180] FID: 249.3249
+Epoch [156/180] Training G Loss: 0.9406, D Loss: 1.2822, Val Loss: 0.2783, MAE: 0.1373, PSNR: 39.81
+Epoch [156/180] FID: 251.4883
+Epoch [157/180] Training G Loss: 0.8971, D Loss: 1.3622, Val Loss: 0.3071, MAE: 0.1472, PSNR: 39.24
+Epoch [157/180] FID: 249.8806
+Epoch [158/180] Training G Loss: 1.0271, D Loss: 1.3301, Val Loss: 0.3156, MAE: 0.1569, PSNR: 38.83
+Epoch [158/180] FID: 251.4179
+Epoch [159/180] Training G Loss: 0.9163, D Loss: 1.3743, Val Loss: 0.2718, MAE: 0.1339, PSNR: 40.18
+Epoch [159/180] FID: 250.3232
+Epoch [160/180] Training G Loss: 0.9041, D Loss: 1.4432, Val Loss: 0.3073, MAE: 0.1491, PSNR: 39.06
+Epoch [160/180] FID: 250.3392
+Epoch [161/180] Training G Loss: 0.8882, D Loss: 1.3998, Val Loss: 0.2903, MAE: 0.1427, PSNR: 39.39
+Epoch [161/180] FID: 250.3979
+Epoch [162/180] Training G Loss: 0.9575, D Loss: 1.3027, Val Loss: 0.2920, MAE: 0.1449, PSNR: 39.30
+Epoch [162/180] FID: 250.8559
+Epoch [163/180] Training G Loss: 0.8556, D Loss: 1.4289, Val Loss: 0.2970, MAE: 0.1443, PSNR: 39.25
+Epoch [163/180] FID: 253.3285
+Epoch [164/180] Training G Loss: 1.0017, D Loss: 1.1878, Val Loss: 0.3261, MAE: 0.1601, PSNR: 38.60
+Epoch [164/180] FID: 249.6172
+Epoch [165/180] Training G Loss: 0.8189, D Loss: 1.4166, Val Loss: 0.3091, MAE: 0.1518, PSNR: 38.88
+Epoch [165/180] FID: 254.6887
+Epoch [166/180] Training G Loss: 0.9141, D Loss: 1.3209, Val Loss: 0.2861, MAE: 0.1424, PSNR: 39.36
+Epoch [166/180] FID: 248.9407
+Epoch [167/180] Training G Loss: 0.8308, D Loss: 1.3762, Val Loss: 0.3035, MAE: 0.1485, PSNR: 39.18
+Epoch [167/180] FID: 249.2332
+Epoch [168/180] Training G Loss: 0.8590, D Loss: 1.3942, Val Loss: 0.3025, MAE: 0.1568, PSNR: 38.73
+Epoch [168/180] FID: 249.5914
+Epoch [169/180] Training G Loss: 0.8742, D Loss: 1.3569, Val Loss: 0.3022, MAE: 0.1488, PSNR: 39.05
+Epoch [169/180] FID: 250.9663
+Epoch [170/180] Training G Loss: 0.7929, D Loss: 1.4961, Val Loss: 0.2893, MAE: 0.1477, PSNR: 38.95
+Epoch [170/180] FID: 251.1600
+Epoch [171/180] Training G Loss: 0.8342, D Loss: 1.3736, Val Loss: 0.2886, MAE: 0.1421, PSNR: 39.63
+Epoch [171/180] FID: 250.7334
+Epoch [172/180] Training G Loss: 0.8099, D Loss: 1.4325, Val Loss: 0.2764, MAE: 0.1381, PSNR: 39.56
+Epoch [172/180] FID: 252.5854
+Epoch [173/180] Training G Loss: 0.8082, D Loss: 1.3779, Val Loss: 0.2687, MAE: 0.1298, PSNR: 40.43
+Epoch [173/180] FID: 251.8174
+Epoch [174/180] Training G Loss: 0.8341, D Loss: 1.4148, Val Loss: 0.3158, MAE: 0.1609, PSNR: 38.37
+Epoch [174/180] FID: 249.6010
+Epoch [175/180] Training G Loss: 0.9223, D Loss: 1.2999, Val Loss: 0.3072, MAE: 0.1549, PSNR: 38.84
+Epoch [175/180] FID: 249.2505
+Epoch [176/180] Training G Loss: 0.9243, D Loss: 1.3780, Val Loss: 0.2746, MAE: 0.1338, PSNR: 40.06
+Epoch [176/180] FID: 250.9872
+Epoch [177/180] Training G Loss: 0.8022, D Loss: 1.3617, Val Loss: 0.2741, MAE: 0.1357, PSNR: 39.82
+Epoch [177/180] FID: 252.9090
+Epoch [178/180] Training G Loss: 0.8473, D Loss: 1.4535, Val Loss: 0.2941, MAE: 0.1481, PSNR: 38.90
+Epoch [178/180] FID: 251.8988
+Epoch [179/180] Training G Loss: 0.8898, D Loss: 1.3592, Val Loss: 0.2916, MAE: 0.1526, PSNR: 39.66
+Epoch [179/180] FID: 252.6920
+Epoch [180/180] Training G Loss: 0.9430, D Loss: 1.3140, Val Loss: 0.2866, MAE: 0.1437, PSNR: 39.78
+Epoch [180/180] FID: 252.5112
+Loaded best model weights based on validation loss.
+
+Test MAE: 0.1405, Test PSNR: 39.98
+Test FID: 249.3116
+Saved 63 MRI scans, generated PET images, and real PET images in 'gan/cd/Pyramid_1st_300'
