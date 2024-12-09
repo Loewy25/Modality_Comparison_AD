@@ -1,0 +1,212 @@
+Using device: cuda
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Number of CN subjects:
+263
+Number of PCN subjects:
+140
+Number of MCI subjects:
+458
+Number of Dementia subjects:
+151
+lenth of dataset: 
+414
+Total samples: 414
+Generator params: 127497729
+StandardDiscriminator params: 4717825
+TaskInducedDiscriminator params: 257058
+Pre-train GAN Epoch [1/50]: G Loss: 3.4704, Dstd Loss: 0.1988, Val Loss: 0.9909
+Pre-train GAN Epoch [2/50]: G Loss: 3.5196, Dstd Loss: 0.1151, Val Loss: 0.7828
+Pre-train GAN Epoch [3/50]: G Loss: 2.6578, Dstd Loss: 0.4444, Val Loss: 0.6144
+Pre-train GAN Epoch [4/50]: G Loss: 1.7017, Dstd Loss: 1.0705, Val Loss: 0.4942
+Pre-train GAN Epoch [5/50]: G Loss: 0.7826, Dstd Loss: 1.6059, Val Loss: 0.3355
+Pre-train GAN Epoch [6/50]: G Loss: 0.6393, Dstd Loss: 1.4560, Val Loss: 0.2918
+Pre-train GAN Epoch [7/50]: G Loss: 0.6255, Dstd Loss: 1.4017, Val Loss: 0.2905
+Pre-train GAN Epoch [8/50]: G Loss: 0.6401, Dstd Loss: 1.4047, Val Loss: 0.2872
+Pre-train GAN Epoch [9/50]: G Loss: 0.6388, Dstd Loss: 1.4074, Val Loss: 0.3001
+Pre-train GAN Epoch [10/50]: G Loss: 0.6532, Dstd Loss: 1.4088, Val Loss: 0.2810
+Pre-train GAN Epoch [11/50]: G Loss: 0.6394, Dstd Loss: 1.4053, Val Loss: 0.2788
+Pre-train GAN Epoch [12/50]: G Loss: 0.6379, Dstd Loss: 1.4010, Val Loss: 0.2769
+Pre-train GAN Epoch [13/50]: G Loss: 0.6505, Dstd Loss: 1.4044, Val Loss: 0.3047
+Pre-train GAN Epoch [14/50]: G Loss: 0.6544, Dstd Loss: 1.4043, Val Loss: 0.3190
+Pre-train GAN Epoch [15/50]: G Loss: 0.6315, Dstd Loss: 1.4046, Val Loss: 0.2873
+Pre-train GAN Epoch [16/50]: G Loss: 0.6720, Dstd Loss: 1.4030, Val Loss: 0.3037
+Pre-train GAN Epoch [17/50]: G Loss: 0.6758, Dstd Loss: 1.4031, Val Loss: 0.3314
+Pre-train GAN Epoch [18/50]: G Loss: 0.6702, Dstd Loss: 1.4194, Val Loss: 0.2694
+Pre-train GAN Epoch [19/50]: G Loss: 0.6349, Dstd Loss: 1.3928, Val Loss: 0.2972
+Pre-train GAN Epoch [20/50]: G Loss: 0.6568, Dstd Loss: 1.3997, Val Loss: 0.3152
+Pre-train GAN Epoch [21/50]: G Loss: 0.6571, Dstd Loss: 1.4065, Val Loss: 0.2711
+Pre-train GAN Epoch [22/50]: G Loss: 0.6239, Dstd Loss: 1.3957, Val Loss: 0.2719
+Pre-train GAN Epoch [23/50]: G Loss: 0.6665, Dstd Loss: 1.3794, Val Loss: 0.4145
+Pre-train GAN Epoch [24/50]: G Loss: 1.0718, Dstd Loss: 1.3111, Val Loss: 0.4003
+Pre-train GAN Epoch [25/50]: G Loss: 0.6437, Dstd Loss: 1.4279, Val Loss: 0.2961
+Pre-train GAN Epoch [26/50]: G Loss: 0.6303, Dstd Loss: 1.3985, Val Loss: 0.2842
+Pre-train GAN Epoch [27/50]: G Loss: 0.6223, Dstd Loss: 1.3976, Val Loss: 0.3297
+Pre-train GAN Epoch [28/50]: G Loss: 0.8091, Dstd Loss: 1.3995, Val Loss: 0.3741
+Pre-train GAN Epoch [29/50]: G Loss: 0.7070, Dstd Loss: 1.3831, Val Loss: 0.3495
+Pre-train GAN Epoch [30/50]: G Loss: 0.8569, Dstd Loss: 1.3624, Val Loss: 0.4554
+Pre-train GAN Epoch [31/50]: G Loss: 0.6957, Dstd Loss: 1.4304, Val Loss: 0.2967
+Pre-train GAN Epoch [32/50]: G Loss: 0.7323, Dstd Loss: 1.3748, Val Loss: 0.3332
+Pre-train GAN Epoch [33/50]: G Loss: 0.6668, Dstd Loss: 1.4500, Val Loss: 0.2857
+Pre-train GAN Epoch [34/50]: G Loss: 0.6847, Dstd Loss: 1.3763, Val Loss: 0.3661
+Pre-train GAN Epoch [35/50]: G Loss: 0.7100, Dstd Loss: 1.4515, Val Loss: 0.2866
+Pre-train GAN Epoch [36/50]: G Loss: 0.6198, Dstd Loss: 1.4310, Val Loss: 0.2854
+Pre-train GAN Epoch [37/50]: G Loss: 0.7635, Dstd Loss: 1.3461, Val Loss: 0.3763
+Pre-train GAN Epoch [38/50]: G Loss: 0.6295, Dstd Loss: 1.4839, Val Loss: 0.2666
+Pre-train GAN Epoch [39/50]: G Loss: 0.6052, Dstd Loss: 1.4204, Val Loss: 0.2724
+Pre-train GAN Epoch [40/50]: G Loss: 0.6257, Dstd Loss: 1.3953, Val Loss: 0.2805
+Pre-train GAN Epoch [41/50]: G Loss: 0.6495, Dstd Loss: 1.4102, Val Loss: 0.2745
+Pre-train GAN Epoch [42/50]: G Loss: 0.6631, Dstd Loss: 1.4115, Val Loss: 0.2656
+Pre-train GAN Epoch [43/50]: G Loss: 0.7266, Dstd Loss: 1.3669, Val Loss: 0.2749
+Pre-train GAN Epoch [44/50]: G Loss: 0.7010, Dstd Loss: 1.3779, Val Loss: 0.3058
+Pre-train GAN Epoch [45/50]: G Loss: 0.6845, Dstd Loss: 1.4408, Val Loss: 0.2916
+Pre-train GAN Epoch [46/50]: G Loss: 0.6736, Dstd Loss: 1.4136, Val Loss: 0.2777
+Pre-train GAN Epoch [47/50]: G Loss: 0.6849, Dstd Loss: 1.3858, Val Loss: 0.3215
+Pre-train GAN Epoch [48/50]: G Loss: 0.7654, Dstd Loss: 1.3172, Val Loss: 0.3629
+Pre-train GAN Epoch [49/50]: G Loss: 0.7597, Dstd Loss: 1.3425, Val Loss: 0.2690
+Pre-train GAN Epoch [50/50]: G Loss: 0.7721, Dstd Loss: 1.3627, Val Loss: 0.3219
+Loaded best pre-trained GAN weights.
+Pre-train Dtask Epoch [1/50]: Train Acc: 0.6000, Val Acc: 0.7042
+Pre-train Dtask Epoch [2/50]: Train Acc: 0.6071, Val Acc: 0.7042
+Pre-train Dtask Epoch [3/50]: Train Acc: 0.7964, Val Acc: 0.9577
+Pre-train Dtask Epoch [4/50]: Train Acc: 0.9000, Val Acc: 0.9296
+Pre-train Dtask Epoch [5/50]: Train Acc: 0.9214, Val Acc: 0.9155
+Pre-train Dtask Epoch [6/50]: Train Acc: 0.9286, Val Acc: 0.9577
+Pre-train Dtask Epoch [7/50]: Train Acc: 0.9500, Val Acc: 0.9437
+Pre-train Dtask Epoch [8/50]: Train Acc: 0.9357, Val Acc: 0.9437
+Pre-train Dtask Epoch [9/50]: Train Acc: 0.9464, Val Acc: 0.9155
+Pre-train Dtask Epoch [10/50]: Train Acc: 0.9464, Val Acc: 0.9577
+Pre-train Dtask Epoch [11/50]: Train Acc: 0.9464, Val Acc: 0.9718
+Pre-train Dtask Epoch [12/50]: Train Acc: 0.9500, Val Acc: 0.9718
+Pre-train Dtask Epoch [13/50]: Train Acc: 0.9571, Val Acc: 0.9718
+Pre-train Dtask Epoch [14/50]: Train Acc: 0.9536, Val Acc: 0.9577
+Pre-train Dtask Epoch [15/50]: Train Acc: 0.9714, Val Acc: 0.9155
+Pre-train Dtask Epoch [16/50]: Train Acc: 0.9714, Val Acc: 0.9718
+Pre-train Dtask Epoch [17/50]: Train Acc: 0.9750, Val Acc: 0.9577
+Pre-train Dtask Epoch [18/50]: Train Acc: 0.9786, Val Acc: 0.9718
+Pre-train Dtask Epoch [19/50]: Train Acc: 0.9821, Val Acc: 0.9859
+Pre-train Dtask Epoch [20/50]: Train Acc: 0.9821, Val Acc: 1.0000
+Pre-train Dtask Epoch [21/50]: Train Acc: 0.9821, Val Acc: 0.9718
+Pre-train Dtask Epoch [22/50]: Train Acc: 0.9821, Val Acc: 0.9859
+Pre-train Dtask Epoch [23/50]: Train Acc: 0.9821, Val Acc: 0.9859
+Pre-train Dtask Epoch [24/50]: Train Acc: 0.9821, Val Acc: 1.0000
+Pre-train Dtask Epoch [25/50]: Train Acc: 0.9821, Val Acc: 1.0000
+Pre-train Dtask Epoch [26/50]: Train Acc: 0.9821, Val Acc: 1.0000
+Pre-train Dtask Epoch [27/50]: Train Acc: 0.9821, Val Acc: 1.0000
+Pre-train Dtask Epoch [28/50]: Train Acc: 0.9821, Val Acc: 0.9718
+Pre-train Dtask Epoch [29/50]: Train Acc: 0.9679, Val Acc: 0.9718
+Pre-train Dtask Epoch [30/50]: Train Acc: 0.9679, Val Acc: 0.9577
+Pre-train Dtask Epoch [31/50]: Train Acc: 0.9643, Val Acc: 0.9859
+Pre-train Dtask Epoch [32/50]: Train Acc: 0.9464, Val Acc: 0.9577
+Pre-train Dtask Epoch [33/50]: Train Acc: 0.9714, Val Acc: 0.9718
+Pre-train Dtask Epoch [34/50]: Train Acc: 0.9786, Val Acc: 0.9296
+Pre-train Dtask Epoch [35/50]: Train Acc: 0.9821, Val Acc: 0.9577
+Pre-train Dtask Epoch [36/50]: Train Acc: 0.9821, Val Acc: 1.0000
+Pre-train Dtask Epoch [37/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [38/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [39/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [40/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [41/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [42/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [43/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [44/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [45/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [46/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [47/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [48/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [49/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Pre-train Dtask Epoch [50/50]: Train Acc: 0.9857, Val Acc: 1.0000
+Loaded best pre-trained Dtask weights.
+Fine-tune Epoch [1/80]: G Loss: 1.3955, Dstd Loss: 1.0303, Val Loss: 0.3991
+Fine-tune Epoch [2/80]: G Loss: 0.9714, Dstd Loss: 1.3392, Val Loss: 0.2914
+Fine-tune Epoch [3/80]: G Loss: 1.1922, Dstd Loss: 1.1211, Val Loss: 0.6131
+Fine-tune Epoch [4/80]: G Loss: 1.0906, Dstd Loss: 1.2536, Val Loss: 0.3610
+Fine-tune Epoch [5/80]: G Loss: 1.0186, Dstd Loss: 1.2637, Val Loss: 0.3539
+Fine-tune Epoch [6/80]: G Loss: 1.0904, Dstd Loss: 1.2454, Val Loss: 0.4646
+Fine-tune Epoch [7/80]: G Loss: 1.0431, Dstd Loss: 1.2943, Val Loss: 0.4448
+Fine-tune Epoch [8/80]: G Loss: 1.1415, Dstd Loss: 1.1970, Val Loss: 0.3263
+Fine-tune Epoch [9/80]: G Loss: 0.8990, Dstd Loss: 1.3761, Val Loss: 0.3029
+Fine-tune Epoch [10/80]: G Loss: 1.0980, Dstd Loss: 1.0812, Val Loss: 0.3293
+Fine-tune Epoch [11/80]: G Loss: 1.3124, Dstd Loss: 1.0913, Val Loss: 0.4205
+Fine-tune Epoch [12/80]: G Loss: 1.0273, Dstd Loss: 1.2955, Val Loss: 0.3574
+Fine-tune Epoch [13/80]: G Loss: 1.0944, Dstd Loss: 1.1637, Val Loss: 0.3245
+Fine-tune Epoch [14/80]: G Loss: 1.0030, Dstd Loss: 1.3087, Val Loss: 0.3053
+Fine-tune Epoch [15/80]: G Loss: 1.0607, Dstd Loss: 1.2179, Val Loss: 0.4433
+Fine-tune Epoch [16/80]: G Loss: 1.2110, Dstd Loss: 1.0153, Val Loss: 0.4831
+Fine-tune Epoch [17/80]: G Loss: 1.3921, Dstd Loss: 1.0123, Val Loss: 0.3470
+Fine-tune Epoch [18/80]: G Loss: 1.0668, Dstd Loss: 1.3163, Val Loss: 0.3617
+Fine-tune Epoch [19/80]: G Loss: 1.2376, Dstd Loss: 1.1361, Val Loss: 0.3487
+Fine-tune Epoch [20/80]: G Loss: 1.2678, Dstd Loss: 1.1619, Val Loss: 0.4500
+Fine-tune Epoch [21/80]: G Loss: 1.2204, Dstd Loss: 1.0966, Val Loss: 0.3978
+Fine-tune Epoch [22/80]: G Loss: 1.1555, Dstd Loss: 1.2311, Val Loss: 0.3465
+Fine-tune Epoch [23/80]: G Loss: 1.3624, Dstd Loss: 1.0894, Val Loss: 0.3085
+Fine-tune Epoch [24/80]: G Loss: 1.0829, Dstd Loss: 1.2545, Val Loss: 0.3017
+Fine-tune Epoch [25/80]: G Loss: 1.2306, Dstd Loss: 1.0793, Val Loss: 0.3152
+Fine-tune Epoch [26/80]: G Loss: 1.2328, Dstd Loss: 1.0694, Val Loss: 0.3395
+Fine-tune Epoch [27/80]: G Loss: 1.1840, Dstd Loss: 1.0938, Val Loss: 0.3055
+Fine-tune Epoch [28/80]: G Loss: 1.2059, Dstd Loss: 1.1473, Val Loss: 0.3481
+Fine-tune Epoch [29/80]: G Loss: 1.2983, Dstd Loss: 1.0617, Val Loss: 0.3794
+Fine-tune Epoch [30/80]: G Loss: 1.1598, Dstd Loss: 1.2023, Val Loss: 0.3215
+Fine-tune Epoch [31/80]: G Loss: 1.2851, Dstd Loss: 0.9976, Val Loss: 0.3077
+Fine-tune Epoch [32/80]: G Loss: 1.3603, Dstd Loss: 0.9997, Val Loss: 0.3427
+Fine-tune Epoch [33/80]: G Loss: 1.3800, Dstd Loss: 1.1576, Val Loss: 0.3339
+Fine-tune Epoch [34/80]: G Loss: 1.4391, Dstd Loss: 1.1123, Val Loss: 0.3732
+Fine-tune Epoch [35/80]: G Loss: 1.4522, Dstd Loss: 0.9775, Val Loss: 0.3642
+Fine-tune Epoch [36/80]: G Loss: 1.2533, Dstd Loss: 1.0101, Val Loss: 0.3199
+Fine-tune Epoch [37/80]: G Loss: 1.3252, Dstd Loss: 0.9830, Val Loss: 0.3152
+Fine-tune Epoch [38/80]: G Loss: 1.3959, Dstd Loss: 0.8874, Val Loss: 0.3130
+Fine-tune Epoch [39/80]: G Loss: 1.3181, Dstd Loss: 1.1572, Val Loss: 0.2999
+Fine-tune Epoch [40/80]: G Loss: 1.3663, Dstd Loss: 1.2002, Val Loss: 0.3258
+Fine-tune Epoch [41/80]: G Loss: 1.0352, Dstd Loss: 1.5185, Val Loss: 0.2745
+Fine-tune Epoch [42/80]: G Loss: 0.9257, Dstd Loss: 1.4676, Val Loss: 0.3289
+Fine-tune Epoch [43/80]: G Loss: 0.9068, Dstd Loss: 1.3911, Val Loss: 0.3083
+Fine-tune Epoch [44/80]: G Loss: 0.9134, Dstd Loss: 1.4330, Val Loss: 0.3309
+Fine-tune Epoch [45/80]: G Loss: 0.8223, Dstd Loss: 1.4219, Val Loss: 0.3148
+Fine-tune Epoch [46/80]: G Loss: 0.8296, Dstd Loss: 1.4123, Val Loss: 0.2942
+Fine-tune Epoch [47/80]: G Loss: 0.8425, Dstd Loss: 1.4063, Val Loss: 0.2879
+Fine-tune Epoch [48/80]: G Loss: 0.8554, Dstd Loss: 1.4269, Val Loss: 0.3260
+Fine-tune Epoch [49/80]: G Loss: 0.8615, Dstd Loss: 1.4295, Val Loss: 0.2864
+Fine-tune Epoch [50/80]: G Loss: 0.8722, Dstd Loss: 1.3574, Val Loss: 0.3010
+Fine-tune Epoch [51/80]: G Loss: 0.7680, Dstd Loss: 1.5088, Val Loss: 0.2752
+Fine-tune Epoch [52/80]: G Loss: 0.8543, Dstd Loss: 1.3695, Val Loss: 0.2906
+Fine-tune Epoch [53/80]: G Loss: 0.8516, Dstd Loss: 1.3611, Val Loss: 0.3040
+Fine-tune Epoch [54/80]: G Loss: 0.8271, Dstd Loss: 1.3797, Val Loss: 0.2837
+Fine-tune Epoch [55/80]: G Loss: 0.8729, Dstd Loss: 1.3532, Val Loss: 0.3359
+Fine-tune Epoch [56/80]: G Loss: 0.8965, Dstd Loss: 1.3558, Val Loss: 0.3505
+Fine-tune Epoch [57/80]: G Loss: 0.9175, Dstd Loss: 1.2907, Val Loss: 0.3045
+Fine-tune Epoch [58/80]: G Loss: 0.8550, Dstd Loss: 1.3769, Val Loss: 0.2756
+Fine-tune Epoch [59/80]: G Loss: 0.8570, Dstd Loss: 1.3904, Val Loss: 0.3120
+Fine-tune Epoch [60/80]: G Loss: 0.9096, Dstd Loss: 1.3317, Val Loss: 0.2972
+Fine-tune Epoch [61/80]: G Loss: 0.8677, Dstd Loss: 1.3851, Val Loss: 0.3139
+Fine-tune Epoch [62/80]: G Loss: 0.9148, Dstd Loss: 1.3277, Val Loss: 0.2826
+Fine-tune Epoch [63/80]: G Loss: 0.8870, Dstd Loss: 1.3425, Val Loss: 0.3198
+Fine-tune Epoch [64/80]: G Loss: 0.8737, Dstd Loss: 1.3361, Val Loss: 0.2857
+Fine-tune Epoch [65/80]: G Loss: 0.9175, Dstd Loss: 1.3152, Val Loss: 0.3060
+Fine-tune Epoch [66/80]: G Loss: 0.9714, Dstd Loss: 1.2937, Val Loss: 0.3003
+Fine-tune Epoch [67/80]: G Loss: 1.0190, Dstd Loss: 1.1864, Val Loss: 0.3008
+Fine-tune Epoch [68/80]: G Loss: 0.9209, Dstd Loss: 1.3444, Val Loss: 0.3032
+Fine-tune Epoch [69/80]: G Loss: 0.9455, Dstd Loss: 1.3132, Val Loss: 0.2830
+Fine-tune Epoch [70/80]: G Loss: 1.0343, Dstd Loss: 1.2216, Val Loss: 0.3321
+Fine-tune Epoch [71/80]: G Loss: 1.0096, Dstd Loss: 1.2866, Val Loss: 0.3561
+Fine-tune Epoch [72/80]: G Loss: 0.9662, Dstd Loss: 1.3136, Val Loss: 0.2882
+Fine-tune Epoch [73/80]: G Loss: 1.0049, Dstd Loss: 1.2360, Val Loss: 0.2865
+Fine-tune Epoch [74/80]: G Loss: 1.0734, Dstd Loss: 1.2348, Val Loss: 0.2904
+Fine-tune Epoch [75/80]: G Loss: 1.1309, Dstd Loss: 1.1732, Val Loss: 0.3039
+Fine-tune Epoch [76/80]: G Loss: 1.0727, Dstd Loss: 1.1540, Val Loss: 0.2784
+Fine-tune Epoch [77/80]: G Loss: 1.1169, Dstd Loss: 1.2461, Val Loss: 0.3051
+Fine-tune Epoch [78/80]: G Loss: 1.1089, Dstd Loss: 1.2563, Val Loss: 0.2936
+Fine-tune Epoch [79/80]: G Loss: 1.0180, Dstd Loss: 1.3316, Val Loss: 0.2844
+Fine-tune Epoch [80/80]: G Loss: 0.9942, Dstd Loss: 1.3755, Val Loss: 0.2739
+Loaded best fine-tuned TPA-GAN weights.
+
+Test MAE: 0.1298, Test PSNR: 40.13
+Test FID: 249.5732
+Saved 63 MRI scans, generated PET images, and real PET images in 'gan/cd/new_Paramid'
