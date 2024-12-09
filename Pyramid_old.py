@@ -547,7 +547,7 @@ if __name__ == '__main__':
     print("Using device:", device)
 
     task = 'cd'
-    info = 'Pyramid_1st_300'
+    info = 'Pyramid_2st_180_0.3_0.5/1.0/0.5_4-5'
 
     # Load data (now also returns labels)
     print("Loading MRI and PET data...")
@@ -556,7 +556,7 @@ if __name__ == '__main__':
 
     # Split into train/test (and then train/val) with labels
     mri_train, mri_test, pet_train, pet_test, labels_train, labels_test = train_test_split(
-        mri_data, pet_data, all_labels, test_size=0.15, random_state=8
+        mri_data, pet_data, all_labels, test_size=0.3, random_state=8
     )
     print(f"Train set: {mri_train.shape[0]} samples, Test set: {mri_test.shape[0]} samples")
 
@@ -609,11 +609,11 @@ if __name__ == '__main__':
     test_loader = DataLoader(test_dataset, batch_size=4, shuffle=False)
 
     optimizer_G = optim.Adam(G.parameters(), lr=1e-4)
-    optimizer_Dstd = optim.Adam(Dstd.parameters(), lr=4e-4)
+    optimizer_Dstd = optim.Adam(Dstd.parameters(), lr=4e-5)
     optimizer_Dtask = optim.Adam(Dtask.parameters(), lr=1e-4)
 
-    gamma = 1.0
-    lambda_ = 0.5
+    gamma = 0.5
+    lambda_ = 1.0
     zeta = 0.5
 
     best_val_loss = float('inf')
