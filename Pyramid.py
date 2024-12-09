@@ -38,7 +38,6 @@ class SelfAttention3D(nn.Module):
         N = D * H * W
         f_x = self.Wf(x).view(B, C, N)
         phi_x = self.Wphi(x).view(B, C, N)
-
         eta = self.softmax(f_x)
         weighted_phi = eta * phi_x
         summed_phi = torch.sum(weighted_phi, dim=2, keepdim=True)
@@ -63,7 +62,7 @@ class PyramidConvBlock(nn.Module):
         self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x):
-        outputs = [path(x) for path in self.paths]
+        outputs = [path(x) for x in self.paths]
         out = torch.cat(outputs, dim=1)
         out = self.relu(out)
         return out
@@ -409,7 +408,7 @@ def train_step_gan(G, Dstd, real_MRI, real_PET, optimizer_G, optimizer_Dstd, gam
 
     return L_G.item(), LDstd.item()
 
-def pretrain_gan(G, Dstd, train_loader, val_loader, device, epochs=50, gamma=1.0, lambda_=0.5):
+def pretrain_gan(G, Dstd, train_loader, val_loader, device, epochs=40, gamma=1.0, lambda_=0.5):  # Modified epochs from 50 to 40
     optimizer_G = torch.optim.Adam(G.parameters(), lr=1e-4)
     optimizer_Dstd = torch.optim.Adam(Dstd.parameters(), lr=4e-4)
 
@@ -453,7 +452,7 @@ def pretrain_gan(G, Dstd, train_loader, val_loader, device, epochs=50, gamma=1.0
         G.load_state_dict(best_G_state)
         print("Loaded best pre-trained GAN weights.")
 
-def pretrain_dtask(Dtask, train_loader, val_loader, device, epochs=50):
+def pretrain_dtask(Dtask, train_loader, val_loader, device, epochs=30):  # Modified epochs from 50 to 30
     optimizer_Dtask = torch.optim.Adam(Dtask.parameters(), lr=1e-4)
     criterion = nn.CrossEntropyLoss()
 
@@ -502,7 +501,7 @@ def pretrain_dtask(Dtask, train_loader, val_loader, device, epochs=50):
         Dtask.load_state_dict(best_Dtask_state)
         print("Loaded best pre-trained Dtask weights.")
 
-def fine_tune_tpa_gan(G, Dstd, Dtask, train_loader, val_loader, device, epochs=50, gamma=1.0, lambda_=0.5, zeta=0.5):
+def fine_tune_tpa_gan(G, Dstd, Dtask, train_loader, val_loader, device, epochs=110, gamma=1.0, lambda_=0.5, zeta=0.7):  # Modified epochs from 80 to 110 and zeta from 0.5 to 0.7
     for param in Dtask.parameters():
         param.requires_grad = False
 
@@ -594,14 +593,14 @@ if __name__ == '__main__':
     print("Using device:", device)
 
     task = 'cd'
-    info = 'new_Paramid'
+    info = 'new_Paramid_40_30_110_zeta_0.7'
 
     mri_data, pet_data, all_labels = load_mri_pet_data(task)
     print(f"Total samples: {mri_data.shape[0]}")
 
     # Split data
     mri_train, mri_test, pet_train, pet_test, labels_train, labels_test = train_test_split(
-        mri_data, pet_data, all_labels, test_size=0.15, random_state=8
+        mri_data, pet_data, all_labels, test_size=0.3, random_state=8
     )
     mri_train, mri_val, pet_train, pet_val, labels_train, labels_val = train_test_split(
         mri_train, pet_train, labels_train, test_size=0.2, random_state=42
@@ -627,14 +626,14 @@ if __name__ == '__main__':
     val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
-    # Phase 1: Pre-train GAN (G+Dstd)
-    pretrain_gan(G, Dstd, train_loader, val_loader, device, epochs=50)
+    # Phase 1: Pre-train GAN (G+Dstd) - Modified epochs to 40
+    pretrain_gan(G, Dstd, train_loader, val_loader, device, epochs=40)
 
-    # Phase 2: Pre-train Dtask
-    pretrain_dtask(Dtask, train_loader, val_loader, device, epochs=50)
+    # Phase 2: Pre-train Dtask - Modified epochs to 30
+    pretrain_dtask(Dtask, train_loader, val_loader, device, epochs=30)
 
-    # Phase 3: Fine-tune TPA-GAN (G+Dstd with Dtask frozen)
-    fine_tune_tpa_gan(G, Dstd, Dtask, train_loader, val_loader, device, epochs=80)
+    # Phase 3: Fine-tune TPA-GAN (G+Dstd with Dtask frozen) - Modified epochs to 110 and zeta to 0.7
+    fine_tune_tpa_gan(G, Dstd, Dtask, train_loader, val_loader, device, epochs=110, zeta=0.7)
 
     # Evaluation on test set
     G.eval()
@@ -708,3 +707,4 @@ if __name__ == '__main__':
         save_images_nii(pet_test[i][0], real_pet_file_path)
 
     print(f"Saved {len(mri_test)} MRI scans, generated PET images, and real PET images in 'gan/{task}/{info}'")
+
