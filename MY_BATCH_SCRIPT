@@ -21,10 +21,12 @@
 #SBATCH --output=slurm-%A_%a.out 
 #SBATCH --error=slurm-%A_%a.err 
 
+conda create --name mynewenv --clone /ceph/chpc/home/l.peiwang/miniconda3/envs/myenv
 
-source /ceph/chpc/home/l.peiwang/miniconda3/etc/profile.d/conda.sh
 
-conda activate myenv
+#source /home/l.peiwang/miniconda3/etc/profile.d/conda.sh
+
+conda activate mynewenv
 
 module load cuda
 module load cudnn
