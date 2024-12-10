@@ -21,8 +21,6 @@
 #SBATCH --output=slurm-%A_%a.out 
 #SBATCH --error=slurm-%A_%a.err 
 
-conda create --name mynewenv --clone /ceph/chpc/home/l.peiwang/miniconda3/envs/myenv
-
 bash Miniconda3-latest-Linux-x86_64.sh -b -p /ceph/chpc/home/l.peiwang/miniconda3
 source /ceph/chpc/home/l.peiwang/miniconda3/etc/profile.d/conda.sh
 
