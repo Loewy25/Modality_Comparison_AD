@@ -21,8 +21,9 @@
 #SBATCH --output=slurm-%A_%a.out 
 #SBATCH --error=slurm-%A_%a.err 
 
-bash Miniconda3-latest-Linux-x86_64.sh -b -p /ceph/chpc/home/l.peiwang/miniconda3
-source /ceph/chpc/home/l.peiwang/miniconda3/etc/profile.d/conda.sh
+bash Miniconda3-latest-Linux-x86_64.sh -b -p /ceph/chpc/home/l.peiwang/new_miniconda3
+
+source /ceph/chpc/home/l.peiwang/new_miniconda3/etc/profile.d/conda.sh
 
 
 #source /home/l.peiwang/miniconda3/etc/profile.d/conda.sh
