@@ -22,7 +22,7 @@
 #SBATCH --error=slurm-%A_%a.err 
 
 
-source /home/l.peiwang/miniconda3/etc/profile.d/conda.sh
+source /ceph/chpc/home/l.peiwang/miniconda3/etc/profile.d/conda.sh
 
 conda activate myenv
 
