@@ -97,7 +97,7 @@ def main():
 
     # Step 2: Load GAN MRI, which were saved after preprocessing with affine np.eye(4)
     print("Loading GAN MRI images...")
-    gan_mri_dir = f'/home/l.peiwang/Modality_Comparison_AD/gan/{task}/{info}/mri'
+    gan_mri_dir = f'/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/gan/{task}/{info}/mri'
     preprocessed_gan_mri_files = sorted([f for f in os.listdir(gan_mri_dir) if f.endswith('.nii.gz')])
     preprocessed_gan_mri_paths = [os.path.join(gan_mri_dir, f) for f in preprocessed_gan_mri_files]
 
@@ -111,8 +111,8 @@ def main():
 
     # Step 4: Load GAN MRI, Real PET, and Synthesized PET images
     print("Loading GAN MRI, Real PET, and Synthesized PET images...")
-    real_pet_dir = f'/home/l.peiwang/Modality_Comparison_AD/gan/{task}/{info}/real_pet'
-    generated_pet_dir = f'/home/l.peiwang/Modality_Comparison_AD/gan/{task}/{info}/pet'
+    real_pet_dir = f'/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/gan/{task}/{info}/real_pet'
+    generated_pet_dir = f'/ceph/chpc/home/l.peiwang/Modality_Comparison_AD/gan/{task}/{info}/pet'
 
     real_pet_files = sorted([f for f in os.listdir(real_pet_dir) if f.endswith('.nii.gz')])
     generated_pet_files = sorted([f for f in os.listdir(generated_pet_dir) if f.endswith('.nii.gz')])
@@ -148,7 +148,7 @@ def main():
 
     # Step 6: Apply mask to the data
     print("Applying mask to the data...")
-    mask_img = nib.load('/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
+    mask_img = nib.load('/ceph/chpc/home/l.peiwang/MR-PET-Classfication/mask_gm_p4_new4.nii')
     masker = NiftiMasker(mask_img=mask_img)
     masker.fit()  # Since mask_img is already provided, we can fit the masker without data
 
