@@ -33,7 +33,7 @@ if ! conda env list | grep -q "^$ENV_NAME "; then
 else
     conda activate $ENV_NAME
 fi
-pip install statsmodels
+pip install matplotlib
 # Load CUDA and CuDNN modules if needed
 module load cuda
 module load cudnn
