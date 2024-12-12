@@ -87,6 +87,104 @@ def match_mri_by_files(preprocessed_mri_paths, preprocessed_gan_mri_paths, label
 
     return matched_gan_mri_paths, matched_labels
 
+
+import os
+import glob
+import pandas as pd
+from itertools import combinations
+
+def generate_data():
+    base_csv_dir = "/ceph/chpc/shared/aristeidis_sotiras_group/l.peiwang_scratch/derivatives_new"
+    tasks = ['cd','cm','md','pc']
+    
+    # Mapping from pair of tasks to final class label
+    intersection_map = {
+        frozenset(['cd','cm']): 'CN',
+        frozenset(['cd','md']): 'Dementia',
+        frozenset(['cm','md']): 'MCI',
+        frozenset(['pc','cm']): 'CN',
+        frozenset(['pc','cd']): 'CN'
+    }
+    
+    # Dictionary to hold subject info
+    subjects = {}
+    
+    def extract_sub_ses(filepath):
+        parts = filepath.split('/')
+        sub_ses = []
+        for p in parts:
+            if p.startswith('sub-') or p.startswith('ses-'):
+                sub_ses.append(p)
+        if len(sub_ses) == 2:
+            return "/".join(sub_ses)
+        return None
+
+    # Read CSVs and store info
+    for task in tasks:
+        mri_csv = os.path.join(base_csv_dir, f"{task}_MRI_data.csv")
+        pet_csv = os.path.join(base_csv_dir, f"{task}_PET_data.csv")
+        
+        mri_df = pd.read_csv(mri_csv, header=None)
+        pet_df = pd.read_csv(pet_csv, header=None)
+        
+        for mri_line, pet_line in zip(mri_df[0], pet_df[0]):
+            mri_path = mri_line.split(',')[0].strip()
+            pet_path = pet_line.split(',')[0].strip()
+
+            sub_ses_info = extract_sub_ses(mri_path)
+            if sub_ses_info is None:
+                sub_ses_info = extract_sub_ses(pet_path)
+            if sub_ses_info is None:
+                continue
+
+            if sub_ses_info not in subjects:
+                subjects[sub_ses_info] = {'tasks': set()}
+            subjects[sub_ses_info]['tasks'].add(task)
+            # Just store one MRI and PET path as reference
+            # (This doesn't have to be perfect, since we will use new_directory to find actual files)
+            if 'mri_path' not in subjects[sub_ses_info]:
+                subjects[sub_ses_info]['mri_path'] = mri_path
+            if 'pet_path' not in subjects[sub_ses_info]:
+                subjects[sub_ses_info]['pet_path'] = pet_path
+
+    pet_paths = []
+    mri_paths = []
+    class_labels_out = []
+
+    # Determine class for each subject
+    for sub_ses_info, data in subjects.items():
+        tasks_present = data['tasks']
+        if len(tasks_present) < 2:
+            # Not enough info to deduce class
+            continue
+        
+        assigned_label = None
+        for combo in combinations(tasks_present, 2):
+            pair = frozenset(combo)
+            if pair in intersection_map:
+                assigned_label = intersection_map[pair]
+                break
+        
+        if assigned_label is None:
+            continue
+
+        # Same logic as old function
+        # Use derivatives_less as mentioned before
+        # If you have changed directory structure, adjust here
+        new_directory = os.path.join('/scratch/l.peiwang/derivatives_less', sub_ses_info, 'anat')
+        
+        pet_files = [f for f in glob.glob(new_directory + '/*FDG*') if 'icv' not in f]
+        mri_files = glob.glob(new_directory + '/*brain*')
+        if pet_files and mri_files:
+            pet_paths.append(pet_files[0])
+            mri_paths.append(mri_files[0])
+            class_labels_out.append(assigned_label)
+
+    return pet_paths, mri_paths, class_labels_out
+
+
+
+
 def main():
     task = 'cd'       # Example task identifier
     info = 'gan/cd/new_Paramid_40_30_110_zeta_0.7'  # Example subfolder identifier
