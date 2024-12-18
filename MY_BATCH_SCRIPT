@@ -11,15 +11,9 @@
 #SBATCH --output=slurm-%A_%a.out
 #SBATCH --error=slurm-%A_%a.err
 
-# Load any required modules if needed
-# module load <module_name>
-
-# Change to the directory you want to inspect (optional)
+# Move into the directory you want to inspect
 cd /ceph/chpc/home/l.peiwang
 
-# Run the 'du' command on the current directory or specify the path directly
-# Using --max-depth=0 to only get the size of the current directory (no recursion)
-du -sh --max-depth=0 . > directory_usage.txt
-
-echo "Directory usage calculation completed. Results saved in directory_usage.txt"
+# Print the disk usage without redirecting to a file
+du -sh --max-depth=0 .
 
