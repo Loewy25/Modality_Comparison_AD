@@ -11,32 +11,15 @@
 #SBATCH --output=slurm-%A_%a.out
 #SBATCH --error=slurm-%A_%a.err
 
-# -------------------------------------
-# Paths and environment configuration
-# -------------------------------------
-MINICONDA_PATH="/ceph/chpc/home/l.peiwang/new_miniconda3"
-ENV_NAME="mynewenv"
+# Load any required modules if needed
+# module load <module_name>
 
-# Initialize conda
-source $MINICONDA_PATH/etc/profile.d/conda.sh
+# Change to the directory you want to inspect (optional)
+cd /ceph/chpc/home/l.peiwang
 
-# Create and activate the environment (skip if it already exists)
-if ! conda env list | grep -q "^$ENV_NAME "; then
-    # Create a new environment with the necessary packages
-    conda create -y -n $ENV_NAME python=3.9
-    conda activate $ENV_NAME
-    # Install packages
-    conda install -y pip numpy scipy nibabel nilearn scikit-learn matplotlib statsmodels scikit-image h5py pillow psutil tensorboard
-    conda install -y pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch -c conda-forge
-    conda install -y -c conda-forge dicom2nifti
-    pip install pytorch_fid
-else
-    conda activate $ENV_NAME
-fi
-pip install matplotlib
-# Load CUDA and CuDNN modules if needed
-module load cuda
-module load cudnn
+# Run the 'du' command on the current directory or specify the path directly
+# Using --max-depth=0 to only get the size of the current directory (no recursion)
+du -sh --max-depth=0 . > directory_usage.txt
 
-# Run your Python script
-python base2.py
+echo "Directory usage calculation completed. Results saved in directory_usage.txt"
+
