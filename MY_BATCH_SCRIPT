@@ -4,7 +4,7 @@
 #SBATCH -N 1                    # Request 1 node
 #SBATCH --mem=100G              # Request memory
 #SBATCH -t 50:30:00             # Set maximum time
-#SBATCH --partition=tier2_gpu   # Partition selection
+#SBATCH --partition=tier2_cpu   # Partition selection
 #SBATCH --account=aristeidis_sotiras
 #SBATCH --exclude=gpu02
 
